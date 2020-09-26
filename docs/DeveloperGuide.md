@@ -236,44 +236,78 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
+* is a McDonalds shift manager
+* has a need to manage a significant number of worker contacts
+* has a need to manage a large amount of work shifts
 * prefer desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: McScheduler provides a one-stop solution for McDonald's shift manager's needs for shift scheduling and worker contact/compensation. All relevant information is easily available to help streamline the management process. 
+It is also easy for the manager to contact workers and manage their hours and pay.
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​                                    | I want to …​                                                                         | So that I can…​                                                        |
+| -------- | ------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `* * *`  | user                                       | add a new worker                                                                     | track the worker's data and schedule their work                        |
+| `* * *`  | user                                       | delete a worker                                                                      | only see workers who are still with McDonald's                         |
+| `* * *`  | user                                       | view the contact details of workers                                                  | contact them easily                                                    |
+| `* * *`  | user                                       | edit details of any worker                                                           | have the most up-to-date information if I need to contact a worker     |
+| `* * *`  | user                                       | assign roles to workers                                                              | put them in shifts based on the work that they are trained to do       |
+| `* * *`  | user                                       | view a list of all workers                                                           | know who are the workers I can assign shifts to                        |
+| `* * *`  | user                                       | add new shifts                                                                       | assign people to those shifts                                          |
+| `* * *`  | user                                       | see all available shifts                                                             | know which shifts need a worker                                        |
+| `* * *`  | user                                       | set the number of workers of each type I need for each shift                         | the scheduling is based on the number of workers needed for each role  |
+| `* * *`  | user                                       | assign workers to shifts                                                             | fill shift positions                                                   |
+| `* * *`  | user                                       | add roles that need to be filled in each shift                                       | assign workers into those roles based on what is needed                |
+| `* * *`  | user                                       | set a range of the number of workers that I need on a day                            | have better flexibilities when scheduling the workers                  |
+| `* * *`  | user                                       | delete a shift                                                                       | remove unwanted shifts                                                 |
+| `* * *`  | user                                       | edit details of a shift                                                              | make changes in the system when they occur                             |
+| `* * *`  | user                                       | unassign workers from shifts                                                         |                                                                        |
+| `* *`    | new user                                   | see a tutorial on how to work the key functions                                      | know how to use the App                                                |
+| `* *`    | user                                       | see a reminder of how to use the app and the details of the various commands         | refer to instructions when I forget how to use the App                 |
+| `* *`    | user                                       | generate the weekly work shift schedule                                              | let the workers know when to report for their shifts                   |
+| `*`      | user                                       | login                                                                                |                                                                        |
+| `*`      | user                                       | see the worker's service rating                                                      | decide who to give more work opportunities to                          |
+
 
 *{More to be added}*
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `McScheduler` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Delete a person**
+#### Use case: Add a worker (UC-001)
 
 **MSS**
 
-1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+1. User requests to add worker.
+2. McScheduler adds worker.
 
-    Use case ends.
+   Use case ends.
+   
+**Extensions**
+* 1a. The given worker information has missing or wrong data.
+
+    * 1a1. McScheduler shows an error message.
+    
+      Use case ends.
+
+#### Use case: Delete a worker (UC-002)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to delete a specific worker in the list.
+4. McScheduler deletes the worker.
+
+   Use case ends.
 
 **Extensions**
 
@@ -283,24 +317,188 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * 3a. The given index is invalid.
 
-    * 3a1. AddressBook shows an error message.
+    * 3a1. McScheduler shows an error message.
 
       Use case resumes at step 2.
+      
+#### Use case: Edit a worker's information (UC-003)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to edit a specific worker in the list.
+4. McScheduler edits the worker.
+
+   Use case ends.
+   
+**Extensions**
+
+* 2a. The list is empty.
+  
+  Use case ends.
+  
+* 3a. The given index is invalid.
+
+    * 3a1. McScheduler shows an error message.
+    
+    Use case resumes at step 2.
+    
+* 3b. No information is given or the information is invalid.
+
+    * 3b1. McScheduler shows an error message.
+    
+    Use case resumes at step 2.
+    
+#### Use case: Add a shift (UC-004)
+
+**MSS**
+
+1. User requests to add a shift.
+2. McScheduler adds the shift.
+
+   Use case ends.
+   
+**Extensions**
+
+* 1a. The shift information is missing or invalid (wrong values).
+
+    * 1a1. McScheduler shows an error message.
+    
+      Use case ends.
+      
+#### Use case: Delete a shift (UC-005)
+
+**MSS**
+
+1. User requests to list shifts.
+2. McScheduler shows a list of shifts.
+3. User requests to delete a specific shift on the list.
+4. McScheduler deletes the shift.
+
+**Extensions**
+
+* 2a. The list is empty.
+  
+  Use case ends.
+  
+* 3a. The given index is invalid.
+
+    * 3a1. McScheduler shows an error message.
+    
+      Use case resumes at step 2.
+
+#### Use case: Edit a shift's information (UC-006)
+
+**MSS**
+
+1. User requests to list shifts.
+2. McScheduler shows a list of shifts.
+3. User requests to edit a specific shift in the list.
+4. McScheduler edits the shift.
+
+   Use case ends.
+   
+**Extensions**
+
+* 2a. The list is empty.
+  
+  Use case ends.
+  
+* 3a. The given index is invalid.
+
+    * 3a1. McScheduler shows an error message.
+    
+    Use case resumes at step 2.
+    
+* 3b. No information is given or the information is invalid.
+
+    * 3b1. McScheduler shows an error message.
+    
+    Use case resumes at step 2.
+    
+#### Use case: Assign worker to a shift (UC-007)
+
+**MSS**
+
+1. User requests to list shifts.
+2. McScheduler shows a list of shifts.
+3. User requests to list workers.
+4. McScheduler shows a list of workers.
+5. User requests to assign worker at a specific position on the workers' list to a shift on a specific position on the shifts' list.
+6. McScheduler assigns specified worker to specified shift.
+
+   Use case ends.
+   
+**Extensions**
+
+* 2a. The list of shifts is empty.
+
+  Use case ends.
+  
+* 4a. The list of workers is empty.
+
+  Use case ends.
+  
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+    
+      Use case resumes at step 4.
+      
+#### Use case: Unassign worker from a shift (UC-008)
+
+**MSS**
+
+1. User requests to list shifts.
+2. McScheduler shows a list of shifts.
+3. User requests to list workers.
+4. McScheduler shows a list of workers.
+5. User requests to unassign worker at a specific position on the workers' list to a shift on a specific position on the shifts' list.
+6. McScheduler unassigns specified worker to specified shift.
+
+   Use case ends.
+   
+**Extensions**
+
+* 2a. The list of shifts is empty.
+
+  Use case ends.
+  
+* 4a. The list of workers is empty.
+
+  Use case ends.
+  
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+    
+      Use case resumes at step 4.
+      
+* 5b. The worker is not assigned to the given shift.
+
+    * 5b1. McScheduler shows an error message.
+    
+      Use case resumes at step 4.
 
 *{More to be added}*
 
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+2.  Should be able to hold up to 1000 workers and 1000 shifts without a noticeable sluggishness in performance for typical usage.
+3.  Should be able to save up to 1000 workers and 1000 shifts worth of data that persists over sessions.
+4.  Data should be saved after every change.
+5.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+6.  A fresh new user should be able to figure out how to use the App easily.
 
 *{More to be added}*
 
 ### Glossary
 
 * **Mainstream OS**: Windows, Linux, Unix, OS-X
-* **Private contact detail**: A contact detail that is not meant to be shared with others
+* **Role**: A position that a worker is able to fill based on their skill set (e.g Cashier, Cleaner, Burger Flipper)
+* **Service Rating**: A rating given based on how well the worker performs at their work
 
 --------------------------------------------------------------------------------------------------------------------
 
