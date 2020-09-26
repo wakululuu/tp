@@ -3,7 +3,8 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). With the McScheduler, all information needed for shift-work assignment is made available easily to streamline the work of McDonald's Shift Managers.
+
 
 * Table of Contents
 {:toc}
@@ -14,9 +15,9 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 1. Ensure you have Java `11` or above installed in your Computer.
 
-1. Download the latest `addressbook.jar` from [here](https://github.com/se-edu/addressbook-level3/releases).
+1. Download the latest `mcscheduler.jar` from [here](https://github.com/AY2021S1-CS2103-F10-4/tp/releases).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+1. Copy the file to the folder you want to use as the _home folder_ for McScheduler.
 
 1. Double-click the file to start the app. The GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
@@ -24,13 +25,15 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * **`list`** : Lists all contacts.
+   * **`worker list`** : Lists all workers in the McScheduler.
 
-   * **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+   * **`worker add`**`n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7` : Adds a cashier named John whose pay is $7/hr. His phone number is 98765432 and he lives at 21 Lower Kent Ridge Rd, Singapore 119077.
 
-   * **`delete`**`3` : Deletes the 3rd contact shown in the current list.
+   * **`worker delete`**`3` : Deletes the 3rd worker shown in the worker list.
 
-   * **`clear`** : Deletes all contacts.
+   * **`shift add`**`d/Wed t/AM r/Cashier-2 r/Cleaner-3` : Adds a shift on Wednesday morning, which requires 2 workers to fill the cashier role and 3 workers to fill the cleaner role.
+
+   * **`assign`**`s/3 w/2 r/Cashier` : Assign the 2nd worker on the list to the 3rd shift on the list as a Cashier.
 
    * **`exit`** : Exits the app.
 
@@ -45,70 +48,71 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+  e.g. in `worker delete WORKER_INDEX`, `WORKER_INDEX` is a parameter for the index of the worker (in the worker list) you want to delete from the application which can be used as `worker delete 4`.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g `n/NAME [r/ROLE]` can be used as `n/John Doe r/Cashier` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+  e.g. `[r/ROLE-NUMBER_NEEDED]…​` can be used as ` ` (i.e. 0 times), `r/Cashier-3`, `r/Cashier-1 r/Cleaner-2` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
 </div>
 
-### Viewing help : `help`
+### Viewing help: `help`
 
-Shows a message explaning how to access the help page.
+Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
 Format: `help`
 
+### Adding a worker: `worker add`
 
-### Adding a person: `add`
+Adds a new worker into the McScheduler.
 
-Adds a person to the address book.
-
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `worker add n/NAME hp/PHONE_NUMBER a/ADDRESS [p/HOURLY_PAY] [r/ROLE]...`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
+A worker can have any number of roles (including 0) that are added by multiple r/ arguments.
 </div>
 
+* The pay is given as hourly pay rate.
+
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `worker add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7` Adds a cashier named John whose pay is $7/hr. His phone number is 98765432 and he lives at 21 Lower Kent Ridge Rd, Singapore 119077.
 
-### Listing all persons : `list`
+* `worker add n/Tom hp/87654321 a/22 Bong Keng Road, #01–01 r/Burger Flipper r/Cleaner p/7.50` Adds a worker named Tom who is able to be a Burger Flipper or a Cleaner, whose pay is $7.50/hr. His phone number is 87654321 and he lives at Bong Keng Road, #01–01.
 
-Shows a list of all persons in the address book.
+### Listing all workers: `worker list`
 
-Format: `list`
+Shows a list of all workers in the McScheduler.
 
-### Editing a person : `edit`
+Format: `worker list`
 
-Edits an existing person in the address book.
+### Editing a worker: `worker edit`
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+Edits an existing worker in the McScheduler.
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+Format: `worker edit WORKER_INDEX [hp/PHONE_NUMBER] [a/ADDRESS] [n/NAME] [p/HOURLY_PAY] [r/ROLE]...`
+
+* Edits the worker at the specified `WORKER_INDEX`. The worker index refers to the index number shown in the displayed worker list. The worker index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+* When editing roles, the existing roles of the worker will be removed i.e adding of roles is not cumulative.
+* You can remove all the worker’s roles by typing `r/` without specifying any roles after it.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `worker edit 1 n/John r/Cleaner` Edits the name and worker role of the 1st worker to be John and Cleaner respectively.
+*  `worker edit 2 n/Betsy Crower p/7` Edits the name and pay of the 2nd person to be Betsy Crower and $7/hr respectively.
 
-### Locating persons by name: `find`
+<!-- ### Locating workers by name: `worker find`
 
-Finds persons whose names contain any of the given keywords.
+Finds workers whose names contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `worker find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
@@ -118,29 +122,103 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `worker find John` returns `john` and `John Doe`
+* `worker find alex david` returns `Alex Yeoh`, `David Li`<br>
+  ![result for 'worker find alex david'](images/findAlexDavidResult.png) -->
 
-### Deleting a person : `delete`
+### Deleting a worker: `worker delete`
 
-Deletes the specified person from the address book.
+Deletes a worker from the McScheduler.
 
-Format: `delete INDEX`
+Format: `worker delete WORKER_INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+* Deletes the worker at the specified `WORKER_INDEX`. The index refers to the index number shown in the displayed worker list. The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `worker delete 4` Deletes the 4th worker shown in the worker list.
 
-### Clearing all entries : `clear`
+### Adding a shift: `shift add`
 
-Clears all entries from the address book.
+Adds a new shift to the McScheduler.
 
-Format: `clear`
+Format: `shift add d/DAY t/TIME [r/ROLE-NUMBER_NEEDED]...`
+
+* Adds a shift on the specified ​day at the specified time.
+* The day specified should be 1 of these values: **Mon, Tue, Wed, Thur, Fri, Sat, Sun**.
+* The time specified should be 1 of these values: **AM/PM**.
+* Each role should be accompanied by the number needed, and this number **must be a positive integer** 1, 2, 3...
+
+Examples:
+* `shift add d/Wed t/AM r/Cashier-2 r/Cleaner-3` Adds a shift on Wednesday morning, which requires 2 workers to fill the cashier role and 3 workers to fill the cleaner role.
+
+* `shift add d/Mon t/PM` Adds a shift on Monday afternoon with no specified roles yet.
+
+### Listing all shifts: `shift list`
+
+Shows a list of all shifts (including all details about the shifts such as their day, time and list of workers) in the McScheduler.
+
+Format: `shift list`
+
+### Editing a shift: `shift edit`
+
+Edits the details of an existing shift in the McScheduler.
+
+Format: `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE-NUMBER_NEEDED]...`
+
+* Edits the shift at the specified `SHIFT_INDEX`. The shift index refers to the index number shown in the displayed shift list. The shift index **must be a positive integer** 1, 2, 3, …​
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values.
+* The day specified should be 1 of these values: **Mon, Tue, Wed, Thur, Fri, Sat, Sun**
+* The time specified should be 1 of these values: **AM/PM**
+* Each role should be accompanied by the number needed, and this number **must be 0 (0 will remove the role from the shift) or a positive integer** 1, 2, 3...
+
+Examples:
+* `shift edit 3 r/Cashier-3 r/Cleaner-2` Edits the 3rd shift on the list such that it now has 3 cashier roles and 2 cleaner roles.
+* `shift edit 1 d/Mon t/PM r/Cleaner-1` Edits the 1st shift such that it is now on Monday afternoon, with 1 cleaner role 
+* `shift edit 2 r/Cleaner-0` Edits the 2nd shift such that it now has no cleaner roles
+
+### Deleting a shift: `shift delete`
+
+Deletes a shift from the McScheduler.
+
+Format: `shift delete SHIFT_INDEX`
+
+* Deletes the shift at the specified `SHIFT_INDEX`. The index refers to the index number shown in the displayed shift list. The index **must be a positive integer** 1, 2, 3, …​
+
+Examples:
+* `shift delete 4` Deletes the 4th shift on the list.
+
+### Assign worker to shift: `assign`
+
+Assigns a worker to a particular shift.
+
+Format: `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE`
+
+* Assigns a worker to shift the specified SHIFT_INDEX. The worker will be at the specified WORKER_INDEX in the worker list. Both indexes must be a positive integer.
+* The order of specifying does not matter, as long ‘s/’ is attached to the SHIFT_INDEX and ‘w/’ is attached to the WORKER_INDEX. <br> e.g. `assign s/4 w/1` is equivalent to `assign w/1 s/4 `
+* The assigned worker will fill up the given ROLE in the shift.
+* If the worker is already in the shift, they will be reassigned to the given role if possible.
+  * This is equivalent to unassign followed by assign.
+* An error message will be displayed in the following situations:
+  * The shift does not have the role.
+  * The role is already completely filled up in the shift.
+  * The worker is unable to fulfil the role.
+
+
+Examples:
+* `assign s/3 w/2 r/Cashier` Assign the 2nd worker on the list to the 3rd shift on the list as a Cashier.
+
+### Remove worker from shift: `unassign`
+
+Removes a worker from a particular shift.
+
+Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX`
+
+* Unassigns a worker to the shift at the specified `SHIFT_ INDEX` of the shift list. The worker unassigned will be the worker at the specified `WORKER_INDEX` in the worker list. 
+* The order of specifying does not matter, as long 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the `WORKER_INDEX`. <br> e.g. `unassign s/4 w/1` is equivalent to `unassign w/1 s/4`
+
+Examples:
+* `unassign s/4 w/1` Removes the 1st worker from the 4th shift.
 
 ### Exiting the program : `exit`
 
@@ -150,29 +228,33 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+McScheduler data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
-### Archiving data files `[coming in v2.0]`
+<!-- ### <Insert new feature> `[coming in v2.0]`
 
-_{explain the feature here}_
+_{explain the feature here}_ -->
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous McScheduler home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
 
-Action | Format, Examples
---------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
-**Help** | `help`
+Data | Action | Format, Examples
+-----|--------|------------------
+Worker | **Add** | `worker add n/NAME hp/PHONE_NUMBER a/ADDRESS [r/ROLE] [p/HOURLY_PAY]​` <br> e.g., `worker add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7`
+Worker | **Delete** | `worker delete WORKER_INDEX​` <br> e.g., `worker delete 4`
+Worker | **Edit** | `worker edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [r/ROLE] [p/HOURLY_PAY]​` <br> e.g., `worker edit 2 n/Betsy Crower p/7`
+Worker | **List** | `worker list`
+Shift | **Add** | `shift add d/DAY t/TIME [r/ROLE-NUMBER_NEEDED]...​` <br> e.g., `shift add d/Wed t/AM r/Cashier-2 r/Cleaner-3`
+Shift | **Delete** | `shift delete SHIFT_INDEX​` <br> e.g., `shift delete 4`
+Shift | **Edit** | `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE-NUMBER_NEEDED]...` <br> e.g., `shift edit 1 d/Mon t/PM r/Cleaner-1`
+Shift | **List** | `shift list`
+General | **Assign** | `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE​` <br> e.g., `assign s/3 w/2 r/Cashier`
+General | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX` <br> e.g., `unassign s/4 w/1`
+General | **Help** | `help`
