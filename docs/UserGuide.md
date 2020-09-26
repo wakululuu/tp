@@ -3,7 +3,7 @@ layout: page
 title: User Guide
 ---
 
-McScheduler is a **a one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). With the McScheduler, all information needed for shift-work assignment is made available easily to streamline the work of McDonald's Shift Managers.
+McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). With the McScheduler, all information needed for shift-work assignment is made available easily to streamline the work of McDonald's Shift Managers.
 
 
 * Table of Contents
@@ -33,7 +33,7 @@ McScheduler is a **a one-stop solution for McDonald's Shift Managers to manage s
 
    * **`shift add`**`d/Wed t/AM r/Cashier-2 r/Cleaner-3` : Adds a shift on Wednesday morning, which requires 2 workers to fill the cashier role and 3 workers to fill the cleaner role.
 
-   * **`assign`**`s/3 w/2 r/Cashier`: Assign the 2nd worker on the list to the 3rd shift on the list as a Cashier.
+   * **`assign`**`s/3 w/2 r/Cashier` : Assign the 2nd worker on the list to the 3rd shift on the list as a Cashier.
 
    * **`exit`** : Exits the app.
 
