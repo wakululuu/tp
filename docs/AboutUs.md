@@ -21,13 +21,13 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Guo Bohao
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/plosslaw.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/plosslaw)]
+[[portfolio](team/plosslaw.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Developer
+* Responsibilities: Testing
 
 ### Sigmund Chianasta
 
