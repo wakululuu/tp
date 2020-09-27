@@ -280,7 +280,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **System** is the `McScheduler` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `McScheduler` and the **Actor** is the `user`, unless specified otherwise).
+
+Please note that inclusions are marked using `inline  code` due to the absence of underline in GitHub MarkDown.
 
 #### Use case: Add a worker (UC-001)
 
@@ -342,13 +344,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     * 3a1. McScheduler shows an error message.
     
-    Use case resumes at step 2.
+      Use case resumes at step 2.
     
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
     
-    Use case resumes at step 2.
+      Use case resumes at step 2.
     
 #### Use case: Add a shift (UC-004)
 
@@ -409,13 +411,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     * 3a1. McScheduler shows an error message.
     
-    Use case resumes at step 2.
+      Use case resumes at step 2.
     
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
     
-    Use case resumes at step 2.
+      Use case resumes at step 2.
     
 #### Use case: Assign worker to a shift (UC-007)
 
@@ -443,6 +445,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * 5a. At least one of the given indexes are invalid.
 
     * 5a1. McScheduler shows an error message.
+    
+      Use case resumes at step 4.
+      
+* 5b. The worker is unable to fulfil any role required for given shift.
+
+    * 5b1. McScheduler shows an error message.
     
       Use case resumes at step 4.
       
@@ -480,6 +488,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 5b1. McScheduler shows an error message.
     
       Use case resumes at step 4.
+      
+#### Use Case: Add new worker to a shift (UC-009)
+
+**MSS**
+
+1. User `adds a worker (UC-001)`.
+2. McScheduler adds worker.
+3. User `assigns worker to a shift (UC-007)`.
+4. McScheduler assigns worker to shift.
+
+   Use case ends.
 
 *{More to be added}*
 
