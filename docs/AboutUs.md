@@ -50,7 +50,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Wang Zijun
 
-<img src="images/zijun.png" width="200px">
+<img src="images/wangzijun97.png" width="200px">
 
 [[github](http://github.com/WangZijun97)]
 [[portfolio](team/WangZijun97.md)]
