@@ -2,9 +2,9 @@
 
 [![CI Status](https://github.com/AY2021S1-CS2103-F10-4/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2021S1-CS2103-F10-4/tp/actions)
 
-McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker 
-contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a 
-Graphical User Interface (GUI). 
+McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker
+contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
+Graphical User Interface (GUI).
 
 With the McScheduler, McDonald's Shift Managers can easily access all information needed for shift-work assignment.
 

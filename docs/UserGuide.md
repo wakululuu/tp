@@ -174,7 +174,7 @@ Format: `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE-NUMBER_NEEDED]...`
 
 Examples:
 * `shift edit 3 r/Cashier-3 r/Cleaner-2` Edits the 3rd shift on the list such that it now has 3 cashier roles and 2 cleaner roles.
-* `shift edit 1 d/Mon t/PM r/Cleaner-1` Edits the 1st shift such that it is now on Monday afternoon, with 1 cleaner role 
+* `shift edit 1 d/Mon t/PM r/Cleaner-1` Edits the 1st shift such that it is now on Monday afternoon, with 1 cleaner role
 * `shift edit 2 r/Cleaner-0` Edits the 2nd shift such that it now has no cleaner roles
 
 ### Deleting a shift: `shift delete`
@@ -214,7 +214,7 @@ Removes a worker from a particular shift.
 
 Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX`
 
-* Unassigns a worker to the shift at the specified `SHIFT_ INDEX` of the shift list. The worker unassigned will be the worker at the specified `WORKER_INDEX` in the worker list. 
+* Unassigns a worker to the shift at the specified `SHIFT_ INDEX` of the shift list. The worker unassigned will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the `WORKER_INDEX`. <br> e.g. `unassign s/4 w/1` is equivalent to `unassign w/1 s/4`
 
 Examples:
