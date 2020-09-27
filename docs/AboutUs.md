@@ -10,23 +10,24 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 ## Project team
 
 ### Foo Kai En
-<img src="images/johndoe.png" width="200px">
 
-[[homepage](http://www.comp.nus.edu.sg/~damithch)]
-[[github](https://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+<img src="images/wakululuu.png" width="200px">
 
-* Role: Project Advisor
+[[github](https://github.com/wakululuu)]
+[[portfolio](team/wakululuu.md)]
+
+* Role: Developer
+* Responsibilities: Code quality, testing (secondary)
 
 ### Guo Bohao
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/plosslaw.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/plosslaw)]
+[[portfolio](team/plosslaw.md)]
 
-* Role: Team Lead
-* Responsibilities: UI
+* Role: Developer
+* Responsibilities: Testing
 
 ### Sigmund Chianasta
 
