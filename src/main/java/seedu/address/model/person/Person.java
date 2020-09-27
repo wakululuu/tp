@@ -53,7 +53,7 @@ public class Person {
     public Address getAddress() {
         return address;
     }
-    
+
     public Remark getRemark() {
         return remark;
     }
