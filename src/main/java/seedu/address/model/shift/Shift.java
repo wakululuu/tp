@@ -48,7 +48,7 @@ public class Shift {
 
     /**
      * Returns true if both shifts have the same identity fields.
-     * This defines a weaker notion of equality between two fields.
+     * This defines a weaker notion of equality between two shifts.
      */
     public boolean isSameShift(Shift otherShift) {
         if (otherShift == this) {
@@ -62,7 +62,7 @@ public class Shift {
 
     /**
      * Returns true if both shifts have the same identity and data fields.
-     * This defines a stronger notion of equality between two persons.
+     * This defines a stronger notion of equality between two shifts.
      */
     @Override
     public boolean equals(Object other) {
