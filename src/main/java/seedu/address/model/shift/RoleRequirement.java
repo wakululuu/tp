@@ -6,11 +6,18 @@ import java.util.Objects;
 
 import seedu.address.model.tag.Role;
 
+/**
+ * Represents a Role Requirement for a shift in the App.
+ * Guarantees: details are present and not null, field values are validated, immutable.
+ */
 public class RoleRequirement {
 
     private final Role role;
     private final int quantity;
 
+    /**
+     * Every field must be present and not null.
+     */
     public RoleRequirement(Role role, int quantity) {
         requireAllNonNull(role, quantity);
         this.role = role;
