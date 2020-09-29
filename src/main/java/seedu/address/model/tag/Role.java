@@ -4,7 +4,7 @@ package seedu.address.model.tag;
  * Represents a Worker Role in the App.
  * Guarantees: immutable, name is valid as declared in
  */
-public class Role extends Tag{
+public class Role extends Tag {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Role names should be alphanumeric";

@@ -36,7 +36,7 @@ public class ShiftTime {
     public static boolean isValidTime(String test) {
         try {
             TimeValue.valueOf(test);
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
         return true;
