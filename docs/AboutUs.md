@@ -31,7 +31,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 ### Sigmund Chianasta
 
-<img src="images/sigmund-c.jpeg" width="200px">
+<img src="images/sigmund-c.png" width="200px">
 
 [[github](http://github.com/sigmund-c)] [[portfolio](team/sigmund-c.md)]
 
