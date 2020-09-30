@@ -1,5 +1,7 @@
 package seedu.address.model.shift;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
@@ -12,6 +14,11 @@ import seedu.address.model.tag.Role;
  */
 public class RoleRequirement {
 
+    public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form <Role> <Quantity> "
+            + "(e.g. \'Cashier 1\')";
+
+    public static final String VALIDATION_REGEX = ".* \\d*$";
+
     private final Role role;
     private final int quantity;
 
@@ -22,6 +29,25 @@ public class RoleRequirement {
         requireAllNonNull(role, quantity);
         this.role = role;
         this.quantity = quantity;
+    }
+
+    /**
+     * String version constructor for easy parsing of sample data.
+     * Todo: Extend to use this for storage data or adapt to use the regular constructor.
+     */
+    public RoleRequirement(String roleRequirementInfo) {
+        requireNonNull(roleRequirementInfo);
+        checkArgument(isValidRoleRequirement(roleRequirementInfo), MESSAGE_CONSTRAINTS);
+        int index = roleRequirementInfo.lastIndexOf(" ");
+        this.role = new Role(roleRequirementInfo.substring(0, index));
+        this.quantity = Integer.parseInt(roleRequirementInfo.substring(index + 1));
+    }
+
+    /**
+     * Returns true if a given string is a valid role requirement
+     */
+    public static boolean isValidRoleRequirement(String test) {
+        return test.matches(VALIDATION_REGEX);
     }
 
     public Role getRole() {
@@ -67,7 +93,7 @@ public class RoleRequirement {
         final StringBuilder builder = new StringBuilder();
         builder.append(" Role Required: ")
                 .append(getRole())
-                .append(" Quantity Required: ")
+                .append(" x ")
                 .append(getQuantity());
         return builder.toString();
     }
