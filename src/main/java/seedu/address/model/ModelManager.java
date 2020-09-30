@@ -12,6 +12,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.shift.Shift;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -22,6 +23,7 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Shift> filteredShifts;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -35,6 +37,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredShifts = new FilteredList<>(this.addressBook.getShiftList());
     }
 
     public ModelManager() {
@@ -88,6 +91,7 @@ public class ModelManager implements Model {
         return addressBook;
     }
 
+    // Person related methods
     @Override
     public boolean hasPerson(Person person) {
         requireNonNull(person);
@@ -112,6 +116,30 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
+    // Shift related methods
+    @Override
+    public boolean hasShift(Shift shift) {
+        requireNonNull(shift);
+        return addressBook.hasShift(shift);
+    }
+
+    @Override
+    public void deleteShift(Shift target) {
+        addressBook.removeShift(target);
+    }
+
+    @Override
+    public void addShift(Shift shift) {
+        addressBook.addShift(shift);
+        updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+    }
+
+    @Override
+    public void setShift(Shift target, Shift editedShift) {
+        requireAllNonNull(target, editedShift);
+        addressBook.setShift(target, editedShift);
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**
@@ -127,6 +155,19 @@ public class ModelManager implements Model {
     public void updateFilteredPersonList(Predicate<Person> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    //============ Filtered Shift List Accessors ==============================================================
+
+    @Override
+    public ObservableList<Shift> getFilteredShiftList() {
+        return filteredShifts;
+    }
+
+    @Override
+    public void updateFilteredShiftList(Predicate<Shift> predicate) {
+        requireNonNull(predicate);
+        filteredShifts.setPredicate(predicate);
     }
 
     @Override
