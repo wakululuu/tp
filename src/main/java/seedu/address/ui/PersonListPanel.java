@@ -9,6 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.shift.Shift;
 
 /**
  * Panel containing the list of persons.
@@ -42,6 +43,20 @@ public class PersonListPanel extends UiPart<Region> {
                 setText(null);
             } else {
                 setGraphic(new PersonCard(person, getIndex() + 1).getRoot());
+            }
+        }
+    }
+
+    class ShiftListViewCell extends ListCell<Shift> {
+        @Override
+        protected void updateItem(Shift shift, boolean empty) {
+            super.updateItem(shift, empty);
+
+            if (empty || shift == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(new ShiftCard(shift, getIndex() + 1).getRoot());
             }
         }
     }
