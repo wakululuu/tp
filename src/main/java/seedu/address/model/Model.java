@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Person;
+import seedu.address.model.shift.Shift;
 
 /**
  * The API of the Model component.
@@ -13,6 +14,7 @@ import seedu.address.model.person.Person;
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+    Predicate<Shift> PREDICATE_SHOW_ALL_SHIFTS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -84,4 +86,40 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    /**
+     * Returns true if a shift with the same identity as {@code shift} exists in the App.
+     */
+    boolean hasShift(Shift shift);
+
+    /**
+     * Deletes the given shift.
+     * Shift must exist in the App.
+     */
+    void deleteShift(Shift target);
+
+    /**
+     * Adds the given shift.
+     * Shift must not already exist in the App.
+     */
+    void addShift(Shift shift);
+
+    /**
+     * Replaces the given shift {@code target} with {@code editedShift}.
+     * {@code target} must already exist in the App.
+     * There must be no shift with the same identity as {@code editedShift} that exists in the App.
+     */
+    void setShift(Shift target, Shift editedShift);
+
+    /**
+     * Updates the filter of the filtered shift list to filter by the given {@code predicate}
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredShiftList(Predicate<Shift> predicate);
+
+    /**
+     * Returns an unmodifiable view of the filtered shift list
+     */
+    ObservableList<Shift> getFilteredShiftList();
+
 }

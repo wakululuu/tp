@@ -21,6 +21,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.shift.Shift;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -145,6 +146,36 @@ public class AddCommandTest {
 
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean hasShift(Shift shift) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void deleteShift(Shift target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addShift(Shift shift) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setShift(Shift target, Shift editedShift) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredShiftList(Predicate<Shift> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Shift> getFilteredShiftList() {
             throw new AssertionError("This method should not be called.");
         }
     }

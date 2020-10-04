@@ -12,6 +12,10 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.shift.RoleRequirement;
+import seedu.address.model.shift.Shift;
+import seedu.address.model.shift.ShiftDay;
+import seedu.address.model.shift.ShiftTime;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -41,10 +45,20 @@ public class SampleDataUtil {
         };
     }
 
+    public static Shift[] getSampleShifts() {
+        return new Shift[] {
+            new Shift(new ShiftDay("Mon"), new ShiftTime("AM"),
+                getRoleRequirementSet("Cashier 1"))
+        };
+    }
+
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
         for (Person samplePerson : getSamplePersons()) {
             sampleAb.addPerson(samplePerson);
+        }
+        for (Shift sampleShift : getSampleShifts()) {
+            sampleAb.addShift(sampleShift);
         }
         return sampleAb;
     }
@@ -55,6 +69,12 @@ public class SampleDataUtil {
     public static Set<Tag> getTagSet(String... strings) {
         return Arrays.stream(strings)
                 .map(Tag::new)
+                .collect(Collectors.toSet());
+    }
+
+    public static Set<RoleRequirement> getRoleRequirementSet(String... string) {
+        return Arrays.stream(string)
+                .map(RoleRequirement::new)
                 .collect(Collectors.toSet());
     }
 

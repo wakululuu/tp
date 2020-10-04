@@ -14,6 +14,10 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Phone;
+import seedu.address.model.shift.RoleRequirement;
+import seedu.address.model.shift.ShiftDay;
+import seedu.address.model.shift.ShiftTime;
+import seedu.address.model.tag.Role;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -130,5 +134,78 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String day} into a {@code ShiftDay}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code day} is invalid.
+     */
+    public static ShiftDay parseShiftDay(String day) throws ParseException {
+        requireNonNull(day);
+        String trimmedShiftDay = day.trim();
+        if (!ShiftDay.isValidDay(trimmedShiftDay)) {
+            throw new ParseException(ShiftDay.MESSAGE_CONSTRAINTS);
+        }
+        return new ShiftDay(day);
+    }
+
+    /**
+     * Parses a {@code String time} into a {@code ShiftTime}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code time} is invalid.
+     */
+    public static ShiftTime parseShiftTime(String time) throws ParseException {
+        requireNonNull(time);
+        String trimmedShiftTime = time.trim();
+        if (!ShiftTime.isValidTime(trimmedShiftTime)) {
+            throw new ParseException(ShiftTime.MESSAGE_CONSTRAINTS);
+        }
+        return new ShiftTime((time));
+    }
+
+    /**
+     * Parses a {@code String role} into a {@code Role}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code role} is invalid.
+     */
+    public static Role parseRole(String role) throws ParseException {
+        requireNonNull(role);
+        String trimmedRole = role.trim();
+        if (!Role.isValidTagName(trimmedRole)) {
+            throw new ParseException(Role.MESSAGE_CONSTRAINTS);
+        }
+        return new Role(trimmedRole);
+    }
+
+    /**
+     * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code roleRequirement} is invalid.
+     */
+    public static RoleRequirement parseRoleRequirement(String roleRequirement) throws ParseException {
+        requireNonNull(roleRequirement);
+        String trimmedRoleRequirement = roleRequirement.trim();
+        if (!RoleRequirement.isValidRoleRequirement(trimmedRoleRequirement)) {
+            throw new ParseException(RoleRequirement.MESSAGE_CONSTRAINTS);
+        }
+        return new RoleRequirement(trimmedRoleRequirement);
+    }
+
+    /**
+     * Parses {@code Collection<String> roleRequirements} into a {@code Set<RoleRequirement>}.
+     */
+    public static Set<RoleRequirement> parseRoleRequirements(
+            Collection<String> roleRequirements) throws ParseException {
+        requireNonNull(roleRequirements);
+        final Set<RoleRequirement> roleRequirementSet = new HashSet<>();
+        for (String roleRequirementString : roleRequirements) {
+            roleRequirementSet.add(parseRoleRequirement(roleRequirementString));
+        }
+        return roleRequirementSet;
     }
 }
