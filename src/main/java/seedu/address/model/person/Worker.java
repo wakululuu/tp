@@ -18,20 +18,20 @@ public class Worker {
     // Identity fields
     private final Name name;
     private final Phone phone;
-    private final Email email;
 
     // Data fields
+    private final Pay pay;
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Worker(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Worker(Name name, Phone phone, Pay pay, Address address, Set<Tag> tags) {
+        requireAllNonNull(name, phone, pay, address, tags);
         this.name = name;
         this.phone = phone;
-        this.email = email;
+        this.pay = pay;
         this.address = address;
         this.tags.addAll(tags);
     }
@@ -44,8 +44,8 @@ public class Worker {
         return phone;
     }
 
-    public Email getEmail() {
-        return email;
+    public Pay getPay() {
+        return pay;
     }
 
     public Address getAddress() {
@@ -71,7 +71,7 @@ public class Worker {
 
         return otherWorker != null
                 && otherWorker.getName().equals(getName())
-                && (otherWorker.getPhone().equals(getPhone()) || otherWorker.getEmail().equals(getEmail()));
+                && otherWorker.getPhone().equals(getPhone());
     }
 
     /**
@@ -91,7 +91,7 @@ public class Worker {
         Worker otherWorker = (Worker) other;
         return otherWorker.getName().equals(getName())
                 && otherWorker.getPhone().equals(getPhone())
-                && otherWorker.getEmail().equals(getEmail())
+                && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
                 && otherWorker.getTags().equals(getTags());
     }
@@ -99,7 +99,7 @@ public class Worker {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, pay, address, tags);
     }
 
     @Override
@@ -108,8 +108,8 @@ public class Worker {
         builder.append(getName())
                 .append(" Phone: ")
                 .append(getPhone())
-                .append(" Email: ")
-                .append(getEmail())
+                .append(" Hourly pay: ")
+                .append(getPay())
                 .append(" Address: ")
                 .append(getAddress())
                 .append(" Tags: ");

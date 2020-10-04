@@ -12,6 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
+import seedu.address.model.person.Pay;
 import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
@@ -93,6 +94,15 @@ public class ParserUtil {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
         return new Email(trimmedEmail);
+    }
+
+    public static Pay parsePay(String pay) throws ParseException {
+        requireNonNull(pay);
+        String trimmedPay = pay.trim();
+        if (!Pay.isValidPay(pay)) {
+            throw new ParseException(Pay.MESSAGE_CONSTRAINTS);
+        }
+        return new Pay(trimmedPay);
     }
 
     /**
