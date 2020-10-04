@@ -15,12 +15,12 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.PersonBuilder;
 
-public class WorkerTest {
+public class PersonTest {
 
     @Test
     public void asObservableList_modifyList_throwsUnsupportedOperationException() {
-        Worker worker = new PersonBuilder().build();
-        assertThrows(UnsupportedOperationException.class, () -> worker.getTags().remove(0));
+        Person person = new PersonBuilder().build();
+        assertThrows(UnsupportedOperationException.class, () -> person.getTags().remove(0));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class WorkerTest {
         assertFalse(ALICE.isSamePerson(null));
 
         // different phone and email -> returns false
-        Worker editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).build();
+        Person editedAlice = new PersonBuilder(ALICE).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).build();
         assertFalse(ALICE.isSamePerson(editedAlice));
 
         // different name -> returns false
@@ -57,7 +57,7 @@ public class WorkerTest {
     @Test
     public void equals() {
         // same values -> returns true
-        Worker aliceCopy = new PersonBuilder(ALICE).build();
+        Person aliceCopy = new PersonBuilder(ALICE).build();
         assertTrue(ALICE.equals(aliceCopy));
 
         // same object -> returns true
@@ -69,11 +69,11 @@ public class WorkerTest {
         // different type -> returns false
         assertFalse(ALICE.equals(5));
 
-        // different worker -> returns false
+        // different person -> returns false
         assertFalse(ALICE.equals(BOB));
 
         // different name -> returns false
-        Worker editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
+        Person editedAlice = new PersonBuilder(ALICE).withName(VALID_NAME_BOB).build();
         assertFalse(ALICE.equals(editedAlice));
 
         // different phone -> returns false

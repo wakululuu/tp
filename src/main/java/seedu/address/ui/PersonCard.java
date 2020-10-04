@@ -7,10 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.address.model.person.Worker;
+import seedu.address.model.person.Person;
 
 /**
- * An UI component that displays information of a {@code Worker}.
+ * An UI component that displays information of a {@code Person}.
  */
 public class PersonCard extends UiPart<Region> {
 
@@ -24,7 +24,7 @@ public class PersonCard extends UiPart<Region> {
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
 
-    public final Worker worker;
+    public final Person person;
 
     @FXML
     private HBox cardPane;
@@ -42,17 +42,17 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
 
     /**
-     * Creates a {@code PersonCode} with the given {@code Worker} and index to display.
+     * Creates a {@code PersonCode} with the given {@code Person} and index to display.
      */
-    public PersonCard(Worker worker, int displayedIndex) {
+    public PersonCard(Person person, int displayedIndex) {
         super(FXML);
-        this.worker = worker;
+        this.person = person;
         id.setText(displayedIndex + ". ");
-        name.setText(worker.getName().fullName);
-        phone.setText(worker.getPhone().value);
-        address.setText(worker.getAddress().value);
-        email.setText(worker.getEmail().value);
-        worker.getTags().stream()
+        name.setText(person.getName().fullName);
+        phone.setText(person.getPhone().value);
+        address.setText(person.getAddress().value);
+        email.setText(person.getEmail().value);
+        person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
@@ -72,6 +72,6 @@ public class PersonCard extends UiPart<Region> {
         // state check
         PersonCard card = (PersonCard) other;
         return id.getText().equals(card.id.getText())
-                && worker.equals(card.worker);
+                && person.equals(card.person);
     }
 }

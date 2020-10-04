@@ -10,10 +10,10 @@ import java.util.Set;
 import seedu.address.model.tag.Tag;
 
 /**
- * Represents a Worker in the address book.
+ * Represents a Person in the address book.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class Worker {
+public class Person {
 
     // Identity fields
     private final Name name;
@@ -27,7 +27,7 @@ public class Worker {
     /**
      * Every field must be present and not null.
      */
-    public Worker(Name name, Phone phone, Pay pay, Address address, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Pay pay, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, pay, address, tags);
         this.name = name;
         this.phone = phone;
@@ -64,14 +64,14 @@ public class Worker {
      * Returns true if both persons of the same name have at least one other identity field that is the same.
      * This defines a weaker notion of equality between two persons.
      */
-    public boolean isSamePerson(Worker otherWorker) {
-        if (otherWorker == this) {
+    public boolean isSamePerson(Person otherPerson) {
+        if (otherPerson == this) {
             return true;
         }
 
-        return otherWorker != null
-                && otherWorker.getName().equals(getName())
-                && otherWorker.getPhone().equals(getPhone());
+        return otherPerson != null
+                && otherPerson.getName().equals(getName())
+                && otherPerson.getPhone().equals(getPhone());
     }
 
     /**
@@ -84,11 +84,11 @@ public class Worker {
             return true;
         }
 
-        if (!(other instanceof Worker)) {
+        if (!(other instanceof Person)) {
             return false;
         }
 
-        Worker otherWorker = (Worker) other;
+        Person otherWorker = (Person) other;
         return otherWorker.getName().equals(getName())
                 && otherWorker.getPhone().equals(getPhone())
                 && otherWorker.getPay().equals(getPay())
