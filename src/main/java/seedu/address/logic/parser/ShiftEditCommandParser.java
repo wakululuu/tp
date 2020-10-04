@@ -13,8 +13,8 @@ import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.ShiftEditCommand;
-import seedu.address.model.ShiftEditCommand.EditShiftDescriptor;
+import seedu.address.logic.commands.ShiftEditCommand;
+import seedu.address.logic.commands.ShiftEditCommand.EditShiftDescriptor;
 import seedu.address.model.shift.RoleRequirement;
 
 /**
