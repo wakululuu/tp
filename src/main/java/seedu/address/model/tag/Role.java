@@ -13,6 +13,10 @@ public class Role extends Tag {
         super(roleName);
     }
 
+    public String getRole() {
+        return tagName;
+    }
+
     @Override
     public boolean equals(Object other) {
         return other == this
