@@ -21,7 +21,7 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
+//import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
@@ -42,13 +42,13 @@ public class EditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_PAY + "HOURLY PAY] "
-//            + "[" + PREFIX_EMAIL + "EMAIL] "
+            //+ "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
+            //+ PREFIX_EMAIL + "johndoe@example.com";
             + PREFIX_PAY + "10.20";
-//            + PREFIX_EMAIL + "johndoe@example.com";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -133,7 +133,7 @@ public class EditCommand extends Command {
         private Name name;
         private Phone phone;
         private Pay pay;
-//        private Email email;
+        //private Email email;
         private Address address;
         private Set<Tag> tags;
 
@@ -147,7 +147,7 @@ public class EditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setPay(toCopy.pay);
-//            setEmail(toCopy.email);
+            //setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
         }
@@ -183,13 +183,15 @@ public class EditCommand extends Command {
             return Optional.ofNullable(pay);
         }
 
-//        public void setEmail(Email email) {
-//            this.email = email;
-//        }
-//
-//        public Optional<Email> getEmail() {
-//            return Optional.ofNullable(email);
-//        }
+        /*
+        public void setEmail(Email email) {
+            this.email = email;
+        }
+
+        public Optional<Email> getEmail() {
+            return Optional.ofNullable(email);
+        }
+         */
 
         public void setAddress(Address address) {
             this.address = address;
@@ -234,7 +236,7 @@ public class EditCommand extends Command {
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())
                     && getPay().equals(e.getPay())
-//                    && getEmail().equals(e.getEmail())
+                    //&& getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getTags().equals(e.getTags());
         }

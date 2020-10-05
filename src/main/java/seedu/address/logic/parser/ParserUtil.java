@@ -100,6 +100,12 @@ public class ParserUtil {
         return new Email(trimmedEmail);
     }
 
+    /**
+     * Parses a {@code String pay} into an {@code Pay}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code pay} is invalid.
+     */
     public static Pay parsePay(String pay) throws ParseException {
         requireNonNull(pay);
         String trimmedPay = pay.trim();
