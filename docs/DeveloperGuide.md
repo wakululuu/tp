@@ -485,12 +485,14 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     
       Use case resumes at step 4.
       
-#### Use Case: Hire a new worker for a shift (UC-009)
+#### Use Case: Hire a new worker for shifts (UC-009)
 
 **MSS**
 
 1. User <u>adds a worker (UC-001)</u>.
 2. User <u>assigns worker to a shift (UC-007)</u>.
+   
+   Step 2 is repeated for all shifts the worker is hired for.
 
    Use case ends.
 
