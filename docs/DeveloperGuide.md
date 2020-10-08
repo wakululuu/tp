@@ -236,16 +236,15 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* is a McDonalds shift manager
-* has a need to manage a significant number of worker contacts
-* has a need to manage a large amount of work shifts
-* prefer desktop apps over other types
+* is a McDonald's shift manager
+* manages a significant number of worker contacts
+* manages a large number of work shifts
+* prefers desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: McScheduler provides a one-stop solution for McDonald's shift manager's needs for shift scheduling and worker contact/compensation. All relevant information is easily available to help streamline the management process. 
-It is also easy for the manager to contact workers and manage their hours and pay.
+**Value proposition**: McScheduler provides a one-stop solution for McDonald's shift managers' needs for shift scheduling and worker contact/compensation. All relevant information is easily available to help streamline the management process. It is also easy for the manager to contact workers and manage their hours and pay. McScheduler aims to be faster than a typical mouse/GUI driven app.
 
 
 ### User stories
