@@ -280,8 +280,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `McScheduler` and the **Actor** is the `user`, unless specified otherwise).
 
-Please note that inclusions are marked using `inline  code` due to the absence of underline in GitHub MarkDown.
-
 #### Use case: Add a worker (UC-001)
 
 **MSS**
@@ -417,7 +415,7 @@ Please note that inclusions are marked using `inline  code` due to the absence o
     
       Use case resumes at step 2.
     
-#### Use case: Assign worker to a shift (UC-007)
+#### Use case: Assign a worker to a shift (UC-007)
 
 **MSS**
 
@@ -425,7 +423,7 @@ Please note that inclusions are marked using `inline  code` due to the absence o
 2. McScheduler shows a list of shifts.
 3. User requests to list workers.
 4. McScheduler shows a list of workers.
-5. User requests to assign worker at a specific position on the workers' list to a shift on a specific position on the shifts' list.
+5. User requests to assign worker at a specific position on the workers' list to a shift at a specific position on the shifts' list.
 6. McScheduler assigns specified worker to specified shift.
 
    Use case ends.
@@ -452,7 +450,7 @@ Please note that inclusions are marked using `inline  code` due to the absence o
     
       Use case resumes at step 4.
       
-#### Use case: Unassign worker from a shift (UC-008)
+#### Use case: Unassign a worker from a shift (UC-008)
 
 **MSS**
 
@@ -460,8 +458,8 @@ Please note that inclusions are marked using `inline  code` due to the absence o
 2. McScheduler shows a list of shifts.
 3. User requests to list workers.
 4. McScheduler shows a list of workers.
-5. User requests to unassign worker at a specific position on the workers' list to a shift on a specific position on the shifts' list.
-6. McScheduler unassigns specified worker to specified shift.
+5. User requests to unassign worker at a specific position on the workers' list to a shift at a specific position on the shifts' list.
+6. McScheduler unassigns specified worker from specified shift.
 
    Use case ends.
    
@@ -487,14 +485,12 @@ Please note that inclusions are marked using `inline  code` due to the absence o
     
       Use case resumes at step 4.
       
-#### Use Case: Add new worker to a shift (UC-009)
+#### Use Case: Hire a new worker for a shift (UC-009)
 
 **MSS**
 
-1. User `adds a worker (UC-001)`.
-2. McScheduler adds worker.
-3. User `assigns worker to a shift (UC-007)`.
-4. McScheduler assigns worker to shift.
+1. User <u>adds a worker (UC-001)</u>.
+2. User <u>assigns worker to a shift (UC-007)</u>.
 
    Use case ends.
 
@@ -507,13 +503,13 @@ Please note that inclusions are marked using `inline  code` due to the absence o
 3.  Should be able to save up to 1000 workers and 1000 shifts worth of data that persists over sessions.
 4.  Data should be saved after every change.
 5.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-6.  A fresh new user should be able to figure out how to use the App easily.
+6.  A fresh new user should be able to figure out how to use the app easily.
 
 *{More to be added}*
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, OS-X
+* **Mainstream OS**: Windows, Linux, Unix, macOS
 * **Role**: A position that a worker is able to fill based on their skill set (e.g Cashier, Cleaner, Burger Flipper)
 * **Service Rating**: A rating given based on how well the worker performs at their work
 
