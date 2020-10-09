@@ -29,31 +29,31 @@ public class ShiftAddCommand extends Command {
     public static final String MESSAGE_SUCCESS = "New shift added: %1$s";
     public static final String MESSAGE_DUPLICATE_SHIFT = "This shift already exists in the McScheduler";
 
-    private final Shift toAdd;
+    private final Shift shiftToAdd;
 
     /**
      * Creates a ShiftAddCommand to add the specified {@code Shift}
      */
     public ShiftAddCommand(Shift shift) {
         requireNonNull(shift);
-        toAdd = shift;
+        shiftToAdd = shift;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        if (model.hasShift(toAdd)) {
+        if (model.hasShift(shiftToAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
         }
 
-        model.addShift(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        model.addShift(shiftToAdd);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, shiftToAdd));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof ShiftAddCommand // instanceof handles nulls
-                && toAdd.equals(((ShiftAddCommand) other).toAdd));
+                && shiftToAdd.equals(((ShiftAddCommand) other).shiftToAdd));
     }
 }
