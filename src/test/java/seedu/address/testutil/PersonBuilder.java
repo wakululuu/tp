@@ -9,7 +9,8 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.Role;
+//import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 
 /**
@@ -28,7 +29,7 @@ public class PersonBuilder {
     private Pay pay;
     //private Email email;
     private Address address;
-    private Set<Tag> tags;
+    private Set<Role> roles;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -39,7 +40,7 @@ public class PersonBuilder {
         pay = new Pay(DEFAULT_PAY);
         //email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
-        tags = new HashSet<>();
+        roles = new HashSet<>();
     }
 
     /**
@@ -51,7 +52,7 @@ public class PersonBuilder {
         pay = personToCopy.getPay();
         //email = personToCopy.getEmail();
         address = personToCopy.getAddress();
-        tags = new HashSet<>(personToCopy.getTags());
+        roles = new HashSet<>(personToCopy.getRoles());
     }
 
     /**
@@ -63,10 +64,10 @@ public class PersonBuilder {
     }
 
     /**
-     * Parses the {@code tags} into a {@code Set<Tag>} and set it to the {@code Person} that we are building.
+     * Parses the {@code roles} into a {@code Set<Role>} and set it to the {@code Person} that we are building.
      */
-    public PersonBuilder withTags(String ... tags) {
-        this.tags = SampleDataUtil.getTagSet(tags);
+    public PersonBuilder withRoles(String ... roles) {
+        this.roles = SampleDataUtil.getRoleSet(roles);
         return this;
     }
 
@@ -106,7 +107,7 @@ public class PersonBuilder {
      */
 
     public Person build() {
-        return new Person(name, phone, pay, address, tags);
+        return new Person(name, phone, pay, address, roles);
     }
 
 }
