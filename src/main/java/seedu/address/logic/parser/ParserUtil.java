@@ -188,6 +188,18 @@ public class ParserUtil {
     }
 
     /**
+     * Parses {@code Collection<String> roles} into a {@code Set<Role>}.
+     */
+    public static Set<Role> parseRoles(Collection<String> roles) throws ParseException {
+        requireNonNull(roles);
+        final Set<Role> roleSet = new HashSet<>();
+        for (String tagName : roles) {
+            roleSet.add(parseRole(tagName));
+        }
+        return roleSet;
+    }
+
+    /**
      * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
      * Leading and trailing whitespaces will be trimmed.
      *

@@ -16,7 +16,8 @@ import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
-import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.Role;
+//import seedu.address.model.tag.Tag;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
@@ -26,22 +27,22 @@ public class SampleDataUtil {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Pay("10"),
                 new Address("Blk 30 Geylang Street 29, #06-40"),
-                getTagSet("friends")),
+                getRoleSet("cashier")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Pay("11.2"),
                 new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getTagSet("colleagues", "friends")),
+                getRoleSet("cashier", "cleaner")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Pay("9.87"),
                 new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                getTagSet("neighbours")),
+                getRoleSet("chef")),
             new Person(new Name("David Li"), new Phone("91031282"), new Pay("0.99"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                getTagSet("family")),
+                getRoleSet("chef")),
             new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Pay("23"),
                 new Address("Blk 47 Tampines Street 20, #17-35"),
-                getTagSet("classmates")),
+                getRoleSet("cashier", "chef")),
             new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Pay("11.10"),
                 new Address("Blk 45 Aljunied Street 85, #11-31"),
-                getTagSet("colleagues"))
+                getRoleSet("cleaner"))
         };
     }
 
@@ -64,14 +65,17 @@ public class SampleDataUtil {
     }
 
     /**
-     * Returns a tag set containing the list of strings given.
+     * Returns a role set containing the list of strings given.
      */
-    public static Set<Tag> getTagSet(String... strings) {
+    public static Set<Role> getRoleSet(String... strings) {
         return Arrays.stream(strings)
-                .map(Tag::new)
+                .map(Role::new)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Returns a role requirement set containing the list of strings given.
+     */
     public static Set<RoleRequirement> getRoleRequirementSet(String... string) {
         return Arrays.stream(string)
                 .map(RoleRequirement::new)
