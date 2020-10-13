@@ -109,6 +109,14 @@ public class Shift {
         return Objects.hash(shiftDay, shiftTime, roleRequirements);
     }
 
+    /**
+     * Converts the {@code Shift} object to a one-line {@code String}.
+     * @return One-line string representation of shift object.
+     */
+    public String toCondensedString() {
+        return getShiftDay() + " " + getShiftTime();
+    }
+
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();

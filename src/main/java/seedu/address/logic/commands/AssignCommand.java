@@ -82,8 +82,8 @@ public class AssignCommand extends Command {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
 
-        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, shiftIndex.getOneBased(),
-                workerIndex.getOneBased(), role.getRole()));
+        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignedShift.toCondensedString(),
+                assignedPerson.getName(), role.getRole()));
     }
 
     /**

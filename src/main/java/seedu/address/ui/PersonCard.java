@@ -40,6 +40,8 @@ public class PersonCard extends UiPart<Region> {
     private Label pay;
     @FXML
     private FlowPane roles;
+    @FXML
+    private FlowPane shifts;
 
     /**
      * Creates a {@code PersonCode} with the given {@code Person} and index to display.
@@ -56,6 +58,9 @@ public class PersonCard extends UiPart<Region> {
         person.getRoles().stream()
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
+        person.getShifts()
+                .forEach((shift, role) -> shifts.getChildren().add(new Label(
+                        shift.toCondensedString() + " (" + role.getRole() + ")")));
     }
 
     @Override

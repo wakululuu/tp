@@ -28,6 +28,8 @@
                 <Label fx:id="dayTime" text="\$first" styleClass="cell_big_label" />
             </HBox>
             <FlowPane fx:id="roleRequirements" />
+            <Label fx:id="workersHeader" styleClass="cell_medium_label" text="Workers:" />
+            <FlowPane fx:id="workers" />
         </VBox>
     </GridPane>
 </HBox>
