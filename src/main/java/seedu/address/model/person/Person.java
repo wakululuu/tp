@@ -3,10 +3,13 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 
 /**
@@ -23,9 +26,10 @@ public class Person {
     private final Pay pay;
     private final Address address;
     private final Set<Role> roles = new HashSet<>();
+    private final Map<Shift, Role> shifts = new HashMap<>();
 
     /**
-     * Every field must be present and not null.
+     * Standard constructor, start with empty {@code shifts}. Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles) {
         requireAllNonNull(name, phone, pay, address, roles);
@@ -34,6 +38,20 @@ public class Person {
         this.pay = pay;
         this.address = address;
         this.roles.addAll(roles);
+    }
+
+    /**
+     * Constructor with non-empty {@code shifts} for Assign and Unassign commands.
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles, Map<Shift, Role> shifts) {
+        requireAllNonNull(name, phone, pay, address, roles, shifts);
+        this.name = name;
+        this.phone = phone;
+        this.pay = pay;
+        this.address = address;
+        this.roles.addAll(roles);
+        this.shifts.putAll(shifts);
     }
 
     public Name getName() {
@@ -59,6 +77,14 @@ public class Person {
      */
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
+    }
+
+    /**
+     * Returns an immutable shift-role map, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Map<Shift, Role> getShifts() {
+        return Collections.unmodifiableMap(shifts);
     }
 
     /**
@@ -93,13 +119,14 @@ public class Person {
                 && otherWorker.getPhone().equals(getPhone())
                 && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
-                && otherWorker.getRoles().equals(getRoles());
+                && otherWorker.getRoles().equals(getRoles())
+                && otherWorker.getShifts().equals(getShifts());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, pay, address, roles);
+        return Objects.hash(name, phone, pay, address, roles, shifts);
     }
 
     @Override
@@ -114,6 +141,8 @@ public class Person {
                 .append(getAddress())
                 .append(" Roles: ");
         getRoles().forEach(builder::append);
+        builder.append(" Shifts: ");
+        getShifts().forEach((a, b) -> builder.append(a + "(" + b + ") ")); // Format: "Shift(Role) "
         return builder.toString();
     }
 
