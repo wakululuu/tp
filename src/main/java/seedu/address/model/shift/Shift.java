@@ -3,9 +3,14 @@ package seedu.address.model.shift;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import seedu.address.model.person.Person;
+import seedu.address.model.tag.Role;
 
 /**
  * Represents a Shift in the App.
@@ -19,15 +24,29 @@ public class Shift {
 
     // Data fields
     private final Set<RoleRequirement> roleRequirements = new HashSet<>();
+    private final Map<Person, Role> workers = new HashMap<>();
 
     /**
-     * Every field must be present and not null
+     * Standard constructor, start with empty {@code workers}. Every field must be present and not null
      */
     public Shift(ShiftDay shiftDay, ShiftTime shiftTime, Set<RoleRequirement> roleRequirements) {
         requireAllNonNull(shiftDay, shiftTime, roleRequirements);
         this.shiftDay = shiftDay;
         this.shiftTime = shiftTime;
         this.roleRequirements.addAll(roleRequirements);
+    }
+
+    /**
+     * Constructor with non-empty {@code workers} for Assign and Unassign commands.
+     * Every field must be present and not null.
+     */
+    public Shift(ShiftDay shiftDay, ShiftTime shiftTime, Set<RoleRequirement> roleRequirements,
+            Map<Person, Role> workers) {
+        requireAllNonNull(shiftDay, shiftTime, roleRequirements);
+        this.shiftDay = shiftDay;
+        this.shiftTime = shiftTime;
+        this.roleRequirements.addAll(roleRequirements);
+        this.workers.putAll(workers);
     }
 
     public ShiftDay getShiftDay() {
@@ -44,6 +63,10 @@ public class Shift {
      */
     public Set<RoleRequirement> getRoleRequirements() {
         return Collections.unmodifiableSet(roleRequirements);
+    }
+
+    public Map<Person, Role> getWorkers() {
+        return workers;
     }
 
     /**
