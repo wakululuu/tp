@@ -20,16 +20,16 @@ import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 
 /**
- * Assigns a worker to a shift.
+ * Assigns a person to a shift.
  */
 public class AssignCommand extends Command {
     public static final String COMMAND_WORD = "assign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns the specified worker to the specified shift"
-            + "by the index numbers used in the last worker and shift listings. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns the specified person to the specified shift"
+            + "by the index numbers used in the last person and shift listings. "
             + "\nParameters: "
             + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
-            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer) "
+            + PREFIX_WORKER + "PERSON_INDEX (must be a positive integer) "
             + PREFIX_ROLE + "ROLE\n"
             + "Example: " + COMMAND_WORD
             + " s/4 "
@@ -37,24 +37,24 @@ public class AssignCommand extends Command {
             + "r/Cashier";
 
     public static final String MESSAGE_ASSIGN_SUCCESS = "New shift assignment added:\n"
-            + "Shift: %1$s, Worker: %2$s, Role: %3$s";
+            + "Shift: %1$s, Person: %2$s, Role: %3$s";
 
     private final Index shiftIndex;
-    private final Index workerIndex;
+    private final Index personIndex;
     private final Role role;
 
     /**
      * Creates an AssignCommand to assign the specified {@code Person} to the specified {@code Shift}.
      *
-     * @param shiftIndex of the shift in the filtered shift list to assign the worker to.
-     * @param workerIndex of the worker in the filtered worker list to assign to the shift.
+     * @param shiftIndex of the shift in the filtered shift list to assign the person to.
+     * @param personIndex of the person in the filtered person list to assign to the shift.
      * @param role of the person in the shift.
      */
-    public AssignCommand(Index shiftIndex, Index workerIndex, Role role) {
-        requireAllNonNull(shiftIndex, workerIndex, role);
+    public AssignCommand(Index shiftIndex, Index personIndex, Role role) {
+        requireAllNonNull(shiftIndex, personIndex, role);
 
         this.shiftIndex = shiftIndex;
-        this.workerIndex = workerIndex;
+        this.personIndex = personIndex;
         this.role = role;
     }
 
@@ -66,17 +66,17 @@ public class AssignCommand extends Command {
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
-        if (workerIndex.getZeroBased() >= lastShownPersonList.size()) {
+        if (personIndex.getZeroBased() >= lastShownPersonList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person workerToAssign = lastShownPersonList.get(workerIndex.getZeroBased());
+        Person personToAssign = lastShownPersonList.get(personIndex.getZeroBased());
         Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
 
-        Person assignedPerson = createAssignedPerson(workerToAssign, shiftToAssign, role);
-        Shift assignedShift = createAssignedShift(shiftToAssign, workerToAssign, role);
+        Person assignedPerson = createAssignedPerson(personToAssign, shiftToAssign, role);
+        Shift assignedShift = createAssignedShift(shiftToAssign, personToAssign, role);
 
-        model.setPerson(workerToAssign, assignedPerson);
+        model.setPerson(personToAssign, assignedPerson);
         model.setShift(shiftToAssign, assignedShift);
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
@@ -129,7 +129,7 @@ public class AssignCommand extends Command {
         // state check
         AssignCommand e = (AssignCommand) other;
         return shiftIndex.equals(e.shiftIndex)
-                && workerIndex.equals(e.workerIndex)
+                && personIndex.equals(e.personIndex)
                 && role.equals(e.role);
     }
 }
