@@ -10,7 +10,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.ShiftBuilder;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,28 +32,28 @@ public class ShiftAddCommandTest {
 
     @Test
     public void execute_shiftAcceptedByModel_addSuccessful() throws Exception {
-        ShiftAddCommandTest.ModelStubAcceptingPersonAdded modelStub = new ShiftAddCommandTest.ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().build();
+        ShiftAddCommandTest.ModelStubAcceptingShiftAdded modelStub = new ShiftAddCommandTest.ModelStubAcceptingShiftAdded();
+        Shift validShift = new ShiftBuilder().build();
 
-        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+        CommandResult commandResult = new ShiftAddCommand(validShift).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validPerson), commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
+        assertEquals(String.format(ShiftAddCommand.MESSAGE_SUCCESS, validShift), commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(validShift), modelStub.shiftsAdded);
     }
 
     @Test
     public void execute_duplicateShift_throwsCommandException() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithPerson(validPerson);
+        Shift validShift = new ShiftBuilder().build();
+        ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
+        ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithShift(validShift);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        assertThrows(CommandException.class, shiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
-        Shift shift1 = new ShiftBuilder().withName("Alice").build();
-        Shift shift2 = new ShiftBuilder().withName("Bob").build();
+        Shift shift1 = new ShiftBuilder().withShiftDay("FRI").withShiftTime("AM").build();
+        Shift shift2 = new ShiftBuilder().withShiftDay("TUE").withShiftTime("PM").build();
         ShiftAddCommand addShift1Command = new ShiftAddCommand(shift1);
         ShiftAddCommand addShift2Command = new ShiftAddCommand(shift2);
 
@@ -185,37 +185,37 @@ public class ShiftAddCommandTest {
     /**
      * A Model stub that contains a single person.
      */
-    private class ModelStubWithPerson extends ShiftAddCommandTest.ModelStub {
-        private final Person person;
+    private class ModelStubWithShift extends ShiftAddCommandTest.ModelStub {
+        private final Shift shift;
 
-        ModelStubWithPerson(Person person) {
-            requireNonNull(person);
-            this.person = person;
+        ModelStubWithShift(Shift shift) {
+            requireNonNull(shift);
+            this.shift = shift;
         }
 
         @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return this.person.isSamePerson(person);
+        public boolean hasShift(Shift shift) {
+            requireNonNull(shift);
+            return this.shift.isSameShift(shift);
         }
     }
 
     /**
      * A Model stub that always accept the person being added.
      */
-    private class ModelStubAcceptingPersonAdded extends ShiftAddCommandTest.ModelStub {
-        final ArrayList<Person> personsAdded = new ArrayList<>();
+    private class ModelStubAcceptingShiftAdded extends ShiftAddCommandTest.ModelStub {
+        final ArrayList<Shift> shiftsAdded = new ArrayList<>();
 
         @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return personsAdded.stream().anyMatch(person::isSamePerson);
+        public boolean hasShift(Shift shift) {
+            requireNonNull(shift);
+            return shiftsAdded.stream().anyMatch(shift::isSameShift);
         }
 
         @Override
-        public void addPerson(Person person) {
-            requireNonNull(person);
-            personsAdded.add(person);
+        public void addShift(Shift shift) {
+            requireNonNull(shift);
+            shiftsAdded.add(shift);
         }
 
         @Override
