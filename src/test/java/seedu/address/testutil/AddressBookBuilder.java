@@ -43,6 +43,14 @@ public class AddressBookBuilder {
         return this;
     }
 
+    /**
+     * Adds a new {@code Shift} to the {@code AddressBook} that we are building.
+     */
+    public AddressBookBuilder withShift(Shift shift) {
+        addressBook.addShift(shift);
+        return this;
+    }
+
     public AddressBook build() {
         return addressBook;
     }

@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
+import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalShifts.SHIFT_A;
 
 import java.util.Arrays;
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.shift.Shift;
@@ -100,6 +99,7 @@ public class AddressBookTest {
         assertThrows(DuplicateShiftException.class, () -> addressBook.resetData(newData));
     }
 
+
     @Test
     public void hasShift_nullShift_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> addressBook.hasShift(null));
@@ -129,10 +129,10 @@ public class AddressBookTest {
         assertThrows(UnsupportedOperationException.class, () -> addressBook.getShiftList().remove(0));
     }
 
+
     /**
      * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
      */
-    //Todo: include shift based tests, then fully implement shift in this stub
     private static class AddressBookStub implements ReadOnlyAddressBook {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
         private final ObservableList<Shift> shifts = FXCollections.observableArrayList();
@@ -143,12 +143,13 @@ public class AddressBookTest {
         }
 
         public static AddressBookStub createAddressBookStubWithPersons(Collection<Person> persons) {
-            return new AddressBookStub(persons, Collections.EMPTY_LIST);
+            return new AddressBookStub(persons, Collections.emptyList());
         }
 
         public static AddressBookStub createAddressBookStubWithShifts(Collection<Shift> shifts) {
-            return new AddressBookStub(Collections.EMPTY_LIST, shifts);
+            return new AddressBookStub(Collections.emptyList(), shifts);
         }
+
 
         @Override
         public ObservableList<Person> getPersonList() {

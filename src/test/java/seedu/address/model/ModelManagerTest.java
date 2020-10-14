@@ -4,18 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalShifts.SHIFT_A;
+import static seedu.address.testutil.TypicalShifts.SHIFT_B;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -94,8 +99,32 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void hasShift_nullShift_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasShift(null));
+    }
+
+    @Test
+    public void hasShift_shiftNotInAddressBook_returnsFalse() {
+        assertFalse(modelManager.hasShift(SHIFT_A));
+    }
+
+    @Test
+    public void hasShift_shiftInAddressBook_returnsTrue() {
+        modelManager.addShift(SHIFT_A);
+        assertTrue(modelManager.hasShift(SHIFT_A));
+    }
+
+    @Test
+    public void getFilteredShiftList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredShiftList().remove(0));
+    }
+
+    @Test
     public void equals() {
-        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        AddressBook addressBook = new AddressBookBuilder()
+                .withPerson(ALICE).withPerson(BENSON)
+                .withShift(SHIFT_A).withShift(SHIFT_B)
+                .build();
         AddressBook differentAddressBook = new AddressBook();
         UserPrefs userPrefs = new UserPrefs();
 
@@ -116,13 +145,21 @@ public class ModelManagerTest {
         // different addressBook -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
 
-        // different filteredList -> returns false
-        String[] keywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(keywords)));
+        // different filteredPersonList -> returns false
+        String[] personKeywords = ALICE.getName().fullName.split("\\s+");
+        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(personKeywords)));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        //different filteredShiftList -> returns false
+        List<String> shiftKeywords = Arrays.asList(SHIFT_A.getShiftDay().toString(), SHIFT_A.getShiftTime().toString());
+        modelManager.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(shiftKeywords));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+
+        //resets modelManager to initial state
+        modelManager.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
 
         // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
