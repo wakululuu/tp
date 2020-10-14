@@ -1,7 +1,5 @@
 package seedu.address.model;
 
-import java.util.List;
-
 import javafx.collections.ObservableList;
 import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
@@ -17,5 +15,5 @@ public interface ReadOnlyAddressBook {
      */
     ObservableList<Person> getPersonList();
 
-    List<Shift> getShiftList();
+    ObservableList<Shift> getShiftList();
 }

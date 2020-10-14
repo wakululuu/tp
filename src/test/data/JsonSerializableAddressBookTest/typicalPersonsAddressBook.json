@@ -1,5 +1,5 @@
 {
-  "_comment": "AddressBook save file which contains the same Person values as in TypicalPersons#getTypicalAddressBook()",
+  "_comment": "AddressBook save file which contains the same Person values as in AddressBookBuilder#getTypicalAddressBook()",
   "persons" : [ {
     "name" : "Alice Pauline",
     "phone" : "94351253",
@@ -67,5 +67,35 @@
     "roles" : [ ],
     "shiftRoleAssignments" : [ ]
   } ],
-  "shifts": [ ]
+  "shifts" : [ {
+    "day" : "MON",
+    "time" : "AM",
+    "roleRequirements" : [ {
+      "role" : "cashier",
+      "quantity" : 1
+    } ],
+    "personRoleAssignments" : [ ]
+  }, {
+    "day" : "MON",
+    "time" : "PM",
+    "roleRequirements" : [ {
+      "role" : "cashier",
+      "quantity" : 1
+    }, {
+      "role" : "chef",
+      "quantity" : 3
+    } ],
+    "personRoleAssignments" : [ ]
+  }, {
+    "day": "TUE",
+    "time": "AM",
+    "roleRequirements" : [ {
+      "role" : "cleaner",
+      "quantity" : 4
+    }, {
+      "role": "cashier",
+      "quantity" : 3
+    } ],
+    "personRoleAssignments" : [ ]
+  } ]
 }
