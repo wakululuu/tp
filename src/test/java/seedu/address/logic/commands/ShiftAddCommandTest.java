@@ -70,7 +70,7 @@ public class ShiftAddCommandTest {
         // null -> returns false
         assertFalse(addShift1Command.equals(null));
 
-        // different person -> returns false
+        // different shift -> returns false
         assertFalse(addShift1Command.equals(addShift2Command));
     }
 
@@ -183,7 +183,7 @@ public class ShiftAddCommandTest {
     }
 
     /**
-     * A Model stub that contains a single person.
+     * A Model stub that contains a single shift.
      */
     private class ModelStubWithShift extends ShiftAddCommandTest.ModelStub {
         private final Shift shift;
@@ -201,7 +201,7 @@ public class ShiftAddCommandTest {
     }
 
     /**
-     * A Model stub that always accept the person being added.
+     * A Model stub that always accept the shift being added.
      */
     private class ModelStubAcceptingShiftAdded extends ShiftAddCommandTest.ModelStub {
         final ArrayList<Shift> shiftsAdded = new ArrayList<>();
