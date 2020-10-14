@@ -7,15 +7,17 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.ShiftRoleAssignment;
+import seedu.address.model.shift.PersonRoleAssignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 
@@ -92,12 +94,14 @@ public class AssignCommand extends Command {
     private static Person createAssignedPerson(Person personToAssign, Shift shiftToAssign, Role role) {
         assert personToAssign != null;
 
-        Map<Shift, Role> updatedShifts = new HashMap<>();
-        updatedShifts.putAll(personToAssign.getShifts());
-        updatedShifts.put(shiftToAssign, role);
+        Set<ShiftRoleAssignment> updatedShiftRoleAssignments = new HashSet<>(
+                personToAssign.getShiftRoleAssignments());
+
+        ShiftRoleAssignment shiftRoleToAssign = new ShiftRoleAssignment(shiftToAssign, role);
+        updatedShiftRoleAssignments.add(shiftRoleToAssign);
 
         return new Person(personToAssign.getName(), personToAssign.getPhone(), personToAssign.getPay(),
-                personToAssign.getAddress(), personToAssign.getRoles(), updatedShifts);
+                personToAssign.getAddress(), personToAssign.getRoles(), updatedShiftRoleAssignments);
     }
 
     /**
@@ -106,12 +110,14 @@ public class AssignCommand extends Command {
     private static Shift createAssignedShift(Shift shiftToAssign, Person personToAssign, Role role) {
         assert shiftToAssign != null;
 
-        Map<Person, Role> updatedWorkers = new HashMap<>();
-        updatedWorkers.putAll(shiftToAssign.getWorkers());
-        updatedWorkers.put(personToAssign, role);
+        Set<PersonRoleAssignment> updatedPersonRoleAssignments = new HashSet<>(
+                shiftToAssign.getPersonRoleAssignments());
+
+        PersonRoleAssignment personRoleToAssign = new PersonRoleAssignment(personToAssign, role);
+        updatedPersonRoleAssignments.add(personRoleToAssign);
 
         return new Shift(shiftToAssign.getShiftDay(), shiftToAssign.getShiftTime(),
-                shiftToAssign.getRoleRequirements(), updatedWorkers);
+                shiftToAssign.getRoleRequirements(), updatedPersonRoleAssignments);
     }
 
     @Override

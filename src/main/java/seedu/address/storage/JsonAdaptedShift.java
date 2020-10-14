@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.shift.PersonRoleAssignment;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
@@ -25,17 +26,22 @@ public class JsonAdaptedShift {
     private final String day;
     private final String time;
     private final List<JsonAdaptedRoleRequirement> roleRequirements = new ArrayList<>();
+    private final List<JsonAdaptedPersonRoleAssignment> personRoleAssignments = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedShift} with the given shift information.
      */
     @JsonCreator
     public JsonAdaptedShift(@JsonProperty("day") String day, @JsonProperty("time") String time,
-                            @JsonProperty("roleRequirements") List<JsonAdaptedRoleRequirement> roleRequirements) {
+            @JsonProperty("roleRequirements") List<JsonAdaptedRoleRequirement> roleRequirements,
+            @JsonProperty("personRoleAssignments") List<JsonAdaptedPersonRoleAssignment> personRoleAssignments) {
         this.day = day;
         this.time = time;
         if (roleRequirements != null) {
             this.roleRequirements.addAll(roleRequirements);
+        }
+        if (personRoleAssignments != null) {
+            this.personRoleAssignments.addAll(personRoleAssignments);
         }
     }
 
@@ -48,6 +54,10 @@ public class JsonAdaptedShift {
         roleRequirements.addAll(source.getRoleRequirements().stream()
                 .map(JsonAdaptedRoleRequirement::new)
                 .collect(Collectors.toList()));
+        personRoleAssignments.addAll(source.getPersonRoleAssignments()
+                .stream()
+                .map(JsonAdaptedPersonRoleAssignment::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -56,11 +66,6 @@ public class JsonAdaptedShift {
      * @throws IllegalValueException if there were any data constraints violated.
      */
     public Shift toModelType() throws IllegalValueException {
-        final List<RoleRequirement> shiftRoleRequirements = new ArrayList<>();
-        for (JsonAdaptedRoleRequirement req: roleRequirements) {
-            shiftRoleRequirements.add(req.toModelType());
-        }
-
         if (day == null) {
             throw new IllegalValueException(
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, ShiftDay.class.getSimpleName()));
@@ -79,8 +84,19 @@ public class JsonAdaptedShift {
         }
         final ShiftTime modelTime = new ShiftTime(time);
 
-        final Set<RoleRequirement> modelRoleRequirements = new HashSet<>(shiftRoleRequirements);
-        return new Shift(modelDay, modelTime, modelRoleRequirements);
+        final List<RoleRequirement> roleRequirementsBuilder = new ArrayList<>();
+        for (JsonAdaptedRoleRequirement req : roleRequirements) {
+            roleRequirementsBuilder.add(req.toModelType());
+        }
+        final Set<RoleRequirement> modelRoleRequirements = new HashSet<>(roleRequirementsBuilder);
+
+        List<PersonRoleAssignment> personRoleAssignmentsBuilder = new ArrayList<>();
+        for (JsonAdaptedPersonRoleAssignment assignment : personRoleAssignments) {
+            personRoleAssignmentsBuilder.add(assignment.toModelType());
+        }
+        final Set<PersonRoleAssignment> modelPersonRoleAssignments = new HashSet<>(personRoleAssignmentsBuilder);
+
+        return new Shift(modelDay, modelTime, modelRoleRequirements, modelPersonRoleAssignments);
     }
 
 }

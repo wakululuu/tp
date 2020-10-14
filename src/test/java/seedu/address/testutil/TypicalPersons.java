@@ -32,7 +32,8 @@ public class TypicalPersons {
     public static final Person BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPay("10.20").withPhone("98765432")
-            .withRoles("chef", "cashier").build();
+            .withRoles("chef", "cashier")
+            .withShiftRoleAssignments("MON, PM, cashier", "TUE, PM, chef").build();
     public static final Person CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withPay("15.01").withAddress("wall street").build();
     public static final Person DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")

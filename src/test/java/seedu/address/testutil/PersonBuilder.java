@@ -9,6 +9,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.ShiftRoleAssignment;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -30,6 +31,7 @@ public class PersonBuilder {
     //private Email email;
     private Address address;
     private Set<Role> roles;
+    private Set<ShiftRoleAssignment> shiftRoleAssignments;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -41,6 +43,7 @@ public class PersonBuilder {
         //email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         roles = new HashSet<>();
+        shiftRoleAssignments = new HashSet<>();
     }
 
     /**
@@ -53,6 +56,7 @@ public class PersonBuilder {
         //email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         roles = new HashSet<>(personToCopy.getRoles());
+        shiftRoleAssignments = new HashSet<>(personToCopy.getShiftRoleAssignments());
     }
 
     /**
@@ -97,6 +101,16 @@ public class PersonBuilder {
     }
 
     /**
+     * Parses the {@code shiftRoleAssignmentss} into a {@code Set<ShiftRoleAssignments>} and set it to the
+     * {@code Person} that we are building.
+     */
+    public PersonBuilder withShiftRoleAssignments(String ... shiftRoleAssignments) {
+        this.shiftRoleAssignments = SampleDataUtil.getShiftRoleAssignmentSet(shiftRoleAssignments);
+        return this;
+    }
+
+    /*
+    /**
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
     /*
@@ -107,7 +121,7 @@ public class PersonBuilder {
      */
 
     public Person build() {
-        return new Person(name, phone, pay, address, roles);
+        return new Person(name, phone, pay, address, roles, shiftRoleAssignments);
     }
 
 }
