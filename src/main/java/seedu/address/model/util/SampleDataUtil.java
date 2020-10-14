@@ -1,9 +1,14 @@
 package seedu.address.model.util;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import seedu.address.logic.parser.ParserUtil;
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Address;
@@ -12,6 +17,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.ShiftRoleAssignment;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
@@ -26,11 +32,11 @@ public class SampleDataUtil {
     public static Person[] getSamplePersons() {
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Pay("10"),
-                new Address("Blk 30 Geylang Street 29, #06-40"),
-                getRoleSet("cashier")),
+                    new Address("Blk 30 Geylang Street 29, #06-40"),
+                    getRoleSet("cashier")),
             new Person(new Name("Bernice Yu"), new Phone("99272758"), new Pay("11.2"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getRoleSet("cashier", "cleaner")),
+                    new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
+                    getRoleSet("cashier", "cleaner")),
             new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Pay("9.87"),
                 new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
                 getRoleSet("chef")),
@@ -80,6 +86,33 @@ public class SampleDataUtil {
         return Arrays.stream(string)
                 .map(RoleRequirement::new)
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Returns a {@code ShiftRoleAssignment} set containing the list of strings given.
+     */
+    public static Set<ShiftRoleAssignment> getShiftRoleAssignmentSet(String... string) {
+        final Pattern format = Pattern.compile("(?<shiftDay>\\S+), (?<shiftTime>\\S+), (?<role>.+)");
+
+        Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
+        for (String str : string) {
+            Matcher matcher = format.matcher(str);
+            if (!matcher.matches()) {
+                return null;
+            }
+
+            try {
+                ShiftDay shiftDay = ParserUtil.parseShiftDay(matcher.group("shiftDay"));
+                ShiftTime shiftTime = ParserUtil.parseShiftTime(matcher.group("shiftTime"));
+                Set<RoleRequirement> roleRequirements = ParserUtil.parseRoleRequirements(new HashSet<>());
+                Shift shift = new Shift(shiftDay, shiftTime, roleRequirements);
+                Role role = ParserUtil.parseRole(matcher.group("role"));
+                shiftRoleAssignments.add(new ShiftRoleAssignment(shift, role));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return shiftRoleAssignments;
     }
 
 }
