@@ -46,9 +46,6 @@ public class RoleRequirement {
      * Returns true if a given string is a valid role requirement
      */
     public static boolean isValidRoleRequirement(String test) {
-        if (test.trim() == "") {
-            return false;
-        }
         return test.matches(VALIDATION_REGEX);
     }
 
