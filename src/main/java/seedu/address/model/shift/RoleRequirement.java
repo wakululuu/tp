@@ -17,7 +17,7 @@ public class RoleRequirement {
     public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form <Role> <Quantity> "
             + "(e.g. \'Cashier 1\')";
 
-    public static final String VALIDATION_REGEX = ".* \\d*$";
+    public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + " \\d*$";
 
     private final Role role;
     private final int quantity;
@@ -33,7 +33,6 @@ public class RoleRequirement {
 
     /**
      * String version constructor for easy parsing of sample data.
-     * Todo: Extend to use this for storage data or adapt to use the regular constructor.
      */
     public RoleRequirement(String roleRequirementInfo) {
         requireNonNull(roleRequirementInfo);
