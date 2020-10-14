@@ -67,6 +67,13 @@ public class CommandTestUtil {
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
 
+    public static final String VALID_DAY_MON = "MON";
+    public static final String VALID_DAY_TUE = "TUE";
+    public static final String VALID_TIME_AM = "AM";
+    public static final String VALID_TIME_PM = "PM";
+    public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1";
+    public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3";
+
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
