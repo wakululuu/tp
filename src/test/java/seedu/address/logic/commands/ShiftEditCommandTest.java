@@ -1,16 +1,5 @@
 package seedu.address.logic.commands;
 
-import org.junit.jupiter.api.Test;
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.index.Index;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.shift.Shift;
-import seedu.address.testutil.EditShiftDescriptorBuilder;
-import seedu.address.testutil.ShiftBuilder;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_FIRST_SHIFT;
@@ -27,6 +16,18 @@ import static seedu.address.logic.commands.CommandTestUtil.showShiftAtIndex;
 import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
+
+import org.junit.jupiter.api.Test;
+
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.model.AddressBook;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.model.shift.Shift;
+import seedu.address.testutil.EditShiftDescriptorBuilder;
+import seedu.address.testutil.ShiftBuilder;
 
 public class ShiftEditCommandTest {
 
@@ -69,7 +70,8 @@ public class ShiftEditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, new ShiftEditCommand.EditShiftDescriptor());
+        ShiftEditCommand shiftEditCommand =
+                new ShiftEditCommand(INDEX_FIRST_SHIFT, new ShiftEditCommand.EditShiftDescriptor());
         Shift editedShift = model.getFilteredShiftList().get(INDEX_FIRST_SHIFT.getZeroBased());
 
         String expectedMessage = String.format(ShiftEditCommand.MESSAGE_EDIT_SHIFT_SUCCESS, editedShift);
@@ -149,7 +151,8 @@ public class ShiftEditCommandTest {
         final ShiftEditCommand standardCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, DESC_FIRST_SHIFT);
 
         // same values -> returns true
-        ShiftEditCommand.EditShiftDescriptor copyDescriptor = new ShiftEditCommand.EditShiftDescriptor(DESC_FIRST_SHIFT);
+        ShiftEditCommand.EditShiftDescriptor copyDescriptor =
+                new ShiftEditCommand.EditShiftDescriptor(DESC_FIRST_SHIFT);
         ShiftEditCommand commandWithSameValues = new ShiftEditCommand(INDEX_FIRST_SHIFT, copyDescriptor);
         assertTrue(standardCommand.equals(commandWithSameValues));
 

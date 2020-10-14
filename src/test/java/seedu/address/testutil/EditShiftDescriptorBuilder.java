@@ -1,14 +1,16 @@
 package seedu.address.testutil;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import seedu.address.logic.commands.ShiftEditCommand;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 /**
  * A utility class to help with building EditShiftDescriptor objects.
@@ -52,11 +54,12 @@ public class EditShiftDescriptorBuilder {
     }
 
     /**
-     * Parses the {@code roleRequirements} into a {@code Set<RoleRequirement>} and set it to the {@code EditShiftDescriptor}
-     * that we are building.
+     * Parses the {@code roleRequirements} into a {@code Set<RoleRequirement>} and set it to
+     * the {@code EditShiftDescriptor} that we are building.
      */
     public seedu.address.testutil.EditShiftDescriptorBuilder withRoleRequirements(String... roleRequirements) {
-        Set<RoleRequirement> roleRequirementsSet = Stream.of(roleRequirements).map(RoleRequirement::new).collect(Collectors.toSet());
+        Set<RoleRequirement> roleRequirementsSet = Stream.of(roleRequirements)
+                .map(RoleRequirement::new).collect(Collectors.toSet());
         descriptor.setRoleRequirements(roleRequirementsSet);
         return this;
     }
