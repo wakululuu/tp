@@ -17,7 +17,7 @@ public class RoleRequirement {
     public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form ROLE <space> QUANTITY "
             + "(e.g. \'Cashier 1\'). \nQuantity must be greater than zero.";
 
-    public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + "[1-9]\\d*$";
+    public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + " [1-9]\\d*$";
 
     private final Role role;
     private final int quantity;
