@@ -24,6 +24,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.exceptions.DuplicateShiftException;
+import seedu.address.testutil.AddressBookBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.ShiftBuilder;
 
@@ -127,6 +128,35 @@ public class AddressBookTest {
     @Test
     public void getShiftList_modifyList_throwsUnsupportedOperationException() {
         assertThrows(UnsupportedOperationException.class, () -> addressBook.getShiftList().remove(0));
+    }
+
+    @Test
+    public void equals() {
+
+        addressBook.addPerson(ALICE);
+        addressBook.addShift(SHIFT_A);
+        AddressBook noPersonAddressBook = new AddressBookBuilder().withShift(SHIFT_A).build();
+        AddressBook noShiftAddressBook = new AddressBookBuilder().withPerson(ALICE).build();
+        AddressBook emptyAddressBook = new AddressBook();
+
+        //same object returns true
+        assertTrue(addressBook.equals(addressBook));
+
+        //different class object returns false
+        assertFalse(addressBook.equals(123));
+
+        //same content returns true
+        assertTrue(addressBook.equals(new AddressBook(addressBook)));
+
+        //same shifts different persons returns false
+        assertFalse(addressBook.equals(noPersonAddressBook));
+
+        //same persons different shifts returns false
+        assertFalse(addressBook.equals(noShiftAddressBook));
+
+        //different persons different shifts returns false
+        assertFalse(addressBook.equals(emptyAddressBook));
+
     }
 
 
