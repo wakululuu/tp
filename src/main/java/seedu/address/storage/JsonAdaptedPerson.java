@@ -15,6 +15,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Pay;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.ShiftRoleAssignment;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 
@@ -30,6 +31,7 @@ class JsonAdaptedPerson {
     private final String pay;
     private final String address;
     private final List<JsonAdaptedRole> roles = new ArrayList<>();
+    private final List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -37,13 +39,17 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("pay") String pay, @JsonProperty("address") String address,
-            @JsonProperty("roles") List<JsonAdaptedRole> roles) {
+            @JsonProperty("roles") List<JsonAdaptedRole> roles,
+            @JsonProperty("shiftRoleAssignments") List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments) {
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         if (roles != null) {
             this.roles.addAll(roles);
+        }
+        if (shiftRoleAssignments != null) {
+            this.shiftRoleAssignments.addAll(shiftRoleAssignments);
         }
     }
 
@@ -58,6 +64,10 @@ class JsonAdaptedPerson {
         roles.addAll(source.getRoles().stream()
                 .map(JsonAdaptedRole::new)
                 .collect(Collectors.toList()));
+        shiftRoleAssignments.addAll(source.getShiftRoleAssignments()
+                .stream()
+                .map(JsonAdaptedShiftRoleAssignment::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -66,11 +76,6 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
-        final List<Role> personRoles = new ArrayList<>();
-        for (JsonAdaptedRole role : roles) {
-            personRoles.add(role.toModelType());
-        }
-
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
@@ -103,8 +108,19 @@ class JsonAdaptedPerson {
         }
         final Address modelAddress = new Address(address);
 
-        final Set<Role> modelRoles = new HashSet<>(personRoles);
-        return new Person(modelName, modelPhone, modelPay, modelAddress, modelRoles);
+        List<Role> rolesBuilder = new ArrayList<>();
+        for (JsonAdaptedRole role : roles) {
+            rolesBuilder.add(role.toModelType());
+        }
+        final Set<Role> modelRoles = new HashSet<>(rolesBuilder);
+
+        List<ShiftRoleAssignment> shiftRoleAssignmentsBuilder = new ArrayList<>();
+        for (JsonAdaptedShiftRoleAssignment assignment : shiftRoleAssignments) {
+            shiftRoleAssignmentsBuilder.add(assignment.toModelType());
+        }
+        final Set<ShiftRoleAssignment> modelShiftRoleAssignments = new HashSet<>(shiftRoleAssignmentsBuilder);
+
+        return new Person(modelName, modelPhone, modelPay, modelAddress, modelRoles, modelShiftRoleAssignments);
     }
 
 }

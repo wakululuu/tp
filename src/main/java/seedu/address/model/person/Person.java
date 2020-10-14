@@ -3,13 +3,10 @@ package seedu.address.model.person;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 
 /**
@@ -26,7 +23,7 @@ public class Person {
     private final Pay pay;
     private final Address address;
     private final Set<Role> roles = new HashSet<>();
-    private final Map<Shift, Role> shifts = new HashMap<>();
+    private final Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
 
     /**
      * Standard constructor, start with empty {@code shifts}. Every field must be present and not null.
@@ -44,14 +41,15 @@ public class Person {
      * Constructor with non-empty {@code shifts} for Assign and Unassign commands.
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles, Map<Shift, Role> shifts) {
-        requireAllNonNull(name, phone, pay, address, roles, shifts);
+    public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles,
+            Set<ShiftRoleAssignment> shiftRoleAssignments) {
+        requireAllNonNull(name, phone, pay, address, roles, shiftRoleAssignments);
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         this.roles.addAll(roles);
-        this.shifts.putAll(shifts);
+        this.shiftRoleAssignments.addAll(shiftRoleAssignments);
     }
 
     public Name getName() {
@@ -80,11 +78,11 @@ public class Person {
     }
 
     /**
-     * Returns an immutable shift-role map, which throws {@code UnsupportedOperationException}
+     * Returns an immutable shift-role assignment set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Map<Shift, Role> getShifts() {
-        return Collections.unmodifiableMap(shifts);
+    public Set<ShiftRoleAssignment> getShiftRoleAssignments() {
+        return Collections.unmodifiableSet(shiftRoleAssignments);
     }
 
     /**
@@ -120,13 +118,13 @@ public class Person {
                 && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
                 && otherWorker.getRoles().equals(getRoles())
-                && otherWorker.getShifts().equals(getShifts());
+                && otherWorker.getShiftRoleAssignments().equals(getShiftRoleAssignments());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, pay, address, roles, shifts);
+        return Objects.hash(name, phone, pay, address, roles, shiftRoleAssignments);
     }
 
     @Override
@@ -142,7 +140,7 @@ public class Person {
                 .append(" Roles: ");
         getRoles().forEach(builder::append);
         builder.append(" Shifts: ");
-        getShifts().forEach((a, b) -> builder.append(a + "(" + b + ") ")); // Format: "Shift(Role) "
+        getShiftRoleAssignments().forEach(builder::append);
         return builder.toString();
     }
 

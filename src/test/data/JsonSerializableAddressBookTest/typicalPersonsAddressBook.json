@@ -5,43 +5,67 @@
     "phone" : "94351253",
     "pay" : "9.75",
     "address" : "123, Jurong West Ave 6, #08-111",
-    "roles" : [ "cashier" ]
+    "roles" : [ "cashier" ],
+    "shiftRoleAssignments" : [ ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
     "pay" : "10.20",
     "address" : "311, Clementi Ave 2, #02-25",
-    "roles" : [ "chef", "cashier" ]
+    "roles" : [ "chef", "cashier" ],
+    "shiftRoleAssignments" : [
+      {
+        "shift": {
+          "day": "MON",
+          "time": "PM",
+          "roleRequirements": [ ],
+          "personRoleAssignments": [ ]
+        },
+        "role": "cashier"
+      }, {
+        "shift": {
+          "day": "TUE",
+          "time": "PM",
+          "roleRequirements": [ ],
+          "personRoleAssignments": [ ]
+        },
+        "role": "chef"
+    } ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "pay" : "15.01",
     "address" : "wall street",
-    "roles" : [ ]
+    "roles" : [ ],
+    "shiftRoleAssignments" : [ ]
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
     "pay" : "16",
     "address" : "10th street",
-    "roles" : [ "chef" ]
+    "roles" : [ "chef" ],
+    "shiftRoleAssignments" : [ ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
     "pay" : "5.99",
     "address" : "michegan ave",
-    "roles" : [ ]
+    "roles" : [ ],
+    "shiftRoleAssignments" : [ ]
   }, {
     "name" : "Fiona Kunz",
     "phone" : "9482427",
     "pay" : "21.86",
     "address" : "little tokyo",
-    "roles" : [ ]
+    "roles" : [ ],
+    "shiftRoleAssignments" : [ ]
   }, {
     "name" : "George Best",
     "phone" : "9482442",
     "pay" : "24",
     "address" : "4th street",
-    "roles" : [ ]
+    "roles" : [ ],
+    "shiftRoleAssignments" : [ ]
   } ],
   "shifts" : [ {
     "day" : "MON",
@@ -49,7 +73,8 @@
     "roleRequirements" : [ {
       "role" : "cashier",
       "quantity" : 1
-    } ]
+    } ],
+    "personRoleAssignments" : [ ]
   }, {
     "day" : "FRI",
     "time" : "PM",
@@ -59,7 +84,8 @@
     }, {
       "role" : "chef",
       "quantity" : 3
-    } ]
+    } ],
+    "personRoleAssignments" : [ ]
   }, {
     "day": "TUE",
     "time": "AM",
@@ -69,6 +95,7 @@
     }, {
       "role": "cashier",
       "quantity" : 3
-    } ]
+    } ],
+    "personRoleAssignments" : [ ]
   } ]
 }
