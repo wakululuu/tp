@@ -13,7 +13,6 @@ import static seedu.address.testutil.TypicalShifts.SHIFT_C;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.testutil.ShiftBuilder;
-import seedu.address.testutil.TypicalShifts;
 
 public class ShiftTest {
 
@@ -41,10 +40,12 @@ public class ShiftTest {
         assertFalse(SHIFT_A.isSameShift(new ShiftBuilder(SHIFT_A).withShiftTime(VALID_TIME_PM).build()));
 
         // different day and time
-        assertFalse(SHIFT_A.isSameShift(new ShiftBuilder().withShiftDay(VALID_DAY_TUE).withShiftTime(VALID_TIME_PM).build()));
+        assertFalse(SHIFT_A.isSameShift(
+                new ShiftBuilder().withShiftDay(VALID_DAY_TUE).withShiftTime(VALID_TIME_PM).build()));
 
         // same day and time but different role requirements
-        assertTrue(SHIFT_A.isSameShift(new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF).build()));
+        assertTrue(SHIFT_A.isSameShift(
+                new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF).build()));
     }
 
     @Test
