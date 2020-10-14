@@ -17,5 +17,5 @@ public interface ReadOnlyAddressBook {
      */
     ObservableList<Person> getPersonList();
 
-    List<Shift> getShiftList();
+    ObservableList<Shift> getShiftList();
 }

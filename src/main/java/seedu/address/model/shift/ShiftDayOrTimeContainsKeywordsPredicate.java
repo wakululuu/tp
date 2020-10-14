@@ -19,7 +19,7 @@ public class ShiftDayOrTimeContainsKeywordsPredicate implements Predicate<Shift>
     public boolean test(Shift shift) {
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(shift.getShiftDay().toString(), keyword)
-                        && StringUtil.containsWordIgnoreCase(shift.getShiftTime().toString(), keyword));
+                        || StringUtil.containsWordIgnoreCase(shift.getShiftTime().toString(), keyword));
     }
 
     @Override

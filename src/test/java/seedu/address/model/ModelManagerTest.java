@@ -154,7 +154,7 @@ public class ModelManagerTest {
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         //different filteredShiftList -> returns false
-        List<String> shiftKeywords = Arrays.asList(SHIFT_A.getShiftDay().toString(), SHIFT_A.getShiftTime().toString());
+        List<String> shiftKeywords = Arrays.asList(SHIFT_A.getShiftTime().toString());
         modelManager.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(shiftKeywords));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 

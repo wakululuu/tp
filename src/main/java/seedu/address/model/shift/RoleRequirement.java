@@ -80,7 +80,7 @@ public class RoleRequirement {
         return other == this
                 || (other instanceof RoleRequirement
                 && role.equals(((RoleRequirement) other).role)
-                && role.equals(((RoleRequirement) other).quantity));
+                && quantity == ((RoleRequirement) other).quantity);
     }
 
     @Override
