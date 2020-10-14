@@ -170,7 +170,7 @@ Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE <space> NUMBER_NEEDED].
 * Existing values will be updated to the input values.
 * The day specified should be 1 of these values: **Mon, Tue, Wed, Thur, Fri, Sat, Sun**
 * The time specified should be 1 of these values: **AM/PM**
-* Each role should be accompanied by the number needed, and this number **must be 0 (0 will remove the role from the shift) or a positive integer** 1, 2, 3...
+* Each role should be accompanied by the number needed, and this number **must be a positive integer** 1, 2, 3...
 
 Examples:
 * `shift-edit 3 r/Cashier 3 r/Cleaner 2` Edits the 3rd shift on the list such that it now has 3 cashier roles and 2 cleaner roles.
