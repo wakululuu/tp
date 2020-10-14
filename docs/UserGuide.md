@@ -54,7 +54,7 @@ McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shi
   e.g `n/NAME [r/ROLE]` can be used as `n/John Doe r/Cashier` or as `n/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[r/ROLE <space> NUMBER_NEEDED]…​` can be used as ` ` (i.e. 0 times), `r/Cashier 3`, `r/Cashier 1 r/Cleaner 2` etc.
+  e.g. `[r/ROLE NUMBER_NEEDED]…​` can be used as ` ` (i.e. 0 times), `r/Cashier 3`, `r/Cashier 1 r/Cleaner 2` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -141,7 +141,7 @@ Examples:
 
 Adds a new shift to the McScheduler.
 
-Format: `shift-add d/DAY t/TIME [r/ROLE <space> NUMBER_NEEDED]...`
+Format: `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`
 
 * Adds a shift on the specified ​day at the specified time.
 * The day specified should be 1 of these values: **Mon, Tue, Wed, Thur, Fri, Sat, Sun**.
@@ -163,7 +163,7 @@ Format: `shift-list`
 
 Edits the details of an existing shift in the McScheduler.
 
-Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE <space> NUMBER_NEEDED]...`
+Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`
 
 * Edits the shift at the specified `SHIFT_INDEX`. The shift index refers to the index number shown in the displayed shift list. The shift index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
