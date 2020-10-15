@@ -32,16 +32,16 @@ public class UnassignCommandParser {
         }
 
         Index shiftIndex;
-        Index personIndex;
+        Index workerIndex;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT).get());
-            personIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
+            workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     UnassignCommand.MESSAGE_USAGE), ive);
         }
 
-        return new UnassignCommand(shiftIndex, personIndex);
+        return new UnassignCommand(shiftIndex, workerIndex);
     }
 
     /**

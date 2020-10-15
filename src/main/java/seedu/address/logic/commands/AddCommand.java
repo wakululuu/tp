@@ -11,16 +11,16 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Person;
+import seedu.address.model.worker.Worker;
 
 /**
- * Adds a person to the address book.
+ * Adds a worker to the address book.
  */
 public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a person to the address book. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a worker to the address book. "
             + "Parameters: "
             + PREFIX_NAME + "NAME "
             + PREFIX_PHONE + "PHONE "
@@ -37,28 +37,28 @@ public class AddCommand extends Command {
             + PREFIX_ROLE + "chef "
             + PREFIX_ROLE + "cashier";
 
-    public static final String MESSAGE_SUCCESS = "New person added: %1$s";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
+    public static final String MESSAGE_SUCCESS = "New worker added: %1$s";
+    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book";
 
-    private final Person toAdd;
+    private final Worker toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Person}
+     * Creates an AddCommand to add the specified {@code Worker}
      */
-    public AddCommand(Person person) {
-        requireNonNull(person);
-        toAdd = person;
+    public AddCommand(Worker worker) {
+        requireNonNull(worker);
+        toAdd = worker;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.hasPerson(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        if (model.hasWorker(toAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_WORKER);
         }
 
-        model.addPerson(toAdd);
+        model.addWorker(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
     }
 

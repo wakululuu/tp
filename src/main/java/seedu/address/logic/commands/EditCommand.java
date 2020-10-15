@@ -8,7 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,24 +21,24 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Address;
-//import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Pay;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Address;
+//import seedu.address.model.worker.Email;
+import seedu.address.model.worker.Name;
+import seedu.address.model.worker.Pay;
+import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
 /**
- * Edits the details of an existing person in the address book.
+ * Edits the details of an existing worker in the address book.
  */
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the person identified "
-            + "by the index number used in the displayed person list. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the worker identified "
+            + "by the index number used in the displayed worker list. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_NAME + "NAME] "
@@ -53,61 +53,61 @@ public class EditCommand extends Command {
             //+ PREFIX_EMAIL + "johndoe@example.com";
             + PREFIX_PAY + "10.20";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_WORKER_SUCCESS = "Edited Worker: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book.";
 
     private final Index index;
-    private final EditPersonDescriptor editPersonDescriptor;
+    private final EditWorkerDescriptor editWorkerDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * @param index of the worker in the filtered worker list to edit
+     * @param editWorkerDescriptor details to edit the worker with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
+    public EditCommand(Index index, EditWorkerDescriptor editWorkerDescriptor) {
         requireNonNull(index);
-        requireNonNull(editPersonDescriptor);
+        requireNonNull(editWorkerDescriptor);
 
         this.index = index;
-        this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+        this.editWorkerDescriptor = new EditWorkerDescriptor(editWorkerDescriptor);
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        Worker workerToEdit = lastShownList.get(index.getZeroBased());
+        Worker editedWorker = createEditedWorker(workerToEdit, editWorkerDescriptor);
 
-        if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        if (!workerToEdit.isSameWorker(editedWorker) && model.hasWorker(editedWorker)) {
+            throw new CommandException(MESSAGE_DUPLICATE_WORKER);
         }
 
-        model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
+        model.setWorker(workerToEdit, editedWorker);
+        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+        return new CommandResult(String.format(MESSAGE_EDIT_WORKER_SUCCESS, editedWorker));
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * Creates and returns a {@code Worker} with the details of {@code workerToEdit}
+     * edited with {@code editWorkerDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+    private static Worker createEditedWorker(Worker workerToEdit, EditWorkerDescriptor editWorkerDescriptor) {
+        assert workerToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Pay updatedPay = editPersonDescriptor.getPay().orElse(personToEdit.getPay());
-        //Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Set<Role> updatedRoles = editPersonDescriptor.getRoles().orElse(personToEdit.getRoles());
+        Name updatedName = editWorkerDescriptor.getName().orElse(workerToEdit.getName());
+        Phone updatedPhone = editWorkerDescriptor.getPhone().orElse(workerToEdit.getPhone());
+        Pay updatedPay = editWorkerDescriptor.getPay().orElse(workerToEdit.getPay());
+        //Email updatedEmail = editWorkerDescriptor.getEmail().orElse(workerToEdit.getEmail());
+        Address updatedAddress = editWorkerDescriptor.getAddress().orElse(workerToEdit.getAddress());
+        Set<Role> updatedRoles = editWorkerDescriptor.getRoles().orElse(workerToEdit.getRoles());
 
-        return new Person(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles);
+        return new Worker(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles);
     }
 
     @Override
@@ -125,14 +125,14 @@ public class EditCommand extends Command {
         // state check
         EditCommand e = (EditCommand) other;
         return index.equals(e.index)
-                && editPersonDescriptor.equals(e.editPersonDescriptor);
+                && editWorkerDescriptor.equals(e.editWorkerDescriptor);
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * Stores the details to edit the worker with. Each non-empty field value will replace the
+     * corresponding field value of the worker.
      */
-    public static class EditPersonDescriptor {
+    public static class EditWorkerDescriptor {
         private Name name;
         private Phone phone;
         private Pay pay;
@@ -140,13 +140,13 @@ public class EditCommand extends Command {
         private Address address;
         private Set<Role> roles;
 
-        public EditPersonDescriptor() {}
+        public EditWorkerDescriptor() {}
 
         /**
          * Copy constructor.
          * A defensive copy of {@code roles} is used internally.
          */
-        public EditPersonDescriptor(EditPersonDescriptor toCopy) {
+        public EditWorkerDescriptor(EditWorkerDescriptor toCopy) {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setPay(toCopy.pay);
@@ -229,12 +229,12 @@ public class EditCommand extends Command {
             }
 
             // instanceof handles nulls
-            if (!(other instanceof EditPersonDescriptor)) {
+            if (!(other instanceof EditWorkerDescriptor)) {
                 return false;
             }
 
             // state check
-            EditPersonDescriptor e = (EditPersonDescriptor) other;
+            EditWorkerDescriptor e = (EditWorkerDescriptor) other;
 
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())

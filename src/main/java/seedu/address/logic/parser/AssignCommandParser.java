@@ -35,10 +35,10 @@ public class AssignCommandParser {
         }
 
         Index shiftIndex;
-        Index personIndex;
+        Index workerIndex;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT).get());
-            personIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
+            workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AssignCommand.MESSAGE_USAGE), ive);
@@ -46,7 +46,7 @@ public class AssignCommandParser {
 
         Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
-        return new AssignCommand(shiftIndex, personIndex, role);
+        return new AssignCommand(shiftIndex, workerIndex, role);
     }
 
     /**

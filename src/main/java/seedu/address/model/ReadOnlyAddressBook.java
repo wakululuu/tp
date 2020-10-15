@@ -1,8 +1,8 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.worker.Worker;
 
 /**
  * Unmodifiable view of an address book
@@ -10,10 +10,10 @@ import seedu.address.model.shift.Shift;
 public interface ReadOnlyAddressBook {
 
     /**
-     * Returns an unmodifiable view of the persons list.
-     * This list will not contain any duplicate persons.
+     * Returns an unmodifiable view of the workers list.
+     * This list will not contain any duplicate workers.
      */
-    ObservableList<Person> getPersonList();
+    ObservableList<Worker> getWorkerList();
 
     ObservableList<Shift> getShiftList();
 }

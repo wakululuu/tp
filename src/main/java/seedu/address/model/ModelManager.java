@@ -11,8 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.worker.Worker;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -22,7 +22,7 @@ public class ModelManager implements Model {
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
+    private final FilteredList<Worker> filteredWorkers;
     private final FilteredList<Shift> filteredShifts;
 
     /**
@@ -36,7 +36,7 @@ public class ModelManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredWorkers = new FilteredList<>(this.addressBook.getWorkerList());
         filteredShifts = new FilteredList<>(this.addressBook.getShiftList());
     }
 
@@ -91,29 +91,29 @@ public class ModelManager implements Model {
         return addressBook;
     }
 
-    // Person related methods
+    // Worker related methods
     @Override
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return addressBook.hasPerson(person);
+    public boolean hasWorker(Worker worker) {
+        requireNonNull(worker);
+        return addressBook.hasWorker(worker);
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public void deleteWorker(Worker target) {
+        addressBook.removeWorker(target);
     }
 
     @Override
-    public void addPerson(Person person) {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+    public void addWorker(Worker worker) {
+        addressBook.addWorker(worker);
+        updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
     }
 
     @Override
-    public void setPerson(Person target, Person editedPerson) {
-        requireAllNonNull(target, editedPerson);
+    public void setWorker(Worker target, Worker editedWorker) {
+        requireAllNonNull(target, editedWorker);
 
-        addressBook.setPerson(target, editedPerson);
+        addressBook.setWorker(target, editedWorker);
     }
 
     // Shift related methods
@@ -140,21 +140,21 @@ public class ModelManager implements Model {
         addressBook.setShift(target, editedShift);
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    //=========== Filtered Worker List Accessors =============================================================
 
     /**
-     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * Returns an unmodifiable view of the list of {@code Worker} backed by the internal list of
      * {@code versionedAddressBook}
      */
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
+    public ObservableList<Worker> getFilteredWorkerList() {
+        return filteredWorkers;
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
+    public void updateFilteredWorkerList(Predicate<Worker> predicate) {
         requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
+        filteredWorkers.setPredicate(predicate);
     }
 
     //============ Filtered Shift List Accessors ==============================================================
@@ -186,7 +186,7 @@ public class ModelManager implements Model {
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
                 && userPrefs.equals(other.userPrefs)
-                && filteredPersons.equals(other.filteredPersons)
+                && filteredWorkers.equals(other.filteredWorkers)
                 && filteredShifts.equals(other.filteredShifts);
     }
 
