@@ -19,12 +19,12 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
-import seedu.address.model.shift.Shift;
-import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import seedu.address.model.worker.NameContainsKeywordsPredicate;
 import seedu.address.model.worker.Worker;
-import seedu.address.testutil.EditShiftDescriptorBuilder;
+import seedu.address.model.shift.Shift;
+import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import seedu.address.testutil.EditWorkerDescriptorBuilder;
+import seedu.address.testutil.EditShiftDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -67,8 +67,8 @@ public class CommandTestUtil {
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
-    public static final EditCommand.EditWorkerDescriptor DESC_AMY;
-    public static final EditCommand.EditWorkerDescriptor DESC_BOB;
+    public static final WorkerEditCommand.EditWorkerDescriptor DESC_AMY;
+    public static final WorkerEditCommand.EditWorkerDescriptor DESC_BOB;
 
     public static final ShiftEditCommand.EditShiftDescriptor DESC_FIRST_SHIFT;
     public static final ShiftEditCommand.EditShiftDescriptor DESC_SECOND_SHIFT;

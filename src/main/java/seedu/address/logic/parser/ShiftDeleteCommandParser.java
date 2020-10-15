@@ -13,8 +13,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class ShiftDeleteCommandParser implements Parser<ShiftDeleteCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the DeleteCommand
-     * and returns a DeleteCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the WorkerDeleteCommand
+     * and returns a WorkerDeleteCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
     public ShiftDeleteCommand parse(String args) throws ParseException {

@@ -20,15 +20,15 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
-import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
+import seedu.address.model.shift.Shift;
 import seedu.address.testutil.WorkerBuilder;
 
-public class AddCommandTest {
+public class WorkerAddCommandTest {
 
     @Test
     public void constructor_nullWorker_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new AddCommand(null));
+        assertThrows(NullPointerException.class, () -> new WorkerAddCommand(null));
     }
 
     @Test
@@ -36,33 +36,34 @@ public class AddCommandTest {
         ModelStubAcceptingWorkerAdded modelStub = new ModelStubAcceptingWorkerAdded();
         Worker validWorker = new WorkerBuilder().build();
 
-        CommandResult commandResult = new AddCommand(validWorker).execute(modelStub);
+        CommandResult commandResult = new WorkerAddCommand(validWorker).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validWorker), commandResult.getFeedbackToUser());
+        assertEquals(String.format(WorkerAddCommand.MESSAGE_SUCCESS, validWorker), commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(validWorker), modelStub.workersAdded);
     }
 
     @Test
     public void execute_duplicateWorker_throwsCommandException() {
         Worker validWorker = new WorkerBuilder().build();
-        AddCommand addCommand = new AddCommand(validWorker);
+        WorkerAddCommand addCommand = new WorkerAddCommand(validWorker);
         ModelStub modelStub = new ModelStubWithWorker(validWorker);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_WORKER, () -> addCommand.execute(modelStub));
+        assertThrows(CommandException.class, WorkerAddCommand.MESSAGE_DUPLICATE_WORKER, ()
+            -> addCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
         Worker alice = new WorkerBuilder().withName("Alice").build();
         Worker bob = new WorkerBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        WorkerAddCommand addAliceCommand = new WorkerAddCommand(alice);
+        WorkerAddCommand addBobCommand = new WorkerAddCommand(bob);
 
         // same object -> returns true
         assertTrue(addAliceCommand.equals(addAliceCommand));
 
         // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
+        WorkerAddCommand addAliceCommandCopy = new WorkerAddCommand(alice);
         assertTrue(addAliceCommand.equals(addAliceCommandCopy));
 
         // different types -> returns false

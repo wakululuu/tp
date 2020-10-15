@@ -11,34 +11,34 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 //import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
-import seedu.address.model.worker.Phone;
 import seedu.address.model.worker.Worker;
+import seedu.address.model.worker.Phone;
+import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 
 /**
- * Parses input arguments and creates a new AddCommand object
+ * Parses input arguments and creates a new WorkerAddCommand object
  */
-public class AddCommandParser implements Parser<AddCommand> {
+public class AddCommandParser implements Parser<WorkerAddCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the AddCommand
-     * and returns an AddCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the WorkerAddCommand
+     * and returns an WorkerAddCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public AddCommand parse(String args) throws ParseException {
+    public WorkerAddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_PAY)
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
         }
 
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
@@ -50,7 +50,7 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         Worker worker = new Worker(name, phone, pay, address, roleList);
 
-        return new AddCommand(worker);
+        return new WorkerAddCommand(worker);
     }
 
     /**

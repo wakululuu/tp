@@ -10,10 +10,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 import java.util.Set;
 
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.model.tag.Role;
+import seedu.address.logic.commands.WorkerAddCommand;
+import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.model.worker.Worker;
+import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 
 /**
@@ -25,7 +25,7 @@ public class WorkerUtil {
      * Returns an add command string for adding the {@code worker}.
      */
     public static String getAddCommand(Worker worker) {
-        return AddCommand.COMMAND_WORD + " " + getWorkerDetails(worker);
+        return WorkerAddCommand.COMMAND_WORD + " " + getWorkerDetails(worker);
     }
 
     /**
@@ -46,7 +46,7 @@ public class WorkerUtil {
     /**
      * Returns the part of command string for the given {@code EditWorkerDescriptor}'s details.
      */
-    public static String getEditWorkerDescriptorDetails(EditCommand.EditWorkerDescriptor descriptor) {
+    public static String getEditWorkerDescriptorDetails(EditWorkerDescriptor descriptor) {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));

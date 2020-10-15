@@ -13,7 +13,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.EditCommand.EditWorkerDescriptor;
+import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.testutil.EditWorkerDescriptorBuilder;
 
 public class EditWorkerDescriptorTest {

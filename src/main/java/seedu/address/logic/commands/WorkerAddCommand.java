@@ -16,9 +16,9 @@ import seedu.address.model.worker.Worker;
 /**
  * Adds a worker to the address book.
  */
-public class AddCommand extends Command {
+public class WorkerAddCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "worker-add";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a worker to the address book. "
             + "Parameters: "
@@ -43,9 +43,9 @@ public class AddCommand extends Command {
     private final Worker toAdd;
 
     /**
-     * Creates an AddCommand to add the specified {@code Worker}
+     * Creates an WorkerAddCommand to add the specified {@code Worker}
      */
-    public AddCommand(Worker worker) {
+    public WorkerAddCommand(Worker worker) {
         requireNonNull(worker);
         toAdd = worker;
     }
@@ -65,7 +65,7 @@ public class AddCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddCommand // instanceof handles nulls
-                && toAdd.equals(((AddCommand) other).toAdd));
+                || (other instanceof WorkerAddCommand // instanceof handles nulls
+                && toAdd.equals(((WorkerAddCommand) other).toAdd));
     }
 }

@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.EditCommand.EditWorkerDescriptor;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.WorkerAddCommand;
+import seedu.address.logic.commands.WorkerDeleteCommand;
+import seedu.address.logic.commands.WorkerEditCommand;
+import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
+import seedu.address.logic.commands.WorkerListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.worker.NameContainsKeywordsPredicate;
 import seedu.address.model.worker.Worker;
@@ -36,8 +36,8 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_add() throws Exception {
         Worker worker = new WorkerBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(WorkerUtil.getAddCommand(worker));
-        assertEquals(new AddCommand(worker), command);
+        WorkerAddCommand command = (WorkerAddCommand) parser.parseCommand(WorkerUtil.getAddCommand(worker));
+        assertEquals(new WorkerAddCommand(worker), command);
     }
 
     @Test
@@ -48,18 +48,18 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_delete() throws Exception {
-        DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_WORKER.getOneBased());
-        assertEquals(new DeleteCommand(INDEX_FIRST_WORKER), command);
+        WorkerDeleteCommand command = (WorkerDeleteCommand) parser.parseCommand(
+                WorkerDeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_WORKER.getOneBased());
+        assertEquals(new WorkerDeleteCommand(INDEX_FIRST_WORKER), command);
     }
 
     @Test
     public void parseCommand_edit() throws Exception {
         Worker worker = new WorkerBuilder().build();
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder(worker).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
+        WorkerEditCommand command = (WorkerEditCommand) parser.parseCommand(WorkerEditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_WORKER.getOneBased() + " " + WorkerUtil.getEditWorkerDescriptorDetails(descriptor));
-        assertEquals(new EditCommand(INDEX_FIRST_WORKER, descriptor), command);
+        assertEquals(new WorkerEditCommand(INDEX_FIRST_WORKER, descriptor), command);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_list() throws Exception {
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD) instanceof ListCommand);
-        assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
+        assertTrue(parser.parseCommand(WorkerListCommand.COMMAND_WORD) instanceof WorkerListCommand);
+        assertTrue(parser.parseCommand(WorkerListCommand.COMMAND_WORD + " 3") instanceof WorkerListCommand);
     }
 
     @Test

@@ -14,9 +14,9 @@ import seedu.address.model.worker.Worker;
 import seedu.address.testutil.WorkerBuilder;
 
 /**
- * Contains integration tests (interaction with the Model) for {@code AddCommand}.
+ * Contains integration tests (interaction with the Model) for {@code WorkerAddCommand}.
  */
-public class AddCommandIntegrationTest {
+public class WorkerAddCommandIntegrationTest {
 
     private Model model;
 
@@ -32,14 +32,14 @@ public class AddCommandIntegrationTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.addWorker(validWorker);
 
-        assertCommandSuccess(new AddCommand(validWorker), model,
-                String.format(AddCommand.MESSAGE_SUCCESS, validWorker), expectedModel);
+        assertCommandSuccess(new WorkerAddCommand(validWorker), model,
+                String.format(WorkerAddCommand.MESSAGE_SUCCESS, validWorker), expectedModel);
     }
 
     @Test
     public void execute_duplicateWorker_throwsCommandException() {
         Worker workerInList = model.getAddressBook().getWorkerList().get(0);
-        assertCommandFailure(new AddCommand(workerInList), model, AddCommand.MESSAGE_DUPLICATE_WORKER);
+        assertCommandFailure(new WorkerAddCommand(workerInList), model, WorkerAddCommand.MESSAGE_DUPLICATE_WORKER);
     }
 
 }

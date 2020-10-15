@@ -16,23 +16,23 @@ import java.util.Optional;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.EditCommand.EditWorkerDescriptor;
+import seedu.address.logic.commands.WorkerEditCommand;
+import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 
 /**
- * Parses input arguments and creates a new EditCommand object
+ * Parses input arguments and creates a new WorkerEditCommand object
  */
-public class EditCommandParser implements Parser<EditCommand> {
+public class EditCommandParser implements Parser<WorkerEditCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the EditCommand
-     * and returns an EditCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the WorkerEditCommand
+     * and returns an WorkerEditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public EditCommand parse(String args) throws ParseException {
+    public WorkerEditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE);
@@ -42,7 +42,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    WorkerEditCommand.MESSAGE_USAGE), pe);
         }
 
         EditWorkerDescriptor editWorkerDescriptor = new EditWorkerDescriptor();
@@ -68,10 +69,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         parseRolesForEdit(argMultimap.getAllValues(PREFIX_ROLE)).ifPresent(editWorkerDescriptor::setRoles);
 
         if (!editWorkerDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(WorkerEditCommand.MESSAGE_NOT_EDITED);
         }
 
-        return new EditCommand(index, editWorkerDescriptor);
+        return new WorkerEditCommand(index, editWorkerDescriptor);
     }
 
     /**

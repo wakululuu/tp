@@ -21,21 +21,21 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 //import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
-import seedu.address.model.worker.Phone;
 import seedu.address.model.worker.Worker;
+import seedu.address.model.worker.Phone;
+import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
 
 /**
  * Edits the details of an existing worker in the address book.
  */
-public class EditCommand extends Command {
+public class WorkerEditCommand extends Command {
 
-    public static final String COMMAND_WORD = "edit";
+    public static final String COMMAND_WORD = "worker-edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the worker identified "
             + "by the index number used in the displayed worker list. "
@@ -53,7 +53,7 @@ public class EditCommand extends Command {
             //+ PREFIX_EMAIL + "johndoe@example.com";
             + PREFIX_PAY + "10.20";
 
-    public static final String MESSAGE_EDIT_WORKER_SUCCESS = "Edited Worker: %1$s";
+    public static final String MESSAGE_EDIT_WORKER_SUCCESS = "Edited worker: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book.";
 
@@ -64,7 +64,7 @@ public class EditCommand extends Command {
      * @param index of the worker in the filtered worker list to edit
      * @param editWorkerDescriptor details to edit the worker with
      */
-    public EditCommand(Index index, EditWorkerDescriptor editWorkerDescriptor) {
+    public WorkerEditCommand(Index index, EditWorkerDescriptor editWorkerDescriptor) {
         requireNonNull(index);
         requireNonNull(editWorkerDescriptor);
 
@@ -118,12 +118,12 @@ public class EditCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof EditCommand)) {
+        if (!(other instanceof WorkerEditCommand)) {
             return false;
         }
 
         // state check
-        EditCommand e = (EditCommand) other;
+        WorkerEditCommand e = (WorkerEditCommand) other;
         return index.equals(e.index)
                 && editWorkerDescriptor.equals(e.editWorkerDescriptor);
     }

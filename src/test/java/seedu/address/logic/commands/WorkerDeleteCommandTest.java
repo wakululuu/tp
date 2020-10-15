@@ -20,31 +20,31 @@ import seedu.address.model.worker.Worker;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
- * {@code DeleteCommand}.
+ * {@code WorkerDeleteCommand}.
  */
-public class DeleteCommandTest {
+public class WorkerDeleteCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
         Worker workerToDelete = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_WORKER);
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
+        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteWorker(workerToDelete);
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(workerDeleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test
@@ -52,15 +52,15 @@ public class DeleteCommandTest {
         showWorkerAtIndex(model, INDEX_FIRST_WORKER);
 
         Worker workerToDelete = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
-        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_WORKER);
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
 
-        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
+        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.deleteWorker(workerToDelete);
         showNoWorker(expectedModel);
 
-        assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(workerDeleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -71,21 +71,21 @@ public class DeleteCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getWorkerList().size());
 
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_WORKER);
-        DeleteCommand deleteSecondCommand = new DeleteCommand(INDEX_SECOND_WORKER);
+        WorkerDeleteCommand deleteFirstCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
+        WorkerDeleteCommand deleteSecondCommand = new WorkerDeleteCommand(INDEX_SECOND_WORKER);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        DeleteCommand deleteFirstCommandCopy = new DeleteCommand(INDEX_FIRST_WORKER);
+        WorkerDeleteCommand deleteFirstCommandCopy = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
