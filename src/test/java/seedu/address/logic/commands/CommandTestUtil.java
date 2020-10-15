@@ -67,8 +67,8 @@ public class CommandTestUtil {
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
 
-    public static final EditCommand.EditPersonDescriptor DESC_AMY;
-    public static final EditCommand.EditPersonDescriptor DESC_BOB;
+    public static final WorkerEditCommand.EditPersonDescriptor DESC_AMY;
+    public static final WorkerEditCommand.EditPersonDescriptor DESC_BOB;
 
     public static final ShiftEditCommand.EditShiftDescriptor DESC_FIRST_SHIFT;
     public static final ShiftEditCommand.EditShiftDescriptor DESC_SECOND_SHIFT;
