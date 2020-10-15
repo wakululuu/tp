@@ -19,12 +19,12 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
-import seedu.address.model.worker.NameContainsKeywordsPredicate;
-import seedu.address.model.worker.Worker;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
-import seedu.address.testutil.EditWorkerDescriptorBuilder;
+import seedu.address.model.worker.NameContainsKeywordsPredicate;
+import seedu.address.model.worker.Worker;
 import seedu.address.testutil.EditShiftDescriptorBuilder;
+import seedu.address.testutil.EditWorkerDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.

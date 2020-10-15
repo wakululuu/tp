@@ -32,13 +32,13 @@ import static seedu.address.testutil.TypicalWorkers.BOB;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.WorkerAddCommand;
+import seedu.address.model.tag.Role;
+//import seedu.address.model.tag.Tag;
 import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
-import seedu.address.model.worker.Worker;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.tag.Role;
-//import seedu.address.model.tag.Tag;
+import seedu.address.model.worker.Worker;
 import seedu.address.testutil.WorkerBuilder;
 
 public class WorkerAddCommandParserTest {

@@ -21,13 +21,13 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 //import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
-import seedu.address.model.worker.Worker;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
 /**

@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 //import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
-import seedu.address.model.worker.Worker;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
 /**

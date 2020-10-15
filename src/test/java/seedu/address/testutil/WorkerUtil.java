@@ -12,9 +12,9 @@ import java.util.Set;
 
 import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
-import seedu.address.model.worker.Worker;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
+import seedu.address.model.worker.Worker;
 
 /**
  * A utility class for Worker.

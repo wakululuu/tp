@@ -42,14 +42,15 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 //import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.tag.Role;
-//import seedu.address.model.tag.Tag;
 import seedu.address.testutil.EditWorkerDescriptorBuilder;
+//import seedu.address.model.tag.Tag;
+
 
 public class WorkerEditCommandParserTest {
 
