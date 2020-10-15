@@ -26,6 +26,8 @@ public class ShiftCard extends UiPart<Region> {
     private Label id;
     @FXML
     private FlowPane roleRequirements;
+    @FXML
+    private FlowPane personRoleAssignments;
 
     /**
      * Creates a {@code ShiftCard} with the given {@code Shift} and index to display.
@@ -38,6 +40,9 @@ public class ShiftCard extends UiPart<Region> {
         shift.getRoleRequirements().stream()
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> roleRequirements.getChildren().add(new Label(roleRequirement.toString())));
+        shift.getPersonRoleAssignments()
+                .forEach(personRoleAssignment -> personRoleAssignments.getChildren().add(new Label(
+                        personRoleAssignment.getPerson().getName() + " " + personRoleAssignment.getRole())));
     }
 
     @Override

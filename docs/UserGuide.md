@@ -141,7 +141,7 @@ Examples:
 
 Adds a new shift to the McScheduler.
 
-Format: `shift add d/DAY t/TIME [r/ROLE-NUMBER_NEEDED]...`
+Format: `shift add d/DAY t/TIME [r/ROLE <SPACE> NUMBER_NEEDED]...`
 
 * Adds a shift on the specified ​day at the specified time.
 * The day specified should be 1 of these values: **Mon, Tue, Wed, Thur, Fri, Sat, Sun**.
@@ -149,7 +149,7 @@ Format: `shift add d/DAY t/TIME [r/ROLE-NUMBER_NEEDED]...`
 * Each role should be accompanied by the number needed, and this number **must be a positive integer** 1, 2, 3...
 
 Examples:
-* `shift add d/Wed t/AM r/Cashier-2 r/Cleaner-3` Adds a shift on Wednesday morning, which requires 2 workers to fill the cashier role and 3 workers to fill the cleaner role.
+* `shift add d/Wed t/AM r/Cashier 2 r/Cleaner 3` Adds a shift on Wednesday morning, which requires 2 workers to fill the cashier role and 3 workers to fill the cleaner role.
 
 * `shift add d/Mon t/PM` Adds a shift on Monday afternoon with no specified roles yet.
 
@@ -163,7 +163,7 @@ Format: `shift list`
 
 Edits the details of an existing shift in the McScheduler.
 
-Format: `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE-NUMBER_NEEDED]...`
+Format: `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE <SPACE> NUMBER_NEEDED]...`
 
 * Edits the shift at the specified `SHIFT_INDEX`. The shift index refers to the index number shown in the displayed shift list. The shift index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
@@ -173,8 +173,8 @@ Format: `shift edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE-NUMBER_NEEDED]...`
 * Each role should be accompanied by the number needed, and this number **must be 0 (0 will remove the role from the shift) or a positive integer** 1, 2, 3...
 
 Examples:
-* `shift edit 3 r/Cashier-3 r/Cleaner-2` Edits the 3rd shift on the list such that it now has 3 cashier roles and 2 cleaner roles.
-* `shift edit 1 d/Mon t/PM r/Cleaner-1` Edits the 1st shift such that it is now on Monday afternoon, with 1 cleaner role
+* `shift edit 3 r/Cashier 3 r/Cleaner 2` Edits the 3rd shift on the list such that it now has 3 cashier roles and 2 cleaner roles.
+* `shift edit 1 d/Mon t/PM r/Cleaner 1` Edits the 1st shift such that it is now on Monday afternoon, with 1 cleaner role
 * `shift edit 2 r/Cleaner-0` Edits the 2nd shift such that it now has no cleaner roles
 
 ### Deleting a shift: `shift delete`

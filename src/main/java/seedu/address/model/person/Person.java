@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.Role;
 
 /**
  * Represents a Person in the address book.
@@ -22,18 +22,34 @@ public class Person {
     // Data fields
     private final Pay pay;
     private final Address address;
-    private final Set<Tag> tags = new HashSet<>();
+    private final Set<Role> roles = new HashSet<>();
+    private final Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
 
     /**
-     * Every field must be present and not null.
+     * Standard constructor, start with empty {@code shifts}. Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Pay pay, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, pay, address, tags);
+    public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles) {
+        requireAllNonNull(name, phone, pay, address, roles);
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
-        this.tags.addAll(tags);
+        this.roles.addAll(roles);
+    }
+
+    /**
+     * Constructor with non-empty {@code shifts} for Assign and Unassign commands.
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Pay pay, Address address, Set<Role> roles,
+            Set<ShiftRoleAssignment> shiftRoleAssignments) {
+        requireAllNonNull(name, phone, pay, address, roles, shiftRoleAssignments);
+        this.name = name;
+        this.phone = phone;
+        this.pay = pay;
+        this.address = address;
+        this.roles.addAll(roles);
+        this.shiftRoleAssignments.addAll(shiftRoleAssignments);
     }
 
     public Name getName() {
@@ -53,11 +69,20 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable role set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     * @return
+     */
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
+    }
+
+    /**
+     * Returns an immutable shift-role assignment set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public Set<ShiftRoleAssignment> getShiftRoleAssignments() {
+        return Collections.unmodifiableSet(shiftRoleAssignments);
     }
 
     /**
@@ -92,13 +117,14 @@ public class Person {
                 && otherWorker.getPhone().equals(getPhone())
                 && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
-                && otherWorker.getTags().equals(getTags());
+                && otherWorker.getRoles().equals(getRoles())
+                && otherWorker.getShiftRoleAssignments().equals(getShiftRoleAssignments());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, pay, address, tags);
+        return Objects.hash(name, phone, pay, address, roles, shiftRoleAssignments);
     }
 
     @Override
@@ -111,8 +137,10 @@ public class Person {
                 .append(getPay())
                 .append(" Address: ")
                 .append(getAddress())
-                .append(" Tags: ");
-        getTags().forEach(builder::append);
+                .append(" Roles: ");
+        getRoles().forEach(builder::append);
+        builder.append(" Shifts: ");
+        getShiftRoleAssignments().forEach(builder::append);
         return builder.toString();
     }
 
