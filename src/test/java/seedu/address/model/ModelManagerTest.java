@@ -3,13 +3,13 @@ package seedu.address.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalShifts.SHIFT_A;
 import static seedu.address.testutil.TypicalShifts.SHIFT_B;
+import static seedu.address.testutil.TypicalWorkers.ALICE;
+import static seedu.address.testutil.TypicalWorkers.BENSON;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,8 +19,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
+import seedu.address.model.worker.NameContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
@@ -78,24 +78,24 @@ public class ModelManagerTest {
     }
 
     @Test
-    public void hasPerson_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> modelManager.hasPerson(null));
+    public void hasWorker_nullWorker_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.hasWorker(null));
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
-        assertFalse(modelManager.hasPerson(ALICE));
+    public void hasWorker_workerNotInAddressBook_returnsFalse() {
+        assertFalse(modelManager.hasWorker(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
-        modelManager.addPerson(ALICE);
-        assertTrue(modelManager.hasPerson(ALICE));
+    public void hasWorker_workerInAddressBook_returnsTrue() {
+        modelManager.addWorker(ALICE);
+        assertTrue(modelManager.hasWorker(ALICE));
     }
 
     @Test
-    public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredPersonList().remove(0));
+    public void getFilteredWorkerList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> modelManager.getFilteredWorkerList().remove(0));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class ModelManagerTest {
     @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder()
-                .withPerson(ALICE).withPerson(BENSON)
+                .withWorker(ALICE).withWorker(BENSON)
                 .withShift(SHIFT_A).withShift(SHIFT_B)
                 .build();
         AddressBook differentAddressBook = new AddressBook();
@@ -145,13 +145,13 @@ public class ModelManagerTest {
         // different addressBook -> returns false
         assertFalse(modelManager.equals(new ModelManager(differentAddressBook, userPrefs)));
 
-        // different filteredPersonList -> returns false
-        String[] personKeywords = ALICE.getName().fullName.split("\\s+");
-        modelManager.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(personKeywords)));
+        // different filteredWorkerList -> returns false
+        String[] workerKeywords = ALICE.getName().fullName.split("\\s+");
+        modelManager.updateFilteredWorkerList(new NameContainsKeywordsPredicate(Arrays.asList(workerKeywords)));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
 
         // resets modelManager to initial state for upcoming tests
-        modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        modelManager.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         //different filteredShiftList -> returns false
         List<String> shiftKeywords = Arrays.asList(SHIFT_A.getShiftTime().toString());

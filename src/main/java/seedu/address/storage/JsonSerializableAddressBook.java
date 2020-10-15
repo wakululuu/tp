@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.worker.Worker;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -20,19 +20,19 @@ import seedu.address.model.shift.Shift;
 @JsonRootName(value = "addressbook")
 class JsonSerializableAddressBook {
 
-    public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
+    public static final String MESSAGE_DUPLICATE_WORKER = "Workers list contains duplicate worker(s).";
     public static final String MESSAGE_DUPLICATE_SHIFT = "Shifts list contains duplicate shift(s).";
 
-    private final List<JsonAdaptedPerson> persons = new ArrayList<>();
+    private final List<JsonAdaptedWorker> workers = new ArrayList<>();
     private final List<JsonAdaptedShift> shifts = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons and shifts.
+     * Constructs a {@code JsonSerializableAddressBook} with the given workers and shifts.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons,
+    public JsonSerializableAddressBook(@JsonProperty("workers") List<JsonAdaptedWorker> workers,
                                        @JsonProperty("shifts") List<JsonAdaptedShift> shifts) {
-        this.persons.addAll(persons);
+        this.workers.addAll(workers);
         this.shifts.addAll(shifts);
     }
 
@@ -42,7 +42,7 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+        workers.addAll(source.getWorkerList().stream().map(JsonAdaptedWorker::new).collect(Collectors.toList()));
         shifts.addAll(source.getShiftList().stream().map(JsonAdaptedShift::new).collect(Collectors.toList()));
     }
 
@@ -53,12 +53,12 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
-        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+        for (JsonAdaptedWorker jsonAdaptedWorker : workers) {
+            Worker worker = jsonAdaptedWorker.toModelType();
+            if (addressBook.hasWorker(worker)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_WORKER);
             }
-            addressBook.addPerson(person);
+            addressBook.addWorker(worker);
         }
 
         for (JsonAdaptedShift jsonAdaptedShift : shifts) {

@@ -9,16 +9,16 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Pay;
-import seedu.address.model.person.Phone;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
 import seedu.address.model.tag.Role;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.worker.Address;
+import seedu.address.model.worker.Email;
+import seedu.address.model.worker.Name;
+import seedu.address.model.worker.Pay;
+import seedu.address.model.worker.Phone;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
