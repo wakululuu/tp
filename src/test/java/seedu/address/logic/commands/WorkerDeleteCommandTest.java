@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.CommandTestUtil.showWorkerAtIndex;
 import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.Person;
+import seedu.address.model.worker.Worker;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -28,64 +28,64 @@ public class WorkerDeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_PERSON);
+        Worker workerToDelete = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
 
-        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, personToDelete);
+        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
+        expectedModel.deleteWorker(workerToDelete);
 
         assertCommandSuccess(workerDeleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showWorkerAtIndex(model, INDEX_FIRST_WORKER);
 
-        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_PERSON);
+        Worker workerToDelete = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
+        WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
 
-        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, personToDelete);
+        String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.deletePerson(personToDelete);
-        showNoPerson(expectedModel);
+        expectedModel.deleteWorker(workerToDelete);
+        showNoWorker(expectedModel);
 
         assertCommandSuccess(workerDeleteCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+        showWorkerAtIndex(model, INDEX_FIRST_WORKER);
 
-        Index outOfBoundIndex = INDEX_SECOND_PERSON;
+        Index outOfBoundIndex = INDEX_SECOND_WORKER;
         // ensures that outOfBoundIndex is still in bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getWorkerList().size());
 
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test
     public void equals() {
-        WorkerDeleteCommand deleteFirstCommand = new WorkerDeleteCommand(INDEX_FIRST_PERSON);
-        WorkerDeleteCommand deleteSecondCommand = new WorkerDeleteCommand(INDEX_SECOND_PERSON);
+        WorkerDeleteCommand deleteFirstCommand = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
+        WorkerDeleteCommand deleteSecondCommand = new WorkerDeleteCommand(INDEX_SECOND_WORKER);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
 
         // same values -> returns true
-        WorkerDeleteCommand deleteFirstCommandCopy = new WorkerDeleteCommand(INDEX_FIRST_PERSON);
+        WorkerDeleteCommand deleteFirstCommandCopy = new WorkerDeleteCommand(INDEX_FIRST_WORKER);
         assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
 
         // different types -> returns false
@@ -94,16 +94,16 @@ public class WorkerDeleteCommandTest {
         // null -> returns false
         assertFalse(deleteFirstCommand.equals(null));
 
-        // different person -> returns false
+        // different worker -> returns false
         assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
     }
 
     /**
      * Updates {@code model}'s filtered list to show no one.
      */
-    private void showNoPerson(Model model) {
-        model.updateFilteredPersonList(p -> false);
+    private void showNoWorker(Model model) {
+        model.updateFilteredWorkerList(p -> false);
 
-        assertTrue(model.getFilteredPersonList().isEmpty());
+        assertTrue(model.getFilteredWorkerList().isEmpty());
     }
 }

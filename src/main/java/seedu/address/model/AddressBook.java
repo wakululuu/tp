@@ -5,18 +5,18 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.UniqueShiftList;
+import seedu.address.model.worker.UniqueWorkerList;
+import seedu.address.model.worker.Worker;
 
 /**
  * Wraps all data at the address-book level
- * Duplicates are not allowed (by .isSamePerson and .isSameShift comparison)
+ * Duplicates are not allowed (by .isSameWorker and .isSameShift comparison)
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
+    private final UniqueWorkerList workers;
     private final UniqueShiftList shifts;
 
     /*
@@ -27,14 +27,14 @@ public class AddressBook implements ReadOnlyAddressBook {
      *   among constructors.
      */
     {
-        persons = new UniquePersonList();
+        workers = new UniqueWorkerList();
         shifts = new UniqueShiftList();
     }
 
     public AddressBook() {}
 
     /**
-     * Creates an AddressBook using the Persons in the {@code toBeCopied}
+     * Creates an AddressBook using the Workers in the {@code toBeCopied}
      */
     public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
@@ -44,11 +44,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// list overwrite operations
 
     /**
-     * Replaces the contents of the person list with {@code persons}.
-     * {@code persons} must not contain duplicate persons.
+     * Replaces the contents of the worker list with {@code workers}.
+     * {@code workers} must not contain duplicate workers.
      */
-    public void setPersons(List<Person> persons) {
-        this.persons.setPersons(persons);
+    public void setWorkers(List<Worker> workers) {
+        this.workers.setWorkers(workers);
     }
 
     public void setShifts(List<Shift> shifts) {
@@ -60,45 +60,45 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
-        setPersons(newData.getPersonList());
+        setWorkers(newData.getWorkerList());
         setShifts(newData.getShiftList());
     }
 
-    //// person-level operations
+    //// worker-level operations
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a worker with the same identity as {@code worker} exists in the address book.
      */
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return persons.contains(person);
+    public boolean hasWorker(Worker worker) {
+        requireNonNull(worker);
+        return workers.contains(worker);
     }
 
     /**
-     * Adds a person to the address book.
-     * The person must not already exist in the address book.
+     * Adds a worker to the address book.
+     * The worker must not already exist in the address book.
      */
-    public void addPerson(Person p) {
-        persons.add(p);
+    public void addWorker(Worker p) {
+        workers.add(p);
     }
 
     /**
-     * Replaces the given person {@code target} in the list with {@code editedPerson}.
+     * Replaces the given worker {@code target} in the list with {@code editedWorker}.
      * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * The worker identity of {@code editedWorker} must not be the same as another existing worker in the address book.
      */
-    public void setPerson(Person target, Person editedPerson) {
-        requireNonNull(editedPerson);
+    public void setWorker(Worker target, Worker editedWorker) {
+        requireNonNull(editedWorker);
 
-        persons.setPerson(target, editedPerson);
+        workers.setWorker(target, editedWorker);
     }
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removePerson(Person key) {
-        persons.remove(key);
+    public void removeWorker(Worker key) {
+        workers.remove(key);
     }
 
     // shift-level methods
@@ -113,7 +113,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Adds a shift to the App.
-     * The person must not already exist in the App.
+     * The worker must not already exist in the App.
      */
     public void addShift(Shift shift) {
         shifts.add(shift);
@@ -141,14 +141,14 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return persons.asUnmodifiableObservableList().size() + " persons; "
+        return workers.asUnmodifiableObservableList().size() + " workers; "
                 + shifts.asUnmodifiableObservableList().size() + " shifts";
         // TODO: refine later
     }
 
     @Override
-    public ObservableList<Person> getPersonList() {
-        return persons.asUnmodifiableObservableList();
+    public ObservableList<Worker> getWorkerList() {
+        return workers.asUnmodifiableObservableList();
     }
 
     @Override
@@ -168,13 +168,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         AddressBook otherAddressBook = (AddressBook) other;
-        return persons.equals(otherAddressBook.persons)
+        return workers.equals(otherAddressBook.workers)
                 && shifts.equals(otherAddressBook.shifts);
 
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode();
+        return workers.hashCode();
     }
 }

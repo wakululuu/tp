@@ -106,7 +106,7 @@ Format: `worker-edit WORKER_INDEX [hp/PHONE_NUMBER] [a/ADDRESS] [n/NAME] [p/HOUR
 
 Examples:
 *  `worker-edit 1 n/John r/Cleaner` Edits the name and worker role of the 1st worker to be John and Cleaner respectively.
-*  `worker-edit 2 n/Betsy Crower p/7` Edits the name and pay of the 2nd person to be Betsy Crower and $7/hr respectively.
+*  `worker-edit 2 n/Betsy Crower p/7` Edits the name and pay of the 2nd worker to be Betsy Crower and $7/hr respectively.
 
 <!-- ### Locating workers by name: `worker find`
 
@@ -118,7 +118,7 @@ Format: `worker find KEYWORD [MORE_KEYWORDS]`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Only the name is searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+* Workers matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:

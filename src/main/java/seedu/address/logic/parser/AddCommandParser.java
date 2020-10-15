@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Address;
-//import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Pay;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Address;
+//import seedu.address.model.worker.Email;
+import seedu.address.model.worker.Name;
+import seedu.address.model.worker.Pay;
+import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
 /**
@@ -48,9 +48,9 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Role> roleList = ParserUtil.parseRoles(argMultimap.getAllValues(PREFIX_ROLE));
 
-        Person person = new Person(name, phone, pay, address, roleList);
+        Worker worker = new Worker(name, phone, pay, address, roleList);
 
-        return new WorkerAddCommand(person);
+        return new WorkerAddCommand(worker);
     }
 
     /**

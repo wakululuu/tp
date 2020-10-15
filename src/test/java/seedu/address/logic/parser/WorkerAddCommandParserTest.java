@@ -26,57 +26,57 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalPersons.AMY;
-import static seedu.address.testutil.TypicalPersons.BOB;
+import static seedu.address.testutil.TypicalWorkers.AMY;
+import static seedu.address.testutil.TypicalWorkers.BOB;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.WorkerAddCommand;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Pay;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
-import seedu.address.testutil.PersonBuilder;
+import seedu.address.model.worker.Address;
+import seedu.address.model.worker.Name;
+import seedu.address.model.worker.Pay;
+import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Worker;
+import seedu.address.testutil.WorkerBuilder;
 
 public class WorkerAddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Person expectedPerson = new PersonBuilder(BOB).withRoles(VALID_ROLE_CASHIER).build();
+        Worker expectedWorker = new WorkerBuilder(BOB).withRoles(VALID_ROLE_CASHIER).build();
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple names - last name accepted
         assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple phones - last phone accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple addresses - last address accepted
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_AMY
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedPerson));
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple roles - all accepted
-        Person expectedPersonMultipleTags = new PersonBuilder(BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
+        Worker expectedWorkerMultipleTags = new WorkerBuilder(BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
                 .build();
         assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, new WorkerAddCommand(expectedPersonMultipleTags));
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, new WorkerAddCommand(expectedWorkerMultipleTags));
     }
 
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withRoles().build();
+        Worker expectedWorker = new WorkerBuilder(AMY).withRoles().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY,
-                new WorkerAddCommand(expectedPerson));
+                new WorkerAddCommand(expectedWorker));
     }
 
     @Test

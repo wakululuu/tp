@@ -10,11 +10,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.shift.PersonRoleAssignment;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
+import seedu.address.model.shift.WorkerRoleAssignment;
 
 /**
  * Jackson-friendly version of {@link Shift}
@@ -26,7 +26,7 @@ public class JsonAdaptedShift {
     private final String day;
     private final String time;
     private final List<JsonAdaptedRoleRequirement> roleRequirements = new ArrayList<>();
-    private final List<JsonAdaptedPersonRoleAssignment> personRoleAssignments = new ArrayList<>();
+    private final List<JsonAdaptedWorkerRoleAssignment> workerRoleAssignments = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedShift} with the given shift information.
@@ -34,14 +34,14 @@ public class JsonAdaptedShift {
     @JsonCreator
     public JsonAdaptedShift(@JsonProperty("day") String day, @JsonProperty("time") String time,
             @JsonProperty("roleRequirements") List<JsonAdaptedRoleRequirement> roleRequirements,
-            @JsonProperty("personRoleAssignments") List<JsonAdaptedPersonRoleAssignment> personRoleAssignments) {
+            @JsonProperty("workerRoleAssignments") List<JsonAdaptedWorkerRoleAssignment> workerRoleAssignments) {
         this.day = day;
         this.time = time;
         if (roleRequirements != null) {
             this.roleRequirements.addAll(roleRequirements);
         }
-        if (personRoleAssignments != null) {
-            this.personRoleAssignments.addAll(personRoleAssignments);
+        if (workerRoleAssignments != null) {
+            this.workerRoleAssignments.addAll(workerRoleAssignments);
         }
     }
 
@@ -54,9 +54,9 @@ public class JsonAdaptedShift {
         roleRequirements.addAll(source.getRoleRequirements().stream()
                 .map(JsonAdaptedRoleRequirement::new)
                 .collect(Collectors.toList()));
-        personRoleAssignments.addAll(source.getPersonRoleAssignments()
+        workerRoleAssignments.addAll(source.getWorkerRoleAssignments()
                 .stream()
-                .map(JsonAdaptedPersonRoleAssignment::new)
+                .map(JsonAdaptedWorkerRoleAssignment::new)
                 .collect(Collectors.toList()));
     }
 
@@ -90,13 +90,13 @@ public class JsonAdaptedShift {
         }
         final Set<RoleRequirement> modelRoleRequirements = new HashSet<>(roleRequirementsBuilder);
 
-        List<PersonRoleAssignment> personRoleAssignmentsBuilder = new ArrayList<>();
-        for (JsonAdaptedPersonRoleAssignment assignment : personRoleAssignments) {
-            personRoleAssignmentsBuilder.add(assignment.toModelType());
+        List<WorkerRoleAssignment> workerRoleAssignmentsBuilder = new ArrayList<>();
+        for (JsonAdaptedWorkerRoleAssignment assignment : workerRoleAssignments) {
+            workerRoleAssignmentsBuilder.add(assignment.toModelType());
         }
-        final Set<PersonRoleAssignment> modelPersonRoleAssignments = new HashSet<>(personRoleAssignmentsBuilder);
+        final Set<WorkerRoleAssignment> modelWorkerRoleAssignments = new HashSet<>(workerRoleAssignmentsBuilder);
 
-        return new Shift(modelDay, modelTime, modelRoleRequirements, modelPersonRoleAssignments);
+        return new Shift(modelDay, modelTime, modelRoleRequirements, modelWorkerRoleAssignments);
     }
 
 }

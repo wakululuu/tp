@@ -8,8 +8,8 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
 import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
 import static seedu.address.testutil.Assert.assertThrows;
-import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalShifts.SHIFT_A;
+import static seedu.address.testutil.TypicalWorkers.ALICE;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,13 +20,13 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.exceptions.DuplicateShiftException;
+import seedu.address.model.worker.Worker;
+import seedu.address.model.worker.exceptions.DuplicateWorkerException;
 import seedu.address.testutil.AddressBookBuilder;
-import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.ShiftBuilder;
+import seedu.address.testutil.WorkerBuilder;
 
 public class AddressBookTest {
 
@@ -34,7 +34,7 @@ public class AddressBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getPersonList());
+        assertEquals(Collections.emptyList(), addressBook.getWorkerList());
         assertEquals(Collections.emptyList(), addressBook.getShiftList());
     }
 
@@ -51,43 +51,43 @@ public class AddressBookTest {
     }
 
     @Test
-    public void resetData_withDuplicatePersons_throwsDuplicatePersonException() {
-        // Two persons with the same identity fields
-        Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
+    public void resetData_withDuplicateWorkers_throwsDuplicateWorkerException() {
+        // Two workers with the same identity fields
+        Worker editedAlice = new WorkerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
                 .build();
-        List<Person> newPersons = Arrays.asList(ALICE, editedAlice);
-        AddressBookStub newData = AddressBookStub.createAddressBookStubWithPersons(newPersons);
+        List<Worker> newWorkers = Arrays.asList(ALICE, editedAlice);
+        AddressBookStub newData = AddressBookStub.createAddressBookStubWithWorkers(newWorkers);
 
-        assertThrows(DuplicatePersonException.class, () -> addressBook.resetData(newData));
+        assertThrows(DuplicateWorkerException.class, () -> addressBook.resetData(newData));
     }
 
     @Test
-    public void hasPerson_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.hasPerson(null));
+    public void hasWorker_nullWorker_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> addressBook.hasWorker(null));
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
-        assertFalse(addressBook.hasPerson(ALICE));
+    public void hasWorker_workerNotInAddressBook_returnsFalse() {
+        assertFalse(addressBook.hasWorker(ALICE));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
-        addressBook.addPerson(ALICE);
-        assertTrue(addressBook.hasPerson(ALICE));
+    public void hasWorker_workerInAddressBook_returnsTrue() {
+        addressBook.addWorker(ALICE);
+        assertTrue(addressBook.hasWorker(ALICE));
     }
 
     @Test
-    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        addressBook.addPerson(ALICE);
-        Person editedAlice = new PersonBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
+    public void hasWorker_workerWithSameIdentityFieldsInAddressBook_returnsTrue() {
+        addressBook.addWorker(ALICE);
+        Worker editedAlice = new WorkerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
                 .build();
-        assertTrue(addressBook.hasPerson(editedAlice));
+        assertTrue(addressBook.hasWorker(editedAlice));
     }
 
     @Test
-    public void getPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getPersonList().remove(0));
+    public void getWorkerList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getWorkerList().remove(0));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class AddressBookTest {
     }
 
     @Test
-    public void hasShift_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
+    public void hasShift_workerWithSameIdentityFieldsInAddressBook_returnsTrue() {
         addressBook.addShift(SHIFT_A);
         Shift editedShift = new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF)
                 .build();
@@ -133,10 +133,10 @@ public class AddressBookTest {
     @Test
     public void equals() {
 
-        addressBook.addPerson(ALICE);
+        addressBook.addWorker(ALICE);
         addressBook.addShift(SHIFT_A);
-        AddressBook noPersonAddressBook = new AddressBookBuilder().withShift(SHIFT_A).build();
-        AddressBook noShiftAddressBook = new AddressBookBuilder().withPerson(ALICE).build();
+        AddressBook noWorkerAddressBook = new AddressBookBuilder().withShift(SHIFT_A).build();
+        AddressBook noShiftAddressBook = new AddressBookBuilder().withWorker(ALICE).build();
         AddressBook emptyAddressBook = new AddressBook();
 
         //same object returns true
@@ -148,32 +148,32 @@ public class AddressBookTest {
         //same content returns true
         assertTrue(addressBook.equals(new AddressBook(addressBook)));
 
-        //same shifts different persons returns false
-        assertFalse(addressBook.equals(noPersonAddressBook));
+        //same shifts different workers returns false
+        assertFalse(addressBook.equals(noWorkerAddressBook));
 
-        //same persons different shifts returns false
+        //same workers different shifts returns false
         assertFalse(addressBook.equals(noShiftAddressBook));
 
-        //different persons different shifts returns false
+        //different workers different shifts returns false
         assertFalse(addressBook.equals(emptyAddressBook));
 
     }
 
 
     /**
-     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     * A stub ReadOnlyAddressBook whose workers list can violate interface constraints.
      */
     private static class AddressBookStub implements ReadOnlyAddressBook {
-        private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<Worker> workers = FXCollections.observableArrayList();
         private final ObservableList<Shift> shifts = FXCollections.observableArrayList();
 
-        private AddressBookStub(Collection<Person> persons, Collection<Shift> shifts) {
-            this.persons.setAll(persons);
+        private AddressBookStub(Collection<Worker> workers, Collection<Shift> shifts) {
+            this.workers.setAll(workers);
             this.shifts.setAll(shifts);
         }
 
-        public static AddressBookStub createAddressBookStubWithPersons(Collection<Person> persons) {
-            return new AddressBookStub(persons, Collections.emptyList());
+        public static AddressBookStub createAddressBookStubWithWorkers(Collection<Worker> workers) {
+            return new AddressBookStub(workers, Collections.emptyList());
         }
 
         public static AddressBookStub createAddressBookStubWithShifts(Collection<Shift> shifts) {
@@ -182,8 +182,8 @@ public class AddressBookTest {
 
 
         @Override
-        public ObservableList<Person> getPersonList() {
-            return persons;
+        public ObservableList<Worker> getWorkerList() {
+            return workers;
         }
 
         @Override

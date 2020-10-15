@@ -33,23 +33,24 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_WORKER;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.WorkerEditCommand;
-import seedu.address.logic.commands.WorkerEditCommand.EditPersonDescriptor;
-import seedu.address.model.person.Address;
-//import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Pay;
-import seedu.address.model.person.Phone;
+import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Address;
+//import seedu.address.model.worker.Email;
+import seedu.address.model.worker.Name;
+import seedu.address.model.worker.Pay;
+import seedu.address.model.worker.Phone;
+import seedu.address.testutil.EditWorkerDescriptorBuilder;
 //import seedu.address.model.tag.Tag;
-import seedu.address.testutil.EditPersonDescriptorBuilder;
+
 
 public class WorkerEditCommandParserTest {
 
@@ -102,7 +103,7 @@ public class WorkerEditCommandParserTest {
         // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
         assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
 
-        // while parsing {@code PREFIX_ROLE} alone will reset the tags of the {@code Person} being edited,
+        // while parsing {@code PREFIX_ROLE} alone will reset the tags of the {@code Worker} being edited,
         // parsing it together with a valid tag results in error
         assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY, Role.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_EMPTY + ROLE_DESC_CHEF, Role.MESSAGE_CONSTRAINTS);
@@ -115,10 +116,10 @@ public class WorkerEditCommandParserTest {
 
     @Test
     public void parse_allFieldsSpecified_success() {
-        Index targetIndex = INDEX_SECOND_PERSON;
+        Index targetIndex = INDEX_SECOND_WORKER;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + ROLE_DESC_CASHIER
                 + PAY_DESC_AMY + ADDRESS_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_CHEF;
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
                 .withRoles(VALID_ROLE_CHEF, VALID_ROLE_CASHIER).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
@@ -128,10 +129,10 @@ public class WorkerEditCommandParserTest {
 
     @Test
     public void parse_someFieldsSpecified_success() {
-        Index targetIndex = INDEX_FIRST_PERSON;
+        Index targetIndex = INDEX_FIRST_WORKER;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + PAY_DESC_AMY;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB)
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withPay(VALID_PAY_AMY).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
 
@@ -141,45 +142,45 @@ public class WorkerEditCommandParserTest {
     @Test
     public void parse_oneFieldSpecified_success() {
         // name
-        Index targetIndex = INDEX_THIRD_PERSON;
+        Index targetIndex = INDEX_THIRD_WORKER;
         String userInput = targetIndex.getOneBased() + NAME_DESC_AMY;
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY).build();
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // phone
         userInput = targetIndex.getOneBased() + PHONE_DESC_AMY;
-        descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_AMY).build();
+        descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_AMY).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // pay
         userInput = targetIndex.getOneBased() + PAY_DESC_AMY;
-        descriptor = new EditPersonDescriptorBuilder().withPay(VALID_PAY_AMY).build();
+        descriptor = new EditWorkerDescriptorBuilder().withPay(VALID_PAY_AMY).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // address
         userInput = targetIndex.getOneBased() + ADDRESS_DESC_AMY;
-        descriptor = new EditPersonDescriptorBuilder().withAddress(VALID_ADDRESS_AMY).build();
+        descriptor = new EditWorkerDescriptorBuilder().withAddress(VALID_ADDRESS_AMY).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // rolss
         userInput = targetIndex.getOneBased() + ROLE_DESC_CASHIER;
-        descriptor = new EditPersonDescriptorBuilder().withRoles(VALID_ROLE_CASHIER).build();
+        descriptor = new EditWorkerDescriptorBuilder().withRoles(VALID_ROLE_CASHIER).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
     @Test
     public void parse_multipleRepeatedFields_acceptsLast() {
-        Index targetIndex = INDEX_FIRST_PERSON;
+        Index targetIndex = INDEX_FIRST_WORKER;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_AMY + ADDRESS_DESC_AMY + PAY_DESC_AMY
                 + ROLE_DESC_CASHIER + PHONE_DESC_AMY + ADDRESS_DESC_AMY + PAY_DESC_AMY + ROLE_DESC_CHEF
                 + PHONE_DESC_BOB + ADDRESS_DESC_BOB + PAY_DESC_BOB + ROLE_DESC_CASHIER;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB)
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
                 .build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
@@ -190,16 +191,16 @@ public class WorkerEditCommandParserTest {
     @Test
     public void parse_invalidValueFollowedByValidValue_success() {
         // no other valid values specified
-        Index targetIndex = INDEX_FIRST_PERSON;
+        Index targetIndex = INDEX_FIRST_WORKER;
         String userInput = targetIndex.getOneBased() + INVALID_PHONE_DESC + PHONE_DESC_BOB;
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).build();
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
         // other valid values specified
         userInput = targetIndex.getOneBased() + PAY_DESC_BOB + INVALID_PHONE_DESC + ADDRESS_DESC_BOB
                 + PHONE_DESC_BOB;
-        descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB)
+        descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB)
                 .withAddress(VALID_ADDRESS_BOB).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -207,10 +208,10 @@ public class WorkerEditCommandParserTest {
 
     @Test
     public void parse_resetRoles_success() {
-        Index targetIndex = INDEX_THIRD_PERSON;
+        Index targetIndex = INDEX_THIRD_WORKER;
         String userInput = targetIndex.getOneBased() + ROLE_EMPTY;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withRoles().build();
+        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withRoles().build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

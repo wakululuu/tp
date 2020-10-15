@@ -1,13 +1,13 @@
 package seedu.address.testutil;
 
 import seedu.address.model.AddressBook;
-import seedu.address.model.person.Person;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.worker.Worker;
 
 /**
  * A utility class to help with building Addressbook objects.
  * Example usage: <br>
- *     {@code AddressBook ab = new AddressBookBuilder().withPerson("John", "Doe").build();}
+ *     {@code AddressBook ab = new AddressBookBuilder().withWorker("John", "Doe").build();}
  */
 public class AddressBookBuilder {
 
@@ -22,12 +22,12 @@ public class AddressBookBuilder {
     }
 
     /**
-     * Returns an {@code AddressBook} with all the typical persons.
+     * Returns an {@code AddressBook} with all the typical workers.
      */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
-        for (Person person : TypicalPersons.getTypicalPersons()) {
-            ab.addPerson(person);
+        for (Worker worker : TypicalWorkers.getTypicalWorkers()) {
+            ab.addWorker(worker);
         }
         for (Shift shift : TypicalShifts.getTypicalShifts()) {
             ab.addShift(shift);
@@ -36,10 +36,10 @@ public class AddressBookBuilder {
     }
 
     /**
-     * Adds a new {@code Person} to the {@code AddressBook} that we are building.
+     * Adds a new {@code Worker} to the {@code AddressBook} that we are building.
      */
-    public AddressBookBuilder withPerson(Person person) {
-        addressBook.addPerson(person);
+    public AddressBookBuilder withWorker(Worker worker) {
+        addressBook.addWorker(worker);
         return this;
     }
 
