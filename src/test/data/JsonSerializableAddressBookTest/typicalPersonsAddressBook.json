@@ -76,7 +76,7 @@
     } ],
     "personRoleAssignments" : [ ]
   }, {
-    "day" : "MON",
+    "day" : "FRI",
     "time" : "PM",
     "roleRequirements" : [ {
       "role" : "cashier",

@@ -21,7 +21,10 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
+import seedu.address.model.shift.Shift;
+import seedu.address.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.EditShiftDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -67,6 +70,9 @@ public class CommandTestUtil {
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
 
+    public static final ShiftEditCommand.EditShiftDescriptor DESC_FIRST_SHIFT;
+    public static final ShiftEditCommand.EditShiftDescriptor DESC_SECOND_SHIFT;
+
     public static final String VALID_DAY_MON = "MON";
     public static final String VALID_DAY_TUE = "TUE";
     public static final String VALID_TIME_AM = "AM";
@@ -81,6 +87,11 @@ public class CommandTestUtil {
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB)
                 .withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF).build();
+
+        DESC_FIRST_SHIFT = new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_MON).withShiftTime(VALID_TIME_AM)
+                .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF).build();
+        DESC_SECOND_SHIFT = new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_TUE).withShiftTime(VALID_TIME_PM)
+                .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF, VALID_ROLE_REQUIREMENT_CASHIER).build();
     }
 
     /**
@@ -137,6 +148,19 @@ public class CommandTestUtil {
         model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredPersonList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered list to show only the shift at the given {@code targetIndex} in the
+     * {@code model}'s address book.
+     */
+    public static void showShiftAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredShiftList().size());
+
+        Shift shift = model.getFilteredShiftList().get(targetIndex.getZeroBased());
+        final String[] shiftDayKeywords = { shift.getShiftDay().toString() };
+        model.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList(shiftDayKeywords)));
+        assertEquals(1, model.getFilteredShiftList().size());
     }
 
 }
