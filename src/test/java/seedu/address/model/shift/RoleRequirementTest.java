@@ -34,6 +34,8 @@ public class RoleRequirementTest {
 
         // invalid role requirement
         assertFalse(RoleRequirement.isValidRoleRequirement("")); // empty
+        assertFalse(RoleRequirement.isValidRoleRequirement(" ")); // whitespace
+        assertFalse(RoleRequirement.isValidRoleRequirement("      ")); // lots of whitespace
         assertFalse(RoleRequirement.isValidRoleRequirement("role")); // just a role
         assertFalse(RoleRequirement.isValidRoleRequirement("123")); // just a quantity
         assertFalse(RoleRequirement.isValidRoleRequirement("role -4")); // negative quantity
@@ -41,6 +43,7 @@ public class RoleRequirementTest {
 
         // valid role requirement
         assertTrue(RoleRequirement.isValidRoleRequirement("cashier 1")); // valid
+        assertTrue(RoleRequirement.isValidRoleRequirement("     cashier   1")); // valid (whitespace surrounding)
         assertTrue(RoleRequirement.isValidRoleRequirement("deep fryer 4 5")); // with spaces
 
     }

@@ -36,7 +36,7 @@ public class ShiftEditCommand extends Command {
             + "Parameters: INDEX (must be a positive integer) "
             + "[" + PREFIX_SHIFT_DAY + "DAY] "
             + "[" + PREFIX_SHIFT_TIME + "TIME] "
-            + "[" + PREFIX_ROLE_REQUIREMENT + "ROLE <space> QUANTITY_NEEDED]...\n"
+            + "[" + PREFIX_ROLE_REQUIREMENT + "ROLE QUANTITY_NEEDED]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_SHIFT_DAY + "Wed "
             + PREFIX_ROLE_REQUIREMENT + "Cashier 5";

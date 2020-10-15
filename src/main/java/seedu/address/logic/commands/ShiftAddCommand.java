@@ -19,7 +19,7 @@ public class ShiftAddCommand extends Command {
             + "Parameters: "
             + PREFIX_SHIFT_DAY + "DAY "
             + PREFIX_SHIFT_TIME + "TIME "
-            + "[" + PREFIX_ROLE_REQUIREMENT + "ROLE <space> NUMBER_NEEDED]...\n"
+            + "[" + PREFIX_ROLE_REQUIREMENT + "ROLE NUMBER_NEEDED]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_SHIFT_DAY + "MON "
             + PREFIX_SHIFT_TIME + "AM "
