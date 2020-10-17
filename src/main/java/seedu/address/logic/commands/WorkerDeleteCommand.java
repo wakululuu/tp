@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -63,17 +64,27 @@ public class WorkerDeleteCommand extends Command {
         assignedShifts.forEach(assignedShift -> {
             for (Shift shift : fullShiftList) {
                 if (assignedShift.isSameShift(shift)) {
-                    Set<WorkerRoleAssignment> workerRoleAssignments = shift.getWorkerRoleAssignments();
-                    workerRoleAssignments.removeIf(assignment -> workerToDelete.isSameWorker(assignment.getWorker()));
-
-                    Shift updatedShift = new Shift(shift.getShiftDay(), shift.getShiftTime(),
-                            shift.getRoleRequirements(), workerRoleAssignments);
-                    model.setShift(shift, updatedShift);
-
+                    deleteWorkerFromShift(model, shift, workerToDelete);
                     break;
                 }
             }
         });
+    }
+
+    private void deleteWorkerFromShift(Model model, Shift shift, Worker workerToDelete) {
+        Set<WorkerRoleAssignment> editedAssignments = createEditedWorkerRoleAssignments(shift,
+                workerToDelete);
+
+        Shift editedShift = new Shift(shift.getShiftDay(), shift.getShiftTime(),
+                shift.getRoleRequirements(), editedAssignments);
+
+        model.setShift(shift, editedShift);
+    }
+
+    private Set<WorkerRoleAssignment> createEditedWorkerRoleAssignments(Shift shift, Worker workerToDelete) {
+        Set<WorkerRoleAssignment> editedAssignments = new HashSet<>(shift.getWorkerRoleAssignments());
+        editedAssignments.removeIf(assignment -> workerToDelete.isSameWorker(assignment.getWorker()));
+        return editedAssignments;
     }
 
     @Override
