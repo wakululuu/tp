@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -22,6 +23,9 @@ import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
+import seedu.address.model.shift.WorkerRoleAssignment;
+import seedu.address.model.worker.ShiftRoleAssignment;
+import seedu.address.model.worker.Worker;
 
 /**
  * Edits the details of an existing shift in the App.
@@ -76,8 +80,10 @@ public class ShiftEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
         }
 
+        editShiftInAssignedWorkers(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+
         return new CommandResult(String.format(MESSAGE_EDIT_SHIFT_SUCCESS, editedShift));
     }
 
@@ -90,6 +96,47 @@ public class ShiftEditCommand extends Command {
                 .orElse(shiftToEdit.getRoleRequirements());
 
         return new Shift(updatedDay, updatedTime, updatedRoleRequirements, shiftToEdit.getWorkerRoleAssignments());
+    }
+
+    private void editShiftInAssignedWorkers(Model model, Shift shiftToEdit, Shift editedShift) {
+        requireAllNonNull(model, shiftToEdit, editedShift);
+        List<Worker> fullWorkerList = model.getFullWorkerList();
+
+        Stream<Worker> assignedWorkers = shiftToEdit.getWorkerRoleAssignments()
+                .stream()
+                .map(WorkerRoleAssignment::getWorker);
+
+        assignedWorkers.forEach(assignedWorker -> {
+            for (Worker worker : fullWorkerList) {
+                if (assignedWorker.isSameWorker(worker)) {
+                    editShiftInWorker(model, worker, shiftToEdit, editedShift);
+                    break;
+                }
+            }
+        });
+    }
+
+    private void editShiftInWorker(Model model, Worker worker, Shift shiftToEdit, Shift editedShift) {
+        Set<ShiftRoleAssignment> editedAssignments = createEditedShiftRoleAssignments(worker, shiftToEdit,
+                editedShift);
+        Worker editedWorker = new Worker(worker.getName(), worker.getPhone(), worker.getPay(), worker.getAddress(),
+                worker.getRoles(), editedAssignments);
+        model.setWorker(worker, editedWorker);
+    }
+
+    private Set<ShiftRoleAssignment> createEditedShiftRoleAssignments(Worker worker, Shift shiftToEdit,
+            Shift editedShift) {
+        Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>(worker.getShiftRoleAssignments());
+
+        for (ShiftRoleAssignment assignment : shiftRoleAssignments) {
+            if (shiftToEdit.isSameShift(assignment.getShift())) {
+                ShiftRoleAssignment editedAssignment = new ShiftRoleAssignment(editedShift, assignment.getRole());
+                shiftRoleAssignments.add(editedAssignment);
+                shiftRoleAssignments.remove(assignment);
+            }
+        }
+
+        return shiftRoleAssignments;
     }
 
     @Override
