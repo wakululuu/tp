@@ -1,13 +1,19 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.shift.Shift;
+import seedu.address.model.shift.WorkerRoleAssignment;
+import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -40,8 +46,34 @@ public class WorkerDeleteCommand extends Command {
         }
 
         Worker workerToDelete = lastShownList.get(targetIndex.getZeroBased());
+        deleteWorkerFromAssignedShifts(model, workerToDelete);
         model.deleteWorker(workerToDelete);
+
         return new CommandResult(String.format(MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete));
+    }
+
+    private void deleteWorkerFromAssignedShifts(Model model, Worker workerToDelete) {
+        requireAllNonNull(model, workerToDelete);
+        List<Shift> fullShiftList = model.getFullShiftList();
+
+        Stream<Shift> assignedShifts = workerToDelete.getShiftRoleAssignments()
+                .stream()
+                .map(ShiftRoleAssignment::getShift);
+
+        assignedShifts.forEach(assignedShift -> {
+            for (Shift shift : fullShiftList) {
+                if (assignedShift.isSameShift(shift)) {
+                    Set<WorkerRoleAssignment> workerRoleAssignments = shift.getWorkerRoleAssignments();
+                    workerRoleAssignments.removeIf(assignment -> workerToDelete.isSameWorker(assignment.getWorker()));
+
+                    Shift updatedShift = new Shift(shift.getShiftDay(), shift.getShiftTime(),
+                            shift.getRoleRequirements(), workerRoleAssignments);
+                    model.setShift(shift, updatedShift);
+
+                    break;
+                }
+            }
+        });
     }
 
     @Override

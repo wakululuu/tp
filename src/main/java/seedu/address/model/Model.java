@@ -78,6 +78,9 @@ public interface Model {
      */
     void setWorker(Worker target, Worker editedWorker);
 
+    /** Returns an unmodifiable view of the full worker list */
+    ObservableList<Worker> getFullWorkerList();
+
     /** Returns an unmodifiable view of the filtered worker list */
     ObservableList<Worker> getFilteredWorkerList();
 
@@ -116,6 +119,11 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredShiftList(Predicate<Shift> predicate);
+
+    /**
+     * Returns an unmodifiable view of the full shift list
+     */
+    ObservableList<Shift> getFullShiftList();
 
     /**
      * Returns an unmodifiable view of the filtered shift list
