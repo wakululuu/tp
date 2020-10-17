@@ -89,7 +89,7 @@ public class ShiftEditCommand extends Command {
         Set<RoleRequirement> updatedRoleRequirements = editShiftDescriptor.getRoleRequirements()
                 .orElse(shiftToEdit.getRoleRequirements());
 
-        return new Shift(updatedDay, updatedTime, updatedRoleRequirements);
+        return new Shift(updatedDay, updatedTime, updatedRoleRequirements, shiftToEdit.getWorkerRoleAssignments());
     }
 
     @Override
