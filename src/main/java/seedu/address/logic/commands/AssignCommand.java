@@ -4,8 +4,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.HashSet;
 import java.util.List;
@@ -80,9 +78,6 @@ public class AssignCommand extends Command {
 
         model.setWorker(workerToAssign, assignedWorker);
         model.setShift(shiftToAssign, assignedShift);
-
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
 
         return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignedShift.toCondensedString(),
                 assignedWorker.getName(), role.getRole()));
