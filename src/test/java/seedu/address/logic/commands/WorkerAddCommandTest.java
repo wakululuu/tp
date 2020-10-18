@@ -141,6 +141,11 @@ public class WorkerAddCommandTest {
         }
 
         @Override
+        public ObservableList<Worker> getFullWorkerList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Worker> getFilteredWorkerList() {
             throw new AssertionError("This method should not be called.");
         }
@@ -172,6 +177,11 @@ public class WorkerAddCommandTest {
 
         @Override
         public void updateFilteredShiftList(Predicate<Shift> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Shift> getFullShiftList() {
             throw new AssertionError("This method should not be called.");
         }
 
