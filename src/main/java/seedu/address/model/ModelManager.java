@@ -116,6 +116,11 @@ public class ModelManager implements Model {
         addressBook.setWorker(target, editedWorker);
     }
 
+    @Override
+    public ObservableList<Worker> getFullWorkerList() {
+        return addressBook.getWorkerList();
+    }
+
     // Shift related methods
     @Override
     public boolean hasShift(Shift shift) {
@@ -138,6 +143,11 @@ public class ModelManager implements Model {
     public void setShift(Shift target, Shift editedShift) {
         requireAllNonNull(target, editedShift);
         addressBook.setShift(target, editedShift);
+    }
+
+    @Override
+    public ObservableList<Shift> getFullShiftList() {
+        return addressBook.getShiftList();
     }
 
     //=========== Filtered Worker List Accessors =============================================================
