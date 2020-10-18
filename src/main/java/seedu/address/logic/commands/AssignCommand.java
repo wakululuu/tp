@@ -91,6 +91,7 @@ public class AssignCommand extends Command {
 
         Set<ShiftRoleAssignment> updatedShiftRoleAssignments = new HashSet<>(
                 workerToAssign.getShiftRoleAssignments());
+        updatedShiftRoleAssignments.removeIf(assignment -> assignment.getShift().isSameShift(shiftToAssign));
 
         ShiftRoleAssignment shiftRoleToAssign = new ShiftRoleAssignment(shiftToAssign, role);
         updatedShiftRoleAssignments.add(shiftRoleToAssign);
@@ -107,6 +108,7 @@ public class AssignCommand extends Command {
 
         Set<WorkerRoleAssignment> updatedWorkerRoleAssignments = new HashSet<>(
                 shiftToAssign.getWorkerRoleAssignments());
+        updatedWorkerRoleAssignments.removeIf(assignment -> assignment.getWorker().isSameWorker(workerToAssign));
 
         WorkerRoleAssignment workerRoleToAssign = new WorkerRoleAssignment(workerToAssign, role);
         updatedWorkerRoleAssignments.add(workerRoleToAssign);
