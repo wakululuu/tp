@@ -42,6 +42,8 @@ public class WorkerCard extends UiPart<Region> {
     private FlowPane roles;
     @FXML
     private FlowPane shiftRoleAssignments;
+    @FXML
+    private FlowPane shiftLeaveAssignments;
 
     /**
      * Creates a {@code WorkerCode} with the given {@code Worker} and index to display.
@@ -58,9 +60,14 @@ public class WorkerCard extends UiPart<Region> {
         worker.getRoles().stream()
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
-        worker.getShiftRoleAssignments()
+        worker.getShiftRoleAssignmentsWithoutLeave()
                 .forEach(shiftRoleAssignment -> shiftRoleAssignments.getChildren().add(new Label(
-                        shiftRoleAssignment.getShift().toCondensedString() + " " + shiftRoleAssignment.getRole())));
+                        shiftRoleAssignment.getShift().toCondensedString() + " " + shiftRoleAssignment.getRole()
+                )));
+        worker.getShiftLeaveAssignments()
+                .forEach(shiftLeaveAssignment -> shiftLeaveAssignments.getChildren().add(new Label(
+                        shiftLeaveAssignment.getShift().toCondensedString() + " " + shiftLeaveAssignment.getRole()
+                )));
     }
 
     @Override

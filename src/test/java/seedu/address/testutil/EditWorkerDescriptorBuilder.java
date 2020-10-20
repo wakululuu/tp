@@ -86,7 +86,7 @@ public class EditWorkerDescriptorBuilder {
      * that we are building.
      */
     public EditWorkerDescriptorBuilder withRoles(String... roles) {
-        Set<Role> roleSet = Stream.of(roles).map(Role::new).collect(Collectors.toSet());
+        Set<Role> roleSet = Stream.of(roles).map(Role::createRole).collect(Collectors.toSet());
         descriptor.setRoles(roleSet);
         return this;
     }

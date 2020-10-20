@@ -29,6 +29,7 @@
             </HBox>
             <FlowPane fx:id="roleRequirements" />
             <FlowPane fx:id="workerRoleAssignments" />
+            <FlowPane fx:id="workerLeaveAssignments" />
         </VBox>
     </GridPane>
 </HBox>

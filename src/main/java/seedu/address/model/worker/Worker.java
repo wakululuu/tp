@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.model.tag.Role;
 
@@ -83,6 +84,28 @@ public class Worker {
      */
     public Set<ShiftRoleAssignment> getShiftRoleAssignments() {
         return Collections.unmodifiableSet(shiftRoleAssignments);
+    }
+
+    /**
+     * Returns an immutable shift-role assignment set without any assignment to {@code Leave}, which throws
+     * {@code UnsupportedOperationException} if modification is attempted.
+     */
+    public Set<ShiftRoleAssignment> getShiftRoleAssignmentsWithoutLeave() {
+        return shiftRoleAssignments
+                .stream()
+                .filter(shiftRoleAssignment -> !shiftRoleAssignment.isLeave())
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Returns an immutable shift-leave assignment set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<ShiftRoleAssignment> getShiftLeaveAssignments() {
+        return shiftRoleAssignments
+                .stream()
+                .filter(shiftRoleAssignment -> shiftRoleAssignment.isLeave())
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Shift in the App.
@@ -66,6 +67,29 @@ public class Shift {
      */
     public Set<WorkerRoleAssignment> getWorkerRoleAssignments() {
         return workerRoleAssignments;
+    }
+
+    /**
+     * Returns an immutable worker-role assignment set without {@code Leave}, which throws
+     * {@code UnsupportedOperationException} if modification is attempted.
+     * @return
+     */
+    public Set<WorkerRoleAssignment> getWorkerRoleAssignmentsWithoutLeave() {
+        return workerRoleAssignments
+                .stream()
+                .filter(workerRoleAssignment -> !workerRoleAssignment.isLeave())
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
+     * Returns an immutable worker-leave assignment set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<WorkerRoleAssignment> getWorkerLeaveAssignments() {
+        return workerRoleAssignments
+                .stream()
+                .filter(workerRoleAssignment -> workerRoleAssignment.isLeave())
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /**

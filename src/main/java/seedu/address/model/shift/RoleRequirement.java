@@ -38,7 +38,7 @@ public class RoleRequirement {
         requireNonNull(roleRequirementInfo);
         checkArgument(isValidRoleRequirement(roleRequirementInfo), MESSAGE_CONSTRAINTS);
         int index = roleRequirementInfo.lastIndexOf(" ");
-        this.role = new Role(roleRequirementInfo.substring(0, index));
+        this.role = Role.createRole(roleRequirementInfo.substring(0, index));
         this.quantity = Integer.parseInt(roleRequirementInfo.substring(index + 1));
     }
 
