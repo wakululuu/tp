@@ -16,6 +16,7 @@ import seedu.address.logic.commands.ShiftAddCommand;
 import seedu.address.logic.commands.ShiftDeleteCommand;
 import seedu.address.logic.commands.ShiftEditCommand;
 import seedu.address.logic.commands.ShiftListCommand;
+import seedu.address.logic.commands.TakeLeaveCommand;
 import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.commands.WorkerDeleteCommand;
@@ -80,6 +81,9 @@ public class AddressBookParser {
 
         case UnassignCommand.COMMAND_WORD:
             return new UnassignCommandParser().parse(arguments);
+
+        case TakeLeaveCommand.COMMAND_WORD:
+            return new TakeLeaveCommandParser().parse(arguments);
 
         case ShiftAddCommand.COMMAND_WORD:
             return new ShiftAddCommandParser().parse(arguments);
