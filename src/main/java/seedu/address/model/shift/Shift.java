@@ -66,7 +66,7 @@ public class Shift {
      * if modification is attempted.
      */
     public Set<WorkerRoleAssignment> getWorkerRoleAssignments() {
-        return workerRoleAssignments;
+        return Collections.unmodifiableSet(workerRoleAssignments);
     }
 
     /**
