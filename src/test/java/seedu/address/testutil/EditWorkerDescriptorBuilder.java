@@ -12,6 +12,7 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -40,6 +41,7 @@ public class EditWorkerDescriptorBuilder {
         //descriptor.setEmail(worker.getEmail());
         descriptor.setAddress(worker.getAddress());
         descriptor.setRoles(worker.getRoles());
+        descriptor.setUnavailableTimings(worker.getUnavailableTimings());
     }
 
     /**
@@ -88,6 +90,17 @@ public class EditWorkerDescriptorBuilder {
     public EditWorkerDescriptorBuilder withRoles(String... roles) {
         Set<Role> roleSet = Stream.of(roles).map(Role::new).collect(Collectors.toSet());
         descriptor.setRoles(roleSet);
+        return this;
+    }
+
+    /**
+     * Parses the {@code roles} into a {@code Set<Role>} and set it to the {@code EditWorkerDescriptor}
+     * that we are building.
+     */
+    public EditWorkerDescriptorBuilder withUnavailableTimings(String... unavailableTimings) {
+        Set<Unavailability> unavailabilitySet = Stream.of(unavailableTimings)
+                .map(Unavailability::new).collect(Collectors.toSet());
+        descriptor.setUnavailableTimings(unavailabilitySet);
         return this;
     }
 

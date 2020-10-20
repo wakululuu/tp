@@ -25,28 +25,31 @@ public class TypicalWorkers {
     public static final Worker ALICE = new WorkerBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withPay("9.75")
             .withPhone("94351253")
-            .withRoles("cashier").build();
+            .withRoles("cashier")
+            .withUnavailableTimings("MON AM")
+            .build();
     public static final Worker BENSON = new WorkerBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPay("10.20").withPhone("98765432")
             .withRoles("chef", "cashier")
+            .withUnavailableTimings("TUE AM")
             .withShiftRoleAssignments("MON, PM, cashier", "TUE, PM, chef").build();
     public static final Worker CARL = new WorkerBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withPay("15.01").withAddress("wall street").build();
+            .withPay("15.01").withAddress("wall street").withRoles("chef").build();
     public static final Worker DANIEL = new WorkerBuilder().withName("Daniel Meier").withPhone("87652533")
             .withPay("16").withAddress("10th street").withRoles("chef").build();
     public static final Worker ELLE = new WorkerBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withPay("5.99").withAddress("michegan ave").build();
+            .withPay("5.99").withAddress("michegan ave").withRoles("chef").build();
     public static final Worker FIONA = new WorkerBuilder().withName("Fiona Kunz").withPhone("9482427")
-            .withPay("21.86").withAddress("little tokyo").build();
+            .withPay("21.86").withAddress("little tokyo").withRoles("chef").build();
     public static final Worker GEORGE = new WorkerBuilder().withName("George Best").withPhone("9482442")
-            .withPay("24").withAddress("4th street").build();
+            .withPay("24").withAddress("4th street").withRoles("chef").build();
 
     // Manually added
     public static final Worker HOON = new WorkerBuilder().withName("Hoon Meier").withPhone("8482424")
-            .withPay("11.11").withAddress("little india").build();
+            .withPay("11.11").withAddress("little india").withRoles("chef").build();
     public static final Worker IDA = new WorkerBuilder().withName("Ida Mueller").withPhone("8482131")
-            .withPay("10.10").withAddress("chicago ave").build();
+            .withPay("10.10").withAddress("chicago ave").withRoles("chef").build();
 
     // Manually added - Worker's details found in {@code CommandTestUtil}
     public static final Worker AMY = new WorkerBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)

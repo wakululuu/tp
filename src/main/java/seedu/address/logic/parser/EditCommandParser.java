@@ -3,12 +3,11 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +19,7 @@ import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Role;
-//import seedu.address.model.tag.Tag;
+import seedu.address.model.worker.Unavailability;
 
 /**
  * Parses input arguments and creates a new WorkerEditCommand object
@@ -35,7 +34,8 @@ public class EditCommandParser implements Parser<WorkerEditCommand> {
     public WorkerEditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE,
+                        PREFIX_UNAVAILABILITY);
 
         Index index;
 
@@ -57,16 +57,13 @@ public class EditCommandParser implements Parser<WorkerEditCommand> {
             editWorkerDescriptor.setPay(ParserUtil.parsePay(argMultimap.getValue(PREFIX_PAY).get()));
         }
 
-        /*
-        if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
-            editWorkerDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get()));
-        }
-         */
-
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editWorkerDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
+
         parseRolesForEdit(argMultimap.getAllValues(PREFIX_ROLE)).ifPresent(editWorkerDescriptor::setRoles);
+        parseUnavailabilitiesForEdit(argMultimap.getAllValues(PREFIX_UNAVAILABILITY))
+                .ifPresent(editWorkerDescriptor::setUnavailableTimings);
 
         if (!editWorkerDescriptor.isAnyFieldEdited()) {
             throw new ParseException(WorkerEditCommand.MESSAGE_NOT_EDITED);
@@ -88,6 +85,18 @@ public class EditCommandParser implements Parser<WorkerEditCommand> {
         }
         Collection<String> roleSet = roles.size() == 1 && roles.contains("") ? Collections.emptySet() : roles;
         return Optional.of(ParserUtil.parseRoles(roleSet));
+    }
+
+    private Optional<Set<Unavailability>> parseUnavailabilitiesForEdit(Collection<String> unavailabilities)
+            throws ParseException {
+        assert unavailabilities != null;
+
+        if (unavailabilities.isEmpty()) {
+            return Optional.empty();
+        }
+        Collection<String> unavailabilitySet = unavailabilities.size() == 1 && unavailabilities.contains("")
+                ? Collections.emptySet() : unavailabilities;
+        return Optional.of(ParserUtil.parseUnavailabilities(unavailabilitySet));
     }
 
 }

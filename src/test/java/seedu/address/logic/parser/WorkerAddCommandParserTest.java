@@ -74,8 +74,9 @@ public class WorkerAddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Worker expectedWorker = new WorkerBuilder(AMY).withRoles().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY,
+        Worker expectedWorker = new WorkerBuilder(AMY).withShiftRoleAssignments().build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY
+                        + ROLE_DESC_CASHIER,
                 new WorkerAddCommand(expectedWorker));
     }
 
@@ -84,24 +85,28 @@ public class WorkerAddCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE);
 
         // missing name prefix
-        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing phone prefix
-        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing pay prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_PAY_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_PAY_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing address prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + VALID_ADDRESS_BOB,
-                expectedMessage);
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + VALID_ADDRESS_BOB
+                + ROLE_DESC_CASHIER, expectedMessage);
+
+        // missing role prefix
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                + VALID_ROLE_CASHIER, expectedMessage);
 
         // all prefixes missing
-        assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB,
-                expectedMessage);
+        assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
+                + VALID_ROLE_CASHIER, expectedMessage);
     }
 
     @Test
@@ -124,11 +129,11 @@ public class WorkerAddCommandParserTest {
 
         // invalid role
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_ROLE_DESC + VALID_ROLE_CASHIER, Role.MESSAGE_CONSTRAINTS);
+                + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
-        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC,
-                Name.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
+                        + ROLE_DESC_CASHIER, Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB

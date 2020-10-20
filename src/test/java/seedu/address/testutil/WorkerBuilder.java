@@ -12,6 +12,7 @@ import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
 import seedu.address.model.worker.ShiftRoleAssignment;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -24,6 +25,7 @@ public class WorkerBuilder {
     public static final String DEFAULT_PAY = "12.20";
     //public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    public static final String DEFAULT_ROLE = "Cashier";
 
     private Name name;
     private Phone phone;
@@ -31,6 +33,7 @@ public class WorkerBuilder {
     //private Email email;
     private Address address;
     private Set<Role> roles;
+    private Set<Unavailability> unavailableTimings;
     private Set<ShiftRoleAssignment> shiftRoleAssignments;
 
     /**
@@ -43,6 +46,8 @@ public class WorkerBuilder {
         //email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         roles = new HashSet<>();
+        roles.add(new Role(DEFAULT_ROLE));
+        unavailableTimings = new HashSet<>();
         shiftRoleAssignments = new HashSet<>();
     }
 
@@ -53,9 +58,9 @@ public class WorkerBuilder {
         name = workerToCopy.getName();
         phone = workerToCopy.getPhone();
         pay = workerToCopy.getPay();
-        //email = workerToCopy.getEmail();
         address = workerToCopy.getAddress();
         roles = new HashSet<>(workerToCopy.getRoles());
+        unavailableTimings = new HashSet<>(workerToCopy.getUnavailableTimings());
         shiftRoleAssignments = new HashSet<>(workerToCopy.getShiftRoleAssignments());
     }
 
@@ -72,6 +77,15 @@ public class WorkerBuilder {
      */
     public WorkerBuilder withRoles(String ... roles) {
         this.roles = SampleDataUtil.getRoleSet(roles);
+        return this;
+    }
+
+    /**
+     * Parses the {@code unavailableTimings} into a {@code Set<Unavailability>}
+     * and set it to the {@code Worker} that we are building.
+     */
+    public WorkerBuilder withUnavailableTimings(String ... unavailableTimings) {
+        this.unavailableTimings = SampleDataUtil.getUnavailabilitySet(unavailableTimings);
         return this;
     }
 
@@ -101,7 +115,7 @@ public class WorkerBuilder {
     }
 
     /**
-     * Parses the {@code shiftRoleAssignmentss} into a {@code Set<ShiftRoleAssignments>} and set it to the
+     * Parses the {@code shiftRoleAssignments} into a {@code Set<ShiftRoleAssignments>} and set it to the
      * {@code Worker} that we are building.
      */
     public WorkerBuilder withShiftRoleAssignments(String ... shiftRoleAssignments) {
@@ -121,7 +135,7 @@ public class WorkerBuilder {
      */
 
     public Worker build() {
-        return new Worker(name, phone, pay, address, roles, shiftRoleAssignments);
+        return new Worker(name, phone, pay, address, roles, unavailableTimings, shiftRoleAssignments);
     }
 
 }

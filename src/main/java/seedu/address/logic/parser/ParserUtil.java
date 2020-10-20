@@ -19,6 +19,7 @@ import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -198,6 +199,34 @@ public class ParserUtil {
         }
         return roleSet;
     }
+
+    /**
+     * Parses a {@code String unavailability} into an {@code Unavailability}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code unavailability} is invalid.
+     */
+    public static Unavailability parseUnavailability(String unavailability) throws ParseException {
+        requireNonNull(unavailability);
+        String trimmedUnavailability = unavailability.trim();
+        if (!Unavailability.isValidUnavailability(trimmedUnavailability)) {
+            throw new ParseException(Unavailability.MESSAGE_CONSTRAINTS);
+        }
+        return new Unavailability(trimmedUnavailability);
+    }
+
+    /**
+     * Parses {@code Collection<String> unavailabilities} into an {@code Set<Unavailability>}.
+     */
+    public static Set<Unavailability> parseUnavailabilities(Collection<String> unavailabilities) throws ParseException {
+        requireNonNull(unavailabilities);
+        final Set<Unavailability> unavailabilitySet = new HashSet<>();
+        for (String unavailability : unavailabilities) {
+            unavailabilitySet.add(parseUnavailability(unavailability));
+        }
+        return unavailabilitySet;
+    }
+
 
     /**
      * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.

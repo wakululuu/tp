@@ -2,11 +2,11 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -15,11 +15,13 @@ import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
-//import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
+//import seedu.address.model.worker.Email;
+
 //import seedu.address.model.tag.Tag;
 
 /**
@@ -34,9 +36,10 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
      */
     public WorkerAddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE);
+                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_PAY, PREFIX_ADDRESS, PREFIX_ROLE,
+                        PREFIX_UNAVAILABILITY);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_PAY)
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_PAY, PREFIX_ROLE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
         }
@@ -44,11 +47,12 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Pay pay = ParserUtil.parsePay(argMultimap.getValue(PREFIX_PAY).get());
-        //Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Role> roleList = ParserUtil.parseRoles(argMultimap.getAllValues(PREFIX_ROLE));
+        Set<Unavailability> unavailableTimings = ParserUtil.parseUnavailabilities(argMultimap
+                .getAllValues(PREFIX_UNAVAILABILITY));
 
-        Worker worker = new Worker(name, phone, pay, address, roleList);
+        Worker worker = new Worker(name, phone, pay, address, roleList, unavailableTimings);
 
         return new WorkerAddCommand(worker);
     }
