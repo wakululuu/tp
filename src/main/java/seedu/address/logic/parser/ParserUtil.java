@@ -1,6 +1,9 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.UnavailabilitySyntax.AFTERNOON;
+import static seedu.address.logic.parser.UnavailabilitySyntax.MORNING;
+import static seedu.address.logic.parser.UnavailabilitySyntax.WHOLE_DAY;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -216,13 +219,42 @@ public class ParserUtil {
     }
 
     /**
+     * Generates an AM Unavailability using {@code String day}.
+     */
+    public static String createMorningUnavailabilityString(String day) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(day);
+        sb.append(MORNING);
+        return sb.toString();
+    }
+
+    /**
+     * Generates a PM Unavailability using {@code String day}.
+     */
+    public static String createAfternoonUnavailabilityString(String day) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(day);
+        sb.append(AFTERNOON);
+        return sb.toString();
+    }
+
+    /**
      * Parses {@code Collection<String> unavailabilities} into an {@code Set<Unavailability>}.
      */
     public static Set<Unavailability> parseUnavailabilities(Collection<String> unavailabilities) throws ParseException {
         requireNonNull(unavailabilities);
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
         for (String unavailability : unavailabilities) {
-            unavailabilitySet.add(parseUnavailability(unavailability));
+            if (unavailability.contains(WHOLE_DAY)) {
+                String[] tempString = unavailability.split(" ");
+                String day = tempString[0];
+                String morningUnavailability = createMorningUnavailabilityString(day);
+                String afternoonUnavailability = createAfternoonUnavailabilityString(day);
+                unavailabilitySet.add(parseUnavailability(morningUnavailability));
+                unavailabilitySet.add(parseUnavailability(afternoonUnavailability));
+            } else {
+                unavailabilitySet.add(parseUnavailability(unavailability));
+            }
         }
         return unavailabilitySet;
     }

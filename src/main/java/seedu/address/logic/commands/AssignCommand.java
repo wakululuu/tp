@@ -14,7 +14,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.shift.Shift;
-import seedu.address.model.shift.ShiftTime;
 import seedu.address.model.shift.WorkerRoleAssignment;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.ShiftRoleAssignment;
@@ -94,12 +93,7 @@ public class AssignCommand extends Command {
         for (Unavailability unavailability : workerUnavailableTimings) {
             boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
             boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
-            boolean isUnavailableWholeDay = unavailability.getTime().equals(new ShiftTime("FULL"));
-            boolean isFullDayShift = shiftToAssign.getShiftTime().equals(new ShiftTime("FULL"));
-
-            if ((hasSameDay && hasSameTime)
-                    || (hasSameDay && isUnavailableWholeDay)
-                    || (hasSameDay && isFullDayShift)) {
+            if (hasSameDay && hasSameTime) {
                 return true;
             }
         }

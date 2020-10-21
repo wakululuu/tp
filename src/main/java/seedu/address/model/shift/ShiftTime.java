@@ -11,7 +11,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class ShiftTime {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Shift time should only contain one of the following values: AM, PM, FULL";
+            "Shift time should only contain one of the following values: AM, PM";
     public final ShiftTimeValue time;
 
     /**

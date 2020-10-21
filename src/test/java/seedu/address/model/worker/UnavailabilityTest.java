@@ -31,8 +31,8 @@ public class UnavailabilityTest {
         assertFalse(Unavailability.isValidUnavailability("diub oub")); // invalid day and time
 
         // valid unavailability
-        assertTrue(Unavailability.isValidUnavailability("MON PM")); // regular day and time
-        assertTrue(Unavailability.isValidUnavailability("TUE FULL")); // full as time keyword
+        assertTrue(Unavailability.isValidUnavailability("MON AM")); // regular day and AM
+        assertTrue(Unavailability.isValidUnavailability("MON PM")); // regular day and PM
     }
 }
 
