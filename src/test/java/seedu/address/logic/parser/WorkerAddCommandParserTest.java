@@ -100,9 +100,6 @@ public class WorkerAddCommandParserTest {
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + VALID_ADDRESS_BOB
                 + ROLE_DESC_CASHIER, expectedMessage);
 
-        // missing role prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + VALID_ROLE_CASHIER, expectedMessage);
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
