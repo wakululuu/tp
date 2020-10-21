@@ -29,6 +29,7 @@ public class AssignCommandTest {
         Shift shift = model.getFilteredShiftList().get(INDEX_FIRST_SHIFT.getZeroBased());
         Worker worker = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
 
+        // To confirm that typical shift and workers used do not contain any assignments
         assertEquals(shift, SHIFT_A);
         assertEquals(worker, ALICE);
         assertTrue(shift.getWorkerRoleAssignments().size() == 0);
@@ -39,12 +40,13 @@ public class AssignCommandTest {
                     INDEX_FIRST_WORKER,
                     worker.getRoles().iterator().next()).execute(model);
         } catch (Exception e) {
-            fail(e);
+            fail(e); // should not happen
         }
 
         Shift associatedShiftInModel = model.getFilteredShiftList().get(INDEX_FIRST_SHIFT.getZeroBased());
         Worker associatedWorkerInModel = model.getFilteredWorkerList().get(INDEX_FIRST_SHIFT.getZeroBased());
 
+        // To verify that there is now one and only one association in the worker and shift
         assertTrue(associatedShiftInModel.getWorkerRoleAssignments().size() == 1);
         assertTrue(associatedWorkerInModel.getShiftRoleAssignments().size() == 1);
 
@@ -62,6 +64,8 @@ public class AssignCommandTest {
                 .get(0)
                 .getWorker();
 
+        // These two checks show that the worker and shift in the model is different from the worker or shift
+        // that is present within the association classes.
         assertEquals(associatedShiftFromWorkerAssignment, associatedShiftInModel);
         assertEquals(associatedWorkerFromShiftAssignment, associatedWorkerInModel);
 
