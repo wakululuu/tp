@@ -153,6 +153,7 @@ public class WorkerEditCommand extends Command {
                 WorkerRoleAssignment editedAssignment = new WorkerRoleAssignment(editedWorker, assignment.getRole());
                 workerRoleAssignments.add(editedAssignment);
                 workerRoleAssignments.remove(assignment);
+                break;
             }
         }
 

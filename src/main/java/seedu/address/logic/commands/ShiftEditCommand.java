@@ -133,6 +133,7 @@ public class ShiftEditCommand extends Command {
                 ShiftRoleAssignment editedAssignment = new ShiftRoleAssignment(editedShift, assignment.getRole());
                 shiftRoleAssignments.add(editedAssignment);
                 shiftRoleAssignments.remove(assignment);
+                break;
             }
         }
 
