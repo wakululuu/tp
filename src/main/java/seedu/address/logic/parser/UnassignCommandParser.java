@@ -15,7 +15,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new UnassignCommand object
  */
-public class UnassignCommandParser {
+public class UnassignCommandParser implements Parser<UnassignCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the UnassignCommand
