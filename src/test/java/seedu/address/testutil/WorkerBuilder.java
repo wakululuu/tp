@@ -56,7 +56,6 @@ public class WorkerBuilder {
         //email = workerToCopy.getEmail();
         address = workerToCopy.getAddress();
         roles = new HashSet<>(workerToCopy.getRoles());
-        shiftRoleAssignments = new HashSet<>(workerToCopy.getShiftRoleAssignments());
     }
 
     /**
@@ -100,15 +99,6 @@ public class WorkerBuilder {
         return this;
     }
 
-    /**
-     * Parses the {@code shiftRoleAssignmentss} into a {@code Set<ShiftRoleAssignments>} and set it to the
-     * {@code Worker} that we are building.
-     */
-    public WorkerBuilder withShiftRoleAssignments(String ... shiftRoleAssignments) {
-        this.shiftRoleAssignments = SampleDataUtil.getShiftRoleAssignmentSet(shiftRoleAssignments);
-        return this;
-    }
-
     /*
     /**
      * Sets the {@code Email} of the {@code Worker} that we are building.
@@ -121,7 +111,7 @@ public class WorkerBuilder {
      */
 
     public Worker build() {
-        return new Worker(name, phone, pay, address, roles, shiftRoleAssignments);
+        return new Worker(name, phone, pay, address, roles);
     }
 
 }

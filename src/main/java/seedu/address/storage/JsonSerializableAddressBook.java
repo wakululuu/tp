@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -22,18 +23,22 @@ class JsonSerializableAddressBook {
 
     public static final String MESSAGE_DUPLICATE_WORKER = "Workers list contains duplicate worker(s).";
     public static final String MESSAGE_DUPLICATE_SHIFT = "Shifts list contains duplicate shift(s).";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "Assignments list contains duplicate assignment(s).";
 
     private final List<JsonAdaptedWorker> workers = new ArrayList<>();
     private final List<JsonAdaptedShift> shifts = new ArrayList<>();
+    private final List<JsonAdaptedAssignment> assignments = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given workers and shifts.
+     * Constructs a {@code JsonSerializableAddressBook} with the given workers, shifts and assignments.
      */
     @JsonCreator
     public JsonSerializableAddressBook(@JsonProperty("workers") List<JsonAdaptedWorker> workers,
-                                       @JsonProperty("shifts") List<JsonAdaptedShift> shifts) {
+            @JsonProperty("shifts") List<JsonAdaptedShift> shifts,
+            @JsonProperty("assignments") List<JsonAdaptedAssignment> assignments) {
         this.workers.addAll(workers);
         this.shifts.addAll(shifts);
+        this.assignments.addAll(assignments);
     }
 
     /**
@@ -44,6 +49,8 @@ class JsonSerializableAddressBook {
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
         workers.addAll(source.getWorkerList().stream().map(JsonAdaptedWorker::new).collect(Collectors.toList()));
         shifts.addAll(source.getShiftList().stream().map(JsonAdaptedShift::new).collect(Collectors.toList()));
+        assignments.addAll(source.getAssignmentList().stream().map(JsonAdaptedAssignment::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -68,6 +75,15 @@ class JsonSerializableAddressBook {
             }
             addressBook.addShift(shift);
         }
+
+        for (JsonAdaptedAssignment jsonAdaptedAssignment : assignments) {
+            Assignment assignment = jsonAdaptedAssignment.toModelType();
+            if (addressBook.hasAssignment(assignment)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_ASSIGNMENT);
+            }
+            addressBook.addAssignment(assignment);
+        }
+
         return addressBook;
     }
 

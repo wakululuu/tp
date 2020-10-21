@@ -15,7 +15,6 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
@@ -31,7 +30,6 @@ class JsonAdaptedWorker {
     private final String pay;
     private final String address;
     private final List<JsonAdaptedRole> roles = new ArrayList<>();
-    private final List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedWorker} with the given worker details.
@@ -39,18 +37,13 @@ class JsonAdaptedWorker {
     @JsonCreator
     public JsonAdaptedWorker(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
                              @JsonProperty("pay") String pay, @JsonProperty("address") String address,
-                             @JsonProperty("roles") List<JsonAdaptedRole> roles,
-                             @JsonProperty("shiftRoleAssignments")
-                                         List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments) {
+                             @JsonProperty("roles") List<JsonAdaptedRole> roles) {
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         if (roles != null) {
             this.roles.addAll(roles);
-        }
-        if (shiftRoleAssignments != null) {
-            this.shiftRoleAssignments.addAll(shiftRoleAssignments);
         }
     }
 
@@ -64,10 +57,6 @@ class JsonAdaptedWorker {
         address = source.getAddress().value;
         roles.addAll(source.getRoles().stream()
                 .map(JsonAdaptedRole::new)
-                .collect(Collectors.toList()));
-        shiftRoleAssignments.addAll(source.getShiftRoleAssignments()
-                .stream()
-                .map(JsonAdaptedShiftRoleAssignment::new)
                 .collect(Collectors.toList()));
     }
 
@@ -115,13 +104,7 @@ class JsonAdaptedWorker {
         }
         final Set<Role> modelRoles = new HashSet<>(rolesBuilder);
 
-        List<ShiftRoleAssignment> shiftRoleAssignmentsBuilder = new ArrayList<>();
-        for (JsonAdaptedShiftRoleAssignment assignment : shiftRoleAssignments) {
-            shiftRoleAssignmentsBuilder.add(assignment.toModelType());
-        }
-        final Set<ShiftRoleAssignment> modelShiftRoleAssignments = new HashSet<>(shiftRoleAssignmentsBuilder);
-
-        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles, modelShiftRoleAssignments);
+        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles);
     }
 
 }

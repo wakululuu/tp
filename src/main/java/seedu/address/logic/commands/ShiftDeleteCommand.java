@@ -2,20 +2,18 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
+import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
-import seedu.address.model.shift.WorkerRoleAssignment;
-import seedu.address.model.worker.ShiftRoleAssignment;
-import seedu.address.model.worker.Worker;
 
 
 /**
@@ -48,44 +46,26 @@ public class ShiftDeleteCommand extends Command {
         }
 
         Shift shiftToDelete = lastShownList.get(targetIndex.getZeroBased());
-        deleteShiftFromAssignedWorkers(model, shiftToDelete);
+        deleteShiftFromAssignments(model, shiftToDelete);
         model.deleteShift(shiftToDelete);
+        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_DELETE_SHIFT_SUCCESS, shiftToDelete));
     }
 
-    private void deleteShiftFromAssignedWorkers(Model model, Shift shiftToDelete) {
+    private void deleteShiftFromAssignments(Model model, Shift shiftToDelete) {
         requireAllNonNull(model, shiftToDelete);
-        List<Worker> fullWorkerList = model.getFullWorkerList();
+        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
 
-        Stream<Worker> assignedWorkers = shiftToDelete.getWorkerRoleAssignments()
-                .stream()
-                .map(WorkerRoleAssignment::getWorker);
-
-        assignedWorkers.forEach(assignedWorker -> {
-            for (Worker worker : fullWorkerList) {
-                if (assignedWorker.isSameWorker(worker)) {
-                    deleteShiftFromWorker(model, worker, shiftToDelete);
-                    break;
-                }
+        for (Assignment assignment : fullAssignmentList) {
+            if (shiftToDelete.isSameShift(assignment.getShift())) {
+                assignmentsToDelete.add(assignment);
             }
-        });
-    }
+        }
 
-    private void deleteShiftFromWorker(Model model, Worker worker, Shift shiftToDelete) {
-        Set<ShiftRoleAssignment> editedAssignments = createEditedShiftRoleAssignments(worker,
-                shiftToDelete);
-
-        Worker editedWorker = new Worker(worker.getName(), worker.getPhone(), worker.getPay(), worker.getAddress(),
-                worker.getRoles(), editedAssignments);
-
-        model.setWorker(worker, editedWorker);
-    }
-
-    private Set<ShiftRoleAssignment> createEditedShiftRoleAssignments(Worker worker, Shift shiftToDelete) {
-        Set<ShiftRoleAssignment> editedAssignments = new HashSet<>(worker.getShiftRoleAssignments());
-        editedAssignments.removeIf(assignment -> shiftToDelete.isSameShift(assignment.getShift()));
-        return editedAssignments;
+        assignmentsToDelete.forEach(model::deleteAssignment);
     }
 
     @Override

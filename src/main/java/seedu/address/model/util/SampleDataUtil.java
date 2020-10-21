@@ -1,14 +1,9 @@
 package seedu.address.model.util;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import seedu.address.logic.parser.ParserUtil;
-import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.shift.RoleRequirement;
@@ -21,7 +16,6 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
@@ -86,33 +80,6 @@ public class SampleDataUtil {
         return Arrays.stream(string)
                 .map(RoleRequirement::new)
                 .collect(Collectors.toSet());
-    }
-
-    /**
-     * Returns a {@code ShiftRoleAssignment} set containing the list of strings given.
-     */
-    public static Set<ShiftRoleAssignment> getShiftRoleAssignmentSet(String... string) {
-        final Pattern format = Pattern.compile("(?<shiftDay>\\S+), (?<shiftTime>\\S+), (?<role>.+)");
-
-        Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
-        for (String str : string) {
-            Matcher matcher = format.matcher(str);
-            if (!matcher.matches()) {
-                return null;
-            }
-
-            try {
-                ShiftDay shiftDay = ParserUtil.parseShiftDay(matcher.group("shiftDay"));
-                ShiftTime shiftTime = ParserUtil.parseShiftTime(matcher.group("shiftTime"));
-                Set<RoleRequirement> roleRequirements = ParserUtil.parseRoleRequirements(new HashSet<>());
-                Shift shift = new Shift(shiftDay, shiftTime, roleRequirements);
-                Role role = ParserUtil.parseRole(matcher.group("role"));
-                shiftRoleAssignments.add(new ShiftRoleAssignment(shift, role));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return shiftRoleAssignments;
     }
 
 }

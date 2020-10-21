@@ -2,11 +2,14 @@ package seedu.address.ui;
 
 import java.util.Comparator;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -41,12 +44,12 @@ public class WorkerCard extends UiPart<Region> {
     @FXML
     private FlowPane roles;
     @FXML
-    private FlowPane shiftRoleAssignments;
+    private FlowPane workerAssignments;
 
     /**
      * Creates a {@code WorkerCode} with the given {@code Worker} and index to display.
      */
-    public WorkerCard(Worker worker, int displayedIndex) {
+    public WorkerCard(Worker worker, int displayedIndex, ObservableList<Assignment> assignmentList) {
         super(FXML);
         this.worker = worker;
         id.setText(displayedIndex + ". ");
@@ -58,9 +61,14 @@ public class WorkerCard extends UiPart<Region> {
         worker.getRoles().stream()
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
-        worker.getShiftRoleAssignments()
-                .forEach(shiftRoleAssignment -> shiftRoleAssignments.getChildren().add(new Label(
-                        shiftRoleAssignment.getShift().toCondensedString() + " " + shiftRoleAssignment.getRole())));
+
+        assignmentList.forEach(assignment -> {
+            if (worker.isSameWorker(assignment.getWorker())) {
+                workerAssignments.getChildren().add(new Label(
+                        assignment.getShift().toCondensedString() + " " + assignment.getRole()
+                ));
+            }
+        });
     }
 
     @Override
