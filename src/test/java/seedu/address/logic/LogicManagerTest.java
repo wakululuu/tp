@@ -3,11 +3,12 @@ package seedu.address.logic;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 //import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PAY_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalWorkers.AMY;
 
@@ -81,8 +82,8 @@ public class LogicManagerTest {
 
         // Execute add command
         String addCommand = WorkerAddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY
-                + ADDRESS_DESC_AMY;
-        Worker expectedWorker = new WorkerBuilder(AMY).withRoles().build();
+                + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER;
+        Worker expectedWorker = new WorkerBuilder(AMY).withUnavailableTimings().build();
         ModelManager expectedModel = new ModelManager();
         expectedModel.addWorker(expectedWorker);
         String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;

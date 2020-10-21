@@ -288,12 +288,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. McScheduler adds worker.
 
    Use case ends.
-   
+
 **Extensions**
 * 1a. The given worker information has missing or wrong data.
 
     * 1a1. McScheduler shows an error message.
-    
+
       Use case ends.
 
 #### Use case: Delete a worker (UC-002)
@@ -318,7 +318,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. McScheduler shows an error message.
 
       Use case resumes at step 2.
-      
+  
 #### Use case: Edit a worker's information (UC-003)
 
 **MSS**
@@ -329,25 +329,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. McScheduler edits the worker.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 #### Use case: Add a shift (UC-004)
 
 **MSS**
@@ -356,15 +356,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. McScheduler adds the shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 1a. The shift information is missing or invalid (wrong values).
 
     * 1a1. McScheduler shows an error message.
-    
+
       Use case ends.
-      
+ 
 #### Use case: Delete a shift (UC-005)
 
 **MSS**
@@ -377,13 +377,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
 
 #### Use case: Edit a shift's information (UC-006)
@@ -396,25 +396,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. McScheduler edits the shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 #### Use case: Assign a worker to a shift (UC-007)
 
 **MSS**
@@ -427,29 +427,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. McScheduler assigns specified worker to specified shift.
 
    Use case ends.
-   
+ 
 **Extensions**
 
 * 2a. The list of shifts is empty.
 
   Use case ends.
-  
+
 * 4a. The list of workers is empty.
 
   Use case ends.
-  
+
 * 5a. At least one of the given indexes are invalid.
 
     * 5a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+  
 * 5b. The worker is unable to fulfil any role required for given shift.
 
     * 5b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+ 
 #### Use case: Unassign a worker from a shift (UC-008)
 
 **MSS**
@@ -462,36 +462,36 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. McScheduler unassigns specified worker from specified shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list of shifts is empty.
 
   Use case ends.
-  
+
 * 4a. The list of workers is empty.
 
   Use case ends.
-  
+
 * 5a. At least one of the given indexes are invalid.
 
     * 5a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+
 * 5b. The worker is not assigned to the given shift.
 
     * 5b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+  
 #### Use Case: Hire a new worker for shifts (UC-009)
 
 **MSS**
 
 1. User <u>adds a worker (UC-001)</u>.
 2. User <u>assigns worker to a shift (UC-007)</u>.
-   
+
    Step 2 is repeated for all shifts the worker is hired for.
 
    Use case ends.

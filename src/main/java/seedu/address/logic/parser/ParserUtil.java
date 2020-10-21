@@ -1,6 +1,9 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.UnavailabilitySyntax.AFTERNOON;
+import static seedu.address.logic.parser.UnavailabilitySyntax.MORNING;
+import static seedu.address.logic.parser.UnavailabilitySyntax.WHOLE_DAY;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,6 +22,7 @@ import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -198,6 +202,63 @@ public class ParserUtil {
         }
         return roleSet;
     }
+
+    /**
+     * Parses a {@code String unavailability} into an {@code Unavailability}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code unavailability} is invalid.
+     */
+    public static Unavailability parseUnavailability(String unavailability) throws ParseException {
+        requireNonNull(unavailability);
+        String trimmedUnavailability = unavailability.trim();
+        if (!Unavailability.isValidUnavailability(trimmedUnavailability)) {
+            throw new ParseException(Unavailability.MESSAGE_CONSTRAINTS);
+        }
+        return new Unavailability(trimmedUnavailability);
+    }
+
+    /**
+     * Generates an AM Unavailability using {@code String day}.
+     */
+    public static String createMorningUnavailabilityString(String day) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(day);
+        sb.append(MORNING);
+        return sb.toString();
+    }
+
+    /**
+     * Generates a PM Unavailability using {@code String day}.
+     */
+    public static String createAfternoonUnavailabilityString(String day) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(day);
+        sb.append(AFTERNOON);
+        return sb.toString();
+    }
+
+    /**
+     * Parses {@code Collection<String> unavailabilities} into an {@code Set<Unavailability>}.
+     */
+    public static Set<Unavailability> parseUnavailabilities(Collection<String> unavailabilities) throws ParseException {
+        requireNonNull(unavailabilities);
+        final Set<Unavailability> unavailabilitySet = new HashSet<>();
+        for (String unavailability : unavailabilities) {
+            if (unavailability.contains(WHOLE_DAY)) {
+                String[] tempString = unavailability.split(" ");
+                String day = tempString[0];
+                String morningUnavailability = createMorningUnavailabilityString(day);
+                String afternoonUnavailability = createAfternoonUnavailabilityString(day);
+                unavailabilitySet.add(parseUnavailability(morningUnavailability));
+                unavailabilitySet.add(parseUnavailability(afternoonUnavailability));
+            } else {
+                unavailabilitySet.add(parseUnavailability(unavailability));
+            }
+        }
+        return unavailabilitySet;
+    }
+
 
     /**
      * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
