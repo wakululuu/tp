@@ -143,6 +143,8 @@ This mechanism is facilitated by adding/deleting `Assignment` objects in the `Mc
 stores a `Shift`, `Worker` and `Role` object. The `McScheduler` maintains a `UniqueAssignmentList`, which enforces
 uniqueness between `Assignment` objects by comparing them using `Assignment#isSameAssignment(Assignment)`.
 
+![AssignmentClassDiagram](images/AssignmentClassDiagram.png)
+
 The operations supporting the adding/deleting of `Assignment` objects are exposed in the `Model` interface as
 `Model#addAssignment(Assignment)` and `Model#deleteAssignment(Assignment)`.
 
@@ -153,6 +155,8 @@ the McScheduler. The `assign` command creates an `Assignment` object, storing th
 `Role` objects. The command then checks if there already exists an `assignment` with the same `shift` and `worker` in
 the model, as well as the `unavailability` of the `worker` to be assigned. If the `assignment` is unique and the
 `worker` is available, the `assignment` is added to the list of `assignments` in the `model`.
+
+![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
 
 Step 2. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
 from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
