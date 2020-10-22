@@ -1,0 +1,16 @@
+@startuml
+!include style.puml
+
+class Unavailability {
+- day: ShiftDay
+- time: ShiftTime
+- unavailability: String
++{static} isValidUnavailability(String)
++ getDay()
++ getTime()
++ getString()
+
+}
+
+Worker --> Unavailability
+@enduml
