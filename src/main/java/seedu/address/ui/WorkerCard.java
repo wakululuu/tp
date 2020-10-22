@@ -9,6 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -45,6 +46,8 @@ public class WorkerCard extends UiPart<Region> {
     @FXML
     private FlowPane workerAssignments;
     @FXML
+    private FlowPane leaveWorkerAssignments;
+    @FXML
     private FlowPane unavailableTimings;
 
     /**
@@ -63,8 +66,13 @@ public class WorkerCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
 
-        WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(assignmentList, worker);
+        WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(
+                assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), worker);
         workerAssignments.getChildren().add(assignmentListPanel.getRoot());
+
+        WorkerAssignmentListPanel leaveAssignmentListPanel = new WorkerAssignmentListPanel(
+                assignmentList.filtered(assignment -> new Leave().equals(assignment.getRole())), worker);
+        leaveWorkerAssignments.getChildren().add(leaveAssignmentListPanel.getRoot());
 
         worker.getUnavailableTimings()
                 .forEach(unavailability -> unavailableTimings.getChildren().add(new Label(

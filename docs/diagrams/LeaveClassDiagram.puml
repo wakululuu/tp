@@ -1,0 +1,19 @@
+@startuml
+
+class Tag {
+tagName: String
+}
+
+class Role {
+tagName: String
+{static} createRole(String)
+}
+
+class Leave {
+{static} ROLE_NAME: String
+}
+
+Tag <|- Role
+Role <|- Leave
+Role ..> Leave
+@enduml

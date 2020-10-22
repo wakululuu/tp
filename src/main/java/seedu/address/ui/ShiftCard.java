@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
 
 /**
  * An UI component that displays information of a {@code Shift}.
@@ -30,6 +31,8 @@ public class ShiftCard extends UiPart<Region> {
     private FlowPane roleRequirements;
     @FXML
     private FlowPane shiftAssignments;
+    @FXML
+    private FlowPane leaveShiftAssignments;
 
     /**
      * Creates a {@code ShiftCard} with the given {@code Shift} and index to display.
@@ -43,8 +46,13 @@ public class ShiftCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> roleRequirements.getChildren().add(new Label(roleRequirement.toString())));
 
-        ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(assignmentList, shift);
+        ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(
+                assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), shift);
         shiftAssignments.getChildren().add(assignmentListPanel.getRoot());
+
+        ShiftAssignmentListPanel leaveAssignmentListPanel = new ShiftAssignmentListPanel(
+                assignmentList.filtered(assignment -> new Leave().equals(assignment.getRole())), shift);
+        leaveShiftAssignments.getChildren().add(leaveAssignmentListPanel.getRoot());
     }
 
     @Override

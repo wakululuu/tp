@@ -46,7 +46,7 @@ public class WorkerBuilder {
         //email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         roles = new HashSet<>();
-        roles.add(new Role(DEFAULT_ROLE));
+        roles.add(Role.createRole(DEFAULT_ROLE));
         unavailableTimings = new HashSet<>();
         shiftRoleAssignments = new HashSet<>();
     }

@@ -37,7 +37,7 @@ class JsonAdaptedRole extends JsonAdaptedTag {
         if (!Role.isValidTagName(tagName)) {
             throw new IllegalValueException((Role.MESSAGE_CONSTRAINTS));
         }
-        return new Role(tagName);
+        return Role.createRole(tagName);
     }
 
 }
