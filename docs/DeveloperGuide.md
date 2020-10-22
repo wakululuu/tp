@@ -133,6 +133,21 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Role
+
+#### Role Implementation
+
+The `Role` attribute of the `Worker` class extends the existing `Tag` class. The `Role` constructor takes in a `String` and creates a `Role` object with the according `roleName`. In the future, we will change the 
+behavior of `Role` such that we have an enumeration of allowed `roleNames` and only these `Roles` can be 
+instantiated. We will also add support for adding new allowed `roleNames` to the enumeration mentioned above.
+
+#### Design consideration:
+
+We chose to simply extend the `Tag` class since both `Tag` and `Role` are optional fields so it makes sense
+for `Role` to inherit from `Tag`.
+
+<!--Todo: add class diagrams relating Role to Tag, Role Requirement, Worker and Shift-->
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
