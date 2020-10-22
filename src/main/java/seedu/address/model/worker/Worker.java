@@ -113,6 +113,7 @@ public class Worker {
                 .collect(Collectors.toUnmodifiableSet());
     }
 
+    /**
      * Returns an immutable availability set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
