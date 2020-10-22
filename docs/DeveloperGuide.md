@@ -267,7 +267,7 @@ with the unavailable timings `MON AM` and `MON PM`.
 
 The following sequence diagram shows how unavailable timings are added to a `Worker`.
 
-![Unavailability Sequence Diagram](images/UnavailabilitySequenceDiagram.png)
+![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
 
 
 --------------------------------------------------------------------------------------------------------------------
