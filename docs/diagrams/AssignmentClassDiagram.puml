@@ -1,0 +1,8 @@
+@startuml
+title Assignment - Class Diagram
+skinparam backgroundColor transparent
+
+Assignment -->"1" Shift
+Assignment --> "1" Worker
+Assignment --> "1" Role
+@enduml
