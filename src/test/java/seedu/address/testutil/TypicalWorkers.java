@@ -32,8 +32,7 @@ public class TypicalWorkers {
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPay("10.20").withPhone("98765432")
             .withRoles("chef", "cashier")
-            .withUnavailableTimings("TUE AM")
-            .withShiftRoleAssignments("MON, PM, cashier", "TUE, PM, chef").build();
+            .withUnavailableTimings("TUE AM").build();
     public static final Worker CARL = new WorkerBuilder().withName("Carl Kurz").withPhone("95352563")
             .withPay("15.01").withAddress("wall street").withRoles("chef").build();
     public static final Worker DANIEL = new WorkerBuilder().withName("Daniel Meier").withPhone("87652533")

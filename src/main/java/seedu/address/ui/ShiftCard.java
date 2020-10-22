@@ -2,11 +2,13 @@ package seedu.address.ui;
 
 import java.util.Comparator;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 
 /**
@@ -27,14 +29,12 @@ public class ShiftCard extends UiPart<Region> {
     @FXML
     private FlowPane roleRequirements;
     @FXML
-    private FlowPane workerRoleAssignments;
-    @FXML
-    private FlowPane workerLeaveAssignments;
+    private FlowPane shiftAssignments;
 
     /**
      * Creates a {@code ShiftCard} with the given {@code Shift} and index to display.
      */
-    public ShiftCard(Shift shift, int displayedIndex) {
+    public ShiftCard(Shift shift, int displayedIndex, ObservableList<Assignment> assignmentList) {
         super(FXML);
         this.shift = shift;
         id.setText(displayedIndex + ". ");
@@ -42,12 +42,9 @@ public class ShiftCard extends UiPart<Region> {
         shift.getRoleRequirements().stream()
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> roleRequirements.getChildren().add(new Label(roleRequirement.toString())));
-        shift.getWorkerRoleAssignmentsWithoutLeave()
-                .forEach(workerRoleAssignment -> workerRoleAssignments.getChildren().add(new Label(
-                        workerRoleAssignment.getWorker().getName() + " " + workerRoleAssignment.getRole())));
-        shift.getWorkerLeaveAssignments()
-                .forEach(workerLeaveAssignment -> workerLeaveAssignments.getChildren().add(new Label(
-                        workerLeaveAssignment.getWorker().getName() + " " + workerLeaveAssignment.getRole())));
+
+        ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(assignmentList, shift);
+        shiftAssignments.getChildren().add(assignmentListPanel.getRoot());
     }
 
     @Override

@@ -1,0 +1,5 @@
+@startuml
+
+Unavailability --> "1" ShiftTime
+Unavailability --> "1" ShiftDay
+@enduml

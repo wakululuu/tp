@@ -214,6 +214,58 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
 
+### Unavailability feature
+
+The unavailability feature allows users to add unavailable timings to a worker, which comprise a day and a time.
+The setting prevents workers from being assigned to shift slots that they are unavailable for.
+
+### Implementation
+
+The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
+
+#### Unavailability
+
+Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
+in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
+
+![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+
+Instances of `Unavailability` can be created on 2 occasions:
+
+1. During a `worker-add` command, prefixed with `u/`
+2. During a `worker-edit` command, prefixed with `u/`
+
+To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
+`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
+functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
+`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+
+- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
+- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
+- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
+- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
+object for each
+
+Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
+launched the application.
+
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
+`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+
+Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
+`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
+the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
+is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
+String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
+and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
+
+Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
+with the unavailable timings `MON AM` and `MON PM`.
+
+The following sequence diagram shows how unavailable timings are added to a `Worker`.
+
+![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -259,7 +311,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                                       | add a new shift                                                                      | assign workers to shifts                                               |
 | `* * *`  | user                                       | view a list of all shifts                                                            | know which shifts need a worker                                        |
 | `* * *`  | user                                       | add roles that need to be filled in a shift                                          | assign workers into those roles based on what is needed                |
-| `* * *`  | user                                       | set the number of workers needed for each role in a shift                            | schedule workers based on what is needed                                       |
+| `* * *`  | user                                       | set the number of workers needed for each role in a shift                            | schedule workers based on what is needed                               |
 | `* * *`  | user                                       | assign a worker to a shift                                                           | fill shift positions                                                   |
 | `* * *`  | user                                       | edit the details of a shift                                                          | reflect any changes in the number of workers needed for the shift      |
 | `* * *`  | user                                       | unassign a worker from a shift                                                       | find a replacement if the worker is no longer available for that shift |

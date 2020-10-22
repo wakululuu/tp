@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.UniqueAssignmentList;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.UniqueShiftList;
 import seedu.address.model.worker.UniqueWorkerList;
@@ -12,12 +14,13 @@ import seedu.address.model.worker.Worker;
 
 /**
  * Wraps all data at the address-book level
- * Duplicates are not allowed (by .isSameWorker and .isSameShift comparison)
+ * Duplicates are not allowed (by .isSameWorker, .isSameShift and .isSameAssignment comparison)
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniqueWorkerList workers;
     private final UniqueShiftList shifts;
+    private final UniqueAssignmentList assignments;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -29,6 +32,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     {
         workers = new UniqueWorkerList();
         shifts = new UniqueShiftList();
+        assignments = new UniqueAssignmentList();
     }
 
     public AddressBook() {}
@@ -51,9 +55,22 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.workers.setWorkers(workers);
     }
 
+    /**
+     * Replaces the contents of the shift list with {@code shifts}.
+     * {@code shifts} must not contain duplicate shifts.
+     */
     public void setShifts(List<Shift> shifts) {
         this.shifts.setShifts(shifts);
     }
+
+    /**
+     * Replaces the contents of the assignment list with {@code assignments}.
+     * {@code assignments} must not contain duplicate assignments.
+     */
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments.setAssignments(assignments);
+    }
+
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
@@ -62,9 +79,10 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         setWorkers(newData.getWorkerList());
         setShifts(newData.getShiftList());
+        setAssignments(newData.getAssignmentList());
     }
 
-    //// worker-level operations
+    // worker-level operations
 
     /**
      * Returns true if a worker with the same identity as {@code worker} exists in the address book.
@@ -137,12 +155,51 @@ public class AddressBook implements ReadOnlyAddressBook {
         shifts.remove(key);
     }
 
+    // assignment-level operations
+
+    /**
+     * Returns true if an assignment with the same identity as {@code assignment} exists in the address book.
+     */
+    public boolean hasAssignment(Assignment assignment) {
+        requireNonNull(assignment);
+        return assignments.contains(assignment);
+    }
+
+    /**
+     * Adds an assignment to the address book.
+     * The assignment must not already exist in the address book.
+     */
+    public void addAssignment(Assignment p) {
+        assignments.add(p);
+    }
+
+    /**
+     * Replaces the given assignment {@code target} in the list with {@code editedAssignment}.
+     * {@code target} must exist in the address book.
+     * The assignment identity of {@code editedAssignment} must not be the same as another existing assignment in the
+     * address book.
+     */
+    public void setAssignment(Assignment target, Assignment editedAssignment) {
+        requireNonNull(editedAssignment);
+
+        assignments.setAssignment(target, editedAssignment);
+    }
+
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeAssignment(Assignment key) {
+        assignments.remove(key);
+    }
+
     //// util methods
 
     @Override
     public String toString() {
         return workers.asUnmodifiableObservableList().size() + " workers; "
-                + shifts.asUnmodifiableObservableList().size() + " shifts";
+                + shifts.asUnmodifiableObservableList().size() + " shifts;"
+                + assignments.asUnmodifiableObservableList().size() + " assignments";
         // TODO: refine later
     }
 
@@ -154,6 +211,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public ObservableList<Shift> getShiftList() {
         return shifts.asUnmodifiableObservableList();
+    }
+
+    @Override
+    public ObservableList<Assignment> getAssignmentList() {
+        return assignments.asUnmodifiableObservableList();
     }
 
     @Override

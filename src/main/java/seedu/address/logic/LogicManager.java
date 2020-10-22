@@ -14,6 +14,7 @@ import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 import seedu.address.storage.Storage;
@@ -68,6 +69,11 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Shift> getFilteredShiftList() {
         return model.getFilteredShiftList();
+    }
+
+    @Override
+    public ObservableList<Assignment> getFullAssignmentList() {
+        return model.getFullAssignmentList();
     }
 
     @Override
