@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.ArrayList;
@@ -94,8 +93,6 @@ public class WorkerEditCommand extends Command {
 
         editWorkerInAssignments(model, workerToEdit, editedWorker);
         model.setWorker(workerToEdit, editedWorker);
-
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_EDIT_WORKER_SUCCESS, editedWorker));

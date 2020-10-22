@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,9 +80,7 @@ public class ShiftEditCommand extends Command {
 
         editShiftInAssignments(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
-
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_EDIT_SHIFT_SUCCESS, editedShift));
     }

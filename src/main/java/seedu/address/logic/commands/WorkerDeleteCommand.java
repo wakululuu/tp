@@ -2,8 +2,6 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +45,6 @@ public class WorkerDeleteCommand extends Command {
         Worker workerToDelete = lastShownList.get(targetIndex.getZeroBased());
         deleteWorkerFromAssignments(model, workerToDelete);
         model.deleteWorker(workerToDelete);
-
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete));
     }

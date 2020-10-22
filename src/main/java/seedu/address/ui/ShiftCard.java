@@ -43,13 +43,8 @@ public class ShiftCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> roleRequirements.getChildren().add(new Label(roleRequirement.toString())));
 
-        assignmentList.forEach(assignment -> {
-            if (shift.isSameShift(assignment.getShift())) {
-                shiftAssignments.getChildren().add(new Label(
-                        assignment.getWorker().getName() + " " + assignment.getRole()
-                ));
-            }
-        });
+        ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(assignmentList, shift);
+        shiftAssignments.getChildren().add(assignmentListPanel.getRoot());
     }
 
     @Override

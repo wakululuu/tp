@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.worker.Worker;
 
@@ -62,13 +61,8 @@ public class WorkerCard extends UiPart<Region> {
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
 
-        assignmentList.forEach(assignment -> {
-            if (worker.isSameWorker(assignment.getWorker())) {
-                workerAssignments.getChildren().add(new Label(
-                        assignment.getShift().toCondensedString() + " " + assignment.getRole()
-                ));
-            }
-        });
+        WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(assignmentList, worker);
+        workerAssignments.getChildren().add(assignmentListPanel.getRoot());
     }
 
     @Override
