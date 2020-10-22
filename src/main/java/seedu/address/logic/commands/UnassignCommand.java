@@ -92,7 +92,8 @@ public class UnassignCommand extends Command {
         }
 
         return new Worker(workerToUnassign.getName(), workerToUnassign.getPhone(), workerToUnassign.getPay(),
-                workerToUnassign.getAddress(), workerToUnassign.getRoles(), updatedShiftRoleAssignments);
+                workerToUnassign.getAddress(), workerToUnassign.getRoles(), workerToUnassign.getUnavailableTimings(),
+                updatedShiftRoleAssignments);
     }
 
     /**

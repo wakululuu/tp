@@ -9,19 +9,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class ShiftDay {
 
-    enum DayValue {
-        MON,
-        TUE,
-        WED,
-        THUR,
-        FRI,
-        SAT,
-        SUN
-    }
 
     public static final String MESSAGE_CONSTRAINTS =
             "Shift day should only contain one of the following values: MON, TUE, WED, THUR, FRI, SAT, SUN";
-    public final DayValue day;
+    public final ShiftDayValue day;
 
     /**
      * Constructs a {@code ShiftDay}.
@@ -32,7 +23,7 @@ public class ShiftDay {
         requireNonNull(day);
         day = day.toUpperCase();
         checkArgument(isValidDay(day), MESSAGE_CONSTRAINTS);
-        this.day = DayValue.valueOf(day);
+        this.day = ShiftDayValue.valueOf(day);
     }
 
     /**
@@ -40,7 +31,7 @@ public class ShiftDay {
      */
     public static boolean isValidDay(String test) {
         try {
-            DayValue.valueOf(test);
+            ShiftDayValue.valueOf(test);
         } catch (IllegalArgumentException e) {
             return false;
         }

@@ -41,6 +41,8 @@ public class WorkerCard extends UiPart<Region> {
     @FXML
     private FlowPane roles;
     @FXML
+    private FlowPane unavailableTimings;
+    @FXML
     private FlowPane shiftRoleAssignments;
     @FXML
     private FlowPane shiftLeaveAssignments;
@@ -60,6 +62,9 @@ public class WorkerCard extends UiPart<Region> {
         worker.getRoles().stream()
                 .sorted(Comparator.comparing(role -> role.tagName))
                 .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
+        worker.getUnavailableTimings()
+                .forEach(unavailability -> unavailableTimings.getChildren().add(new Label(
+                        unavailability.getDay() + " " + unavailability.getTime())));
         worker.getShiftRoleAssignmentsWithoutLeave()
                 .forEach(shiftRoleAssignment -> shiftRoleAssignments.getChildren().add(new Label(
                         shiftRoleAssignment.getShift().toCondensedString() + " " + shiftRoleAssignment.getRole()

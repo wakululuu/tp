@@ -25,17 +25,20 @@ public class Worker {
     private final Address address;
     private final Set<Role> roles = new HashSet<>();
     private final Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
+    private final Set<Unavailability> unavailableTimings = new HashSet<>();
 
     /**
      * Standard constructor, start with empty {@code shifts}. Every field must be present and not null.
      */
-    public Worker(Name name, Phone phone, Pay pay, Address address, Set<Role> roles) {
-        requireAllNonNull(name, phone, pay, address, roles);
+    public Worker(Name name, Phone phone, Pay pay, Address address, Set<Role> roles,
+                  Set<Unavailability> unavailableTimings) {
+        requireAllNonNull(name, phone, pay, address, roles, unavailableTimings);
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         this.roles.addAll(roles);
+        this.unavailableTimings.addAll(unavailableTimings);
     }
 
     /**
@@ -43,13 +46,15 @@ public class Worker {
      * Every field must be present and not null.
      */
     public Worker(Name name, Phone phone, Pay pay, Address address, Set<Role> roles,
+                  Set<Unavailability> unavailableTimings,
                   Set<ShiftRoleAssignment> shiftRoleAssignments) {
-        requireAllNonNull(name, phone, pay, address, roles, shiftRoleAssignments);
+        requireAllNonNull(name, phone, pay, address, roles, unavailableTimings, shiftRoleAssignments);
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         this.roles.addAll(roles);
+        this.unavailableTimings.addAll(unavailableTimings);
         this.shiftRoleAssignments.addAll(shiftRoleAssignments);
     }
 
@@ -108,6 +113,13 @@ public class Worker {
                 .collect(Collectors.toUnmodifiableSet());
     }
 
+     * Returns an immutable availability set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Unavailability> getUnavailableTimings() {
+        return Collections.unmodifiableSet(unavailableTimings);
+    }
+
     /**
      * Returns true if both workers of the same name have the same phone number.
      */
@@ -141,13 +153,14 @@ public class Worker {
                 && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
                 && otherWorker.getRoles().equals(getRoles())
+                && otherWorker.getUnavailableTimings().equals(getUnavailableTimings())
                 && otherWorker.getShiftRoleAssignments().equals(getShiftRoleAssignments());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, pay, address, roles, shiftRoleAssignments);
+        return Objects.hash(name, phone, pay, address, roles, unavailableTimings, shiftRoleAssignments);
     }
 
     @Override
@@ -162,6 +175,8 @@ public class Worker {
                 .append(getAddress())
                 .append(" Roles: ");
         getRoles().forEach(builder::append);
+        builder.append(" Unavailable Timings: ");
+        getUnavailableTimings().forEach(builder::append);
         builder.append(" Shifts: ");
         getShiftRoleAssignments().forEach(builder::append);
         return builder.toString();

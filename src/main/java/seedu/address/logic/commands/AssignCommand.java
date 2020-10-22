@@ -17,6 +17,7 @@ import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.WorkerRoleAssignment;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.ShiftRoleAssignment;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -73,6 +74,10 @@ public class AssignCommand extends Command {
         Worker workerToAssign = lastShownWorkerList.get(workerIndex.getZeroBased());
         Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
 
+        if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+        }
+
         Worker assignedWorker = createAssignedWorker(workerToAssign, shiftToAssign, role);
         Shift assignedShift = createAssignedShift(shiftToAssign, workerToAssign, role);
 
@@ -83,6 +88,17 @@ public class AssignCommand extends Command {
                 assignedWorker.getName(), role.getRole()));
     }
 
+    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
+        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
+        for (Unavailability unavailability : workerUnavailableTimings) {
+            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
+            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
+            if (hasSameDay && hasSameTime) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Creates and returns a {@code Worker} with the {@code shiftToAssign} and {@code role} assigned.
      */
@@ -97,7 +113,8 @@ public class AssignCommand extends Command {
         updatedShiftRoleAssignments.add(shiftRoleToAssign);
 
         return new Worker(workerToAssign.getName(), workerToAssign.getPhone(), workerToAssign.getPay(),
-                workerToAssign.getAddress(), workerToAssign.getRoles(), updatedShiftRoleAssignments);
+                workerToAssign.getAddress(), workerToAssign.getRoles(), workerToAssign.getUnavailableTimings(),
+                updatedShiftRoleAssignments);
     }
 
     /**

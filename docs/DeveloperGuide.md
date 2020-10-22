@@ -133,6 +133,7 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+
 ### Take/cancel leave feature
 
 The take/cancel leave feature allows users to set workers status to leave given a day and time. 
@@ -179,89 +180,39 @@ The following leave quotas could be implemented, using the existing `RoleRequire
 - Quota of leave per worker
 - Quota of leave per shift
 
-### \[Proposed\] Undo/redo feature
+### Assign/unassign feature
 
-#### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The assign/unassign feature allows the user to assign/unassign a worker to/from a role in a shift.
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+#### Implementation
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+This mechanism is facilitated by adding/deleting `Assignment` objects in the `McScheduler`. Each `Assignment` object
+stores a `Shift`, `Worker` and `Role` object. The `McScheduler` maintains a `UniqueAssignmentList`, which enforces
+uniqueness between `Assignment` objects by comparing them using `Assignment#isSameAssignment(Assignment)`.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+![AssignmentClassDiagram](images/AssignmentClassDiagram.png)
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+The operations supporting the adding/deleting of `Assignment` objects are exposed in the `Model` interface as
+`Model#addAssignment(Assignment)` and `Model#deleteAssignment(Assignment)`.
 
-![UndoRedoState0](images/UndoRedoState0.png)
+#### Example usage scenario
 
-Step 2. The user executes `worker-delete 5` command to delete the 5th worker in the address book. The `worker-delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 1. The user executes `assign s/1 w/1 r/Cashier` to assign the 1st worker the role of a cashier in the 1st shift in
+the McScheduler. The `assign` command creates an `Assignment` object, storing the 1st `Shift`, 1st `Worker` and cashier
+`Role` objects. The command then checks if there already exists an `assignment` with the same `shift` and `worker` in
+the model, as well as the `unavailability` of the `worker` to be assigned. If the `assignment` is unique and the
+`worker` is available, the `assignment` is added to the list of `assignments` in the `model`.
 
-![UndoRedoState1](images/UndoRedoState1.png)
+![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
 
-Step 3. The user executes `worker-add n/David …​` to add a new worker. The `worker-add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
-
-![UndoRedoState2](images/UndoRedoState2.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
-
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AssignCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-Step 4. The user now decides that adding the worker was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
-
-![UndoRedoState3](images/UndoRedoState3.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
-
-</div>
-
-The following sequence diagram shows how the undo operation works:
-
-![UndoSequenceDiagram](images/UndoSequenceDiagram.png)
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-
-</div>
-
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-</div>
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-![UndoRedoState4](images/UndoRedoState4.png)
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
-
-![UndoRedoState5](images/UndoRedoState5.png)
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-![CommitActivityDiagram](images/CommitActivityDiagram.png)
-
-#### Design consideration:
-
-##### Aspect: How undo & redo executes
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the worker being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
+Step 2. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
+from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
+`Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
+`assignment` to be deleted from the list of `assignments` in the `model`.
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -334,12 +285,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. McScheduler adds worker.
 
    Use case ends.
-   
+
 **Extensions**
 * 1a. The given worker information has missing or wrong data.
 
     * 1a1. McScheduler shows an error message.
-    
+
       Use case ends.
 
 #### Use case: Delete a worker (UC-002)
@@ -364,7 +315,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 3a1. McScheduler shows an error message.
 
       Use case resumes at step 2.
-      
+  
 #### Use case: Edit a worker's information (UC-003)
 
 **MSS**
@@ -375,25 +326,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. McScheduler edits the worker.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 #### Use case: Add a shift (UC-004)
 
 **MSS**
@@ -402,15 +353,15 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. McScheduler adds the shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 1a. The shift information is missing or invalid (wrong values).
 
     * 1a1. McScheduler shows an error message.
-    
+
       Use case ends.
-      
+ 
 #### Use case: Delete a shift (UC-005)
 
 **MSS**
@@ -423,13 +374,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
 
 #### Use case: Edit a shift's information (UC-006)
@@ -442,25 +393,25 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 4. McScheduler edits the shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list is empty.
-  
+
   Use case ends.
-  
+
 * 3a. The given index is invalid.
 
     * 3a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 * 3b. No information is given or the information is invalid.
 
     * 3b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 2.
-    
+
 #### Use case: Assign a worker to a shift (UC-007)
 
 **MSS**
@@ -473,29 +424,29 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. McScheduler assigns specified worker to specified shift.
 
    Use case ends.
-   
+ 
 **Extensions**
 
 * 2a. The list of shifts is empty.
 
   Use case ends.
-  
+
 * 4a. The list of workers is empty.
 
   Use case ends.
-  
+
 * 5a. At least one of the given indexes are invalid.
 
     * 5a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+  
 * 5b. The worker is unable to fulfil any role required for given shift.
 
     * 5b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+ 
 #### Use case: Unassign a worker from a shift (UC-008)
 
 **MSS**
@@ -508,36 +459,36 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 6. McScheduler unassigns specified worker from specified shift.
 
    Use case ends.
-   
+
 **Extensions**
 
 * 2a. The list of shifts is empty.
 
   Use case ends.
-  
+
 * 4a. The list of workers is empty.
 
   Use case ends.
-  
+
 * 5a. At least one of the given indexes are invalid.
 
     * 5a1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+
 * 5b. The worker is not assigned to the given shift.
 
     * 5b1. McScheduler shows an error message.
-    
+
       Use case resumes at step 4.
-      
+  
 #### Use Case: Hire a new worker for shifts (UC-009)
 
 **MSS**
 
 1. User <u>adds a worker (UC-001)</u>.
 2. User <u>assigns worker to a shift (UC-007)</u>.
-   
+
    Step 2 is repeated for all shifts the worker is hired for.
 
    Use case ends.

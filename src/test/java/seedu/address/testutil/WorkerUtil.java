@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
@@ -14,6 +15,7 @@ import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.model.tag.Role;
 //import seedu.address.model.tag.Tag;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -40,6 +42,9 @@ public class WorkerUtil {
         worker.getRoles().stream().forEach(
             s -> sb.append(PREFIX_ROLE + s.tagName + " ")
         );
+        worker.getUnavailableTimings().stream().forEach(
+            s -> sb.append(PREFIX_ROLE + s.getString() + " ")
+        );
         return sb.toString();
     }
 
@@ -58,6 +63,14 @@ public class WorkerUtil {
                 sb.append(PREFIX_ROLE);
             } else {
                 roles.forEach(s -> sb.append(PREFIX_ROLE).append(s.tagName).append(" "));
+            }
+        }
+        if (descriptor.getUnavailableTimings().isPresent()) {
+            Set<Unavailability> unavailabilities = descriptor.getUnavailableTimings().get();
+            if (unavailabilities.isEmpty()) {
+                sb.append(PREFIX_UNAVAILABILITY);
+            } else {
+                unavailabilities.forEach(s -> sb.append(PREFIX_UNAVAILABILITY).append(s.getString()).append(" "));
             }
         }
         return sb.toString();
