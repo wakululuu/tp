@@ -44,6 +44,8 @@ public class WorkerCard extends UiPart<Region> {
     private FlowPane roles;
     @FXML
     private FlowPane workerAssignments;
+    @FXML
+    private FlowPane unavailableTimings;
 
     /**
      * Creates a {@code WorkerCode} with the given {@code Worker} and index to display.
@@ -63,6 +65,10 @@ public class WorkerCard extends UiPart<Region> {
 
         WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(assignmentList, worker);
         workerAssignments.getChildren().add(assignmentListPanel.getRoot());
+
+        worker.getUnavailableTimings()
+                .forEach(unavailability -> unavailableTimings.getChildren().add(new Label(
+                        unavailability.getDay() + " " + unavailability.getTime())));
     }
 
     @Override

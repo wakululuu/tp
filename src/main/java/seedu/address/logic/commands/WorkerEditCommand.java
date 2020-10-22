@@ -3,12 +3,11 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.ArrayList;
@@ -26,11 +25,13 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
-//import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
+//import seedu.address.model.worker.Email;
+
 //import seedu.address.model.tag.Tag;
 
 /**
@@ -51,6 +52,7 @@ public class WorkerEditCommand extends Command {
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             //+ "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_ROLE + "ROLE]...\n"
+            + "[" + PREFIX_UNAVAILABILITY + "UNAVAILABLE TIMINGS]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             //+ PREFIX_EMAIL + "johndoe@example.com";
@@ -111,8 +113,10 @@ public class WorkerEditCommand extends Command {
         //Email updatedEmail = editWorkerDescriptor.getEmail().orElse(workerToEdit.getEmail());
         Address updatedAddress = editWorkerDescriptor.getAddress().orElse(workerToEdit.getAddress());
         Set<Role> updatedRoles = editWorkerDescriptor.getRoles().orElse(workerToEdit.getRoles());
+        Set<Unavailability> updatedUnavailabilities = editWorkerDescriptor.getUnavailableTimings()
+                .orElse(workerToEdit.getUnavailableTimings());
 
-        return new Worker(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles);
+        return new Worker(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles, updatedUnavailabilities);
     }
 
     private void editWorkerInAssignments(Model model, Worker workerToEdit, Worker editedWorker) {
@@ -166,6 +170,7 @@ public class WorkerEditCommand extends Command {
         //private Email email;
         private Address address;
         private Set<Role> roles;
+        private Set<Unavailability> unavailableTimings;
 
         public EditWorkerDescriptor() {}
 
@@ -180,13 +185,15 @@ public class WorkerEditCommand extends Command {
             //setEmail(toCopy.email);
             setAddress(toCopy.address);
             setRoles(toCopy.roles);
+            setUnavailableTimings(toCopy.unavailableTimings);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, pay, address, roles);
+            return CollectionUtil.isAnyNonNull(name, phone, pay, address, roles,
+                    unavailableTimings);
         }
 
         public void setName(Name name) {
@@ -248,6 +255,15 @@ public class WorkerEditCommand extends Command {
             return (roles != null) ? Optional.of(Collections.unmodifiableSet(roles)) : Optional.empty();
         }
 
+        public void setUnavailableTimings(Set<Unavailability> unavailableTimings) {
+            this.unavailableTimings = (unavailableTimings != null) ? new HashSet<>(unavailableTimings) : null;
+        }
+
+        public Optional<Set<Unavailability>> getUnavailableTimings() {
+            return (unavailableTimings != null)
+                    ? Optional.of(Collections.unmodifiableSet(unavailableTimings)) : Optional.empty();
+        }
+
         @Override
         public boolean equals(Object other) {
             // short circuit if same object
@@ -268,7 +284,8 @@ public class WorkerEditCommand extends Command {
                     && getPay().equals(e.getPay())
                     //&& getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
-                    && getRoles().equals(e.getRoles());
+                    && getRoles().equals(e.getRoles())
+                    && getUnavailableTimings().equals(e.getUnavailableTimings());
         }
 
     }

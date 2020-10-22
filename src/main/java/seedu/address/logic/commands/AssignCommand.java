@@ -17,6 +17,7 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -80,11 +81,27 @@ public class AssignCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
         }
 
+        if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+        }
+
         model.addAssignment(assignmentToAdd);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignmentToAdd));
+    }
+
+    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
+        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
+        for (Unavailability unavailability : workerUnavailableTimings) {
+            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
+            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
+            if (hasSameDay && hasSameTime) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -15,6 +15,7 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
+import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
 
@@ -30,6 +31,7 @@ class JsonAdaptedWorker {
     private final String pay;
     private final String address;
     private final List<JsonAdaptedRole> roles = new ArrayList<>();
+    private final List<JsonAdaptedUnavailability> unavailableTimings = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedWorker} with the given worker details.
@@ -37,13 +39,17 @@ class JsonAdaptedWorker {
     @JsonCreator
     public JsonAdaptedWorker(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
                              @JsonProperty("pay") String pay, @JsonProperty("address") String address,
-                             @JsonProperty("roles") List<JsonAdaptedRole> roles) {
+                             @JsonProperty("roles") List<JsonAdaptedRole> roles,
+                             @JsonProperty("unavailableTimings") List<JsonAdaptedUnavailability> unavailableTimings) {
         this.name = name;
         this.phone = phone;
         this.pay = pay;
         this.address = address;
         if (roles != null) {
             this.roles.addAll(roles);
+        }
+        if (unavailableTimings != null) {
+            this.unavailableTimings.addAll(unavailableTimings);
         }
     }
 
@@ -57,6 +63,9 @@ class JsonAdaptedWorker {
         address = source.getAddress().value;
         roles.addAll(source.getRoles().stream()
                 .map(JsonAdaptedRole::new)
+                .collect(Collectors.toList()));
+        unavailableTimings.addAll(source.getUnavailableTimings().stream()
+                .map(JsonAdaptedUnavailability::new)
                 .collect(Collectors.toList()));
     }
 
@@ -104,7 +113,13 @@ class JsonAdaptedWorker {
         }
         final Set<Role> modelRoles = new HashSet<>(rolesBuilder);
 
-        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles);
+        List<Unavailability> unavailabilitiesBuilder = new ArrayList<>();
+        for (JsonAdaptedUnavailability unavailability : unavailableTimings) {
+            unavailabilitiesBuilder.add(unavailability.toModelType());
+        }
+        final Set<Unavailability> modelUnavailabilities = new HashSet<>(unavailabilitiesBuilder);
+
+        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles, modelUnavailabilities);
     }
 
 }
