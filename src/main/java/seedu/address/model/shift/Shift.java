@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Represents a Shift in the App.
@@ -46,7 +45,7 @@ public class Shift {
     public Set<RoleRequirement> getRoleRequirements() {
         return Collections.unmodifiableSet(roleRequirements);
     }
-    
+
     /**
      * Returns true if both shifts have the same identity fields.
      * This defines a weaker notion of equality between two shifts.

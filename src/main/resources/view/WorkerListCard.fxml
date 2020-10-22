@@ -33,6 +33,7 @@
       <Label fx:id="address" styleClass="cell_small_label" text="\$address" />
       <Label fx:id="pay" styleClass="cell_small_label" text="\$pay" />
       <FlowPane fx:id="workerAssignments" />
+      <FlowPane fx:id="leaveWorkerAssignments" />
       <FlowPane fx:id="unavailableTimings" />
     </VBox>
       <rowConstraints>
