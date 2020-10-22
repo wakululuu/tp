@@ -77,7 +77,7 @@ public class ShiftDeleteCommand extends Command {
                 shiftToDelete);
 
         Worker editedWorker = new Worker(worker.getName(), worker.getPhone(), worker.getPay(), worker.getAddress(),
-                worker.getRoles(), editedAssignments);
+                worker.getRoles(), worker.getUnavailableTimings(), editedAssignments);
 
         model.setWorker(worker, editedWorker);
     }
