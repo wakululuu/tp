@@ -48,7 +48,7 @@ public class SampleDataUtil {
             new Worker(new Name("David Li"), new Phone("91031282"), new Pay("0.99"),
                 new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
                 getRoleSet("chef"),
-                    getUnavailabilitySet("FRI FULL")),
+                    getUnavailabilitySet("FRI AM")),
             new Worker(new Name("Irfan Ibrahim"), new Phone("92492021"), new Pay("23"),
                 new Address("Blk 47 Tampines Street 20, #17-35"),
                 getRoleSet("cashier", "chef"),
