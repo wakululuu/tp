@@ -8,6 +8,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -17,6 +18,7 @@ import seedu.address.model.worker.Worker;
 public class WorkerListPanel extends UiPart<Region> {
     private static final String FXML = "WorkerListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(WorkerListPanel.class);
+    private final ObservableList<Assignment> assignmentList;
 
     @FXML
     private ListView<Worker> workerListView;
@@ -24,10 +26,11 @@ public class WorkerListPanel extends UiPart<Region> {
     /**
      * Creates a {@code WorkerListPanel} with the given {@code ObservableList}.
      */
-    public WorkerListPanel(ObservableList<Worker> workerList) {
+    public WorkerListPanel(ObservableList<Worker> workerList, ObservableList<Assignment> assignmentList) {
         super(FXML);
         workerListView.setItems(workerList);
         workerListView.setCellFactory(listView -> new WorkerListViewCell());
+        this.assignmentList = assignmentList;
     }
 
     /**
@@ -42,7 +45,7 @@ public class WorkerListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new WorkerCard(worker, getIndex() + 1).getRoot());
+                setGraphic(new WorkerCard(worker, getIndex() + 1, assignmentList).getRoot());
             }
         }
     }
@@ -56,7 +59,7 @@ public class WorkerListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new ShiftCard(shift, getIndex() + 1).getRoot());
+                setGraphic(new ShiftCard(shift, getIndex() + 1, assignmentList).getRoot());
             }
         }
     }

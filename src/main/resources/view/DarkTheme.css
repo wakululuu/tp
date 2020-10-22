@@ -351,42 +351,23 @@
     -fx-font-size: 11;
 }
 
-#unavailableTimings {
+#shiftAssignments, #workerAssignments, #unavailableTimings {
     -fx-hgap: 7;
     -fx-vgap: 3;
+}
+
+#shiftAssignments .label, #workerAssignments .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 11;
 }
 
 #unavailableTimings .label {
     -fx-text-fill: white;
     -fx-background-color: #d92c0d;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
-    -fx-background-radius: 2;
-    -fx-font-size: 11;
-}
-
-#shiftRoleAssignments {
-    -fx-hgap: 7;
-    -fx-vgap: 3;
-}
-
-#shiftRoleAssignments .label {
-    -fx-text-fill: white;
-    -fx-background-color: #3e7b91;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
-    -fx-background-radius: 2;
-    -fx-font-size: 11;
-}
-
-#workerRoleAssignments {
-    -fx-hgap: 7;
-    -fx-vgap: 3;
-}
-
-#workerRoleAssignments .label {
-    -fx-text-fill: white;
-    -fx-background-color: #3e7b91;
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
     -fx-background-radius: 2;

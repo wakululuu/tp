@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -15,6 +16,7 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Worker> PREDICATE_SHOW_ALL_WORKERS = unused -> true;
     Predicate<Shift> PREDICATE_SHOW_ALL_SHIFTS = unused -> true;
+    Predicate<Assignment> PREDICATE_SHOW_ALL_ASSIGNMENTS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -54,6 +56,8 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    // worker-level operations
+
     /**
      * Returns true if a worker with the same identity as {@code worker} exists in the address book.
      */
@@ -89,6 +93,8 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredWorkerList(Predicate<Worker> predicate);
+
+    // shift-level operations
 
     /**
      * Returns true if a shift with the same identity as {@code shift} exists in the App.
@@ -129,5 +135,43 @@ public interface Model {
      * Returns an unmodifiable view of the filtered shift list
      */
     ObservableList<Shift> getFilteredShiftList();
+
+    // assignment-level operations
+    /**
+     * Returns true if an assignment with the same identity as {@code assignment} exists in the address book.
+     */
+    boolean hasAssignment(Assignment assignment);
+
+    /**
+     * Deletes the given assignment.
+     * The assignment must exist in the address book.
+     */
+    void deleteAssignment(Assignment target);
+
+    /**
+     * Adds the given assignment.
+     * {@code assignment} must not already exist in the address book.
+     */
+    void addAssignment(Assignment assignment);
+
+    /**
+     * Replaces the given assignment {@code target} with {@code editedAssignment}.
+     * {@code target} must exist in the address book.
+     * The assignment identity of {@code editedAssignment} must not be the same as another existing assignment in the
+     * address book.
+     */
+    void setAssignment(Assignment target, Assignment editedAssignment);
+
+    /** Returns an unmodifiable view of the full assignment list */
+    ObservableList<Assignment> getFullAssignmentList();
+
+    /** Returns an unmodifiable view of the filtered assignment list */
+    ObservableList<Assignment> getFilteredAssignmentList();
+
+    /**
+     * Updates the filter of the filtered assignment list to filter by the given {@code predicate}.
+     * @throws NullPointerException if {@code predicate} is null.
+     */
+    void updateFilteredAssignmentList(Predicate<Assignment> predicate);
 
 }

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -24,6 +25,7 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Worker> filteredWorkers;
     private final FilteredList<Shift> filteredShifts;
+    private final FilteredList<Assignment> filteredAssignments;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -38,6 +40,7 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredWorkers = new FilteredList<>(this.addressBook.getWorkerList());
         filteredShifts = new FilteredList<>(this.addressBook.getShiftList());
+        filteredAssignments = new FilteredList<>(this.addressBook.getAssignmentList());
     }
 
     public ModelManager() {
@@ -150,6 +153,36 @@ public class ModelManager implements Model {
         return addressBook.getShiftList();
     }
 
+    // Assignment related methods
+    @Override
+    public boolean hasAssignment(Assignment assignment) {
+        requireNonNull(assignment);
+        return addressBook.hasAssignment(assignment);
+    }
+
+    @Override
+    public void deleteAssignment(Assignment target) {
+        addressBook.removeAssignment(target);
+    }
+
+    @Override
+    public void addAssignment(Assignment assignment) {
+        addressBook.addAssignment(assignment);
+        updateFilteredAssignmentList(PREDICATE_SHOW_ALL_ASSIGNMENTS);
+    }
+
+    @Override
+    public void setAssignment(Assignment target, Assignment editedAssignment) {
+        requireAllNonNull(target, editedAssignment);
+
+        addressBook.setAssignment(target, editedAssignment);
+    }
+
+    @Override
+    public ObservableList<Assignment> getFullAssignmentList() {
+        return addressBook.getAssignmentList();
+    }
+
     //=========== Filtered Worker List Accessors =============================================================
 
     /**
@@ -178,6 +211,23 @@ public class ModelManager implements Model {
     public void updateFilteredShiftList(Predicate<Shift> predicate) {
         requireNonNull(predicate);
         filteredShifts.setPredicate(predicate);
+    }
+
+    //=========== Filtered Assignment List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Assignment} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList<Assignment> getFilteredAssignmentList() {
+        return filteredAssignments;
+    }
+
+    @Override
+    public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+        requireNonNull(predicate);
+        filteredAssignments.setPredicate(predicate);
     }
 
     @Override

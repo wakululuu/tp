@@ -8,11 +8,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 
 public class ShiftListPanel extends UiPart<Region> {
     private static final String FXML = "ShiftListPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(ShiftListPanel.class);
+    private final ObservableList<Assignment> assignmentList;
 
     @FXML
     private ListView<Shift> shiftListView;
@@ -20,10 +22,11 @@ public class ShiftListPanel extends UiPart<Region> {
     /**
      * Creates a {@code ShiftListPanel} with the given {@code ObservableList}.
      */
-    public ShiftListPanel(ObservableList<Shift> shiftList) {
+    public ShiftListPanel(ObservableList<Shift> shiftList, ObservableList<Assignment> assignmentList) {
         super(FXML);
         shiftListView.setItems(shiftList);
         shiftListView.setCellFactory(shiftView -> new ShiftListViewCell());
+        this.assignmentList = assignmentList;
     }
 
     /**
@@ -38,7 +41,7 @@ public class ShiftListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new ShiftCard(shift, getIndex() + 1).getRoot());
+                setGraphic(new ShiftCard(shift, getIndex() + 1, assignmentList).getRoot());
             }
         }
     }

@@ -17,7 +17,7 @@ import seedu.address.model.tag.Role;
 /**
  * Parses input arguments and creates a new AssignCommand object
  */
-public class AssignCommandParser {
+public class AssignCommandParser implements Parser<AssignCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the AssignCommand
