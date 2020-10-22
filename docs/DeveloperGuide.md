@@ -158,6 +158,9 @@ the model, as well as the `unavailability` of the `worker` to be assigned. If th
 
 ![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AssignCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
 Step 2. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
 from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
