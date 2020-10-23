@@ -10,26 +10,24 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.shift.Shift;
-import seedu.address.model.shift.WorkerRoleAssignment;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 //import seedu.address.model.worker.Email;
@@ -95,8 +93,8 @@ public class WorkerEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_WORKER);
         }
 
+        editWorkerInAssignments(model, workerToEdit, editedWorker);
         model.setWorker(workerToEdit, editedWorker);
-        editWorkerInAssignedShifts(model, workerToEdit, editedWorker);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(String.format(MESSAGE_EDIT_WORKER_SUCCESS, editedWorker));
@@ -118,49 +116,29 @@ public class WorkerEditCommand extends Command {
         Set<Unavailability> updatedUnavailabilities = editWorkerDescriptor.getUnavailableTimings()
                 .orElse(workerToEdit.getUnavailableTimings());
 
-        return new Worker(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles, updatedUnavailabilities,
-                workerToEdit.getShiftRoleAssignments());
+        return new Worker(updatedName, updatedPhone, updatedPay, updatedAddress, updatedRoles, updatedUnavailabilities);
     }
 
-
-    private void editWorkerInAssignedShifts(Model model, Worker workerToEdit, Worker editedWorker) {
+    private void editWorkerInAssignments(Model model, Worker workerToEdit, Worker editedWorker) {
         requireAllNonNull(model, workerToEdit, editedWorker);
-        List<Shift> fullShiftList = model.getFullShiftList();
+        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToEdit = new ArrayList<>();
 
-        Stream<Shift> assignedShifts = workerToEdit.getShiftRoleAssignments()
-                .stream()
-                .map(ShiftRoleAssignment::getShift);
-
-        assignedShifts.forEach(assignedShift -> {
-            for (Shift shift : fullShiftList) {
-                if (assignedShift.isSameShift(shift)) {
-                    editWorkerInShift(model, shift, workerToEdit, editedWorker);
-                    break;
-                }
-            }
-        });
-    }
-
-    private void editWorkerInShift(Model model, Shift shift, Worker workerToEdit, Worker editedWorker) {
-        Set<WorkerRoleAssignment> editedAssignments = createEditedWorkerRoleAssignments(shift, workerToEdit,
-                editedWorker);
-        Shift editedShift = new Shift(shift.getShiftDay(), shift.getShiftTime(),
-                shift.getRoleRequirements(), editedAssignments);
-        model.setShift(shift, editedShift);
-    }
-
-    private Set<WorkerRoleAssignment> createEditedWorkerRoleAssignments(Shift shift, Worker workerToEdit,
-            Worker editedWorker) {
-        Set<WorkerRoleAssignment> workerRoleAssignments = new HashSet<>(shift.getWorkerRoleAssignments());
-        for (WorkerRoleAssignment assignment : workerRoleAssignments) {
+        for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
-                WorkerRoleAssignment editedAssignment = new WorkerRoleAssignment(editedWorker, assignment.getRole());
-                workerRoleAssignments.add(editedAssignment);
-                workerRoleAssignments.remove(assignment);
+                assignmentsToEdit.add(assignment);
             }
         }
 
-        return workerRoleAssignments;
+        for (Assignment assignment : assignmentsToEdit) {
+            Assignment updatedAssignment = createEditedAssignment(assignment, editedWorker);
+            model.setAssignment(assignment, updatedAssignment);
+        }
+    }
+
+    private static Assignment createEditedAssignment(Assignment assignmentToEdit, Worker editedWorker) {
+        requireAllNonNull(assignmentToEdit, editedWorker);
+        return new Assignment(assignmentToEdit.getShift(), editedWorker, assignmentToEdit.getRole());
     }
 
     @Override

@@ -74,7 +74,7 @@ public class WorkerAddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Worker expectedWorker = new WorkerBuilder(AMY).withShiftRoleAssignments().build();
+        Worker expectedWorker = new WorkerBuilder(AMY).build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY
                         + ROLE_DESC_CASHIER,
                 new WorkerAddCommand(expectedWorker));

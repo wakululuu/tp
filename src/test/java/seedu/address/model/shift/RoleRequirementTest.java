@@ -19,7 +19,7 @@ public class RoleRequirementTest {
     @Test
     public void stringConstructor_inputWithSpaces_correctlyParsed() {
         String testRole = "Deep Fryer Technician 2";
-        Role role = new Role(testRole);
+        Role role = Role.createRole(testRole);
         String testQuantity = "5";
         int quantity = Integer.parseInt(testQuantity);
 

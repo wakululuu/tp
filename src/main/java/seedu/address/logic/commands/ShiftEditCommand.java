@@ -7,25 +7,23 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
-import seedu.address.model.shift.WorkerRoleAssignment;
-import seedu.address.model.worker.ShiftRoleAssignment;
-import seedu.address.model.worker.Worker;
 
 /**
  * Edits the details of an existing shift in the App.
@@ -80,7 +78,7 @@ public class ShiftEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
         }
 
-        editShiftInAssignedWorkers(model, shiftToEdit, editedShift);
+        editShiftInAssignments(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
 
@@ -95,48 +93,29 @@ public class ShiftEditCommand extends Command {
         Set<RoleRequirement> updatedRoleRequirements = editShiftDescriptor.getRoleRequirements()
                 .orElse(shiftToEdit.getRoleRequirements());
 
-        return new Shift(updatedDay, updatedTime, updatedRoleRequirements, shiftToEdit.getWorkerRoleAssignments());
+        return new Shift(updatedDay, updatedTime, updatedRoleRequirements);
     }
 
-    private void editShiftInAssignedWorkers(Model model, Shift shiftToEdit, Shift editedShift) {
+    private void editShiftInAssignments(Model model, Shift shiftToEdit, Shift editedShift) {
         requireAllNonNull(model, shiftToEdit, editedShift);
-        List<Worker> fullWorkerList = model.getFullWorkerList();
+        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToEdit = new ArrayList<>();
 
-        Stream<Worker> assignedWorkers = shiftToEdit.getWorkerRoleAssignments()
-                .stream()
-                .map(WorkerRoleAssignment::getWorker);
-
-        assignedWorkers.forEach(assignedWorker -> {
-            for (Worker worker : fullWorkerList) {
-                if (assignedWorker.isSameWorker(worker)) {
-                    editShiftInWorker(model, worker, shiftToEdit, editedShift);
-                    break;
-                }
-            }
-        });
-    }
-
-    private void editShiftInWorker(Model model, Worker worker, Shift shiftToEdit, Shift editedShift) {
-        Set<ShiftRoleAssignment> editedAssignments = createEditedShiftRoleAssignments(worker, shiftToEdit,
-                editedShift);
-        Worker editedWorker = new Worker(worker.getName(), worker.getPhone(), worker.getPay(), worker.getAddress(),
-                worker.getRoles(), worker.getUnavailableTimings(), editedAssignments);
-        model.setWorker(worker, editedWorker);
-    }
-
-    private Set<ShiftRoleAssignment> createEditedShiftRoleAssignments(Worker worker, Shift shiftToEdit,
-            Shift editedShift) {
-        Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>(worker.getShiftRoleAssignments());
-
-        for (ShiftRoleAssignment assignment : shiftRoleAssignments) {
+        for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
-                ShiftRoleAssignment editedAssignment = new ShiftRoleAssignment(editedShift, assignment.getRole());
-                shiftRoleAssignments.add(editedAssignment);
-                shiftRoleAssignments.remove(assignment);
+                assignmentsToEdit.add(assignment);
             }
         }
 
-        return shiftRoleAssignments;
+        for (Assignment assignment : assignmentsToEdit) {
+            Assignment updatedAssignment = createEditedAssignment(assignment, editedShift);
+            model.setAssignment(assignment, updatedAssignment);
+        }
+    }
+
+    private static Assignment createEditedAssignment(Assignment assignmentToEdit, Shift editedShift) {
+        requireAllNonNull(assignmentToEdit, editedShift);
+        return new Assignment(editedShift, assignmentToEdit.getWorker(), assignmentToEdit.getRole());
     }
 
     @Override

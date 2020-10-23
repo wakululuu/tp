@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Objects;
 
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 
 /**
@@ -32,6 +33,13 @@ public class ShiftRoleAssignment {
 
     public Role getRole() {
         return role;
+    }
+
+    /**
+     * Returns true if the role assignment refers to the worker taking leave.
+     */
+    public boolean isLeave() {
+        return role instanceof Leave;
     }
 
     /**
