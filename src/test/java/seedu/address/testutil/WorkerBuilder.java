@@ -11,7 +11,6 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
@@ -34,7 +33,6 @@ public class WorkerBuilder {
     private Address address;
     private Set<Role> roles;
     private Set<Unavailability> unavailableTimings;
-    private Set<ShiftRoleAssignment> shiftRoleAssignments;
 
     /**
      * Creates a {@code WorkerBuilder} with the default details.
@@ -48,7 +46,6 @@ public class WorkerBuilder {
         roles = new HashSet<>();
         roles.add(Role.createRole(DEFAULT_ROLE));
         unavailableTimings = new HashSet<>();
-        shiftRoleAssignments = new HashSet<>();
     }
 
     /**
