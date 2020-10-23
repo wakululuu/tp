@@ -34,6 +34,12 @@ create WorkerAddCommand
 AddCommandParser -> WorkerAddCommand
 activate WorkerAddCommand
 
+create Worker
+WorkerAddCommand -> Worker
+activate Worker
+return newWorker
+deactivate Worker
+
 WorkerAddCommand --> AddCommandParser : d
 deactivate WorkerAddCommand
 
@@ -48,14 +54,6 @@ deactivate AddressBookParser
 
 LogicManager -> WorkerAddCommand : execute()
 activate WorkerAddCommand
-
-create Worker
-WorkerAddCommand -> Worker
-activate Worker
-
-Worker -> WorkerAddCommand
-return newWorker
-deactivate Worker
 
 WorkerAddCommand -> Model : addWorker(newWorker)
 activate Model

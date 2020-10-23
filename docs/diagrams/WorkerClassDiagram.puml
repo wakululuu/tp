@@ -10,6 +10,7 @@ UniqueWorkerList o-right-> Worker
 
 Worker *--> "1" Name
 Worker *--> "1" Phone
+Worker *--> "1" Pay
 Worker *--> "1" Address
 Worker *--> "*" Role
 Worker *--> "*" Unavailability
