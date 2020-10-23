@@ -1,0 +1,78 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddCommandParser" as AddCommandParser LOGIC_COLOR
+participant "d:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
+participant "d:Worker" as Worker LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute(command)
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand(command)
+activate AddressBookParser
+
+create AddCommandParser
+AddressBookParser -> AddCommandParser
+activate AddCommandParser
+
+AddCommandParser --> AddressBookParser
+deactivate AddCommandParser
+
+AddressBookParser -> AddCommandParser : parse(command)
+activate AddCommandParser
+
+create WorkerAddCommand
+AddCommandParser -> WorkerAddCommand
+activate WorkerAddCommand
+
+WorkerAddCommand --> AddCommandParser : d
+deactivate WorkerAddCommand
+
+AddCommandParser --> AddressBookParser : d
+deactivate AddCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+AddCommandParser -[hidden]-> AddressBookParser
+destroy AddCommandParser
+
+AddressBookParser --> LogicManager : d
+deactivate AddressBookParser
+
+LogicManager -> WorkerAddCommand : execute()
+activate WorkerAddCommand
+
+create Worker
+WorkerAddCommand -> Worker
+activate Worker
+
+Worker -> WorkerAddCommand
+return newWorker
+deactivate Worker
+
+WorkerAddCommand -> Model : addWorker(newWorker)
+activate Model
+
+Model --> WorkerAddCommand
+deactivate Model
+
+create CommandResult
+WorkerAddCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> WorkerAddCommand
+deactivate CommandResult
+
+WorkerAddCommand --> LogicManager : result
+deactivate WorkerAddCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

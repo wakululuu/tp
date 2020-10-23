@@ -8,9 +8,9 @@ AddressBook *-right-> "1" UniqueWorkerList
 
 UniqueWorkerList o-right-> Worker
 
-Worker *--> Name
-Worker *--> Phone
-Worker *--> Address
-Worker *--> Role
-Worker *--> Unavailability
+Worker *--> "1" Name
+Worker *--> "1" Phone
+Worker *--> "1" Address
+Worker *--> "*" Role
+Worker *--> "*" Unavailability
 @enduml
