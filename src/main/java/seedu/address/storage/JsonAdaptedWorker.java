@@ -15,7 +15,6 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 //import seedu.address.model.tag.Tag;
@@ -33,7 +32,6 @@ class JsonAdaptedWorker {
     private final String address;
     private final List<JsonAdaptedRole> roles = new ArrayList<>();
     private final List<JsonAdaptedUnavailability> unavailableTimings = new ArrayList<>();
-    private final List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedWorker} with the given worker details.
@@ -42,9 +40,7 @@ class JsonAdaptedWorker {
     public JsonAdaptedWorker(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
                              @JsonProperty("pay") String pay, @JsonProperty("address") String address,
                              @JsonProperty("roles") List<JsonAdaptedRole> roles,
-                             @JsonProperty("unavailableTimings") List<JsonAdaptedUnavailability> unavailableTimings,
-                             @JsonProperty("shiftRoleAssignments")
-                                         List<JsonAdaptedShiftRoleAssignment> shiftRoleAssignments) {
+                             @JsonProperty("unavailableTimings") List<JsonAdaptedUnavailability> unavailableTimings) {
         this.name = name;
         this.phone = phone;
         this.pay = pay;
@@ -54,9 +50,6 @@ class JsonAdaptedWorker {
         }
         if (unavailableTimings != null) {
             this.unavailableTimings.addAll(unavailableTimings);
-        }
-        if (shiftRoleAssignments != null) {
-            this.shiftRoleAssignments.addAll(shiftRoleAssignments);
         }
     }
 
@@ -73,10 +66,6 @@ class JsonAdaptedWorker {
                 .collect(Collectors.toList()));
         unavailableTimings.addAll(source.getUnavailableTimings().stream()
                 .map(JsonAdaptedUnavailability::new)
-                .collect(Collectors.toList()));
-        shiftRoleAssignments.addAll(source.getShiftRoleAssignments()
-                .stream()
-                .map(JsonAdaptedShiftRoleAssignment::new)
                 .collect(Collectors.toList()));
     }
 
@@ -130,14 +119,7 @@ class JsonAdaptedWorker {
         }
         final Set<Unavailability> modelUnavailabilities = new HashSet<>(unavailabilitiesBuilder);
 
-        List<ShiftRoleAssignment> shiftRoleAssignmentsBuilder = new ArrayList<>();
-        for (JsonAdaptedShiftRoleAssignment assignment : shiftRoleAssignments) {
-            shiftRoleAssignmentsBuilder.add(assignment.toModelType());
-        }
-        final Set<ShiftRoleAssignment> modelShiftRoleAssignments = new HashSet<>(shiftRoleAssignmentsBuilder);
-
-        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles, modelUnavailabilities,
-                modelShiftRoleAssignments);
+        return new Worker(modelName, modelPhone, modelPay, modelAddress, modelRoles, modelUnavailabilities);
     }
 
 }

@@ -1,0 +1,21 @@
+@startuml
+Logic -> TakeLeaveCommand : execute()
+activate TakeLeaveCommand
+
+TakeLeaveCommand -> AssignCommand : execute()
+activate AssignCommand
+
+AssignCommand -> Model : assign leave
+activate Model
+
+Model --> AssignCommand
+deactivate Model
+
+AssignCommand --> TakeLeaveCommand
+deactivate AssignCommand
+
+TakeLeaveCommand --> Logic : commandResult
+deactivate TakeLeaveCommand
+
+
+@enduml

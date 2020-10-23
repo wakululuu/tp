@@ -19,7 +19,6 @@ public class Shift {
 
     // Data fields
     private final Set<RoleRequirement> roleRequirements = new HashSet<>();
-    private final Set<WorkerRoleAssignment> workerRoleAssignments = new HashSet<>();
 
     /**
      * Standard constructor, start with empty {@code workers}. Every field must be present and not null
@@ -29,19 +28,6 @@ public class Shift {
         this.shiftDay = shiftDay;
         this.shiftTime = shiftTime;
         this.roleRequirements.addAll(roleRequirements);
-    }
-
-    /**
-     * Constructor with non-empty {@code workers} for Assign and Unassign commands.
-     * Every field must be present and not null.
-     */
-    public Shift(ShiftDay shiftDay, ShiftTime shiftTime, Set<RoleRequirement> roleRequirements,
-            Set<WorkerRoleAssignment> workerRoleAssignments) {
-        requireAllNonNull(shiftDay, shiftTime, roleRequirements);
-        this.shiftDay = shiftDay;
-        this.shiftTime = shiftTime;
-        this.roleRequirements.addAll(roleRequirements);
-        this.workerRoleAssignments.addAll(workerRoleAssignments);
     }
 
     public ShiftDay getShiftDay() {
@@ -58,14 +44,6 @@ public class Shift {
      */
     public Set<RoleRequirement> getRoleRequirements() {
         return Collections.unmodifiableSet(roleRequirements);
-    }
-
-    /**
-     * Returns an immutable worker-role assignment set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<WorkerRoleAssignment> getWorkerRoleAssignments() {
-        return workerRoleAssignments;
     }
 
     /**
@@ -99,14 +77,13 @@ public class Shift {
         Shift otherShift = (Shift) other;
         return otherShift.getShiftDay().equals(getShiftDay())
                 && otherShift.getShiftTime().equals(getShiftTime())
-                && otherShift.getRoleRequirements().equals(getRoleRequirements())
-                && otherShift.getWorkerRoleAssignments().equals(getWorkerRoleAssignments());
+                && otherShift.getRoleRequirements().equals(getRoleRequirements());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(shiftDay, shiftTime, roleRequirements, workerRoleAssignments);
+        return Objects.hash(shiftDay, shiftTime, roleRequirements);
     }
 
     /**
@@ -126,8 +103,6 @@ public class Shift {
                 .append(getShiftTime())
                 .append(" Role requirements: ");
         getRoleRequirements().forEach(builder::append);
-        builder.append(" Workers: ");
-        getWorkerRoleAssignments().forEach(builder::append);
         return builder.toString();
     }
 

@@ -23,7 +23,6 @@ public class Worker {
     private final Pay pay;
     private final Address address;
     private final Set<Role> roles = new HashSet<>();
-    private final Set<ShiftRoleAssignment> shiftRoleAssignments = new HashSet<>();
     private final Set<Unavailability> unavailableTimings = new HashSet<>();
 
     /**
@@ -38,23 +37,6 @@ public class Worker {
         this.address = address;
         this.roles.addAll(roles);
         this.unavailableTimings.addAll(unavailableTimings);
-    }
-
-    /**
-     * Constructor with non-empty {@code shifts} for Assign and Unassign commands.
-     * Every field must be present and not null.
-     */
-    public Worker(Name name, Phone phone, Pay pay, Address address, Set<Role> roles,
-                  Set<Unavailability> unavailableTimings,
-                  Set<ShiftRoleAssignment> shiftRoleAssignments) {
-        requireAllNonNull(name, phone, pay, address, roles, unavailableTimings, shiftRoleAssignments);
-        this.name = name;
-        this.phone = phone;
-        this.pay = pay;
-        this.address = address;
-        this.roles.addAll(roles);
-        this.unavailableTimings.addAll(unavailableTimings);
-        this.shiftRoleAssignments.addAll(shiftRoleAssignments);
     }
 
     public Name getName() {
@@ -80,14 +62,6 @@ public class Worker {
      */
     public Set<Role> getRoles() {
         return Collections.unmodifiableSet(roles);
-    }
-
-    /**
-     * Returns an immutable shift-role assignment set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
-    public Set<ShiftRoleAssignment> getShiftRoleAssignments() {
-        return Collections.unmodifiableSet(shiftRoleAssignments);
     }
 
     /**
@@ -131,14 +105,13 @@ public class Worker {
                 && otherWorker.getPay().equals(getPay())
                 && otherWorker.getAddress().equals(getAddress())
                 && otherWorker.getRoles().equals(getRoles())
-                && otherWorker.getUnavailableTimings().equals(getUnavailableTimings())
-                && otherWorker.getShiftRoleAssignments().equals(getShiftRoleAssignments());
+                && otherWorker.getUnavailableTimings().equals(getUnavailableTimings());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, pay, address, roles, unavailableTimings, shiftRoleAssignments);
+        return Objects.hash(name, phone, pay, address, roles, unavailableTimings);
     }
 
     @Override
@@ -155,8 +128,6 @@ public class Worker {
         getRoles().forEach(builder::append);
         builder.append(" Unavailable Timings: ");
         getUnavailableTimings().forEach(builder::append);
-        builder.append(" Shifts: ");
-        getShiftRoleAssignments().forEach(builder::append);
         return builder.toString();
     }
 

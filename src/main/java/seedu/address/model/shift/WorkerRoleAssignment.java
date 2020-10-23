@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
@@ -32,6 +33,13 @@ public class WorkerRoleAssignment {
 
     public Role getRole() {
         return role;
+    }
+
+    /**
+     * Returns true if this assignment represents a Leave.
+     */
+    public boolean isLeave() {
+        return role instanceof Leave;
     }
 
     /**

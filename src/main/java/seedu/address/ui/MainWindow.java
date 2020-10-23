@@ -114,10 +114,10 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        workerListPanel = new WorkerListPanel(logic.getFilteredWorkerList());
+        workerListPanel = new WorkerListPanel(logic.getFilteredWorkerList(), logic.getFullAssignmentList());
         workerListPanelPlaceholder.getChildren().add(workerListPanel.getRoot());
 
-        shiftListPanel = new ShiftListPanel(logic.getFilteredShiftList());
+        shiftListPanel = new ShiftListPanel(logic.getFilteredShiftList(), logic.getFullAssignmentList());
         shiftListPanelPlaceholder.getChildren().add(shiftListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
