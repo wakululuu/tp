@@ -165,6 +165,9 @@ The following sequence diagram shows how `Worker` is added.
 
 ![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
 ### Unavailability feature
 
 The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
@@ -218,6 +221,9 @@ with the unavailable timings `MON AM` and `MON PM`.
 The following sequence diagram shows how unavailable timings are added to a `Worker`.
 
 ![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
 
 ### Take/cancel leave feature
 
