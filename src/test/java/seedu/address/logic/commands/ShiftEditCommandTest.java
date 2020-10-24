@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_FIRST_SHIFT;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_SECOND_SHIFT;
@@ -154,22 +156,22 @@ public class ShiftEditCommandTest {
         ShiftEditCommand.EditShiftDescriptor copyDescriptor =
                 new ShiftEditCommand.EditShiftDescriptor(DESC_FIRST_SHIFT);
         ShiftEditCommand commandWithSameValues = new ShiftEditCommand(INDEX_FIRST_SHIFT, copyDescriptor);
-        assertTrue(standardCommand.equals(commandWithSameValues));
+        assertEquals(commandWithSameValues, standardCommand);
 
         // same object -> returns true
-        assertTrue(standardCommand.equals(standardCommand));
+        assertEquals(standardCommand, standardCommand);
 
         // null -> returns false
-        assertFalse(standardCommand.equals(null));
+        assertNotEquals(standardCommand, null);
 
         // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
+        assertNotEquals(new ClearCommand(), standardCommand);
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new ShiftEditCommand(INDEX_SECOND_SHIFT, DESC_FIRST_SHIFT)));
+        assertNotEquals(new ShiftEditCommand(INDEX_SECOND_SHIFT, DESC_FIRST_SHIFT), standardCommand);
 
         // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new ShiftEditCommand(INDEX_FIRST_SHIFT, DESC_SECOND_SHIFT)));
+        assertNotEquals(new ShiftEditCommand(INDEX_FIRST_SHIFT, DESC_SECOND_SHIFT), standardCommand);
     }
 
 

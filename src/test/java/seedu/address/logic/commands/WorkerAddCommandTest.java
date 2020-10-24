@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -61,20 +62,20 @@ public class WorkerAddCommandTest {
         WorkerAddCommand addBobCommand = new WorkerAddCommand(bob);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertEquals(addAliceCommand, addAliceCommand);
 
         // same values -> returns true
         WorkerAddCommand addAliceCommandCopy = new WorkerAddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
+        assertEquals(addAliceCommandCopy, addAliceCommand);
 
         // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertNotEquals(addAliceCommand, 1);
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertNotEquals(addAliceCommand, null);
 
         // different worker -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        assertNotEquals(addBobCommand, addAliceCommand);
     }
 
     /**
