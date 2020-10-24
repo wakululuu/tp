@@ -133,6 +133,97 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Adding of a Worker feature
+
+The adding of workers is core to the functionality of the system. Users are able to add important information to each
+worker, which will help them assign workers to shifts they are most suited for.
+
+#### Implementation
+
+The mechanism for adding a worker is facilitated by a `Worker` class. A `Worker` has a `Name`, a
+`Phone`, a `Pay`, an optional `Role` set and an optional `Unavailability` set.
+
+![Worker Class Diagram](images/WorkerClassDiagram.png)
+
+A user can add a `Worker` to the `McScheduler` by running a `worker-add` command. 
+
+#### Example usage scenario
+Given below is an example usage scenario and how the add worker feature behaves at each step after the user has
+launched the application.
+
+Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `AddressBookParser`
+creates an `AddCommandParser` and calls the `AddCommandParser#parse()` method.
+
+Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `AddCommandParser#parse()` and an instance of
+`Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as parameters to the `Worker`
+constructor and a new `Worker` object is created.
+
+Step 3. A `WorkerAddCommand` with the newly created `Worker` object is returned and executed. The `Worker` object is
+added to and stored inside the `Model`.
+
+The following sequence diagram shows how `Worker` is added.
+
+![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
+### Unavailability feature
+
+The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
+The setting prevents workers from being assigned to shift slots that they are unavailable for.
+
+#### Implementation
+
+The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
+
+#### Unavailability
+
+Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
+in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
+
+![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+
+Instances of `Unavailability` can be created on 2 occasions:
+
+1. During a `worker-add` command, prefixed with `u/`
+2. During a `worker-edit` command, prefixed with `u/`
+
+To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
+`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
+functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
+`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+
+- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
+- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
+- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
+- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
+object for each
+
+#### Example usage scenario
+
+Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
+launched the application.
+
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
+`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+
+Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
+`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
+the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
+is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
+String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
+and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
+
+Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
+with the unavailable timings `MON AM` and `MON PM`.
+
+The following sequence diagram shows how unavailable timings are added to a `Worker`.
+
+![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
 
 ### Take/cancel leave feature
 
@@ -182,7 +273,6 @@ The following leave quotas could be implemented, using the existing `RoleRequire
 
 ### Assign/unassign feature
 
-
 The assign/unassign feature allows the user to assign/unassign a worker to/from a role in a shift.
 
 #### Implementation
@@ -213,59 +303,6 @@ Step 2. The user realises the previous command was a mistake and executes `unass
 from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
-
-### Unavailability feature
-
-The unavailability feature allows users to add unavailable timings to a worker, which comprise a day and a time.
-The setting prevents workers from being assigned to shift slots that they are unavailable for.
-
-### Implementation
-
-The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
-
-#### Unavailability
-
-Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
-in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
-
-![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
-
-Instances of `Unavailability` can be created on 2 occasions:
-
-1. During a `worker-add` command, prefixed with `u/`
-2. During a `worker-edit` command, prefixed with `u/`
-
-To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
-`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
-functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
-`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
-
-- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
-- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
-- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
-- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
-object for each
-
-Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
-launched the application.
-
-Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
-`AddCommandParser` and calls the `AddCommandParser#parse()` method.
-
-Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
-`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
-the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
-is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
-String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
-and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
-
-Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
-with the unavailable timings `MON AM` and `MON PM`.
-
-The following sequence diagram shows how unavailable timings are added to a `Worker`.
-
-![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
-
 
 --------------------------------------------------------------------------------------------------------------------
 
