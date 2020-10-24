@@ -101,7 +101,6 @@ public class WorkerBuilder {
         return this;
     }
 
-
     /**
      * Sets the {@code Pay} of the {@code Worker} that we are building.
      */
