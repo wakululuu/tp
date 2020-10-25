@@ -48,6 +48,15 @@ public class MassTakeLeaveCommand extends Command {
     private final ShiftDay endDay;
     private final ShiftTime endTime;
 
+    /**
+     * Creates a MassTakeLeaveCommand to add leave for the specified {@code Worker} between the given dates and times.
+     *
+     * @param workerIndex of the worker in the filtered worker list.
+     * @param startDay of the leave.
+     * @param startTime of the leave.
+     * @param endDay of the leave.
+     * @param endTime of the leave.
+     */
     public MassTakeLeaveCommand(Index workerIndex, ShiftDay startDay, ShiftTime startTime,
                                 ShiftDay endDay, ShiftTime endTime) {
         requireAllNonNull(workerIndex, startDay, startTime, endDay, endTime);
@@ -75,7 +84,7 @@ public class MassTakeLeaveCommand extends Command {
         ArrayList<ShiftTime> times = ShiftTime.getAllTimes();
 
         int index = days.indexOf(startDay) * 2 + times.indexOf(startTime);
-        while(index < days.size() * times.size() * 3) { // prevents infinite loop just in case
+        while (index < days.size() * times.size() * 3) { // prevents infinite loop just in case
             ShiftDay day = days.get((index / times.size()) % days.size());
             ShiftTime time = times.get(index % times.size());
             shiftsToTakeLeaveFrom.add(new Shift(day, time, Collections.emptySet()));

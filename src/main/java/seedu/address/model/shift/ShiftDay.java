@@ -3,7 +3,6 @@ package seedu.address.model.shift;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**

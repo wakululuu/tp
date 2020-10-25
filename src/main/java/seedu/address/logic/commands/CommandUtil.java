@@ -11,6 +11,9 @@ import seedu.address.model.worker.Worker;
  */
 public class CommandUtil {
 
+    /**
+     * Checks if a worker is unavailable at a given shift.
+     */
     public static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
         Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
         for (Unavailability unavailability : workerUnavailableTimings) {
