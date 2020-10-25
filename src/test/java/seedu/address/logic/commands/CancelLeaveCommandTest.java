@@ -32,7 +32,7 @@ public class CancelLeaveCommandTest {
     }
 
     @Test
-    public void execute_LeaveInModel_success() throws Exception {
+    public void execute_leaveInModel_success() throws Exception {
         ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
         model.addWorker(BENSON);
         model.addShift(SHIFT_A);
@@ -50,25 +50,25 @@ public class CancelLeaveCommandTest {
     }
 
     @Test
-    public void execute_LeaveNotInModel_throwsCommandException() {
+    public void execute_leaveNotInModel_throwsCommandException() {
         ModelManager model = new ModelManager(new AddressBook(), new UserPrefs());
-        assertThrows(CommandException.class,
-                () -> new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+        assertThrows(CommandException.class, () ->
+                new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
 
         model.addShift(SHIFT_A);
         model.addWorker(BENSON);
-        assertThrows(CommandException.class,
-                () -> new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+        assertThrows(CommandException.class, () ->
+                new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
     }
 
     @Test
-    public void execute_AssignmentInModelNotLeave_throwsCommandException() {
+    public void execute_assignmentInModelNotLeave_throwsCommandException() {
         Model model = new ModelManager(new AddressBook(), new UserPrefs());
         model.addWorker(BENSON);
         model.addShift(SHIFT_A);
         model.addAssignment(new Assignment(SHIFT_A, BENSON, Role.createRole("Cashier")));
-        assertThrows(CommandException.class,
-                () -> new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+        assertThrows(CommandException.class, () ->
+                new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
     }
 
     @Test

@@ -298,9 +298,9 @@ diagram demonstrates how this works.
 
 - `CancelLeaveCommand` is very similar to `UnassignCommand`. However, there is a need to check if the assignment being
 removed represents a leave taken and not a normal role assignment. Hence, `CancelLeaveCommand` is implemented
-separately. For implementation details, refer to `UnassignCommand`.
+separately and not as a wrapper. However, its implementation details is almost identical to `UnassignCommand`.
 
-For more information, see [Implementation for Assign/Unassign Feature](#Assign/unassign-feature).
+For more information, see [Implementation for Assign/Unassign Feature](#assignunassign-feature).
 
 ##### Future Extensions - Leave Quota
 

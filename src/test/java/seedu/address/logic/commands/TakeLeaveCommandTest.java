@@ -78,8 +78,8 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList();
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
-        assertThrows(CommandException.class,
-                () -> new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+        assertThrows(CommandException.class, () ->
+                new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class TakeLeaveCommandTest {
 
         private final ArrayList<Assignment> assignments;
 
-        public ModelStubAcceptingLeaveAdded(List<Worker> workers, List<Shift> shifts)  {
+        public ModelStubAcceptingLeaveAdded(List<Worker> workers, List<Shift> shifts) {
             super();
             for (Worker worker: workers) {
                 addWorker(worker);
