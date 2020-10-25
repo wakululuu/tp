@@ -304,6 +304,39 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
 
+
+### MassOps Feature
+For certain commands that will be frequently used (`assign`, `unassign`, `take-leave`, `cancel-leave`), mass
+ operations are supported to reduce the required number of command calls.
+ 
+#### Implementation
+These operations consist of their own Command class and CommandParser class. In each of the supported 
+CommandParser class, Mass operations uses `ParserUtil`'s `GetAllValues()` method, which parses the user input 
+and returns all values that start with the specific prefix. In this case, the prefix is 'w/', 
+signifying a `Worker`-`Role` relation.
+
+Once the Command object has its `shiftIndex` and Set of `WorkerRole`, it creates individual `Assignment`s and adds
+them to the Model.
+
+
+![Class Diagram of AssignCommand, highlighting its MassOps](images/MassAssignClassDiagram.png)
+
+#### Example Usage Scenario
+Let's say that the manager has a new Shift, and requires 3 of their existing staff members to work on 
+that shift immediately.
+
+Step 1. The manager creates a new Shift through the `shift-add` command if it was not already done.
+
+Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
+eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
+and Janitor respectively to Shift number 8.
+
+Step 3. McScheduler parses the input and creates 3 Assignments: 
+shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds them to the Model
+
+
+![Object Diagram of one AssignCommand used to assign 3 workers into a shift](images/MassAssignObjectDiagram.png)
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**

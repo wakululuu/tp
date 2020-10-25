@@ -1,0 +1,18 @@
+@startuml
+!include style.puml
+skinparam arrowColor LOGIC_COLOR
+skinparam classBackgroundColor LOGIC_COLOR
+
+class AssignCommand {
+shiftIndex: Index
+}
+class WorkerRole MODEL_COLOR {
+workerIndex: Index
+}
+class Role MODEL_COLOR
+
+AssignCommand -up-|> Command
+AssignCommand -down-> "1..*"WorkerRole
+
+WorkerRole -> "1"Role MODEL_COLOR : assignedRole
+@enduml

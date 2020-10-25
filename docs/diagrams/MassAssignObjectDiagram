@@ -1,0 +1,30 @@
+@startuml
+!include style.puml
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor LOGIC_COLOR
+
+class AssignCommand as "__:AssignCommand__"{
+shiftIndex: 8
+}
+class WorkerRole1 as "___:WorkerRole__"  MODEL_COLOR{
+workerIndex: 3
+}
+class WorkerRole2 as "___:WorkerRole__"  MODEL_COLOR{
+workerIndex: 4
+}
+class WorkerRole3 as "___:WorkerRole__"  MODEL_COLOR{
+workerIndex: 7
+}
+class Role1 as "__cashier:Role__" MODEL_COLOR
+class Role2 as "__fryCook:Role__" MODEL_COLOR
+class Role3 as "__janitor:Role__" MODEL_COLOR
+
+WorkerRole1 -down Role1
+WorkerRole2 -down Role2
+WorkerRole3 -down Role3
+
+AssignCommand -down- WorkerRole1
+AssignCommand -down- WorkerRole2
+AssignCommand -down- WorkerRole3
+
+@enduml
