@@ -6,6 +6,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 import static seedu.address.logic.parser.ParserUtil.arePrefixesPresent;
 
+import java.util.Set;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.TakeLeaveCommand;
@@ -33,15 +35,15 @@ public class TakeLeaveCommandParser {
         }
 
         Index shiftIndex;
-        Index workerIndex;
+        Set<Index> workerIndexes;
         try {
             shiftIndex = ParserUtil.parseIndex(argumentMultimap.getValue(PREFIX_SHIFT).get());
-            workerIndex = ParserUtil.parseIndex(argumentMultimap.getValue(PREFIX_WORKER).get());
+            workerIndexes = ParserUtil.parseIndexes(argumentMultimap.getAllValues(PREFIX_WORKER));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     TakeLeaveCommand.MESSAGE_USAGE, ive));
         }
 
-        return new TakeLeaveCommand(shiftIndex, workerIndex);
+        return new TakeLeaveCommand(shiftIndex, workerIndexes);
     }
 }

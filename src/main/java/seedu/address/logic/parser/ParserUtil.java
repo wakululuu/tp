@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.assignment.WorkerRole;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
@@ -51,6 +52,20 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    /**
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
+     * trimmed.
+     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     */
+    public static Set<Index> parseIndexes(Collection<String> oneBasedIndexes) throws ParseException {
+        requireNonNull(oneBasedIndexes);
+        final Set<Index> indexSet = new HashSet<>();
+        for (String oneBasedIndex : oneBasedIndexes) {
+            indexSet.add(parseIndex(oneBasedIndex));
+        }
+        return indexSet;
     }
 
     /**
@@ -295,5 +310,33 @@ public class ParserUtil {
             roleRequirementSet.add(parseRoleRequirement(roleRequirementString));
         }
         return roleRequirementSet;
+    }
+
+    /**
+     * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code roleRequirement} is invalid.
+     */
+    public static WorkerRole parseWorkerRole(String workerRole) throws ParseException {
+        requireNonNull(workerRole);
+        String trimmedWorkerRole = workerRole.trim();
+        if (!WorkerRole.isValidWorkerRole(trimmedWorkerRole)) {
+            throw new ParseException(WorkerRole.MESSAGE_CONSTRAINTS);
+        }
+        return new WorkerRole(trimmedWorkerRole);
+    }
+
+    /**
+     * Parses {@code Collection<String> workerRoles} into a {@code Set<WorkerRole>}.
+     */
+    public static Set<WorkerRole> parseWorkerRoles(
+            Collection<String> workerRoles) throws ParseException {
+        requireNonNull(workerRoles);
+        final Set<WorkerRole> workerRoleSet = new HashSet<>();
+        for (String workerRoleString : workerRoles) {
+            workerRoleSet.add(parseWorkerRole(workerRoleString));
+        }
+        return workerRoleSet;
     }
 }

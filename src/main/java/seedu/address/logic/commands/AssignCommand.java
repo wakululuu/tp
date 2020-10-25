@@ -2,9 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_ROLE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
@@ -16,8 +15,8 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.WorkerRole;
 import seedu.address.model.shift.Shift;
-import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
@@ -27,37 +26,33 @@ import seedu.address.model.worker.Worker;
 public class AssignCommand extends Command {
     public static final String COMMAND_WORD = "assign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a shift, worker and role assignment to the "
-            + "McScheduler by the index numbers used in the last worker and shift listings. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds shift, worker(s) and role(s) assignment(s) "
+            + "to the McScheduler by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
-            + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
-            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer) "
-            + PREFIX_ROLE + "ROLE\n"
+            + PREFIX_SHIFT + "SHIFT_INDEX "
+            + PREFIX_WORKER_ROLE + "WORKER_INDEX ROLE\n"
             + "Example: " + COMMAND_WORD
             + " s/4 "
-            + "w/1 "
-            + "r/Cashier";
+            + "w/1 Cashier "
+            + "w/3 Janitor";
 
-    public static final String MESSAGE_ASSIGN_SUCCESS = "New assignment added:\n%1$s";
-    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
+    public static final String MESSAGE_ASSIGN_SUCCESS = "%d new assignment(s) added.";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler: %1$s";
 
     private final Index shiftIndex;
-    private final Index workerIndex;
-    private final Role role;
+    private final Set<WorkerRole> workerRoles;
 
     /**
      * Creates an AssignCommand to add an assignment of the specified {@code Shift}, {@code Worker} and {@code Role}.
      *
      * @param shiftIndex  of the shift in the filtered shift list.
-     * @param workerIndex of the worker in the filtered worker list.
-     * @param role        of the worker in the shift.
+     * @param workerRoles a set of worker-roles to be assined to the shift
      */
-    public AssignCommand(Index shiftIndex, Index workerIndex, Role role) {
-        requireAllNonNull(shiftIndex, workerIndex, role);
+    public AssignCommand(Index shiftIndex, Set<WorkerRole> workerRoles) {
+        requireAllNonNull(shiftIndex, workerRoles);
 
         this.shiftIndex = shiftIndex;
-        this.workerIndex = workerIndex;
-        this.role = role;
+        this.workerRoles = workerRoles;
     }
 
     @Override
@@ -70,27 +65,31 @@ public class AssignCommand extends Command {
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
-        if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        for (WorkerRole workerRole: workerRoles) {
+            if (workerRole.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            }
         }
 
-        Worker workerToAssign = lastShownWorkerList.get(workerIndex.getZeroBased());
-        Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
-        Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
+        for (WorkerRole workerRole: workerRoles) {
+            Worker workerToAssign = lastShownWorkerList.get(workerRole.getWorkerIndex().getZeroBased());
+            Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
+            Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, workerRole.getRole());
 
-        if (model.hasAssignment(assignmentToAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+            if (model.hasAssignment(assignmentToAdd)) {
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
+            }
+
+            if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT, assignmentToAdd));
+            }
+
+            model.addAssignment(assignmentToAdd);
+            model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+            model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
         }
 
-        if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
-        }
-
-        model.addAssignment(assignmentToAdd);
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
-
-        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignmentToAdd));
+        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, workerRoles.size()));
     }
 
     private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
@@ -120,7 +119,6 @@ public class AssignCommand extends Command {
         // state check
         AssignCommand e = (AssignCommand) other;
         return shiftIndex.equals(e.shiftIndex)
-                && workerIndex.equals(e.workerIndex)
-                && role.equals(e.role);
+                && workerRoles.equals(e.workerRoles);
     }
 }
