@@ -2,6 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static seedu.address.logic.commands.CommandUtil.generateShiftsInDayTimeRange;
+import static seedu.address.logic.commands.CommandUtil.hasLeaveAssignment;
+import static seedu.address.logic.commands.CommandUtil.hasNonLeaveAssignment;
 import static seedu.address.logic.commands.CommandUtil.isWorkerUnavailable;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
@@ -79,20 +82,7 @@ public class MassTakeLeaveCommand extends Command {
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 
-        ArrayList<Shift> shiftsToTakeLeaveFrom = new ArrayList<>();
-        ArrayList<ShiftDay> days = ShiftDay.getAllDays();
-        ArrayList<ShiftTime> times = ShiftTime.getAllTimes();
-
-        int index = days.indexOf(startDay) * 2 + times.indexOf(startTime);
-        while (index < days.size() * times.size() * 3) { // prevents infinite loop just in case
-            ShiftDay day = days.get((index / times.size()) % days.size());
-            ShiftTime time = times.get(index % times.size());
-            shiftsToTakeLeaveFrom.add(new Shift(day, time, Collections.emptySet()));
-            index++;
-            if (day.equals(endDay) && time.equals(endTime)) {
-                break;
-            }
-        }
+        List<Shift> shiftsToTakeLeaveFrom = generateShiftsInDayTimeRange(startDay, startTime, endDay, endTime);
 
         StringBuilder errorMessageForShiftsWithOtherAssignments = new StringBuilder();
         ArrayList<Shift> shiftsAlreadyWithLeave = new ArrayList<>();
@@ -124,13 +114,5 @@ public class MassTakeLeaveCommand extends Command {
 
     }
 
-    private boolean hasNonLeaveAssignment(Model model, Assignment toCheck) {
-        return model.hasAssignment(toCheck)
-                && !(model.getAssignment(toCheck).get().getRole().equals(new Leave()));
-    }
 
-    private boolean hasLeaveAssignment(Model model, Assignment toCheck) {
-        return model.hasAssignment(toCheck)
-                && model.getAssignment(toCheck).get().getRole().equals(new Leave());
-    }
 }
