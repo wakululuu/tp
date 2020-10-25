@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +34,18 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     public boolean contains(Assignment toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameAssignment);
+    }
+
+    /**
+     * Returns {@code Optional} containing assignment with same identity as query.
+     */
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+
+        return internalList
+                .stream()
+                .filter(assignment -> assignment.isSameAssignment(toGet))
+                .findFirst();
     }
 
     /**

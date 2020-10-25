@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -176,6 +177,12 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedAssignment);
 
         addressBook.setAssignment(target, editedAssignment);
+    }
+
+    @Override
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return addressBook.getAssignment(toGet);
     }
 
     @Override

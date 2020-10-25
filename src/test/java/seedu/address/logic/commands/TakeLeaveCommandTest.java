@@ -1,9 +1,13 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 import static seedu.address.testutil.TypicalShifts.SHIFT_A;
 import static seedu.address.testutil.TypicalWorkers.ALICE;
 import static seedu.address.testutil.TypicalWorkers.DANIEL;
@@ -76,6 +80,21 @@ public class TakeLeaveCommandTest {
 
         assertThrows(CommandException.class,
                 () -> new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+    }
+
+    @Test
+    public void equals() {
+        TakeLeaveCommand firstIndexes = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        TakeLeaveCommand secondIndexes = new TakeLeaveCommand(INDEX_SECOND_SHIFT, INDEX_SECOND_WORKER);
+        TakeLeaveCommand firstShiftSecondWorker = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_SECOND_WORKER);
+
+        assertTrue(firstIndexes.equals(firstIndexes)); // same object
+        assertTrue(firstIndexes.equals(new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER))); // same values
+        assertFalse(firstIndexes.equals(123)); // different type
+        assertFalse(firstIndexes.equals(null)); // null
+        assertFalse(firstIndexes.equals(secondIndexes)); // different values
+        assertFalse(firstIndexes.equals(firstShiftSecondWorker)); // different worker
+        assertFalse(secondIndexes.equals(firstShiftSecondWorker)); // different shift
     }
 
     /**
