@@ -302,9 +302,30 @@ separately and not as a wrapper. However, its implementation details is almost i
 
 For more information, see [Implementation for Assign/Unassign Feature](#assignunassign-feature).
 
+##### Mass Operation Commands
+
+To increase the convenience of use for our expected typist user, we introduced a few mass operations related to leave:
+
+- `TakeLeaveCommand` and `CancelLeaveCommand` both allow for many worker to one shift leave assignment similar to 
+`AssignCommand` and `UnassignCommand`.
+- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift leave assignment.
+  - These two mass commands allow for taking leave over a range of dates - similar to how leave is often planned 
+  by workers.
+  - These two commands do not require `Shift`s representing the datetime range to take leave to be present. A bare-bones 
+  `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
+  (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
+  - The two commands handle other `Assignment`s differently:
+    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`).
+    - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
+    
+The following activity diagram describes the process behind `MassTakeLeaveCommand`.
+
+![MassTakeLeaveCommand Activity Diagram](images/MassTakeLeaveActivityDiagram.png)
+
 ##### Future Extensions - Leave Quota
 
-The following leave quotas could be implemented, using the existing `RoleRequirement` class:
+The following leave quotas could be implemented, possibly using the existing `RoleRequirement` class:
 
 - Quota of leave per worker
 - Quota of leave per shift
