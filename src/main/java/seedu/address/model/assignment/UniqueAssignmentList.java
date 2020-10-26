@@ -79,7 +79,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
         }
     }
 
-    public void setAssignments(seedu.address.model.assignment.UniqueAssignmentList replacement) {
+    public void setAssignments(UniqueAssignmentList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
     }
@@ -112,8 +112,8 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof seedu.address.model.assignment.UniqueAssignmentList // instanceof handles nulls
-                && internalList.equals(((seedu.address.model.assignment.UniqueAssignmentList) other).internalList));
+                || (other instanceof UniqueAssignmentList // instanceof handles nulls
+                && internalList.equals(((UniqueAssignmentList) other).internalList));
     }
 
     @Override

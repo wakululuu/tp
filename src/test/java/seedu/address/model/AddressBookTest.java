@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
@@ -141,22 +142,22 @@ public class AddressBookTest {
         AddressBook emptyAddressBook = new AddressBook();
 
         //same object returns true
-        assertTrue(addressBook.equals(addressBook));
+        assertEquals(addressBook, addressBook);
 
         //different class object returns false
-        assertFalse(addressBook.equals(123));
+        assertNotEquals(addressBook, 123);
 
         //same content returns true
-        assertTrue(addressBook.equals(new AddressBook(addressBook)));
+        assertEquals(new AddressBook(addressBook), addressBook);
 
         //same shifts different workers returns false
-        assertFalse(addressBook.equals(noWorkerAddressBook));
+        assertNotEquals(noWorkerAddressBook, addressBook);
 
         //same workers different shifts returns false
-        assertFalse(addressBook.equals(noShiftAddressBook));
+        assertNotEquals(noShiftAddressBook, addressBook);
 
         //different workers different shifts returns false
-        assertFalse(addressBook.equals(emptyAddressBook));
+        assertNotEquals(emptyAddressBook, addressBook);
 
     }
 
