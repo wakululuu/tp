@@ -15,6 +15,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_ROLE = new Prefix("r/");
     public static final Prefix PREFIX_ROLE_REQUIREMENT = new Prefix("r/");
     public static final Prefix PREFIX_SHIFT = new Prefix("s/");
+    public static final Prefix PREFIX_SHIFT_NEW = new Prefix("sn/");
+    public static final Prefix PREFIX_SHIFT_OLD = new Prefix("so/");
     public static final Prefix PREFIX_SHIFT_DAY = new Prefix("d/");
     public static final Prefix PREFIX_SHIFT_TIME = new Prefix("t/");
     public static final Prefix PREFIX_UNAVAILABILITY = new Prefix("u/");
