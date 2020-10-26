@@ -18,11 +18,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ModelManager;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Leave;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 public class TakeLeaveCommandTest {
@@ -57,6 +59,16 @@ public class TakeLeaveCommandTest {
         List<Worker> workers = Arrays.asList(ALICE);
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
+
+        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
+    }
+
+    @Test
+    public void execute_workerAlreadyHasAssignment_throwsCommandException() {
+        List<Worker> workers = Arrays.asList(DANIEL);
+        List<Shift> shifts = Arrays.asList(SHIFT_A);
+        ModelStubAlreadyHasAssignment model = new ModelStubAlreadyHasAssignment(workers, shifts);
 
         TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
         assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
@@ -126,6 +138,22 @@ public class TakeLeaveCommandTest {
             this.assignments.add(assignment);
         }
 
+    }
+
+    /**
+     * Similarly, this stub replaces all methods regarding assignment, but always returns true for
+     * {@code hasAssignment()}.
+     */
+    private class ModelStubAlreadyHasAssignment extends ModelStubAcceptingLeaveAdded {
+
+        public ModelStubAlreadyHasAssignment(List<Worker> workers, List<Shift> shifts) {
+            super(workers, shifts);
+        }
+
+        @Override
+        public boolean hasAssignment(Assignment assignment) {
+            return true;
+        }
     }
 
 }
