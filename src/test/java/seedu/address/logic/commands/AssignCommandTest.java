@@ -10,6 +10,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_SHIFT;
 
 import java.util.Arrays;
 
@@ -100,7 +101,7 @@ public class AssignCommandTest {
     @Test
     public void execute_workerUnavailable_throws() throws Exception {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        AssignCommand assignCommand = new AssignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER,
+        AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, INDEX_FIRST_WORKER,
                 Role.createRole(VALID_ROLE_CASHIER));
 
         assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT, () -> assignCommand.execute(model));
