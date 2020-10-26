@@ -14,6 +14,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -54,26 +55,29 @@ public class UnassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        try {
+            List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+            List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
-        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
-        List<Shift> lastShownShiftList = model.getFilteredShiftList();
+            if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            }
+            if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            }
 
-        if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
+            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
+            model.deleteAssignment(assignmentToDelete);
+
+            model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+            model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+
+            return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
+        } catch (AssignmentNotFoundException e) {
+            throw new CommandException("The assignment does not exist");
         }
-        if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
-        }
-
-        Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
-        Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
-        Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
-        model.deleteAssignment(assignmentToDelete);
-
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
-
-        return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
     }
 
     @Override

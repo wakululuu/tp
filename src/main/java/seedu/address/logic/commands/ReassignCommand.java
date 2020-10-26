@@ -17,6 +17,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Unavailability;
@@ -66,39 +67,42 @@ public class ReassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        try {
+            List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+            List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
-        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
-        List<Shift> lastShownShiftList = model.getFilteredShiftList();
+            if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
+                    || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            }
+            if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            }
 
-        if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
-                || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            Worker workerToReassign = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Shift shiftToRemove = lastShownShiftList.get(oldShiftIndex.getZeroBased());
+            Assignment assignmentToRemove = new Assignment(shiftToRemove, workerToReassign);
+            model.deleteAssignment(assignmentToRemove);
+
+            Shift shiftToReassign = lastShownShiftList.get(newShiftIndex.getZeroBased());
+            Assignment reassignmentToAdd = new Assignment(shiftToReassign, workerToReassign, newRole);
+
+            if (model.hasAssignment(reassignmentToAdd)) {
+                throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+            }
+
+            if (isWorkerUnavailable(workerToReassign, shiftToReassign)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+            }
+
+            model.addAssignment(reassignmentToAdd);
+            model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+            model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+
+            return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, reassignmentToAdd));
+        } catch (AssignmentNotFoundException e) {
+            throw new CommandException("The old assignment does not exist");
         }
-        if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
-        }
-
-        Worker workerToReassign = lastShownWorkerList.get(workerIndex.getZeroBased());
-        Shift shiftToRemove = lastShownShiftList.get(oldShiftIndex.getZeroBased());
-        Assignment assignmentToRemove = new Assignment(shiftToRemove, workerToReassign);
-        model.deleteAssignment(assignmentToRemove);
-
-        Shift shiftToReassign = lastShownShiftList.get(newShiftIndex.getZeroBased());
-        Assignment reassignmentToAdd = new Assignment(shiftToReassign, workerToReassign, newRole);
-
-        if (model.hasAssignment(reassignmentToAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
-        }
-
-        if (isWorkerUnavailable(workerToReassign, shiftToReassign)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
-        }
-
-        model.addAssignment(reassignmentToAdd);
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
-
-        return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, reassignmentToAdd));
     }
 
     private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
