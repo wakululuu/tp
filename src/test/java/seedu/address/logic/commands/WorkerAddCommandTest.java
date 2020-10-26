@@ -22,6 +22,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 import seedu.address.testutil.WorkerBuilder;
 
@@ -217,12 +218,32 @@ public class WorkerAddCommandTest {
         }
 
         @Override
-        public ObservableList<Assignment> getFilteredAssignmentList() {
+        public boolean hasRole(Role role) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+        public void deleteRole(Role target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addRole(Role role) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setRole(Role target, Role editedRole) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Role> getFilteredRoleList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredRoleList(Predicate<Role> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }

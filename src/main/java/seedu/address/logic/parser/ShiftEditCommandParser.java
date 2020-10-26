@@ -15,12 +15,21 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ShiftEditCommand;
 import seedu.address.logic.commands.ShiftEditCommand.EditShiftDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.shift.RoleRequirement;
 
 /**
  * Parses input arguments and creates a new ShiftEditCommand object.
  */
 public class ShiftEditCommandParser implements Parser<ShiftEditCommand> {
+
+    private final Model model;
+
+    /** Standard constructor. */
+    public ShiftEditCommandParser(Model model) {
+        super();
+        this.model = model;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the ShiftEditCommand.
@@ -73,7 +82,7 @@ public class ShiftEditCommandParser implements Parser<ShiftEditCommand> {
         Collection<String> roleRequirementsSet = roleRequirements.size() == 1 && roleRequirements.contains("")
                 ? Collections.emptySet()
                 : roleRequirements;
-        return Optional.of(ParserUtil.parseRoleRequirements(roleRequirementsSet));
+        return Optional.of(ParserUtil.parseRoleRequirements(roleRequirementsSet, model));
     }
 
 }

@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
@@ -28,6 +29,14 @@ import seedu.address.model.worker.Worker;
  * Parses input arguments and creates a new WorkerAddCommand object
  */
 public class AddCommandParser implements Parser<WorkerAddCommand> {
+
+    private final Model model;
+
+    /** Standard constructor. */
+    public AddCommandParser(Model model) {
+        super();
+        this.model = model;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerAddCommand
@@ -48,7 +57,7 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Pay pay = ParserUtil.parsePay(argMultimap.getValue(PREFIX_PAY).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
-        Set<Role> roleList = ParserUtil.parseRoles(argMultimap.getAllValues(PREFIX_ROLE));
+        Set<Role> roleList = ParserUtil.parseRoles(argMultimap.getAllValues(PREFIX_ROLE), model);
         Set<Unavailability> unavailableTimings = ParserUtil.parseUnavailabilities(argMultimap
                 .getAllValues(PREFIX_UNAVAILABILITY));
 

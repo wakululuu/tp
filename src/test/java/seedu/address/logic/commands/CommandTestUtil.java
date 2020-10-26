@@ -62,6 +62,7 @@ public class CommandTestUtil {
     //public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "cashier*"; // '*' not allowed in roles
+    public static final String NOT_FOUND_ROLE_DESC = " " + PREFIX_ROLE + "random role"; // role not in model
     public static final String INVALID_UNAVAILABILITY = " " + PREFIX_UNAVAILABILITY + "ddw w"; // not valid day or time
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

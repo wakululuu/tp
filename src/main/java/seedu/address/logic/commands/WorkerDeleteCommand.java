@@ -14,7 +14,7 @@ import seedu.address.model.assignment.Assignment;
 import seedu.address.model.worker.Worker;
 
 /**
- * Deletes a worker identified using it's displayed index from the address book.
+ * Deletes a worker identified using its displayed index from the address book.
  */
 public class WorkerDeleteCommand extends Command {
 

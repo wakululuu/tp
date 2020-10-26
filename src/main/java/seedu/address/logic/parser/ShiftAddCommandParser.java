@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.ShiftAddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
@@ -19,6 +20,14 @@ import seedu.address.model.shift.ShiftTime;
  * Parses input arguments and creates a new ShiftAddCommand object
  */
 public class ShiftAddCommandParser implements Parser<ShiftAddCommand> {
+
+    private final Model model;
+
+    /** Standard constructor. */
+    public ShiftAddCommandParser(Model model) {
+        super();
+        this.model = model;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerAddCommand
@@ -37,7 +46,7 @@ public class ShiftAddCommandParser implements Parser<ShiftAddCommand> {
         ShiftDay shiftDay = ParserUtil.parseShiftDay(argMultimap.getValue(PREFIX_SHIFT_DAY).get());
         ShiftTime shiftTime = ParserUtil.parseShiftTime(argMultimap.getValue(PREFIX_SHIFT_TIME).get());
         Set<RoleRequirement> roleReqList =
-                ParserUtil.parseRoleRequirements(argMultimap.getAllValues(PREFIX_ROLE_REQUIREMENT));
+                ParserUtil.parseRoleRequirements(argMultimap.getAllValues(PREFIX_ROLE_REQUIREMENT), model);
 
         Shift shift = new Shift(shiftDay, shiftTime, roleReqList);
 

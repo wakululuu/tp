@@ -18,6 +18,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.Model;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Unavailability;
 
@@ -25,6 +26,14 @@ import seedu.address.model.worker.Unavailability;
  * Parses input arguments and creates a new WorkerEditCommand object
  */
 public class EditCommandParser implements Parser<WorkerEditCommand> {
+
+    private final Model model;
+
+    /** Standard constructor. */
+    public EditCommandParser(Model model) {
+        super();
+        this.model = model;
+    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerEditCommand
@@ -84,7 +93,7 @@ public class EditCommandParser implements Parser<WorkerEditCommand> {
             return Optional.empty();
         }
         Collection<String> roleSet = roles.size() == 1 && roles.contains("") ? Collections.emptySet() : roles;
-        return Optional.of(ParserUtil.parseRoles(roleSet));
+        return Optional.of(ParserUtil.parseRoles(roleSet, model));
     }
 
     private Optional<Set<Unavailability>> parseUnavailabilitiesForEdit(Collection<String> unavailabilities)
