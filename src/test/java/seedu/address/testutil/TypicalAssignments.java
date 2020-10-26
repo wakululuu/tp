@@ -19,10 +19,10 @@ import seedu.address.model.assignment.Assignment;
 public class TypicalAssignments {
 
     public static final Assignment ASSIGNMENT_A = new AssignmentBuilder().withWorker(ALICE)
-            .withShift(SHIFT_A)
+            .withShift(SHIFT_B)
             .withRole("cashier").build();
     public static final Assignment ASSIGNMENT_B = new AssignmentBuilder().withWorker(BOB)
-            .withShift(SHIFT_B)
+            .withShift(SHIFT_A)
             .withRole("chef").build();
     public static final Assignment ASSIGNMENT_C = new AssignmentBuilder().withWorker(CARL)
             .withShift(SHIFT_C)
