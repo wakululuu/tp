@@ -70,6 +70,7 @@ public class ReassignCommand extends Command {
         try {
             List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
             List<Shift> lastShownShiftList = model.getFilteredShiftList();
+            List<Assignment> assignmentList = model.getFullAssignmentList();
 
             if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
                     || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
@@ -82,12 +83,18 @@ public class ReassignCommand extends Command {
             Worker workerToReassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToRemove = lastShownShiftList.get(oldShiftIndex.getZeroBased());
             Assignment assignmentToRemove = new Assignment(shiftToRemove, workerToReassign);
-            model.deleteAssignment(assignmentToRemove);
+
+            for (Assignment a : assignmentList) {
+                if (a.equals(assignmentToRemove)) {
+                    assignmentToRemove = new Assignment(shiftToRemove, workerToReassign, a.getRole());
+                }
+            }
 
             Shift shiftToReassign = lastShownShiftList.get(newShiftIndex.getZeroBased());
             Assignment reassignmentToAdd = new Assignment(shiftToReassign, workerToReassign, newRole);
 
-            if (model.hasAssignment(reassignmentToAdd)) {
+            if (model.hasAssignment(reassignmentToAdd) &&
+                    reassignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
                 throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
             }
 
@@ -95,6 +102,7 @@ public class ReassignCommand extends Command {
                 throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
             }
 
+            model.deleteAssignment(assignmentToRemove);
             model.addAssignment(reassignmentToAdd);
             model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
             model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);

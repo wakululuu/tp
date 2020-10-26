@@ -31,7 +31,7 @@ public class Role extends Tag {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof Role
-                && tagName.equals(((Role) other).tagName));
+                && tagName.equalsIgnoreCase(((Role) other).tagName));
     }
 
 }
