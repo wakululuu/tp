@@ -24,7 +24,7 @@ public class WorkerBuilder {
     public static final String DEFAULT_PAY = "12.20";
     //public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_ROLE = "Cashier";
+    public static final String DEFAULT_ROLE = "cashier";
 
     private Name name;
     private Phone phone;

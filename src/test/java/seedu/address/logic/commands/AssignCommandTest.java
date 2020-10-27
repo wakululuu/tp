@@ -99,12 +99,23 @@ public class AssignCommandTest {
     }
 
     @Test
-    public void execute_workerUnavailable_throws() throws Exception {
+    public void execute_workerNotFitForRole_throwsCommandException() {
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, INDEX_FIRST_WORKER,
+                Role.createRole(VALID_ROLE_CHEF));
+
+        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, () ->
+                assignCommand.execute(model));
+    }
+
+    @Test
+    public void execute_workerUnavailable_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, INDEX_FIRST_WORKER,
                 Role.createRole(VALID_ROLE_CASHIER));
 
-        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT, () -> assignCommand.execute(model));
+        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, () ->
+                assignCommand.execute(model));
     }
 
     @Test

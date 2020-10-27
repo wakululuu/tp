@@ -20,7 +20,6 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -79,11 +78,11 @@ public class UnassignCommandTest {
     }
 
     @Test
-    public void execute_assignmentNotInModel_throwsAssignmentNotFoundException() {
+    public void execute_assignmentNotInModel_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         UnassignCommand unassignCommand = new UnassignCommand(INDEX_SECOND_SHIFT, INDEX_FIRST_WORKER);
 
-        assertThrows(AssignmentNotFoundException.class, () -> unassignCommand.execute(model));
+        assertCommandFailure(unassignCommand, model, UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND);
     }
 
     @Test

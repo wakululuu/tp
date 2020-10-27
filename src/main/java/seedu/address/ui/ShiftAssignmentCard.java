@@ -9,7 +9,7 @@ public class ShiftAssignmentCard extends AssignmentCard {
      */
     public ShiftAssignmentCard(Assignment assignment) {
         super(assignment);
-        label.setText(assignment.getWorker().getName() + " " + assignment.getRole());
+        label.setText(assignment.getWorker().getName() + " [" + assignment.getRole() + "]");
     }
 
 }
