@@ -20,6 +20,9 @@ public class TypicalShifts {
     public static final Shift SHIFT_C = new ShiftBuilder().withShiftDay("TUE")
             .withShiftTime("AM")
             .withRoleRequirements("cleaner 4", "cashier 3").build();
+    public static final Shift SHIFT_D = new ShiftBuilder().withShiftDay("TUE")
+            .withShiftTime("PM")
+            .withRoleRequirements("cashier 2", "cleaner 2", "chef 2").build();
 
     public static List<Shift> getTypicalShifts() {
         return new ArrayList<>(Arrays.asList(SHIFT_A, SHIFT_B, SHIFT_C));

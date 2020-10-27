@@ -10,6 +10,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 import static seedu.address.testutil.TypicalShifts.SHIFT_A;
 import static seedu.address.testutil.TypicalWorkers.ALICE;
+import static seedu.address.testutil.TypicalWorkers.BENSON;
 import static seedu.address.testutil.TypicalWorkers.DANIEL;
 
 import java.util.ArrayList;
@@ -18,13 +19,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ModelManager;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Leave;
-import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 public class TakeLeaveCommandTest {
@@ -38,7 +37,7 @@ public class TakeLeaveCommandTest {
 
     @Test
     public void execute_correctIndexes_success() throws Exception {
-        List<Worker> workers = Arrays.asList(DANIEL);
+        List<Worker> workers = Arrays.asList(ALICE);
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
@@ -46,7 +45,7 @@ public class TakeLeaveCommandTest {
         CommandResult result;
         result = takeLeaveCommand.execute(model);
 
-        Assignment assignment = new Assignment(SHIFT_A, DANIEL, new Leave());
+        Assignment assignment = new Assignment(SHIFT_A, ALICE, new Leave());
 
         assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
                 + AssignCommand.MESSAGE_ASSIGN_SUCCESS, assignment), result.getFeedbackToUser());
@@ -56,7 +55,7 @@ public class TakeLeaveCommandTest {
 
     @Test
     public void execute_workerNotAvailable_throwsCommandException() {
-        List<Worker> workers = Arrays.asList(ALICE);
+        List<Worker> workers = Arrays.asList(BENSON);
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
@@ -75,7 +74,7 @@ public class TakeLeaveCommandTest {
     }
 
     @Test
-    public void execute_workerNotInModel_throwsCommandException() {
+    public void execute_invalidWorkerIndex_throwsCommandException() {
         List<Worker> workers = Arrays.asList();
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
@@ -85,7 +84,7 @@ public class TakeLeaveCommandTest {
     }
 
     @Test
-    public void execute_shiftNotInModel_throwsCommandException() {
+    public void execute_invalidShiftIndex_throwsCommandException() {
         List<Worker> workers = Arrays.asList(ALICE);
         List<Shift> shifts = Arrays.asList();
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);

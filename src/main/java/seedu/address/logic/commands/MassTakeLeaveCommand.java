@@ -44,6 +44,7 @@ public class MassTakeLeaveCommand extends Command {
             + " w/2 d/Mon t/PM d/Wed t/AM ";
 
     public static final String MESSAGE_MASS_TAKE_LEAVE_SUCCESS = "Leave added from shift {%1$s} to shift {%2$s}.";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = AssignCommand.MESSAGE_DUPLICATE_ASSIGNMENT + " {%1$s}\n";
 
     private final Index workerIndex;
     private final ShiftDay startDay;
@@ -89,8 +90,9 @@ public class MassTakeLeaveCommand extends Command {
         for (Shift shift: shiftsToTakeLeaveFrom) {
             Assignment toCheck = new Assignment(shift, worker);
             if (hasNonLeaveAssignment(model, toCheck)) {
+                Assignment nonLeaveAssignmentInModel = model.getAssignment(toCheck).get();
                 errorMessageForShiftsWithOtherAssignments
-                        .append(String.format(AssignCommand.MESSAGE_DUPLICATE_ASSIGNMENT + " {%1$s}", toCheck) + "\n");
+                        .append(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, nonLeaveAssignmentInModel));
             } else if (hasLeaveAssignment(model, toCheck) || isWorkerUnavailable(worker, shift)) {
                 shiftsAlreadyWithLeave.add(shift);
             }
@@ -112,6 +114,24 @@ public class MassTakeLeaveCommand extends Command {
                 new Shift(startDay, startTime, Collections.emptySet()),
                 new Shift(endDay, endTime, Collections.emptySet())));
 
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof MassTakeLeaveCommand)) {
+            return false;
+        }
+
+        MassTakeLeaveCommand c = (MassTakeLeaveCommand) other;
+        return this.workerIndex == c.workerIndex
+                && this.startDay == c.startDay
+                && this.startTime == c.startTime
+                && this.endDay == c.endDay
+                && this.endTime == c.endTime;
     }
 
 

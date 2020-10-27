@@ -83,6 +83,7 @@ public class MassCancelLeaveCommand extends Command {
                 .stream()
                 .map(shift -> new Assignment(shift, worker))
                 .filter(assignment -> CommandUtil.hasLeaveAssignment(model, assignment))
+                .map(assignment -> model.getAssignment(assignment).get())
                 .collect(Collectors.toList());
 
         Shift startShift = new Shift(startDay, startTime, Collections.emptySet());
@@ -97,5 +98,23 @@ public class MassCancelLeaveCommand extends Command {
 
         return new CommandResult(String.format(MESSAGE_MASS_CANCEL_LEAVE_SUCCESS, startShift, endShift));
 
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof MassCancelLeaveCommand)) {
+            return false;
+        }
+
+        MassCancelLeaveCommand c = (MassCancelLeaveCommand) other;
+        return this.workerIndex == c.workerIndex
+                && this.startDay == c.startDay
+                && this.startTime == c.startTime
+                && this.endDay == c.endDay
+                && this.endTime == c.endTime;
     }
 }
