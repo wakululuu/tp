@@ -80,8 +80,12 @@ public class AssignCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
         }
 
+        if (!workerToAssign.isFitForRole(role)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
+        }
+
         if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
         }
 
         model.addAssignment(assignmentToAdd);

@@ -78,7 +78,7 @@ public class UnassignCommandTest {
     }
 
     @Test
-    public void execute_assignmentNotInModel_throwsAssignmentNotFoundException() {
+    public void execute_assignmentNotInModel_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         UnassignCommand unassignCommand = new UnassignCommand(INDEX_SECOND_SHIFT, INDEX_FIRST_WORKER);
 
