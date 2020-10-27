@@ -8,9 +8,15 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,6 +86,14 @@ public class CommandTestUtil {
     public static final String VALID_TIME_PM = "PM";
     public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1";
     public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3";
+
+    public static final String VALID_SHIFT_INDEX_1 = " " + PREFIX_SHIFT + INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_SHIFT_INDEX_2 = " " + PREFIX_SHIFT + INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_WORKER_INDEX_1 = " " + PREFIX_WORKER + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_WORKER_INDEX_2 = " " + PREFIX_WORKER + INDEX_SECOND_WORKER.getOneBased();
+
+    public static final String INVALID_SHIFT_INDEX = " " + PREFIX_SHIFT + "a";
+    public static final String INVALID_WORKER_INDEX = " " + PREFIX_WORKER + "a";
 
     static {
         DESC_AMY = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)
