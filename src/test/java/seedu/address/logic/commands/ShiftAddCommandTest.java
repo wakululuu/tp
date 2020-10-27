@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -52,7 +54,17 @@ public class ShiftAddCommandTest {
         ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithShift(validShift);
 
         assertThrows(CommandException.class,
-                shiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+                ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_roleNotFound_throwsCommandException() {
+        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1").build();
+        ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
+        ModelStub modelStub = new ModelStubAcceptingShiftAdded();
+
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, VALID_ROLE_CASHIER), () ->
+                shiftAddCommand.execute(modelStub));
     }
 
     @Test
@@ -275,6 +287,12 @@ public class ShiftAddCommandTest {
      */
     private class ModelStubAcceptingShiftAdded extends ShiftAddCommandTest.ModelStub {
         final ArrayList<Shift> shiftsAdded = new ArrayList<>();
+        final ArrayList<Role> validRoles = new ArrayList<>();
+
+        ModelStubAcceptingShiftAdded(Role... role) {
+            requireNonNull(role);
+            validRoles.addAll(Arrays.asList(role));
+        }
 
         @Override
         public boolean hasShift(Shift shift) {
@@ -286,6 +304,12 @@ public class ShiftAddCommandTest {
         public void addShift(Shift shift) {
             requireNonNull(shift);
             shiftsAdded.add(shift);
+        }
+
+        @Override
+        public boolean hasRole(Role role) {
+            requireNonNull(role);
+            return validRoles.stream().anyMatch(role::equals);
         }
 
         @Override

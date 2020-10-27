@@ -12,21 +12,12 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AssignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.Model;
 import seedu.address.model.tag.Role;
 
 /**
  * Parses input arguments and creates a new AssignCommand object
  */
 public class AssignCommandParser implements Parser<AssignCommand> {
-
-    private final Model model;
-
-    /** Standard constructor. */
-    public AssignCommandParser(Model model) {
-        super();
-        this.model = model;
-    }
 
     /**
      * Parses the given {@code String} of arguments in the context of the AssignCommand
@@ -53,7 +44,7 @@ public class AssignCommandParser implements Parser<AssignCommand> {
                     AssignCommand.MESSAGE_USAGE), ive);
         }
 
-        Role role = ParserUtil.parseExistingRole(argMultimap.getValue(PREFIX_ROLE).get(), model);
+        Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
         return new AssignCommand(shiftIndex, workerIndex, role);
     }

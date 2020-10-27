@@ -62,6 +62,10 @@ public class AssignCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        if (!model.hasRole(role)) {
+            throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
+        }
+
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 

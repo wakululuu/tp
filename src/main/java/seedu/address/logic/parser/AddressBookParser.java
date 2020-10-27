@@ -27,7 +27,6 @@ import seedu.address.logic.commands.WorkerDeleteCommand;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.Model;
 
 /**
  * Parses user input.
@@ -38,12 +37,6 @@ public class AddressBookParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-
-    private final Model model;
-
-    public AddressBookParser(Model model) {
-        this.model = model;
-    }
 
     /**
      * Parses user input into command for execution.
@@ -63,13 +56,13 @@ public class AddressBookParser {
         switch (commandWord.toLowerCase()) {
 
         case WorkerAddCommand.COMMAND_WORD:
-            return new AddCommandParser(model).parse(arguments);
+            return new AddCommandParser().parse(arguments);
 
         case AssignCommand.COMMAND_WORD:
-            return new AssignCommandParser(model).parse(arguments);
+            return new AssignCommandParser().parse(arguments);
 
         case WorkerEditCommand.COMMAND_WORD:
-            return new EditCommandParser(model).parse(arguments);
+            return new EditCommandParser().parse(arguments);
 
         case WorkerDeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
@@ -99,10 +92,10 @@ public class AddressBookParser {
             return new CancelLeaveCommandParser().parse(arguments);
 
         case ShiftAddCommand.COMMAND_WORD:
-            return new ShiftAddCommandParser(model).parse(arguments);
+            return new ShiftAddCommandParser().parse(arguments);
 
         case ShiftEditCommand.COMMAND_WORD:
-            return new ShiftEditCommandParser(model).parse(arguments);
+            return new ShiftEditCommandParser().parse(arguments);
 
         case ShiftDeleteCommand.COMMAND_WORD:
             return new ShiftDeleteCommandParser().parse(arguments);

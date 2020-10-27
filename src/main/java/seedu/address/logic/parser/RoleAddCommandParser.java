@@ -15,7 +15,7 @@ public class RoleAddCommandParser implements Parser<RoleAddCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public RoleAddCommand parse(String args) throws ParseException {
-        Role role = ParserUtil.parseNewRole(args);
+        Role role = ParserUtil.parseRole(args);
 
         return new RoleAddCommand(role);
     }

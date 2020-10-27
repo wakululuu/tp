@@ -5,8 +5,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 
+import java.util.Set;
+
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 
 /**
@@ -44,6 +48,13 @@ public class ShiftAddCommand extends Command {
         requireNonNull(model);
         if (model.hasShift(shiftToAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
+        }
+
+        Set<RoleRequirement> roleRequirementSet = shiftToAdd.getRoleRequirements();
+        for (RoleRequirement requirement : roleRequirementSet) {
+            if (!model.hasRole(requirement.getRole())) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, requirement.getRole()));
+            }
         }
 
         model.addShift(shiftToAdd);

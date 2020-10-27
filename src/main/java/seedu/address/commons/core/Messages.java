@@ -11,7 +11,7 @@ public class Messages {
     public static final String MESSAGE_WORKERS_LISTED_OVERVIEW = "%1$d workers listed!";
     public static final String MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX = "The shift index provided is invalid";
     public static final String MESSAGE_INVALID_ROLE_DISPLAYED_INDEX = "The role index provided is invalid";
-    public static final String MESSAGE_ROLE_NOT_FOUND = "The role provided is not found";
+    public static final String MESSAGE_ROLE_NOT_FOUND = "This role does not exist in the McScheduler: %1$s";
     public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "The worker is not available for this shift";
     public static final String MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE = "The worker is not fit for this role";
 
