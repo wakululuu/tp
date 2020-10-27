@@ -14,7 +14,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new TakeLeaveCommand object.
  */
-public class TakeLeaveCommandParser {
+public class TakeLeaveCommandParser implements Parser<TakeLeaveCommand>{
 
     /**
      * Parses the given {@code String} of arguments in the context of the TakeLeaveCommand

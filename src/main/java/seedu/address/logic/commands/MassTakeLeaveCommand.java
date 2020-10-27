@@ -127,11 +127,11 @@ public class MassTakeLeaveCommand extends Command {
         }
 
         MassTakeLeaveCommand c = (MassTakeLeaveCommand) other;
-        return this.workerIndex == c.workerIndex
-                && this.startDay == c.startDay
-                && this.startTime == c.startTime
-                && this.endDay == c.endDay
-                && this.endTime == c.endTime;
+        return this.workerIndex.equals(c.workerIndex)
+                && this.startDay.equals(c.startDay)
+                && this.startTime.equals(c.startTime)
+                && this.endDay.equals(c.endDay)
+                && this.endTime.equals(c.endTime);
     }
 
 

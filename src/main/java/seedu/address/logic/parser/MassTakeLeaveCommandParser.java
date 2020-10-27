@@ -56,4 +56,5 @@ public class MassTakeLeaveCommandParser implements Parser<MassTakeLeaveCommand> 
 
         return new MassTakeLeaveCommand(workerIndex, startDay, startTime, endDay, endTime);
     }
+
 }

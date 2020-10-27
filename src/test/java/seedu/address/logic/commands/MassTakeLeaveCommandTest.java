@@ -115,7 +115,9 @@ public class MassTakeLeaveCommandTest {
     @Test
     public void equals() {
         MassTakeLeaveCommand massTakeLeaveCommand1 = new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm);
-        MassTakeLeaveCommand massTakeLeaveCommand1copy = new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm);
+        MassTakeLeaveCommand massTakeLeaveCommand1Copy = new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm);
+        MassTakeLeaveCommand massTakeLeaveCommand1AnotherCopy = new MassTakeLeaveCommand(
+                INDEX_FIRST_WORKER, new ShiftDay("MON"), new ShiftTime("AM"), new ShiftDay("TUE"), new ShiftTime("PM"));
 
         // same object
         assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1);
@@ -125,8 +127,9 @@ public class MassTakeLeaveCommandTest {
         assertNotEquals(massTakeLeaveCommand1, 123);
 
         // same/different values
-        assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1copy);
-        assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_SECOND_WORKER, mon, am, tue , pm));
+        assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1Copy);
+        assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1AnotherCopy); // not same object this time
+        assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_SECOND_WORKER, mon, am, tue ,pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, tue, am, tue, pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, pm, tue, pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, pm));
