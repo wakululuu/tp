@@ -12,7 +12,6 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -163,7 +162,7 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void deleteAssignment(Assignment target) throws AssignmentNotFoundException {
+    public void deleteAssignment(Assignment target) {
         addressBook.removeAssignment(target);
     }
 

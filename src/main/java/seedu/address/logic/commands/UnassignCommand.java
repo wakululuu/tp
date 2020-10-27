@@ -12,7 +12,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 
@@ -69,11 +68,11 @@ public class UnassignCommand extends Command {
         Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
         Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
 
-        try {
-            model.deleteAssignment(assignmentToDelete);
-        } catch (AssignmentNotFoundException e) {
+        if (!model.hasAssignment(assignmentToDelete)) {
             throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
         }
+
+        model.deleteAssignment(assignmentToDelete);
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
     }

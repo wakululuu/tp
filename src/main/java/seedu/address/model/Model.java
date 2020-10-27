@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
@@ -149,10 +148,8 @@ public interface Model {
     /**
      * Deletes the given assignment.
      * The assignment must exist in the address book.
-     *
-     * @throws AssignmentNotFoundException if the assignment to be deleted does not exist.
      */
-    void deleteAssignment(Assignment target) throws AssignmentNotFoundException;
+    void deleteAssignment(Assignment target);
 
     /**
      * Adds the given assignment.
