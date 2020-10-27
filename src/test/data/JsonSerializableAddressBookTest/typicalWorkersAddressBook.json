@@ -7,7 +7,7 @@
     "address" : "123, Jurong West Ave 6, #08-111",
     "roles" : [ "cashier" ],
     "unavailableTimings" : [ {
-      "unavailability" : "MON AM"
+      "unavailability" : "TUE AM"
     } ]
   }, {
     "name" : "Benson Meier",
@@ -16,7 +16,7 @@
     "address" : "311, Clementi Ave 2, #02-25",
     "roles" : [ "chef", "cashier" ],
     "unavailableTimings" : [ {
-      "unavailability" : "TUE AM"
+      "unavailability" : "MON AM"
     } ]
   }, {
     "name" : "Carl Kurz",
