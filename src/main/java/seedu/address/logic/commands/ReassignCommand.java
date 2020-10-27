@@ -93,8 +93,8 @@ public class ReassignCommand extends Command {
             Shift shiftToReassign = lastShownShiftList.get(newShiftIndex.getZeroBased());
             Assignment reassignmentToAdd = new Assignment(shiftToReassign, workerToReassign, newRole);
 
-            if (model.hasAssignment(reassignmentToAdd) &&
-                    reassignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
+            if (model.hasAssignment(reassignmentToAdd)
+                    && reassignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
                 throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
             }
 
