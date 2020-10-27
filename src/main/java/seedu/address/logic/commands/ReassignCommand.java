@@ -5,7 +5,8 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
@@ -26,15 +27,17 @@ import seedu.address.model.worker.Worker;
 public class ReassignCommand extends Command {
     public static final String COMMAND_WORD = "reassign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Reassigns a worker to a new shift in the "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an assignment in the "
             + "McScheduler by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
-            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer) "
+            + PREFIX_WORKER_OLD + "OLD_WORKER_INDEX (must be a positive integer) "
+            + PREFIX_WORKER_NEW + "NEW_WORKER_INDEX (must be a positive integer "
             + PREFIX_SHIFT_OLD + "OLD_SHIFT_INDEX (must be a positive integer) "
             + PREFIX_SHIFT_NEW + "NEW_SHIFT_INDEX (must be a positive integer) "
             + PREFIX_ROLE + "ROLE\n"
             + "Example: " + COMMAND_WORD
-            + " w/1 "
+            + " wo/1 "
+            + "wn/2 "
             + "so/1 "
             + "sn/2 "
             + "r/Cashier";
@@ -44,21 +47,24 @@ public class ReassignCommand extends Command {
 
     private final Index oldShiftIndex;
     private final Index newShiftIndex;
-    private final Index workerIndex;
+    private final Index oldWorkerIndex;
+    private final Index newWorkerIndex;
     private final Role newRole;
 
     /**
      * Creates a ReassignCommand to edit an assignment of the specified {@code Shift}, {@code Worker} and {@code Role}.
      *
-     * @param workerIndex of the worker in the filtered worker list.
+     * @param oldWorkerIndex of the worker in the filtered worker list.
+     * @param newWorkerIndex of the worker in the filtered worker list.
      * @param oldShiftIndex  of the old shift in the filtered shift list.
      * @param newShiftIndex  of the new shift to be assigned in the filtered shift list.
      * @param newRole        of the worker in the new shift.
      */
-    public ReassignCommand(Index workerIndex, Index oldShiftIndex,
+    public ReassignCommand(Index oldWorkerIndex, Index newWorkerIndex, Index oldShiftIndex,
                            Index newShiftIndex, Role newRole) {
-        requireAllNonNull(workerIndex, oldShiftIndex, newShiftIndex, newRole);
-        this.workerIndex = workerIndex;
+        requireAllNonNull(oldWorkerIndex, newWorkerIndex, oldShiftIndex, newShiftIndex, newRole);
+        this.oldWorkerIndex = oldWorkerIndex;
+        this.newWorkerIndex = newWorkerIndex;
         this.oldShiftIndex = oldShiftIndex;
         this.newShiftIndex = newShiftIndex;
         this.newRole = newRole;
@@ -76,38 +82,39 @@ public class ReassignCommand extends Command {
                     || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
             }
-            if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+            if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()
+                    || newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
             }
 
-            Worker workerToReassign = lastShownWorkerList.get(workerIndex.getZeroBased());
-            Shift shiftToRemove = lastShownShiftList.get(oldShiftIndex.getZeroBased());
-            Assignment assignmentToRemove = new Assignment(shiftToRemove, workerToReassign);
+            Worker oldWorker = lastShownWorkerList.get(oldWorkerIndex.getZeroBased());
+            Shift oldShift = lastShownShiftList.get(oldShiftIndex.getZeroBased());
+            Assignment assignmentToRemove = new Assignment(oldShift, oldWorker);
 
             for (Assignment a : assignmentList) {
                 if (a.equals(assignmentToRemove)) {
-                    assignmentToRemove = new Assignment(shiftToRemove, workerToReassign, a.getRole());
+                    assignmentToRemove = a;
                 }
             }
 
-            Shift shiftToReassign = lastShownShiftList.get(newShiftIndex.getZeroBased());
-            Assignment reassignmentToAdd = new Assignment(shiftToReassign, workerToReassign, newRole);
+            Worker newWorker = lastShownWorkerList.get(newWorkerIndex.getZeroBased());
+            Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
+            Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
 
-            if (model.hasAssignment(reassignmentToAdd)
-                    && reassignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
+            if (model.hasAssignment(assignmentToAdd)
+                    && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
                 throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
             }
 
-            if (isWorkerUnavailable(workerToReassign, shiftToReassign)) {
+            if (isWorkerUnavailable(newWorker, newShift)) {
                 throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
             }
 
-            model.deleteAssignment(assignmentToRemove);
-            model.addAssignment(reassignmentToAdd);
+            model.setAssignment(assignmentToRemove, assignmentToAdd);
             model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
             model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
-            return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, reassignmentToAdd));
+            return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
         } catch (AssignmentNotFoundException e) {
             throw new CommandException("The old assignment does not exist");
         }
@@ -140,7 +147,8 @@ public class ReassignCommand extends Command {
         // state check
         ReassignCommand e = (ReassignCommand) other;
         return oldShiftIndex.equals(e.oldShiftIndex)
-                && workerIndex.equals(e.workerIndex)
+                && oldWorkerIndex.equals(e.oldWorkerIndex)
+                && newWorkerIndex.equals(e.newWorkerIndex)
                 && newShiftIndex.equals(e.newShiftIndex)
                 && newRole.equals(e.newRole);
     }

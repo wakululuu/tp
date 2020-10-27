@@ -5,7 +5,8 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 
 import java.util.stream.Stream;
 
@@ -26,21 +27,23 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
     public ReassignCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
-                PREFIX_WORKER, PREFIX_SHIFT_OLD, PREFIX_SHIFT_NEW,
+                PREFIX_WORKER_OLD, PREFIX_WORKER_NEW, PREFIX_SHIFT_OLD, PREFIX_SHIFT_NEW,
                 PREFIX_ROLE);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_WORKER, PREFIX_SHIFT_OLD,
+        if (!arePrefixesPresent(argMultimap, PREFIX_WORKER_OLD, PREFIX_WORKER_NEW, PREFIX_SHIFT_OLD,
                 PREFIX_SHIFT_NEW, PREFIX_ROLE)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ReassignCommand.MESSAGE_USAGE));
         }
 
         Index oldShiftIndex;
         Index newShiftIndex;
-        Index workerIndex;
+        Index oldWorkerIndex;
+        Index newWorkerIndex;
         try {
             oldShiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT_OLD).get());
             newShiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT_NEW).get());
-            workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
+            oldWorkerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER_OLD).get());
+            newWorkerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER_NEW).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ReassignCommand.MESSAGE_USAGE), ive);
@@ -48,7 +51,7 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
 
         Role newRole = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
-        return new ReassignCommand(workerIndex, oldShiftIndex, newShiftIndex, newRole);
+        return new ReassignCommand(oldWorkerIndex, newWorkerIndex, oldShiftIndex, newShiftIndex, newRole);
     }
 
     /**
