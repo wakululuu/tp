@@ -34,6 +34,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -234,7 +235,7 @@ public class AssignCommandParserTest {
         }
 
         @Override
-        public void deleteAssignment(Assignment target) {
+        public void deleteAssignment(Assignment target) throws AssignmentNotFoundException {
             throw new AssertionError("This method should not be called.");
         }
 

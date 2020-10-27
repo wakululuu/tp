@@ -71,8 +71,10 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     /**
      * Removes the equivalent assignment from the list.
      * The assignment must exist in the list.
+     *
+     * @throws AssignmentNotFoundException if the assignment to be deleted does not exist.
      */
-    public void remove(Assignment toRemove) {
+    public void remove(Assignment toRemove) throws AssignmentNotFoundException {
         requireNonNull(toRemove);
         if (!internalList.remove(toRemove)) {
             throw new AssignmentNotFoundException();

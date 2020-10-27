@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.UniqueAssignmentList;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.UniqueShiftList;
 import seedu.address.model.tag.Role;
@@ -201,8 +202,10 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
+     *
+     * @throws AssignmentNotFoundException if the assignment to be removed does not exist.
      */
-    public void removeAssignment(Assignment key) {
+    public void removeAssignment(Assignment key) throws AssignmentNotFoundException {
         assignments.remove(key);
     }
 
