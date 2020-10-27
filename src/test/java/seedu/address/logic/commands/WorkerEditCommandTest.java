@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
@@ -153,22 +154,22 @@ public class WorkerEditCommandTest {
         // same values -> returns true
         EditWorkerDescriptor copyDescriptor = new EditWorkerDescriptor(DESC_AMY);
         WorkerEditCommand commandWithSameValues = new WorkerEditCommand(INDEX_FIRST_WORKER, copyDescriptor);
-        assertTrue(standardCommand.equals(commandWithSameValues));
+        assertEquals(commandWithSameValues, standardCommand);
 
         // same object -> returns true
-        assertTrue(standardCommand.equals(standardCommand));
+        assertEquals(standardCommand, standardCommand);
 
         // null -> returns false
-        assertFalse(standardCommand.equals(null));
+        assertNotEquals(standardCommand, null);
 
         // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
+        assertNotEquals(new ClearCommand(), standardCommand);
 
         // different index -> returns false
-        assertFalse(standardCommand.equals(new WorkerEditCommand(INDEX_SECOND_WORKER, DESC_AMY)));
+        assertNotEquals(new WorkerEditCommand(INDEX_SECOND_WORKER, DESC_AMY), standardCommand);
 
         // different descriptor -> returns false
-        assertFalse(standardCommand.equals(new WorkerEditCommand(INDEX_FIRST_WORKER, DESC_BOB)));
+        assertNotEquals(new WorkerEditCommand(INDEX_FIRST_WORKER, DESC_BOB), standardCommand);
     }
 
 }

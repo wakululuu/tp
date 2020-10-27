@@ -2,8 +2,7 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
@@ -25,10 +24,6 @@ import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.worker.Worker;
 import seedu.address.testutil.ShiftBuilder;
-
-
-
-
 
 public class ShiftAddCommandTest {
 
@@ -67,20 +62,20 @@ public class ShiftAddCommandTest {
         ShiftAddCommand addShift2Command = new ShiftAddCommand(shift2);
 
         // same object -> returns true
-        assertTrue(addShift1Command.equals(addShift1Command));
+        assertEquals(addShift1Command, addShift1Command);
 
         // same values -> returns true
         ShiftAddCommand addShift1CommandCopy = new ShiftAddCommand(shift1);
-        assertTrue(addShift1Command.equals(addShift1CommandCopy));
+        assertEquals(addShift1CommandCopy, addShift1Command);
 
         // different types -> returns false
-        assertFalse(addShift1Command.equals(1));
+        assertNotEquals(addShift1Command, 1);
 
         // null -> returns false
-        assertFalse(addShift1Command.equals(null));
+        assertNotEquals(addShift1Command, null);
 
         // different shift -> returns false
-        assertFalse(addShift1Command.equals(addShift2Command));
+        assertNotEquals(addShift2Command, addShift1Command);
     }
 
 

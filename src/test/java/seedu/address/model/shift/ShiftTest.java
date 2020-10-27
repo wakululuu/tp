@@ -1,6 +1,8 @@
 package seedu.address.model.shift;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DAY_TUE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
@@ -51,28 +53,28 @@ public class ShiftTest {
     @Test
     public void equals() {
         // null
-        assertFalse(SHIFT_A.equals(null));
+        assertNotEquals(SHIFT_A, null);
 
         // same object
-        assertTrue(SHIFT_A.equals(SHIFT_A));
+        assertEquals(SHIFT_A, SHIFT_A);
 
         // different type
-        assertFalse(SHIFT_A.equals(123));
+        assertNotEquals(SHIFT_A, 123);
 
         // same values
-        assertTrue(SHIFT_A.equals(new ShiftBuilder(SHIFT_A).build()));
+        assertEquals(new ShiftBuilder(SHIFT_A).build(), SHIFT_A);
 
         // completely different
-        assertFalse(SHIFT_B.equals(SHIFT_C));
+        assertNotEquals(SHIFT_C, SHIFT_B);
 
         // different day
-        assertFalse(SHIFT_A.equals(new ShiftBuilder(SHIFT_A).withShiftDay(VALID_DAY_TUE)));
+        assertNotEquals(new ShiftBuilder(SHIFT_A).withShiftDay(VALID_DAY_TUE), SHIFT_A);
 
         // different time
-        assertFalse(SHIFT_A.equals(new ShiftBuilder(SHIFT_A).withShiftTime(VALID_TIME_PM)));
+        assertNotEquals(new ShiftBuilder(SHIFT_A).withShiftTime(VALID_TIME_PM), SHIFT_A);
 
         // different role requirements
-        assertFalse(SHIFT_A.equals(new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF)));
+        assertNotEquals(new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF), SHIFT_A);
     }
 
 }
