@@ -11,8 +11,6 @@ import seedu.address.model.assignment.Assignment;
  */
 class JsonAdaptedAssignment {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Assignment's %s field is missing!";
-
     private final JsonAdaptedShift shift;
     private final JsonAdaptedWorker worker;
     private final JsonAdaptedRole role;

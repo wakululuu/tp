@@ -148,6 +148,14 @@ public class WorkerEditCommandTest {
     }
 
     @Test
+    public void execute_roleNotFound_throwsCommandException() {
+        WorkerEditCommand editCommand = new WorkerEditCommand(INDEX_FIRST_WORKER,
+                new EditWorkerDescriptorBuilder().withRoles("random role").build());
+
+        assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "random role"));
+    }
+
+    @Test
     public void equals() {
         final WorkerEditCommand standardCommand = new WorkerEditCommand(INDEX_FIRST_WORKER, DESC_AMY);
 

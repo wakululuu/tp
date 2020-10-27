@@ -1,7 +1,11 @@
 package seedu.address.testutil;
 
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+
 import seedu.address.model.AddressBook;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -22,7 +26,7 @@ public class AddressBookBuilder {
     }
 
     /**
-     * Returns an {@code AddressBook} with all the typical workers.
+     * Returns an {@code AddressBook} with all the typical workers, shifts and roles.
      */
     public static AddressBook getTypicalAddressBook() {
         AddressBook ab = new AddressBook();
@@ -32,6 +36,8 @@ public class AddressBookBuilder {
         for (Shift shift : TypicalShifts.getTypicalShifts()) {
             ab.addShift(shift);
         }
+        ab.addRole(Role.createRole(VALID_ROLE_CASHIER));
+        ab.addRole(Role.createRole(VALID_ROLE_CHEF));
         return ab;
     }
 

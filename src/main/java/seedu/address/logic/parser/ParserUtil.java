@@ -268,7 +268,6 @@ public class ParserUtil {
         return unavailabilitySet;
     }
 
-
     /**
      * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
      * Leading and trailing whitespaces will be trimmed.
@@ -281,14 +280,19 @@ public class ParserUtil {
         if (!RoleRequirement.isValidRoleRequirement(trimmedRoleRequirement)) {
             throw new ParseException(RoleRequirement.MESSAGE_CONSTRAINTS);
         }
-        return new RoleRequirement(trimmedRoleRequirement);
+
+        int index = trimmedRoleRequirement.lastIndexOf(" ");
+        Role role = parseRole(trimmedRoleRequirement.substring(0, index));
+        int quantity = Integer.parseInt(trimmedRoleRequirement.substring(index + 1));
+
+        return new RoleRequirement(role, quantity);
     }
 
     /**
      * Parses {@code Collection<String> roleRequirements} into a {@code Set<RoleRequirement>}.
      */
-    public static Set<RoleRequirement> parseRoleRequirements(
-            Collection<String> roleRequirements) throws ParseException {
+    public static Set<RoleRequirement> parseRoleRequirements(Collection<String> roleRequirements)
+            throws ParseException {
         requireNonNull(roleRequirements);
         final Set<RoleRequirement> roleRequirementSet = new HashSet<>();
         for (String roleRequirementString : roleRequirements) {

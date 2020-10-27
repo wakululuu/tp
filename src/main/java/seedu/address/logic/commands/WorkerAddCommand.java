@@ -10,8 +10,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 //import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.Set;
+
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -59,6 +63,13 @@ public class WorkerAddCommand extends Command {
 
         if (model.hasWorker(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_WORKER);
+        }
+
+        Set<Role> roleSet = toAdd.getRoles();
+        for (Role role : roleSet) {
+            if (!model.hasRole(role)) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
+            }
         }
 
         model.addWorker(toAdd);

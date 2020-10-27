@@ -82,5 +82,6 @@
       "quantity" : 3
     } ]
   } ],
-  "assignments": []
+  "assignments": [],
+  "validRoles": [ "cashier", "chef" ]
 }
