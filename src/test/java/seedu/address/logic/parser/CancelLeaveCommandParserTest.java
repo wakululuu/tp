@@ -14,7 +14,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.CancelLeaveCommand;
-import seedu.address.logic.commands.TakeLeaveCommand;
 
 public class CancelLeaveCommandParserTest {
     private CancelLeaveCommandParser parser = new CancelLeaveCommandParser();

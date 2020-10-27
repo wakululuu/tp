@@ -11,7 +11,6 @@ import static seedu.address.logic.commands.CommandTestUtil.TIME_DESC_AM;
 import static seedu.address.logic.commands.CommandTestUtil.TIME_DESC_PM;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DAY_MON;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DAY_TUE;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_SHIFT_INDEX_1;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TIME_AM;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TIME_PM;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_WORKER_INDEX_1;
@@ -35,14 +34,14 @@ public class MassTakeLeaveCommandParserTest {
     @Test
     public void parser_allFieldsPresent_success() {
 
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_WORKER_INDEX_1 + DAY_DESC_MON +
-                TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_WORKER_INDEX_1 + DAY_DESC_MON
+                + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
                 new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm));
 
 
         // change order should result in a different MassTakeLeaveCommand
-        assertParseSuccess(parser, TIME_DESC_PM + DAY_DESC_MON + DAY_DESC_TUE + VALID_WORKER_INDEX_1 +
-                        TIME_DESC_AM, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, pm, tue, am));
+        assertParseSuccess(parser, TIME_DESC_PM + DAY_DESC_MON + DAY_DESC_TUE + VALID_WORKER_INDEX_1
+                + TIME_DESC_AM, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, pm, tue, am));
     }
 
     @Test
@@ -61,23 +60,23 @@ public class MassTakeLeaveCommandParserTest {
     public void parser_extraCompulsoryFields_fail() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, MassTakeLeaveCommand.MESSAGE_USAGE);
 
-        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE +
-                DAY_DESC_MON + TIME_DESC_PM, expectedMessage); // extra day
-        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE +
-                TIME_DESC_PM + TIME_DESC_AM, expectedMessage); // extra time
-        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_MON +
-                TIME_DESC_AM + DAY_DESC_MON + TIME_DESC_AM, expectedMessage); // extra day/time
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE
+                + DAY_DESC_MON + TIME_DESC_PM, expectedMessage); // extra day
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE
+                + TIME_DESC_PM + TIME_DESC_AM, expectedMessage); // extra time
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_MON
+                + TIME_DESC_AM + DAY_DESC_MON + TIME_DESC_AM, expectedMessage); // extra day/time
     }
 
     @Test
     public void parser_invalidValue_fail() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, MassTakeLeaveCommand.MESSAGE_USAGE);
 
-        assertParseFailure(parser, INVALID_WORKER_INDEX + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE +
-                TIME_DESC_PM, expectedMessage); // invalid worker
-        assertParseFailure(parser, VALID_WORKER_INDEX_1 + INVALID_DAY + TIME_DESC_AM + DAY_DESC_TUE +
-                TIME_DESC_AM, expectedMessage); // invalid day
-        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + INVALID_TIME + DAY_DESC_TUE +
-                TIME_DESC_PM, expectedMessage); //invalid time
+        assertParseFailure(parser, INVALID_WORKER_INDEX + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE
+                + TIME_DESC_PM, expectedMessage); // invalid worker
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + INVALID_DAY + TIME_DESC_AM + DAY_DESC_TUE
+                + TIME_DESC_AM, expectedMessage); // invalid day
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + INVALID_TIME + DAY_DESC_TUE
+                + TIME_DESC_PM, expectedMessage); //invalid time
     }
 }

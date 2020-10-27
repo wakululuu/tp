@@ -129,7 +129,7 @@ public class MassTakeLeaveCommandTest {
         // same/different values
         assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1Copy);
         assertEquals(massTakeLeaveCommand1, massTakeLeaveCommand1AnotherCopy); // not same object this time
-        assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_SECOND_WORKER, mon, am, tue ,pm));
+        assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_SECOND_WORKER, mon, am, tue , pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, tue, am, tue, pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, pm, tue, pm));
         assertNotEquals(massTakeLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, pm));
