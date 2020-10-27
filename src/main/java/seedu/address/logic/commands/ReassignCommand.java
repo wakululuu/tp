@@ -107,7 +107,7 @@ public class ReassignCommand extends Command {
             }
 
             if (isWorkerUnavailable(newWorker, newShift)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
             }
 
             model.setAssignment(assignmentToRemove, assignmentToAdd);
