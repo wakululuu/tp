@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.assignment.Assignment;
@@ -204,6 +205,15 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removeAssignment(Assignment key) {
         assignments.remove(key);
+    }
+
+    /**
+     * Returns {@code Optional} containing assignment in {@code AddressBook} that has same identity as query assignment.
+     * If none found, returns and empty Optional.
+     */
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return assignments.getAssignment(toGet);
     }
 
     // role-level operations

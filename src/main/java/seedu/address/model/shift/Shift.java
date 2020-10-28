@@ -10,6 +10,7 @@ import java.util.Set;
 
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 
 /**
@@ -55,6 +56,9 @@ public class Shift {
      * Returns true if the specified {@code role} is required in the shift and has yet to be filled.
      */
     public boolean isRoleRequired(Role role) {
+        if (role instanceof Leave) {
+            return true;
+        }
         for (RoleRequirement requirement : roleRequirements) {
             if (requirement.getRole().equals(role)) {
                 return !requirement.isFilled();

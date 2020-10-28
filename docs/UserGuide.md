@@ -214,11 +214,89 @@ Removes a worker from a particular shift.
 
 Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX`
 
-* Unassigns a worker to the shift at the specified `SHIFT_ INDEX` of the shift list. The worker unassigned will be the worker at the specified `WORKER_INDEX` in the worker list.
+* Unassigns a worker to the shift at the specified `SHIFT_INDEX` of the shift list. The worker unassigned will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the `WORKER_INDEX`. <br> e.g. `unassign s/4 w/1` is equivalent to `unassign w/1 s/4`
 
 Examples:
 * `unassign s/4 w/1` Removes the 1st worker from the 4th shift.
+
+### Assign worker to take leave during shift: `take-leave`
+
+Assigns a worker to take leave at a particular day and time, as indicated by a shift.
+
+Format: `take-leave s/SHIFT_INDEX w/WORKER_INDEX`
+
+* Assigns a worker to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker taking leave
+will be the worker at the specified `WORKER_INDEX` in the worker list.
+* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the 
+`WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
+* An error message will be shown in the following situations:
+  * The worker is unavailable for that shift, since there is no reason to take leave then.
+  * The worker is already assigned to a role for that shift.
+
+Examples:
+* `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
+
+### Assign a worker's leave over a range of days and times: `mass-take-leave`
+
+Assigns a worker to take leave over a range of days and times given a start and end day/time.
+
+Format: `mass-take-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
+
+* Assigns a worker to take leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+`END_TIME`. The worker taking leave will be the worker at the specified `WORKER_INDEX` in the worker list.
+* The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
+and similarly for time). Specifying in the wrong order is likely to result in leave taken in the wrong shifts.
+* However, the order does not matter for all other arguments. <br> e.g. `mass-take-leave w/2 d/MON t/AM d/FRI t/PM` is
+the same as `mass-take-leave t/AM t/PM d/MON d/FRI w/2`, though the latter syntax is not recommended.
+* The day/time range will loop properly between Sunday and Monday. Hence `mass-take-leave w/2 d/SUN t/AM d/MON t/AM` will
+work as intended - leave taken on Sunday morning to Monday morning.
+* Shifts will be created for all day and time combinations within the specified range that does not have a shift already
+present within the McScheduler. These shifts will have no role requirements.
+* An error message will be shown in the following situations:
+  * The worker has an assigned role in any one of the shifts within the day/time range.
+  
+Examples:
+* `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
+* `mass-take-leave w/1 d/THU t/PM d/MON t/PM` Assigns the 1st worker to take leave from THU PM shift to MON PM shift (inclusive).
+
+### Cancel a worker's leave during a shift: `cancel-leave`
+
+Cancels a worker's leave at a particular day and time, as indicated by a shift.
+
+Format `cancel-leave s/SHIFT_INDEX w/WORKER_INDEX`
+
+* Cancel's a worker's leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is 
+cancelled will be the worker at the specified `WORKER_INDEX` in the worker list.
+* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
+`WORKER_INDEX`. <br> e.g. `cancel-leave s/4 w/1` is equivalent to `cancel-leave w/1 s/4`.
+* An error message will be shown in the following situations:
+  * No leave found for the worker at the specified shift.
+  * An assignment other than leave is found for the worker at the specified shift.
+  
+Examples:
+* `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
+
+### Cancel a worker's leave over a range of days and times: `mass-cancel-leave`
+
+Cancels a worker's leave over a range of days and times given a start and end day/time.
+
+Format: `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
+
+* Cancel's a worker's leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+`END_TIME`. The worker cancelling leave will be the worker at the specified `WORKER_INDEX` in the worker list.
+* The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
+and similarly for time). Specifying in the wrong order is likely to result in leave cancelled in the wrong shifts.
+* However, the order does not matter for all other arguments. <br> e.g. `mass-cancel-leave w/2 d/MON t/AM d/FRI t/PM` is
+the same as `mass-cancel-leave t/AM t/PM d/MON d/FRI w/2`, though the latter syntax is not recommended.
+* The day/time range will loop properly between Sunday and Monday. Hence `mass-cancel-leave w/2 d/SUN t/AM d/MON t/AM` will
+work as intended - leave cancelled from Sunday morning to Monday morning.
+* An error message will be shown in the following situations:
+  * The worker has no leave in the given day/time range.
+  
+Examples:
+* `mass-cancel-leave w/2 d/MON t/PM d/THU t/PM` Cancels the 2nd worker's leave between MON PM shift to THU PM shift (inclusive).
+* `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
 
 ### Exiting the program : `exit`
 
