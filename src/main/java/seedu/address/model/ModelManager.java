@@ -21,6 +21,7 @@ import seedu.address.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+    private static final Integer HOURS_PER_SHIFT = 6;
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
@@ -118,6 +119,20 @@ public class ModelManager implements Model {
         requireAllNonNull(target, editedWorker);
 
         addressBook.setWorker(target, editedWorker);
+    }
+    @Override
+    public float calculateWorkerPay(Worker worker) {
+        Integer numberOfShiftsAssigned = 0;
+        ObservableList<Assignment> assignments = getFullAssignmentList();
+        for (Assignment assignment : assignments) {
+            Worker assignedWorker = assignment.getWorker();
+            if (assignedWorker.equals(worker)) {
+                numberOfShiftsAssigned++;
+            }
+        }
+        assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
+
+        return worker.getPay().value * numberOfShiftsAssigned * HOURS_PER_SHIFT;
     }
 
     @Override
