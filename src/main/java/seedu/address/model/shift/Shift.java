@@ -10,6 +10,7 @@ import java.util.Set;
 
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 
 /**
@@ -52,9 +53,23 @@ public class Shift {
     }
 
     /**
+     * Returns an immutable role set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set<Role> getRoles() {
+        Set<Role> roles = new HashSet<>();
+        this.roleRequirements.forEach(roleRequirement -> roles.add(roleRequirement.getRole()));
+        return Collections.unmodifiableSet(roles);
+    }
+
+
+    /**
      * Returns true if the specified {@code role} is required in the shift and has yet to be filled.
      */
     public boolean isRoleRequired(Role role) {
+        if (role instanceof Leave) {
+            return true;
+        }
         for (RoleRequirement requirement : roleRequirements) {
             if (requirement.getRole().equals(role)) {
                 return !requirement.isFilled();
@@ -80,7 +95,14 @@ public class Shift {
         model.setShift(shiftToUpdate, updatedShift);
     }
 
-    private static int countRoleQuantityFilled(Model model, Shift shiftToUpdate, Role role) {
+    /**
+     * Counts the quantity filled of the specified {@code role} in the specified {@code shift}.
+     *
+     * @param model storing the shift to be updated.
+     * @param shiftToUpdate in the model.
+     * @param role whose quantity filled needs to be calculated.
+     */
+    public static int countRoleQuantityFilled(Model model, Shift shiftToUpdate, Role role) {
         List<Assignment> assignmentList = model.getFullAssignmentList();
         int quantityFilled = 0;
 
