@@ -117,7 +117,6 @@ public class WorkerEditCommand extends Command {
         Name updatedName = editWorkerDescriptor.getName().orElse(workerToEdit.getName());
         Phone updatedPhone = editWorkerDescriptor.getPhone().orElse(workerToEdit.getPhone());
         Pay updatedPay = editWorkerDescriptor.getPay().orElse(workerToEdit.getPay());
-        //Email updatedEmail = editWorkerDescriptor.getEmail().orElse(workerToEdit.getEmail());
         Address updatedAddress = editWorkerDescriptor.getAddress().orElse(workerToEdit.getAddress());
         Set<Role> updatedRoles = editWorkerDescriptor.getRoles().orElse(workerToEdit.getRoles());
         Set<Unavailability> updatedUnavailabilities = editWorkerDescriptor.getUnavailableTimings()
@@ -134,7 +133,8 @@ public class WorkerEditCommand extends Command {
 
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
-                if (editedWorker.isUnavailable(assignment.getShift())) {
+                Role assignedRole = assignment.getRole();
+                if (!editedWorker.isFitForRole(assignedRole) || editedWorker.isUnavailable(assignment.getShift())) {
                     assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
