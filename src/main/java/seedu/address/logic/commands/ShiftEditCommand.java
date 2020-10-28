@@ -116,7 +116,7 @@ public class ShiftEditCommand extends Command {
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
                 Role assignmentRole = assignment.getRole();
-                if (!newRoles.contains(assignmentRole)) {
+                if (!newRoles.contains(assignmentRole) || assignment.getWorker().isUnavailable(editedShift)) {
                     // This accounts for the case where the shift no longer has the role specified in the assignment
                     assignmentsToDelete.add(assignment);
                 } else if (Shift.countRoleQuantityFilled(model, shiftToEdit, assignmentRole)
@@ -129,6 +129,7 @@ public class ShiftEditCommand extends Command {
                 }
             }
         }
+
         for (Assignment assignment : assignmentsToDelete) {
             model.deleteAssignment(assignment);
         }

@@ -134,13 +134,14 @@ public class WorkerEditCommand extends Command {
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
                 Role assignedRole = assignment.getRole();
-                if (!editedWorker.isFitForRole(assignedRole)) {
+                if (!editedWorker.isFitForRole(assignedRole) || workerToEdit.isSameWorker(assignment.getWorker())) {
                     assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
                 }
             }
         }
+
         for (Assignment assignment : assignmentsToDelete) {
             model.deleteAssignment(assignment);
         }
