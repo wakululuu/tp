@@ -2,12 +2,9 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_SHIFT_INDEX;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_WORKER_INDEX;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
-import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
-import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CHEF;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_SHIFT_INDEX_1;
@@ -20,14 +17,15 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AssignCommand;
 import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.tag.Role;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class AssignCommandParserTest {
     private AssignCommandParser parser = new AssignCommandParser();
@@ -38,7 +36,8 @@ public class AssignCommandParserTest {
         validWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
 
         // whitespace only preamble
-        assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,
+        assertParseSuccess(parser,
+                PREAMBLE_WHITESPACE + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,
                 new AssignCommand(INDEX_FIRST_SHIFT, validWorkerRole));
 
         // different order
@@ -46,12 +45,14 @@ public class AssignCommandParserTest {
                 new AssignCommand(INDEX_FIRST_SHIFT, validWorkerRole));
 
         // multiple shift indexes - last shift index accepted
-        assertParseSuccess(parser, VALID_SHIFT_INDEX_2 + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,
+        assertParseSuccess(parser,
+                VALID_SHIFT_INDEX_2 + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,
                 new AssignCommand(INDEX_FIRST_SHIFT, validWorkerRole));
 
         // multiple worker-role indexes - mass ops
         assertParseSuccess(parser,
-                VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER + VALID_WORKER_INDEX_2 + " " + VALID_ROLE_CHEF,
+                VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER
+                        + VALID_WORKER_INDEX_2 + " " + VALID_ROLE_CHEF,
                 new AssignCommand(INDEX_FIRST_SHIFT, validWorkerRole));
     }
 
@@ -60,13 +61,16 @@ public class AssignCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE);
 
         // missing shift prefix
-        assertParseFailure(parser, INDEX_FIRST_SHIFT + VALID_WORKER_INDEX_1 + VALID_ROLE_CASHIER, expectedMessage);
+        assertParseFailure(parser,
+                INDEX_FIRST_SHIFT + VALID_WORKER_INDEX_1 + VALID_ROLE_CASHIER, expectedMessage);
 
         // missing worker-role prefix
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + " " + INDEX_FIRST_WORKER + VALID_ROLE_CASHIER, expectedMessage);
+        assertParseFailure(parser,
+                VALID_SHIFT_INDEX_1 + " " + INDEX_FIRST_WORKER + VALID_ROLE_CASHIER, expectedMessage);
 
         // both prefixes missing
-        assertParseFailure(parser, INDEX_FIRST_SHIFT + " " + INDEX_FIRST_WORKER + VALID_ROLE_CASHIER, expectedMessage);
+        assertParseFailure(parser,
+                INDEX_FIRST_SHIFT + " " + INDEX_FIRST_WORKER + VALID_ROLE_CASHIER, expectedMessage);
     }
 
     @Test
@@ -82,7 +86,8 @@ public class AssignCommandParserTest {
                 expectedMessage);
 
         // multiple indexes in worker-role prefix
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + INDEX_SECOND_WORKER + VALID_ROLE_CASHIER, expectedMessage);
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " "
+                + INDEX_SECOND_WORKER + VALID_ROLE_CASHIER, expectedMessage);
 
         // invalid worker-role regex
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + INVALID_ROLE,

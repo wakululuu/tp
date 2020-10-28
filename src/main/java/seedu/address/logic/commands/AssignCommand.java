@@ -138,17 +138,9 @@ public class AssignCommand extends Command {
             return false;
         }
 
-        List<Integer> hash = new ArrayList<>();
-        List<Integer> hash2 = new ArrayList<>();
-        for (WorkerRolePair pair: workerRolePairs) {
-            hash.add(pair.hashCode());
-        }
-        for (WorkerRolePair pair: ((AssignCommand)other).workerRolePairs) {
-            hash2.add(pair.hashCode());
-        }
         // state check
         AssignCommand e = (AssignCommand) other;
         return shiftIndex.equals(e.shiftIndex)
-                && workerRolePairs.containsAll(e.workerRolePairs);
+                && workerRolePairs.equals(e.workerRolePairs);
     }
 }

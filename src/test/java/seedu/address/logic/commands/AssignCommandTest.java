@@ -10,9 +10,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
-import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_SHIFT;
-import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_WORKER;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +26,6 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.WorkerRolePair;
-import seedu.address.model.assignment.exceptions.DuplicateAssignmentException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;

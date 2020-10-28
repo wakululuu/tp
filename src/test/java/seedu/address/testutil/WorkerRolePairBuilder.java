@@ -1,11 +1,10 @@
 package seedu.address.testutil;
 
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.tag.Role;
-
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 
 public class WorkerRolePairBuilder {
 

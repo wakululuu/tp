@@ -13,13 +13,13 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UnassignCommand;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class UnassignCommandParserTest {
     private UnassignCommandParser parser = new UnassignCommandParser();
