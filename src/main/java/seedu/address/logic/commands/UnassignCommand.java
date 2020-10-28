@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
 
@@ -15,6 +13,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -33,6 +32,7 @@ public class UnassignCommand extends Command {
             + "w/4";
 
     public static final String MESSAGE_UNASSIGN_SUCCESS = "Shift assignment removed:\n%1$s";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "This assignment does not exist in the McScheduler";
 
     private final Index shiftIndex;
     private final Index workerIndex;
@@ -67,12 +67,28 @@ public class UnassignCommand extends Command {
         Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
         Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
         Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
-        model.deleteAssignment(assignmentToDelete);
 
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+        if (!model.hasAssignment(assignmentToDelete)) {
+            throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
+        }
+        Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
+
+        model.deleteAssignment(assignmentToDelete);
+        Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
+    }
+
+    private static Role getRoleToUnassign(Model model, Shift shiftToUnassign, Worker workerToUnassign) {
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getShift().isSameShift(shiftToUnassign)
+                    && assignment.getWorker().isSameWorker(workerToUnassign)) {
+                return assignment.getRole();
+            }
+        }
+        assert false; // a role should have been returned within the for loop
+        return null;
     }
 
     @Override
@@ -93,4 +109,3 @@ public class UnassignCommand extends Command {
                 && workerIndex.equals(e.workerIndex);
     }
 }
-

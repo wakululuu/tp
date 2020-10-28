@@ -40,9 +40,9 @@ public class AssignCommandParserTest {
                 new AssignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
 
         // multiple worker indexes - last worker index accepted
-        assertParseSuccess(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_2 + VALID_WORKER_INDEX_1
-                + ROLE_DESC_CASHIER, new AssignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER,
-                Role.createRole(VALID_ROLE_CASHIER)));
+        assertParseSuccess(parser,
+                VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_2 + VALID_WORKER_INDEX_1 + ROLE_DESC_CASHIER,
+                new AssignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
 
         // multiple roles - last role accepted
         assertParseSuccess(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + ROLE_DESC_CHEF + ROLE_DESC_CASHIER,
@@ -57,8 +57,7 @@ public class AssignCommandParserTest {
         assertParseFailure(parser, INDEX_FIRST_SHIFT + VALID_WORKER_INDEX_1 + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing worker prefix
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + " " + INDEX_FIRST_WORKER + ROLE_DESC_CASHIER,
-                expectedMessage);
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + " " + INDEX_FIRST_WORKER + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing role prefix
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,

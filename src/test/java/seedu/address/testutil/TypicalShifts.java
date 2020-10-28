@@ -13,13 +13,13 @@ public class TypicalShifts {
 
     public static final Shift SHIFT_A = new ShiftBuilder().withShiftDay("MON")
             .withShiftTime("AM")
-            .withRoleRequirements("cashier 1").build();
+            .withRoleRequirements("cashier 1 1").build();
     public static final Shift SHIFT_B = new ShiftBuilder().withShiftDay("FRI")
             .withShiftTime("PM")
-            .withRoleRequirements("cashier 1", "chef 3").build();
+            .withRoleRequirements("cashier 1 0", "chef 3 1").build();
     public static final Shift SHIFT_C = new ShiftBuilder().withShiftDay("TUE")
             .withShiftTime("AM")
-            .withRoleRequirements("cleaner 4", "cashier 3").build();
+            .withRoleRequirements("cleaner 4 0", "cashier 3 1").build();
     public static final Shift SHIFT_D = new ShiftBuilder().withShiftDay("TUE")
             .withShiftTime("PM")
             .withRoleRequirements("cashier 2", "cleaner 2", "chef 2").build();

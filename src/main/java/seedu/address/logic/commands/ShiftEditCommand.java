@@ -78,6 +78,13 @@ public class ShiftEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
         }
 
+        Set<RoleRequirement> roleRequirementSet = editedShift.getRoleRequirements();
+        for (RoleRequirement requirement : roleRequirementSet) {
+            if (!model.hasRole(requirement.getRole())) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, requirement.getRole()));
+            }
+        }
+
         editShiftInAssignments(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);

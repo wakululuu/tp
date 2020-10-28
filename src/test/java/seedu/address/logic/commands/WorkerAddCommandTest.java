@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -22,6 +24,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 import seedu.address.testutil.WorkerBuilder;
 
@@ -34,7 +37,8 @@ public class WorkerAddCommandTest {
 
     @Test
     public void execute_workerAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingWorkerAdded modelStub = new ModelStubAcceptingWorkerAdded();
+        ModelStubAcceptingWorkerAdded modelStub = new ModelStubAcceptingWorkerAdded(
+                Role.createRole(VALID_ROLE_CASHIER));
         Worker validWorker = new WorkerBuilder().build();
 
         CommandResult commandResult = new WorkerAddCommand(validWorker).execute(modelStub);
@@ -51,6 +55,16 @@ public class WorkerAddCommandTest {
 
         assertThrows(CommandException.class, WorkerAddCommand.MESSAGE_DUPLICATE_WORKER, ()
             -> addCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_roleNotFound_throwsCommandException() {
+        Worker validWorker = new WorkerBuilder().build();
+        WorkerAddCommand addCommand = new WorkerAddCommand(validWorker);
+        ModelStub modelStub = new ModelStubAcceptingWorkerAdded();
+
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, VALID_ROLE_CASHIER), () ->
+                addCommand.execute(modelStub));
     }
 
     @Test
@@ -222,12 +236,32 @@ public class WorkerAddCommandTest {
         }
 
         @Override
-        public ObservableList<Assignment> getFilteredAssignmentList() {
+        public boolean hasRole(Role role) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+        public void deleteRole(Role target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addRole(Role role) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setRole(Role target, Role editedRole) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Role> getFilteredRoleList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredRoleList(Predicate<Role> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }
@@ -255,6 +289,12 @@ public class WorkerAddCommandTest {
      */
     private class ModelStubAcceptingWorkerAdded extends ModelStub {
         final ArrayList<Worker> workersAdded = new ArrayList<>();
+        final ArrayList<Role> validRoles = new ArrayList<>();
+
+        ModelStubAcceptingWorkerAdded(Role... role) {
+            requireNonNull(role);
+            validRoles.addAll(Arrays.asList(role));
+        }
 
         @Override
         public boolean hasWorker(Worker worker) {
@@ -266,6 +306,12 @@ public class WorkerAddCommandTest {
         public void addWorker(Worker worker) {
             requireNonNull(worker);
             workersAdded.add(worker);
+        }
+
+        @Override
+        public boolean hasRole(Role role) {
+            requireNonNull(role);
+            return validRoles.stream().anyMatch(role::equals);
         }
 
         @Override

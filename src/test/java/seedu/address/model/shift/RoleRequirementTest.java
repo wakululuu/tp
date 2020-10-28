@@ -12,20 +12,25 @@ import seedu.address.model.tag.Role;
 
 public class RoleRequirementTest {
 
-    private RoleRequirement roleRequirement = new RoleRequirement("cleaner 3");
-    private RoleRequirement differentRoleRoleRequirement = new RoleRequirement("cashier 3");
-    private RoleRequirement differentQuantityRoleRequirement = new RoleRequirement("cleaner 7");
-    private RoleRequirement differentRoleRequirement = new RoleRequirement("cashier 7");
+    private static final RoleRequirement ROLE_REQUIREMENT = new RoleRequirement("cleaner 3 0");
+    private static final RoleRequirement DIFFERENT_ROLE_ROLE_REQUIREMENT = new RoleRequirement("cashier 3 0");
+    private static final RoleRequirement DIFFERENT_QUANTITY_REQUIRED_ROLE_REQUIREMENT =
+            new RoleRequirement("cleaner 7 0");
+    private static final RoleRequirement DIFFERENT_QUANTITY_FILLED_ROLE_REQUIREMENT =
+            new RoleRequirement("cleaner 3 1");
+    private static final RoleRequirement DIFFERENT_ROLE_REQUIREMENT = new RoleRequirement("cashier 7 2");
 
     @Test
     public void stringConstructor_inputWithSpaces_correctlyParsed() {
         String testRole = "Deep Fryer Technician 2";
         Role role = Role.createRole(testRole);
-        String testQuantity = "5";
-        int quantity = Integer.parseInt(testQuantity);
+        String testQuantityRequired = "5";
+        int quantityRequired = Integer.parseInt(testQuantityRequired);
+        String testQuantityFilled = "0";
+        int quantityFilled = Integer.parseInt(testQuantityFilled);
 
-        assertEquals(new RoleRequirement(testRole + " " + testQuantity),
-                new RoleRequirement(role, quantity));
+        assertEquals(new RoleRequirement(testRole + " " + testQuantityRequired + " " + testQuantityFilled),
+                new RoleRequirement(role, quantityRequired, quantityFilled));
     }
 
     @Test
@@ -52,40 +57,43 @@ public class RoleRequirementTest {
     @Test
     public void isSameRoleRequirement() {
         // same object
-        assertTrue(roleRequirement.isSameRoleRequirement(roleRequirement));
+        assertTrue(ROLE_REQUIREMENT.isSameRoleRequirement(ROLE_REQUIREMENT));
 
         // null
-        assertFalse(roleRequirement.isSameRoleRequirement(null));
+        assertFalse(ROLE_REQUIREMENT.isSameRoleRequirement(null));
 
         // different role only -> returns false
-        assertFalse(roleRequirement.isSameRoleRequirement(differentRoleRoleRequirement));
+        assertFalse(ROLE_REQUIREMENT.isSameRoleRequirement(DIFFERENT_ROLE_ROLE_REQUIREMENT));
 
-        // different quantity only -> returns true
-        assertTrue(roleRequirement.isSameRoleRequirement(differentQuantityRoleRequirement));
+        // different quantity required only -> returns false
+        assertFalse(ROLE_REQUIREMENT.isSameRoleRequirement(DIFFERENT_QUANTITY_REQUIRED_ROLE_REQUIREMENT));
+
+        // different quantity filled only -> returns true
+        assertTrue(ROLE_REQUIREMENT.isSameRoleRequirement(DIFFERENT_QUANTITY_FILLED_ROLE_REQUIREMENT));
 
         // completely different -> returns false
-        assertFalse(roleRequirement.isSameRoleRequirement(differentRoleRequirement));
+        assertFalse(ROLE_REQUIREMENT.isSameRoleRequirement(DIFFERENT_ROLE_REQUIREMENT));
     }
 
     @Test
     public void equals() {
         // same object
-        assertFalse(!roleRequirement.equals(roleRequirement));
+        assertFalse(!ROLE_REQUIREMENT.equals(ROLE_REQUIREMENT));
 
         // same values
-        assertEquals(new RoleRequirement(roleRequirement.getRole(),
-                roleRequirement.getQuantity()), roleRequirement);
+        assertEquals(new RoleRequirement(ROLE_REQUIREMENT.getRole(),
+                ROLE_REQUIREMENT.getQuantityRequired()), ROLE_REQUIREMENT);
 
         // null -> returns false
-        assertNotEquals(roleRequirement, null);
+        assertNotEquals(ROLE_REQUIREMENT, null);
 
         // different type -> returns false
-        assertNotEquals(roleRequirement, 123);
+        assertNotEquals(ROLE_REQUIREMENT, 123);
 
         // different any field -> returns false
-        assertNotEquals(differentRoleRoleRequirement, roleRequirement); // different role only
-        assertNotEquals(differentQuantityRoleRequirement, roleRequirement); // different quantity only
-        assertNotEquals(differentRoleRequirement, roleRequirement); // completely different
+        assertNotEquals(DIFFERENT_ROLE_ROLE_REQUIREMENT, ROLE_REQUIREMENT); // different role only
+        assertNotEquals(DIFFERENT_QUANTITY_REQUIRED_ROLE_REQUIREMENT, ROLE_REQUIREMENT); // different quantity only
+        assertNotEquals(DIFFERENT_ROLE_REQUIREMENT, ROLE_REQUIREMENT); // completely different
     }
 
 }

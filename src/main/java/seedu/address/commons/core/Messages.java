@@ -15,5 +15,10 @@ public class Messages {
             "No assignment found between worker: %1$s and shift: %2$s";
     public static final String MESSAGE_NO_LEAVE_FOUND =
             "No leave found between worker: %1$s and shift: %2$s";
+    public static final String MESSAGE_INVALID_ROLE_DISPLAYED_INDEX = "The role index provided is invalid";
+    public static final String MESSAGE_ROLE_NOT_FOUND = "This role does not exist in the McScheduler: %1$s";
+    public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "The worker is not available for this shift";
+    public static final String MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE = "The worker is not fit for this role";
+    public static final String MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED = "The role is not required for this shift";
 
 }
