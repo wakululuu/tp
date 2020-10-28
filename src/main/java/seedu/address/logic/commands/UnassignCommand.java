@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
 import java.util.Set;
@@ -35,6 +33,8 @@ public class UnassignCommand extends Command {
             + "w/2";
 
     public static final String MESSAGE_UNASSIGN_SUCCESS = "%1$d shift assignment(s) removed:\n%2$s";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND =
+                "This assignment does not exist in the McScheduler: [%1$s]";
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -56,7 +56,6 @@ public class UnassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
@@ -71,7 +70,19 @@ public class UnassignCommand extends Command {
 
         StringBuilder unassignStringBuilder = new StringBuilder();
 
-        for (Index workerIndex: workerIndexes) {
+        // Check if any is not found
+        for (Index workerIndex : workerIndexes) {
+            Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
+            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
+
+            if (!model.hasAssignment(assignmentToDelete)) {
+                throw new CommandException(String.format(MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentToDelete));
+            }
+        }
+
+        // Remove assignments
+        for (Index workerIndex : workerIndexes) {
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
             Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
@@ -80,8 +91,6 @@ public class UnassignCommand extends Command {
             unassignStringBuilder.append(assignmentToDelete);
             unassignStringBuilder.append("\n");
         }
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
         return new CommandResult(
                 String.format(MESSAGE_UNASSIGN_SUCCESS, workerIndexes.size(), unassignStringBuilder.toString()));

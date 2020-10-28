@@ -1,4 +1,7 @@
 @startuml
+!include style.puml
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
 
 class Tag {
 tagName: String

@@ -17,6 +17,7 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
@@ -65,26 +66,37 @@ public class AssignCommand extends Command {
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
+
+        // Check for: worker existence, model hasRole, worker is fit, worker is available
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+                throw new CommandException(
+                        Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX + ": " + workerRolePair.getWorkerIndex());
+            }
+            Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
+            Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
+            Role role = workerRolePair.getRole();
+
+            if (!model.hasRole(role)) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, workerRolePair.getRole()));
+            }
+            if (!workerToAssign.isFitForRole(role)) {
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE,
+                            workerToAssign.getName(), role));
+            }
+            if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
+                            workerToAssign.getName(), shiftToAssign));
             }
         }
 
+        // Add assignments
         StringBuilder assignStringBuilder = new StringBuilder();
 
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, workerRolePair.getRole());
-
-            if (model.hasAssignment(assignmentToAdd)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
-            }
-
-            if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT, assignmentToAdd));
-            }
             model.addAssignment(assignmentToAdd);
 
             assignStringBuilder.append(assignmentToAdd);

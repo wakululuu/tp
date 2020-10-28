@@ -32,7 +32,7 @@ public class RoleRequirement {
     }
 
     /**
-     * String version constructor for easy parsing of sample data.
+     * String version constructor for easy parsing of test data.
      */
     public RoleRequirement(String roleRequirementInfo) {
         requireNonNull(roleRequirementInfo);
