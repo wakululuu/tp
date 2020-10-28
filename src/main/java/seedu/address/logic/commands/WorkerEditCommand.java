@@ -134,7 +134,7 @@ public class WorkerEditCommand extends Command {
 
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
-                if (AssignCommand.isWorkerUnavailable(editedWorker, assignment.getShift())) {
+                if (editedWorker.isUnavailable(assignment.getShift())) {
                     assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);

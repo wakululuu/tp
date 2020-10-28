@@ -111,7 +111,7 @@ public class ShiftEditCommand extends Command {
 
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
-                if (AssignCommand.isWorkerUnavailable(assignment.getWorker(), editedShift)) {
+                if (assignment.getWorker().isUnavailable(editedShift)) {
                     assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
