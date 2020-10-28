@@ -20,7 +20,7 @@ public class WorkerRolePair {
     public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form [ WORKER_INDEX ] [ ROLE ]"
             + "(e.g. \'2 Cashier\').";
 
-    public static final String VALIDATION_REGEX = "[1-9] " + Role.VALIDATION_REGEX;
+    public static final String VALIDATION_REGEX = "[1-9][0-9]* " + Role.VALIDATION_REGEX;
 
     private final Index workerIndex;
     private final Role role;
@@ -67,7 +67,7 @@ public class WorkerRolePair {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof WorkerRolePair
-                && workerIndex == ((WorkerRolePair) other).workerIndex
+                && workerIndex.equals(((WorkerRolePair) other).workerIndex)
                 && role.equals(((WorkerRolePair) other).role));
     }
 

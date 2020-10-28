@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_ROLE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -67,11 +68,12 @@ public class AssignCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
 
+        List<Assignment> assignmentsToAdd = new ArrayList<>();
         // Check for: worker existence, model hasRole, worker is fit, worker is available
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(
-                        Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX + ": " + workerRolePair.getWorkerIndex());
+                throw new CommandException(String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX,
+                            workerRolePair.getWorkerIndex().getOneBased()));
             }
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
@@ -88,18 +90,21 @@ public class AssignCommand extends Command {
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
                             workerToAssign.getName(), shiftToAssign));
             }
+
+            Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
+            if (model.hasAssignment(assignmentToAdd)) {
+                throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+            }
+            assignmentsToAdd.add(assignmentToAdd);
         }
 
         // Add assignments
         StringBuilder assignStringBuilder = new StringBuilder();
 
-        for (WorkerRolePair workerRolePair : workerRolePairs) {
-            Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
-            Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
-            Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, workerRolePair.getRole());
-            model.addAssignment(assignmentToAdd);
+        for (Assignment assignment : assignmentsToAdd) {
+            model.addAssignment(assignment);
 
-            assignStringBuilder.append(assignmentToAdd);
+            assignStringBuilder.append(assignment);
             assignStringBuilder.append("\n");
         }
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
@@ -133,9 +138,17 @@ public class AssignCommand extends Command {
             return false;
         }
 
+        List<Integer> hash = new ArrayList<>();
+        List<Integer> hash2 = new ArrayList<>();
+        for (WorkerRolePair pair: workerRolePairs) {
+            hash.add(pair.hashCode());
+        }
+        for (WorkerRolePair pair: ((AssignCommand)other).workerRolePairs) {
+            hash2.add(pair.hashCode());
+        }
         // state check
         AssignCommand e = (AssignCommand) other;
         return shiftIndex.equals(e.shiftIndex)
-                && workerRolePairs.equals(e.workerRolePairs);
+                && workerRolePairs.containsAll(e.workerRolePairs);
     }
 }

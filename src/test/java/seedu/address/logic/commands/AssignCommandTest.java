@@ -28,6 +28,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.WorkerRolePair;
+import seedu.address.model.assignment.exceptions.DuplicateAssignmentException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -43,26 +44,11 @@ public class AssignCommandTest {
     }
 
     @Test
-    public void constructor_nullWorkerIndex_throwsNullPointerException() {
-        Set<WorkerRolePair> nullWorkerIndex = new HashSet<>();
-        nullWorkerIndex.add(new WorkerRolePair(null, Role.createRole(VALID_ROLE_CASHIER)));
-        assertThrows(NullPointerException.class, () -> new AssignCommand(INDEX_FIRST_SHIFT, nullWorkerIndex));
-    }
-
-    @Test
-    public void constructor_nullRole_throwsNullPointerException() {
-        Set<WorkerRolePair> nullWorkerRole = new HashSet<>();
-        nullWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, null));
-        assertThrows(NullPointerException.class, () -> new AssignCommand(INDEX_FIRST_SHIFT,nullWorkerRole));
-    }
-
-    @Test
     public void execute_assignmentAcceptedByModel_assignSuccessful() throws Exception {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
         Set<WorkerRolePair> validWorkerRole = new HashSet<>();
         validWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
-        validWorkerRole.add(new WorkerRolePair(INDEX_THIRD_WORKER, Role.createRole(VALID_ROLE_CHEF)));
         AssignCommand validAssignCommand = new AssignCommand(INDEX_SECOND_SHIFT, validWorkerRole);
         CommandResult commandResult = validAssignCommand.execute(model);
 
@@ -72,14 +58,9 @@ public class AssignCommandTest {
                 .withWorker(workerToAssign)
                 .withRole(VALID_ROLE_CASHIER).build();
 
-        Worker workerToAssign2 = model.getFilteredWorkerList().get(INDEX_THIRD_WORKER.getZeroBased());
-        Assignment validAssignment2 = new AssignmentBuilder().withShift(shiftToAssign)
-                .withWorker(workerToAssign2)
-                .withRole(VALID_ROLE_CHEF).build();
-
-        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, 2, validAssignment),
+        assertEquals(String.format(AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, validAssignment + "\n"),
                 commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validAssignment, validAssignment2), model.getFullAssignmentList());
+        assertEquals(Arrays.asList(validAssignment), model.getFullAssignmentList());
     }
 
     @Test
@@ -103,7 +84,8 @@ public class AssignCommandTest {
         invalidWorkerIndex.add(new WorkerRolePair(outOfBoundIndex, Role.createRole(VALID_ROLE_CASHIER)));
         AssignCommand assignCommand = new AssignCommand(INDEX_FIRST_SHIFT, invalidWorkerIndex);
 
-        assertCommandFailure(assignCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(assignCommand, model,
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
@@ -127,7 +109,10 @@ public class AssignCommandTest {
         notFitWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CHEF)));
         AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, notFitWorkerRole);
 
-        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, () ->
+        String workerName = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased()).getName().toString();
+
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, workerName, VALID_ROLE_CHEF), () ->
                 assignCommand.execute(model));
     }
 
@@ -139,7 +124,11 @@ public class AssignCommandTest {
         validWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
         AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, validWorkerRole);
 
-        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, () ->
+        String workerName = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased()).getName().toString();
+        String shiftName = model.getFilteredShiftList().get(INDEX_THIRD_SHIFT.getZeroBased()).toString();
+
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerName, shiftName), () ->
                 assignCommand.execute(model));
     }
 

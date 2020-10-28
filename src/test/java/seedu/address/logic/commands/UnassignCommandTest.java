@@ -47,6 +47,12 @@ public class UnassignCommandTest {
     }
 
     @Test
+    public void constructor_nullWorkerIndexSet_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () ->
+                new UnassignCommand(INDEX_FIRST_SHIFT, null));
+    }
+
+    @Test
     public void execute_unassignmentAcceptedByModel_unassignSuccessful() throws Exception {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
@@ -65,7 +71,7 @@ public class UnassignCommandTest {
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
                 .withWorker(workerToUnassign).buildDummy();
 
-        assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS, validAssignment),
+        assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS + "\n", 1, validAssignment),
                 commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(), model.getFullAssignmentList());
     }
@@ -85,7 +91,7 @@ public class UnassignCommandTest {
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
 
         Set<Index> outOfBoundWorkerIndex = new HashSet<>();
         outOfBoundWorkerIndex.add(outOfBoundIndex);
@@ -102,7 +108,12 @@ public class UnassignCommandTest {
         workerIndex.add(INDEX_FIRST_WORKER);
         UnassignCommand unassignCommand = new UnassignCommand(INDEX_SECOND_SHIFT, workerIndex);
 
-        assertCommandFailure(unassignCommand, model, UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND);
+        String assignmentName = new Assignment(model.getFilteredShiftList().get(INDEX_SECOND_SHIFT.getZeroBased()),
+                    model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased()))
+                    .toString();
+
+        assertCommandFailure(unassignCommand, model,
+                    String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
     }
 
     @Test

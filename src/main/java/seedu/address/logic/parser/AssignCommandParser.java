@@ -35,7 +35,7 @@ public class AssignCommandParser implements Parser<AssignCommand> {
         }
 
         Index shiftIndex;
-        Index workerIndex;
+        //Index workerIndex;
         Set<WorkerRolePair> workerRolePairs;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT).get());
