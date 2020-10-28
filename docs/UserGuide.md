@@ -87,15 +87,23 @@ Format: `help`
 
 Adds a new worker to the McScheduler.
 
-Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS [p/HOURLY_PAY] [r/ROLE]...`
+Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABILITY]...`
 
-* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS` and `HOURLY_PAY`.
+* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY`, `ROLE`(s) and
+`UNAVAILABILITY`(s).
+* `HOURLY_PAY` can have a maximum of 2 decimal places only. 
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
+* `UNAVAILABILITY` must be in the format {u/DAY TIME}. `DAY` should take one of these values: **Mon, Tue, Wed, Thu,
+Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon`, `mOn` etc. are all accepted). `TIME` should
+take one of these values: **AM, PM, FULL**. These values are also case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+accepted). The worker will be unavailable during the specified `UNAVAILABILITY`(s). A worker cannot be assigned to a shift
+they are unavailable for with the [assign](#assigning-a-worker-to-a-role-in-a-shift-assign) command.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
-A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.
+A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.  
+A worker can have any number of unavailable timings (including zero) that can be added by multiple `u/` parameters.
 
 </div>
 
@@ -103,9 +111,9 @@ Examples:
 * `worker-add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7` Adds a cashier named John
   whose pay is $7/hr. His phone number is 98765432 and he lives at 21 Lower Kent Ridge Rd, Singapore 119077.
 
-* `worker-add n/Tom hp/87654321 a/22 Bong Keng Road, #01–01 r/Burger Flipper r/Janitor p/7.50` Adds a worker named Tom
+* `worker-add n/Tom hp/87654321 a/22 Bong Keng Road, #01–01 r/Burger Flipper r/Janitor p/7.50 u/Mon AM` Adds a worker named Tom
   who is fit to be a burger flipper or a janitor, and whose pay is $7.50/hr. His phone number is 87654321 and he lives
-  at Bong Keng Road, #01–01.
+  at Bong Keng Road, #01–01. He is unavailable for work on Monday mornings.
 
 ### Listing all workers: `worker-list`
 
@@ -178,7 +186,7 @@ Format: `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`
 
 * Adds a shift on the specified `DAY` at the specified `TIME`.
 * The day specified should take one of these values: **Mon, Tue, Wed, Thu, Fri, Sat, Sun**. These values are case-
-  insensitive i.e. `Mon`, `MON`, `mon`, `mOn` etc. are all accepted.
+  insensitive i.e. `Mon`, `MON`, `mon` etc. are all accepted.
 * The time specified should take one of these values: **AM, PM**. These values are case-insensitive i.e. `am`, `AM`,
   `aM` and `Am` are all accepted.
 * The shift will require the specified `ROLE`(s). The specified `ROLE`(s) must be an existing role in the McScheduler. A
@@ -293,9 +301,24 @@ Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX`
 * Unassigns the worker at the specified `WORKER_INDEX` from the shift at the specified `SHIFT_ INDEX`. The indexes refer
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
+  
+### Reassigning an existing assignment: `reassign`
+
+Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
+
+Format: `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX r/ROLE`
+
+* Reassigns an existing assignment using the indexes provided such that the worker at `NEW_WORKER_INDEX` will be assigned to the
+shift at `NEW_SHIFT_INDEX` for the specified `ROLE`. The indexes **must be positive integers** i.e. 1,2, 3, …​
+* The old assignment involving the worker at the specified `OLD_WORKER_INDEX` and the shift at `OLD_SHIFT_INDEX` must be valid.
+The old assignment will be edited during a successful `reassign` call.
+* The `OLD_WORKER_INDEX` can be the same as the `NEW_WORKER_INDEX`. The `OLD_SHIFT_INDEX` can be the same as the `NEW_SHIFT_INDEX`.
+This allows workers to be reassigned to the same shift but under a different `ROLE`.
+* No reassignment will be made if there already exists a duplicate assignment in the McScheduler.
 
 Example:
-* `unassign s/4 w/1` Removes the 1st worker from the 4th shift.
+* `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.
+* `reassign so/1 wo/2 sn/3 wn/2 r/Cashier` Reassigns the 2nd worker on the worker list to the 3rd shift on the shift list as a Cashier.
 
 ### Assign worker to take leave during shift: `take-leave`
 
@@ -400,7 +423,7 @@ the data of your previous McScheduler home folder.
 
 Data | Action | Format, Example
 -----|--------|------------------
-Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS [p/HOURLY_PAY] [r/ROLE]...`<br>e.g. `worker-add n/Johnhp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7`
+Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABILITY]...`<br>e.g. `worker-add n/Johnhp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7 u/Mon Full`
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7`
 Worker | **List** | `worker-list`
@@ -413,5 +436,6 @@ Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Role | **List** | `role-list`
 Assignment | **Assign** | `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE`<br>e.g. `assign s/3 w/2 r/Cashier`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX`<br>e.g. `unassign s/4 w/1`
+Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wo/1 r/Chef`
 General | **Help** | `help`
 General | **Exit** | `exit`
