@@ -3,15 +3,17 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
@@ -48,6 +50,7 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_ROLE_CASHIER = "cashier";
     public static final String VALID_ROLE_CHEF = "chef";
+    public static final String VALID_ROLE_JANITOR = "janitor";
     public static final String VALID_UNAVAILABILITY = "MON AM";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
@@ -92,8 +95,20 @@ public class CommandTestUtil {
     public static final String VALID_WORKER_INDEX_1 = " " + PREFIX_WORKER + INDEX_FIRST_WORKER.getOneBased();
     public static final String VALID_WORKER_INDEX_2 = " " + PREFIX_WORKER + INDEX_SECOND_WORKER.getOneBased();
 
+    public static final String INVALID_NEW_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
+    public static final String INVALID_NEW_WORKER_INDEX = " " + PREFIX_WORKER_NEW + "a";
+    public static final String INVALID_OLD_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
+    public static final String INVALID_OLD_WORKER_INDEX = " " + PREFIX_WORKER_OLD + "a";
     public static final String INVALID_SHIFT_INDEX = " " + PREFIX_SHIFT + "a";
     public static final String INVALID_WORKER_INDEX = " " + PREFIX_WORKER + "a";
+
+    public static final String VALID_NEW_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_NEW + INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_NEW_SHIFT_INDEX_2 = " " + PREFIX_SHIFT_NEW + INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_1 = " " + PREFIX_WORKER_NEW + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_2 = " " + PREFIX_WORKER_NEW + INDEX_SECOND_WORKER.getOneBased();
+    public static final String VALID_OLD_WORKER_INDEX_1 = " " + PREFIX_WORKER_OLD + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_OLD_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_OLD + INDEX_FIRST_SHIFT.getOneBased();
+
 
     static {
         DESC_AMY = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)

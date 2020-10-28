@@ -9,7 +9,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 
 import java.util.List;
-import java.util.Set;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -18,7 +17,6 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
-import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 public class ReassignCommand extends Command {
@@ -71,11 +69,6 @@ public class ReassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-
-        if (!model.hasRole(newRole)) {
-            throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
-        }
-
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
         List<Assignment> assignmentList = model.getFullAssignmentList();
@@ -87,6 +80,9 @@ public class ReassignCommand extends Command {
         if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()
                 || newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        }
+        if (!model.hasRole(newRole)) {
+            throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
         }
 
         Worker oldWorker = lastShownWorkerList.get(oldWorkerIndex.getZeroBased());
@@ -116,8 +112,7 @@ public class ReassignCommand extends Command {
         if (!newWorker.isFitForRole(newRole)) {
             throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
         }
-
-        if (isWorkerUnavailable(newWorker, newShift)) {
+        if (newWorker.isUnavailable(newShift)) {
             throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
         }
 
@@ -132,17 +127,6 @@ public class ReassignCommand extends Command {
         return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
     }
 
-    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
-        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
-        for (Unavailability unavailability : workerUnavailableTimings) {
-            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
-            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
-            if (hasSameDay && hasSameTime) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean equals(Object other) {
