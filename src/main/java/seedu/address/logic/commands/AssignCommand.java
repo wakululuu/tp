@@ -90,7 +90,12 @@ public class AssignCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
         }
 
+        if (!shiftToAssign.isRoleRequired(role)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
+        }
+
         model.addAssignment(assignmentToAdd);
+        Shift.updateRoleRequirements(model, shiftToAssign, role);
 
         return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignmentToAdd));
     }

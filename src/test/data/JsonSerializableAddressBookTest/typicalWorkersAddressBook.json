@@ -59,27 +59,32 @@
     "time" : "AM",
     "roleRequirements" : [ {
       "role" : "cashier",
-      "quantity" : 1
+      "quantityRequired" : 1,
+      "quantityFilled" : 1
     } ]
   }, {
     "day" : "FRI",
     "time" : "PM",
     "roleRequirements" : [ {
       "role" : "cashier",
-      "quantity" : 1
+      "quantityRequired" : 1,
+      "quantityFilled" : 0
     }, {
       "role" : "chef",
-      "quantity" : 3
+      "quantityRequired" : 3,
+      "quantityFilled" : 1
     } ]
   }, {
     "day": "TUE",
     "time": "AM",
     "roleRequirements" : [ {
       "role" : "cleaner",
-      "quantity" : 4
+      "quantityRequired" : 4,
+      "quantityFilled" : 0
     }, {
       "role": "cashier",
-      "quantity" : 3
+      "quantityRequired" : 3,
+      "quantityFilled" : 1
     } ]
   } ],
   "assignments": [],

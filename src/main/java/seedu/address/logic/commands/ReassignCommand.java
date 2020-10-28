@@ -7,8 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
 
@@ -17,7 +15,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -42,7 +39,7 @@ public class ReassignCommand extends Command {
 
     public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made:\n%1$s";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
-    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "This assignment does not exist in the McScheduler";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
     private final Index oldShiftIndex;
     private final Index newShiftIndex;
@@ -72,58 +69,61 @@ public class ReassignCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        try {
-            List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
-            List<Shift> lastShownShiftList = model.getFilteredShiftList();
-            List<Assignment> assignmentList = model.getFullAssignmentList();
+        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+        List<Shift> lastShownShiftList = model.getFilteredShiftList();
+        List<Assignment> assignmentList = model.getFullAssignmentList();
 
-            if (!model.hasRole(newRole)) {
-                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
-            }
+        if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
+                || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        }
+        if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()
+                || newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        }
+        if (!model.hasRole(newRole)) {
+            throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
+        }
 
-            if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
-                    || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
-            }
-            if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()
-                    || newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
-            }
+        Worker oldWorker = lastShownWorkerList.get(oldWorkerIndex.getZeroBased());
+        Shift oldShift = lastShownShiftList.get(oldShiftIndex.getZeroBased());
+        Assignment assignmentToRemove = new Assignment(oldShift, oldWorker);
 
-            Worker oldWorker = lastShownWorkerList.get(oldWorkerIndex.getZeroBased());
-            Shift oldShift = lastShownShiftList.get(oldShiftIndex.getZeroBased());
-            Assignment assignmentToRemove = new Assignment(oldShift, oldWorker);
-
-            for (Assignment a : assignmentList) {
-                if (a.equals(assignmentToRemove)) {
-                    assignmentToRemove = a;
-                }
-            }
-
-            Worker newWorker = lastShownWorkerList.get(newWorkerIndex.getZeroBased());
-            Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
-            Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
-
-            if (model.hasAssignment(assignmentToAdd)
-                    && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
-                throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
-            }
-            if (!newWorker.isFitForRole(newRole)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
-            }
-
-            if (newWorker.isUnavailable(newShift)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
-            }
-
-            model.setAssignment(assignmentToRemove, assignmentToAdd);
-            model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-            model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
-
-            return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
-        } catch (AssignmentNotFoundException e) {
+        if (!model.hasAssignment(assignmentToRemove)) {
             throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
         }
+
+        for (Assignment a : assignmentList) {
+            if (a.equals(assignmentToRemove)) {
+                assignmentToRemove = a;
+            }
+        }
+        assert assignmentToRemove.getRole() != null; // dummy assignment has been replaced with actual assignment
+
+        Worker newWorker = lastShownWorkerList.get(newWorkerIndex.getZeroBased());
+        Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
+        Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
+
+        if (model.hasAssignment(assignmentToAdd)
+                && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
+            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+        }
+
+        if (!newWorker.isFitForRole(newRole)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
+        }
+        if (newWorker.isUnavailable(newShift)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+
+        if (!newShift.isRoleRequired(newRole)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
+        }
+
+        model.setAssignment(assignmentToRemove, assignmentToAdd);
+        Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
+        Shift.updateRoleRequirements(model, newShift, newRole);
+
+        return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
     }
 
 

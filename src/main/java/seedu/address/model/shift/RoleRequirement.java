@@ -14,32 +14,59 @@ import seedu.address.model.tag.Role;
  */
 public class RoleRequirement {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form [ ROLE ] [ QUANTITY ]"
-            + "(e.g. \'Cashier 1\'). \nQuantity must be greater than zero.";
+    public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form 'ROLE QUANTITY_REQUIRED'"
+            + " (e.g. \'Cashier 1\'). \nQuantity must be greater than zero.";
+    public static final String MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR = "Role Requirements must be of the form 'ROLE "
+            + "QUANTITY_REQUIRED QUANTITY_FILLED' (e.g. \'Cashier 1 0\').\nQuantity required must be positive. "
+            + "Quantity filled must be non-negative and at most the quantity required";
 
     public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + " [1-9]\\d*$";
+    public static final String VALIDATION_REGEX_STRING_CONSTRUCTOR = Role.VALIDATION_REGEX + " [1-9]\\d* \\d+$";
 
     private final Role role;
-    private final int quantity;
+    private final int quantityRequired;
+    private final int quantityFilled;
 
     /**
+     * Creates a role requirement with no workers filling the {@code role} yet.
      * Every field must be present and not null.
      */
-    public RoleRequirement(Role role, int quantity) {
-        requireAllNonNull(role, quantity);
+    public RoleRequirement(Role role, int quantityRequired) {
+        requireAllNonNull(role, quantityRequired);
         this.role = role;
-        this.quantity = quantity;
+        this.quantityRequired = quantityRequired;
+        quantityFilled = 0;
     }
 
     /**
-     * String version constructor for easy parsing of test data.
+     * Creates a role requirement with the number of workers filling the {@code role}.
+     * Every field must be present and not null.
+     */
+    public RoleRequirement(Role role, int quantityRequired, int quantityFilled) {
+        requireAllNonNull(role, quantityRequired, quantityFilled);
+        assert quantityFilled <= quantityRequired;
+        this.role = role;
+        this.quantityRequired = quantityRequired;
+        this.quantityFilled = quantityFilled;
+    }
+
+    /**
+     * String version constructor for easy parsing of sample and test data.
      */
     public RoleRequirement(String roleRequirementInfo) {
         requireNonNull(roleRequirementInfo);
-        checkArgument(isValidRoleRequirement(roleRequirementInfo), MESSAGE_CONSTRAINTS);
-        int index = roleRequirementInfo.lastIndexOf(" ");
-        this.role = Role.createRole(roleRequirementInfo.substring(0, index));
-        this.quantity = Integer.parseInt(roleRequirementInfo.substring(index + 1));
+        checkArgument(roleRequirementInfo.matches(VALIDATION_REGEX_STRING_CONSTRUCTOR),
+                MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR);
+
+        int lastSpaceIndex = roleRequirementInfo.lastIndexOf(" ");
+        quantityFilled = Integer.parseInt(roleRequirementInfo.substring(lastSpaceIndex + 1));
+        String lastSpaceRemovedString = roleRequirementInfo.substring(0, lastSpaceIndex);
+
+        int secondLastSpaceIndex = lastSpaceRemovedString.lastIndexOf(" ");
+        role = Role.createRole(lastSpaceRemovedString.substring(0, secondLastSpaceIndex));
+        quantityRequired = Integer.parseInt(lastSpaceRemovedString.substring(secondLastSpaceIndex + 1));
+
+        checkArgument(quantityFilled <= quantityRequired, MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR);
     }
 
     /**
@@ -49,16 +76,27 @@ public class RoleRequirement {
         return test.matches(VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if the quantity filled has not reached the quantity required.
+     */
+    public boolean isFilled() {
+        return quantityFilled >= quantityRequired;
+    }
+
     public Role getRole() {
         return role;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantityRequired() {
+        return quantityRequired;
+    }
+
+    public int getQuantityFilled() {
+        return quantityFilled;
     }
 
     /**
-     * Returns true if both role requirements are about the same role
+     * Returns true if both role requirements are about the same role and require the same quantity.
      * This defines a weaker notion of equality between the two role requirements.
      */
     public boolean isSameRoleRequirement(RoleRequirement otherRoleRequirement) {
@@ -67,11 +105,12 @@ public class RoleRequirement {
         }
 
         return otherRoleRequirement != null
-                && otherRoleRequirement.getRole().equals(getRole());
+                && otherRoleRequirement.getRole().equals(getRole())
+                && otherRoleRequirement.getQuantityRequired() == getQuantityRequired();
     }
 
     /**
-     * Returns true only if both role requirements are about the same role and of the same quantity.
+     * Returns true only if both role requirements are about the same role and of the same quantity required.
      * This defines a stronger notion of equality between two role requirements.
      */
     @Override
@@ -79,12 +118,12 @@ public class RoleRequirement {
         return other == this
                 || (other instanceof RoleRequirement
                 && role.equals(((RoleRequirement) other).role)
-                && quantity == ((RoleRequirement) other).quantity);
+                && quantityRequired == ((RoleRequirement) other).quantityRequired);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(role, quantity);
+        return Objects.hash(role, quantityRequired);
     }
 
     @Override
@@ -93,7 +132,7 @@ public class RoleRequirement {
         builder.append(" Role Required: ")
                 .append(getRole())
                 .append(" x ")
-                .append(getQuantity());
+                .append(getQuantityRequired());
         return builder.toString();
     }
 

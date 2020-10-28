@@ -81,13 +81,13 @@ public class ShiftDayOrTimeContainsKeywordsPredicateTest {
         // keywords match role requirement but not day nor time
         predicate = new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList("cashier", "1"));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 2").build()));
+                .withRoleRequirements("cashier 2 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 1").build()));
+                .withRoleRequirements("cashier 1 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("chef 1").build()));
+                .withRoleRequirements("chef 1 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 3", "cleaner 1").build()));
+                .withRoleRequirements("cashier 3 0", "cleaner 1 0").build()));
 
     }
 

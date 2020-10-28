@@ -150,7 +150,7 @@ public class ShiftEditCommandTest {
     @Test
     public void execute_roleNotFound_throwsCommandException() {
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT,
-                new EditShiftDescriptorBuilder().withRoleRequirements("random role 1").build());
+                new EditShiftDescriptorBuilder().withRoleRequirements("random role 1 0").build());
 
         assertCommandFailure(shiftEditCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "random role"));
     }
