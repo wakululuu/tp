@@ -7,8 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
 
@@ -17,7 +15,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
-import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -42,7 +39,7 @@ public class ReassignCommand extends Command {
 
     public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made:\n%1$s";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
-    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "This assignment does not exist in the McScheduler";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
     private final Index oldShiftIndex;
     private final Index newShiftIndex;
@@ -123,12 +120,12 @@ public class ReassignCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
         }
 
-            model.setAssignment(assignmentToRemove, assignmentToAdd);
-            Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
-            Shift.updateRoleRequirements(model, newShift, newRole);
+        model.setAssignment(assignmentToRemove, assignmentToAdd);
+        Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
+        Shift.updateRoleRequirements(model, newShift, newRole);
 
-            return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
-        }
+        return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
+    }
 
 
     @Override

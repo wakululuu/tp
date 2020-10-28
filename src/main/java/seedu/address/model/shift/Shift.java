@@ -4,8 +4,13 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
+import seedu.address.model.tag.Role;
 
 /**
  * Represents a Shift in the App.
@@ -44,6 +49,66 @@ public class Shift {
      */
     public Set<RoleRequirement> getRoleRequirements() {
         return Collections.unmodifiableSet(roleRequirements);
+    }
+
+    /**
+     * Returns true if the specified {@code role} is required in the shift and has yet to be filled.
+     */
+    public boolean isRoleRequired(Role role) {
+        for (RoleRequirement requirement : roleRequirements) {
+            if (requirement.getRole().equals(role)) {
+                return !requirement.isFilled();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Updates the quantity of the specified {@code role} that is filled in the specified {@code shift}.
+     *
+     * @param model storing the shift to be updated.
+     * @param shiftToUpdate in the model.
+     * @param role of the role requirement to be updated.
+     */
+    public static void updateRoleRequirements(Model model, Shift shiftToUpdate, Role role) {
+        requireAllNonNull(model, shiftToUpdate, role);
+        int quantityFilled = countRoleQuantityFilled(model, shiftToUpdate, role);
+        Set<RoleRequirement> updatedRoleRequirements = getUpdatedRoleRequirements(shiftToUpdate, role, quantityFilled);
+
+        Shift updatedShift = new Shift(shiftToUpdate.getShiftDay(), shiftToUpdate.getShiftTime(),
+                updatedRoleRequirements);
+        model.setShift(shiftToUpdate, updatedShift);
+    }
+
+    private static int countRoleQuantityFilled(Model model, Shift shiftToUpdate, Role role) {
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+        int quantityFilled = 0;
+
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getShift().isSameShift(shiftToUpdate) && assignment.getRole().equals(role)) {
+                quantityFilled++;
+            }
+        }
+
+        return quantityFilled;
+    }
+
+    private static Set<RoleRequirement> getUpdatedRoleRequirements(Shift shiftToUpdate, Role role, int quantityFilled) {
+        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(shiftToUpdate.getRoleRequirements());
+
+        for (RoleRequirement requirement : updatedRoleRequirements) {
+            if (requirement.getRole().equals(role)) {
+                RoleRequirement updatedRoleRequirement = new RoleRequirement(role, requirement.getQuantityRequired(),
+                        quantityFilled);
+                assert updatedRoleRequirement.getQuantityFilled() <= updatedRoleRequirement.getQuantityRequired();
+
+                updatedRoleRequirements.remove(requirement);
+                updatedRoleRequirements.add(updatedRoleRequirement);
+                break;
+            }
+        }
+
+        return updatedRoleRequirements;
     }
 
     /**
