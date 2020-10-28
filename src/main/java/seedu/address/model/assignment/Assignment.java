@@ -99,11 +99,12 @@ public class Assignment {
         final StringBuilder builder = new StringBuilder();
         builder.append("Shift: ")
                 .append(getShift().toCondensedString())
-                .append(" Worker: ")
+                .append(" - Worker: ")
                 .append(getWorker().getName());
         if (role != null) {
-            builder.append(" Role: ")
-                    .append(getRole().getRole());
+            builder.append(" (Role: ")
+                    .append(getRole().getRole())
+                    .append(")");
         }
         return builder.toString();
     }
