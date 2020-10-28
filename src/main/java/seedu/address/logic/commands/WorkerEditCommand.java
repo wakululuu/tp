@@ -117,7 +117,6 @@ public class WorkerEditCommand extends Command {
         Name updatedName = editWorkerDescriptor.getName().orElse(workerToEdit.getName());
         Phone updatedPhone = editWorkerDescriptor.getPhone().orElse(workerToEdit.getPhone());
         Pay updatedPay = editWorkerDescriptor.getPay().orElse(workerToEdit.getPay());
-        //Email updatedEmail = editWorkerDescriptor.getEmail().orElse(workerToEdit.getEmail());
         Address updatedAddress = editWorkerDescriptor.getAddress().orElse(workerToEdit.getAddress());
         Set<Role> updatedRoles = editWorkerDescriptor.getRoles().orElse(workerToEdit.getRoles());
         Set<Unavailability> updatedUnavailabilities = editWorkerDescriptor.getUnavailableTimings()
@@ -130,11 +129,21 @@ public class WorkerEditCommand extends Command {
         requireAllNonNull(model, workerToEdit, editedWorker);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
 
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
-                assignmentsToEdit.add(assignment);
+                Role assignedRole = assignment.getRole();
+                Set<Role> editedWorkerRoles = editedWorker.getRoles();
+                if (!editedWorkerRoles.contains(assignedRole)) {
+                    assignmentsToDelete.add(assignment);
+                } else {
+                    assignmentsToEdit.add(assignment);
+                }
             }
+        }
+        for (Assignment assignment : assignmentsToDelete) {
+            model.deleteAssignment(assignment);
         }
 
         for (Assignment assignment : assignmentsToEdit) {

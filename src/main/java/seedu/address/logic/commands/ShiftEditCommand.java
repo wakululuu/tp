@@ -24,6 +24,7 @@ import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
+import seedu.address.model.tag.Role;
 
 /**
  * Edits the details of an existing shift in the App.
@@ -107,11 +108,23 @@ public class ShiftEditCommand extends Command {
         requireAllNonNull(model, shiftToEdit, editedShift);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
+        Set<Role> newRoles = new HashSet<>();
 
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
-                assignmentsToEdit.add(assignment);
+                Role assignmentRole = assignment.getRole();
+                Set<RoleRequirement> newRoleRequirements = editedShift.getRoleRequirements();
+                newRoleRequirements.forEach(roleRequirement -> newRoles.add(roleRequirement.getRole()));
+                if (!newRoles.contains(assignmentRole)) {
+                    assignmentsToDelete.add(assignment);
+                } else {
+                    assignmentsToEdit.add(assignment);
+                }
             }
+        }
+        for (Assignment assignment : assignmentsToDelete) {
+            model.deleteAssignment(assignment);
         }
 
         for (Assignment assignment : assignmentsToEdit) {
