@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AssignCommand;
-import seedu.address.logic.commands.WorkerAvailableCommand;
 import seedu.address.logic.commands.CancelLeaveCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
@@ -25,6 +24,7 @@ import seedu.address.logic.commands.ShiftListCommand;
 import seedu.address.logic.commands.TakeLeaveCommand;
 import seedu.address.logic.commands.UnassignCommand;
 import seedu.address.logic.commands.WorkerAddCommand;
+import seedu.address.logic.commands.WorkerAvailableCommand;
 import seedu.address.logic.commands.WorkerDeleteCommand;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerListCommand;
