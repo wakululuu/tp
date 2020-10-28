@@ -87,7 +87,7 @@ public class UnassignCommand extends Command {
                 return assignment.getRole();
             }
         }
-        assert false;
+        assert false; // a role should have been returned within the for loop
         return null;
     }
 

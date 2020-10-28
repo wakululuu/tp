@@ -44,6 +44,7 @@ public class RoleRequirement {
      */
     public RoleRequirement(Role role, int quantityRequired, int quantityFilled) {
         requireAllNonNull(role, quantityRequired, quantityFilled);
+        assert quantityFilled <= quantityRequired;
         this.role = role;
         this.quantityRequired = quantityRequired;
         this.quantityFilled = quantityFilled;
@@ -79,7 +80,6 @@ public class RoleRequirement {
      * Returns true if the quantity filled has not reached the quantity required.
      */
     public boolean isFilled() {
-        assert quantityFilled <= quantityRequired;
         return quantityFilled >= quantityRequired;
     }
 
@@ -118,7 +118,6 @@ public class RoleRequirement {
         return other == this
                 || (other instanceof RoleRequirement
                 && role.equals(((RoleRequirement) other).role)
-                && quantityRequired == ((RoleRequirement) other).quantityRequired
                 && quantityRequired == ((RoleRequirement) other).quantityRequired);
     }
 
