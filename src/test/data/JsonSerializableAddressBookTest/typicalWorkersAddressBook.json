@@ -23,7 +23,7 @@
     "phone" : "95352563",
     "pay" : "15.01",
     "address" : "wall street",
-    "roles" : [ "chef" ],
+    "roles" : [ "cashier" ],
     "unavailableTimings" : [ ]
   }, {
     "name" : "Daniel Meier",
@@ -83,5 +83,5 @@
     } ]
   } ],
   "assignments": [],
-  "validRoles": [ "cashier", "chef" ]
+  "validRoles": [ "cashier", "chef", "janitor"]
 }

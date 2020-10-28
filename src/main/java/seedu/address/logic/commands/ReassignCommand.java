@@ -11,7 +11,6 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
-import java.util.Set;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -21,7 +20,6 @@ import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
-import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 public class ReassignCommand extends Command {
@@ -44,6 +42,7 @@ public class ReassignCommand extends Command {
 
     public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made:\n%1$s";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "This assignment does not exist in the McScheduler";
 
     private final Index oldShiftIndex;
     private final Index newShiftIndex;
@@ -78,6 +77,10 @@ public class ReassignCommand extends Command {
             List<Shift> lastShownShiftList = model.getFilteredShiftList();
             List<Assignment> assignmentList = model.getFullAssignmentList();
 
+            if (!model.hasRole(newRole)) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
+            }
+
             if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
                     || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
@@ -105,8 +108,11 @@ public class ReassignCommand extends Command {
                     && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
                 throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
             }
+            if (!newWorker.isFitForRole(newRole)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
+            }
 
-            if (isWorkerUnavailable(newWorker, newShift)) {
+            if (newWorker.isUnavailable(newShift)) {
                 throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
             }
 
@@ -116,21 +122,10 @@ public class ReassignCommand extends Command {
 
             return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
         } catch (AssignmentNotFoundException e) {
-            throw new CommandException("The old assignment does not exist");
+            throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
         }
     }
 
-    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
-        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
-        for (Unavailability unavailability : workerUnavailableTimings) {
-            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
-            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
-            if (hasSameDay && hasSameTime) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean equals(Object other) {

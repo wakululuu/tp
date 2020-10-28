@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 
 /**
@@ -77,6 +78,21 @@ public class Worker {
      */
     public boolean isFitForRole(Role role) {
         return roles.contains(role);
+    }
+
+    /**
+     * Returns true if the worker is unavailable for the specified shift.
+     */
+    public boolean isUnavailable(Shift shiftToAssign) {
+        Set<Unavailability> workerUnavailableTimings = getUnavailableTimings();
+        for (Unavailability unavailability : workerUnavailableTimings) {
+            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
+            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
+            if (hasSameDay && hasSameTime) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
