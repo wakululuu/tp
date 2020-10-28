@@ -16,7 +16,7 @@ import seedu.address.model.shift.ShiftTimeValue;
  */
 public class Unavailability {
     public static final String MESSAGE_CONSTRAINTS =
-            "Unavailability should only contain one of the days: MON, TUE, WED, THUR, FRI, SAT, SUN and/or "
+            "Unavailability must contain one of the days: MON, TUE, WED, THUR, FRI, SAT, SUN and "
                     + "one of the times: AM, PM, FULL";
     private final ShiftDay day;
     private final ShiftTime time;
@@ -41,8 +41,8 @@ public class Unavailability {
     public static boolean isValidUnavailability(String test) {
         String[] splitString = test.split(" ");
         try {
-            ShiftDayValue.valueOf(splitString[0]);
-            ShiftTimeValue.valueOf(splitString[1]);
+            ShiftDayValue.valueOf(splitString[0].toUpperCase());
+            ShiftTimeValue.valueOf(splitString[1].toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         } catch (ArrayIndexOutOfBoundsException e) {
