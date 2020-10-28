@@ -11,7 +11,6 @@ import seedu.address.model.worker.Address;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
-import seedu.address.model.worker.ShiftRoleAssignment;
 import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
@@ -25,7 +24,7 @@ public class WorkerBuilder {
     public static final String DEFAULT_PAY = "12.20";
     //public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_ROLE = "Cashier";
+    public static final String DEFAULT_ROLE = "cashier";
 
     private Name name;
     private Phone phone;
@@ -34,7 +33,6 @@ public class WorkerBuilder {
     private Address address;
     private Set<Role> roles;
     private Set<Unavailability> unavailableTimings;
-    private Set<ShiftRoleAssignment> shiftRoleAssignments;
 
     /**
      * Creates a {@code WorkerBuilder} with the default details.
@@ -48,7 +46,6 @@ public class WorkerBuilder {
         roles = new HashSet<>();
         roles.add(Role.createRole(DEFAULT_ROLE));
         unavailableTimings = new HashSet<>();
-        shiftRoleAssignments = new HashSet<>();
     }
 
     /**
@@ -103,7 +100,6 @@ public class WorkerBuilder {
         this.phone = new Phone(phone);
         return this;
     }
-
 
     /**
      * Sets the {@code Pay} of the {@code Worker} that we are building.

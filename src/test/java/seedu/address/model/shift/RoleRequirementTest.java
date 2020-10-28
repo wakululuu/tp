@@ -2,6 +2,7 @@ package seedu.address.model.shift;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -69,22 +70,22 @@ public class RoleRequirementTest {
     @Test
     public void equals() {
         // same object
-        assertTrue(roleRequirement.equals(roleRequirement));
+        assertFalse(!roleRequirement.equals(roleRequirement));
 
         // same values
-        assertTrue(roleRequirement.equals(new RoleRequirement(roleRequirement.getRole(),
-                roleRequirement.getQuantity())));
+        assertEquals(new RoleRequirement(roleRequirement.getRole(),
+                roleRequirement.getQuantity()), roleRequirement);
 
         // null -> returns false
-        assertFalse(roleRequirement.equals(null));
+        assertNotEquals(roleRequirement, null);
 
         // different type -> returns false
-        assertFalse(roleRequirement.equals(123));
+        assertNotEquals(roleRequirement, 123);
 
         // different any field -> returns false
-        assertFalse(roleRequirement.equals(differentRoleRoleRequirement)); // different role only
-        assertFalse(roleRequirement.equals(differentQuantityRoleRequirement)); // different quantity only
-        assertFalse(roleRequirement.equals(differentRoleRequirement)); // completely different
+        assertNotEquals(differentRoleRoleRequirement, roleRequirement); // different role only
+        assertNotEquals(differentQuantityRoleRequirement, roleRequirement); // different quantity only
+        assertNotEquals(differentRoleRequirement, roleRequirement); // completely different
     }
 
 }

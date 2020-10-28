@@ -73,6 +73,13 @@ public class Worker {
     }
 
     /**
+     * Returns true if the worker's role set contains the specified role.
+     */
+    public boolean isFitForRole(Role role) {
+        return roles.contains(role);
+    }
+
+    /**
      * Returns true if both workers of the same name have the same phone number.
      */
     public boolean isSameWorker(Worker otherWorker) {

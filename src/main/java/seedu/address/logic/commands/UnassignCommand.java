@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.List;
 
@@ -33,6 +31,7 @@ public class UnassignCommand extends Command {
             + "w/4";
 
     public static final String MESSAGE_UNASSIGN_SUCCESS = "Shift assignment removed:\n%1$s";
+    public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "This assignment does not exist in the McScheduler";
 
     private final Index shiftIndex;
     private final Index workerIndex;
@@ -67,10 +66,12 @@ public class UnassignCommand extends Command {
         Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
         Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
         Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
-        model.deleteAssignment(assignmentToDelete);
 
-        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+        if (!model.hasAssignment(assignmentToDelete)) {
+            throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
+        }
+
+        model.deleteAssignment(assignmentToDelete);
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
     }

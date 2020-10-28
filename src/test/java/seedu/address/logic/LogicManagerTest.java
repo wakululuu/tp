@@ -9,6 +9,7 @@ import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PAY_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalWorkers.AMY;
 
@@ -28,6 +29,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -78,6 +80,7 @@ public class LogicManagerTest {
         JsonUserPrefsStorage userPrefsStorage =
                 new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
         StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        model.addRole(Role.createRole(VALID_ROLE_CASHIER));
         logic = new LogicManager(model, storage);
 
         // Execute add command
@@ -85,6 +88,7 @@ public class LogicManagerTest {
                 + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER;
         Worker expectedWorker = new WorkerBuilder(AMY).withUnavailableTimings().build();
         ModelManager expectedModel = new ModelManager();
+        expectedModel.addRole(Role.createRole(VALID_ROLE_CASHIER));
         expectedModel.addWorker(expectedWorker);
         String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);

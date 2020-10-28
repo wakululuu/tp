@@ -93,6 +93,13 @@ public class WorkerEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_WORKER);
         }
 
+        Set<Role> roleSet = editedWorker.getRoles();
+        for (Role role : roleSet) {
+            if (!model.hasRole(role)) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
+            }
+        }
+
         editWorkerInAssignments(model, workerToEdit, editedWorker);
         model.setWorker(workerToEdit, editedWorker);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);

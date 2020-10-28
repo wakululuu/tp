@@ -8,6 +8,10 @@ public class Leave extends Role {
         super("Leave");
     }
 
+    public static boolean isLeave(Role role) {
+        return role.tagName.equalsIgnoreCase(ROLE_NAME);
+    }
+
     /**
      * In this implementation, a {@code Role} with {@code tagName == Leave.ROLE_NAME} is equal to {@code Leave}.
      * Future implementations which require a distinction between them should edit the below implementation.
@@ -17,7 +21,7 @@ public class Leave extends Role {
         return other == this
                 || other instanceof Leave
                 || (other instanceof Role
-                && ((Role) other).tagName == ROLE_NAME);
+                && ((Role) other).tagName.equalsIgnoreCase(ROLE_NAME));
     }
 
 }

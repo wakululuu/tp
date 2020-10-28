@@ -2,8 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -22,12 +23,9 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 import seedu.address.testutil.ShiftBuilder;
-
-
-
-
 
 public class ShiftAddCommandTest {
 
@@ -55,7 +53,17 @@ public class ShiftAddCommandTest {
         ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithShift(validShift);
 
         assertThrows(CommandException.class,
-                shiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+                ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_roleNotFound_throwsCommandException() {
+        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1").build();
+        ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
+        ModelStub modelStub = new ModelStubAcceptingShiftAdded();
+
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, VALID_ROLE_CASHIER), () ->
+                shiftAddCommand.execute(modelStub));
     }
 
     @Test
@@ -66,20 +74,20 @@ public class ShiftAddCommandTest {
         ShiftAddCommand addShift2Command = new ShiftAddCommand(shift2);
 
         // same object -> returns true
-        assertTrue(addShift1Command.equals(addShift1Command));
+        assertEquals(addShift1Command, addShift1Command);
 
         // same values -> returns true
         ShiftAddCommand addShift1CommandCopy = new ShiftAddCommand(shift1);
-        assertTrue(addShift1Command.equals(addShift1CommandCopy));
+        assertEquals(addShift1CommandCopy, addShift1Command);
 
         // different types -> returns false
-        assertFalse(addShift1Command.equals(1));
+        assertNotEquals(addShift1Command, 1);
 
         // null -> returns false
-        assertFalse(addShift1Command.equals(null));
+        assertNotEquals(addShift1Command, null);
 
         // different shift -> returns false
-        assertFalse(addShift1Command.equals(addShift2Command));
+        assertNotEquals(addShift2Command, addShift1Command);
     }
 
 
@@ -225,12 +233,32 @@ public class ShiftAddCommandTest {
         }
 
         @Override
-        public ObservableList<Assignment> getFilteredAssignmentList() {
+        public boolean hasRole(Role role) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
+        public void deleteRole(Role target) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addRole(Role role) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setRole(Role target, Role editedRole) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Role> getFilteredRoleList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredRoleList(Predicate<Role> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }
@@ -258,6 +286,12 @@ public class ShiftAddCommandTest {
      */
     private class ModelStubAcceptingShiftAdded extends ShiftAddCommandTest.ModelStub {
         final ArrayList<Shift> shiftsAdded = new ArrayList<>();
+        final ArrayList<Role> validRoles = new ArrayList<>();
+
+        ModelStubAcceptingShiftAdded(Role... role) {
+            requireNonNull(role);
+            validRoles.addAll(Arrays.asList(role));
+        }
 
         @Override
         public boolean hasShift(Shift shift) {
@@ -269,6 +303,12 @@ public class ShiftAddCommandTest {
         public void addShift(Shift shift) {
             requireNonNull(shift);
             shiftsAdded.add(shift);
+        }
+
+        @Override
+        public boolean hasRole(Role role) {
+            requireNonNull(role);
+            return validRoles.stream().anyMatch(role::equals);
         }
 
         @Override
