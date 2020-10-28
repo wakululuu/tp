@@ -84,8 +84,8 @@ public class CommandTestUtil {
     public static final String VALID_DAY_TUE = "TUE";
     public static final String VALID_TIME_AM = "AM";
     public static final String VALID_TIME_PM = "PM";
-    public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1";
-    public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3";
+    public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1 1";
+    public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3 2";
 
     public static final String VALID_SHIFT_INDEX_1 = " " + PREFIX_SHIFT + INDEX_FIRST_SHIFT.getOneBased();
     public static final String VALID_SHIFT_INDEX_2 = " " + PREFIX_SHIFT + INDEX_SECOND_SHIFT.getOneBased();

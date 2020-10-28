@@ -13,6 +13,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -70,10 +71,24 @@ public class UnassignCommand extends Command {
         if (!model.hasAssignment(assignmentToDelete)) {
             throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
         }
+        Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
 
         model.deleteAssignment(assignmentToDelete);
+        Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
 
         return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, assignmentToDelete));
+    }
+
+    private static Role getRoleToUnassign(Model model, Shift shiftToUnassign, Worker workerToUnassign) {
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getShift().isSameShift(shiftToUnassign)
+                    && assignment.getWorker().isSameWorker(workerToUnassign)) {
+                return assignment.getRole();
+            }
+        }
+        assert false; // a role should have been returned within the for loop
+        return null;
     }
 
     @Override
@@ -94,4 +109,3 @@ public class UnassignCommand extends Command {
                 && workerIndex.equals(e.workerIndex);
     }
 }
-
