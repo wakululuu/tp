@@ -130,14 +130,11 @@ public class WorkerEditCommand extends Command {
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
         List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
-        List<Assignment> assignmentsToDelete = new ArrayList<>();
 
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
                 Role assignedRole = assignment.getRole();
-                if (!editedWorker.isFitForRole(assignedRole) || workerToEdit.isSameWorker(assignment.getWorker())) {
-                    assignmentsToDelete.add(assignment);
-                } else if (editedWorker.isUnavailable(assignment.getShift())) {
+                if (!editedWorker.isFitForRole(assignedRole) || editedWorker.isUnavailable(assignment.getShift())) {
                     assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);

@@ -111,7 +111,6 @@ public class ShiftEditCommand extends Command {
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
         List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
-        List<Assignment> assignmentsToDelete = new ArrayList<>();
         Set<Role> newRoles = editedShift.getRoles();
 
         for (Assignment assignment : fullAssignmentList) {
@@ -125,8 +124,6 @@ public class ShiftEditCommand extends Command {
                     // This accounts for the case where the quantity needed for a particular role is less than the
                     // current quantity filled
                     throw new CommandException(MESSAGE_UNASSIGN_WORKERS);
-                } else if (assignment.getWorker().isUnavailable(editedShift)) {
-                    assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
                 }
