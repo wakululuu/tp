@@ -36,7 +36,7 @@ public class AssignCommand extends Command {
             + "w/1 Cashier "
             + "w/3 Janitor";
 
-    public static final String MESSAGE_ASSIGN_SUCCESS = "%d new assignment(s) added:\n%1$s";
+    public static final String MESSAGE_ASSIGN_SUCCESS = "%1$d new assignment(s) added:\n%2$s";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler: %1$s";
 
     private final Index shiftIndex;
@@ -85,9 +85,10 @@ public class AssignCommand extends Command {
             if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT, assignmentToAdd));
             }
+            model.addAssignment(assignmentToAdd);
 
             assignStringBuilder.append(assignmentToAdd);
-            model.addAssignment(assignmentToAdd);
+            assignStringBuilder.append("\n");
         }
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);

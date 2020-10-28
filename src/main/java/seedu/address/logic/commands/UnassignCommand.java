@@ -34,7 +34,7 @@ public class UnassignCommand extends Command {
             + "w/4 "
             + "w/2";
 
-    public static final String MESSAGE_UNASSIGN_SUCCESS = "%d shift assignment(s) removed:\n%1$s";
+    public static final String MESSAGE_UNASSIGN_SUCCESS = "%1$d shift assignment(s) removed:\n%2$s";
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -78,6 +78,7 @@ public class UnassignCommand extends Command {
             model.deleteAssignment(assignmentToDelete);
 
             unassignStringBuilder.append(assignmentToDelete);
+            unassignStringBuilder.append("\n");
         }
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
