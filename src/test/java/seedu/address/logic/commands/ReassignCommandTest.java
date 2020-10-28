@@ -8,7 +8,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_JANITOR;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBook;
 import static seedu.address.testutil.AddressBookBuilder.getTypicalAddressBookWithAssignments;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
@@ -126,7 +125,7 @@ public class ReassignCommandTest {
     }
     @Test
     public void execute_workerUnavailable_throwsCommandException() {
-        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBookWithAssignments(), new UserPrefs());
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, INDEX_FIRST_WORKER,
                 INDEX_THIRD_SHIFT, INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_CASHIER));
 

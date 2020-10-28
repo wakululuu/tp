@@ -125,7 +125,7 @@ public class ReassignCommand extends Command {
         Shift.updateRoleRequirements(model, newShift, newRole);
 
         return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
-        }
+    }
 
 
     @Override
