@@ -37,7 +37,7 @@ public class ShiftDay {
      */
     public static boolean isValidDay(String test) {
         try {
-            ShiftDayValue.valueOf(test);
+            ShiftDayValue.valueOf(test.toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         }

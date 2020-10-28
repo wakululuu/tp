@@ -39,7 +39,7 @@ public class ShiftTime {
      */
     public static boolean isValidTime(String test) {
         try {
-            ShiftTimeValue.valueOf(test);
+            ShiftTimeValue.valueOf(test.toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         }
