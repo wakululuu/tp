@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
@@ -194,6 +196,12 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return addressBook.getAssignment(toGet);
+    }
+
+    @Override
     public ObservableList<Assignment> getFullAssignmentList() {
         return addressBook.getAssignmentList();
     }
@@ -202,6 +210,9 @@ public class ModelManager implements Model {
     @Override
     public boolean hasRole(Role role) {
         requireNonNull(role);
+        if (role instanceof Leave) {
+            return true;
+        }
         return addressBook.hasRole(role);
     }
 

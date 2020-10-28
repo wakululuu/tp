@@ -1,0 +1,17 @@
+@startuml
+
+skinparam conditionStyle diamond
+
+start
+
+:parse given datetime range\ninto list of shifts;
+If (do some shifts have non-leave assignment?) then ([yes])
+    :notify user of error;
+else ([no])
+    :remove shifts which user\nhas already taken leave;
+    :add leave to all shifts;
+Endif
+
+stop
+
+@enduml

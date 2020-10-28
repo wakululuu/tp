@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 
 /**
@@ -77,6 +78,9 @@ public class Worker {
      * Returns true if the worker's role set contains the specified role.
      */
     public boolean isFitForRole(Role role) {
+        if (role instanceof Leave) {
+            return true;
+        }
         return roles.contains(role);
     }
 

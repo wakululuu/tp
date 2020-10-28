@@ -225,52 +225,6 @@ The following sequence diagram shows how unavailable timings are added to a `Wor
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-### Take/cancel leave feature
-
-The take/cancel leave feature allows users to set workers status to leave given a day and time. 
-The setting prevents workers from being allocated to a work shift for which they are taking leave.
-
-#### Implementation
-
-The proposed mechanism to indicate that individuals are on leave makes use of the existing system for assigning workers
-to shifts with a particular role. By making use of the existing assignment system, certain conflicts can be avoided:
-
-- Assignment of a worker to a shift when they took leave for that shift will not result in two assignments to the same shift.
-
-##### Leave
-
-Leave is represented as an extension of `Role`. To prevent conflicts between `new Leave()` and `new Role("Leave")`,
-these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
-be reconsidered if there should be a significant difference between these two objects.
-
-![Leave Class Diagram](images/LeaveClassDiagram.png)
-
-Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
-through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
-This implementation prevents the creation of a role that has the same name as a leave.
-
-##### Leave Assignment
-
-Assignment makes use of the `workerRoleAssignment` and `shiftRoleAssignment` features using `Leave` as the role.
-
-##### Commands
-
-Commands are essentially wrappers for `AssignCommand` and `UnassignCommand`. The following diagram explains how 
-this works. 
-
-![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
-
-- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift.
-- Conversely, `CancelLeaveCommand` is a wrapper for `UnassignCommand` and cancels leave 
-(not represented in diagram, but works similarly).
-
-##### Future Extensions - Leave Quota
-
-The following leave quotas could be implemented, using the existing `RoleRequirement` class:
-
-- Quota of leave per worker
-- Quota of leave per shift
-
 ### Assign/unassign feature
 
 The assign/unassign feature allows the user to assign/unassign a worker to/from a role in a shift.
@@ -303,6 +257,78 @@ Step 2. The user realises the previous command was a mistake and executes `unass
 from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
+
+### Take/cancel leave feature
+
+The take/cancel leave feature allows users to set workers status to leave given a day and time. 
+The setting prevents workers from being allocated to a work shift for which they are taking leave.
+
+#### Implementation
+
+The proposed mechanism to indicate that individuals are on leave makes use of the existing system for assigning workers
+to shifts with a particular role. By making use of the existing assignment system, certain conflicts can be avoided:
+
+- Assignment of a worker to a shift when they took leave for that shift will not result in two assignments to the same shift.
+
+##### Leave
+
+Leave is represented as an extension of `Role`. To prevent conflicts between `new Leave()` and `new Role("Leave")`,
+these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
+be reconsidered if there should be a significant difference between these two objects.
+
+![Leave Class Diagram](images/LeaveClassDiagram.png)
+
+Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
+through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
+This implementation prevents the creation of a role that has the same name as a leave.
+
+##### Leave Assignment
+
+Assignment makes use of the `Assignment` class features using `Leave` as the role.
+
+##### Commands
+
+Since `Leave` is essentially an extension of the assignment system, commands related to leave are very similar
+to commands related to assignments.
+
+- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift. The following
+diagram demonstrates how this works.
+
+![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
+
+- `CancelLeaveCommand` is very similar to `UnassignCommand`. However, there is a need to check if the assignment being
+removed represents a leave taken and not a normal role assignment. Hence, `CancelLeaveCommand` is implemented
+separately and not as a wrapper. However, its implementation details is almost identical to `UnassignCommand`.
+
+For more information, see [Implementation for Assign/Unassign Feature](#assignunassign-feature).
+
+##### Mass Operation Commands
+
+To increase the convenience of use for our expected typist user, we introduced a few mass operations related to leave:
+
+- `TakeLeaveCommand` and `CancelLeaveCommand` both allow for many worker to one shift leave assignment similar to 
+`AssignCommand` and `UnassignCommand`.
+- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift leave assignment.
+  - These two mass commands allow for taking leave over a range of dates - similar to how leave is often planned 
+  by workers.
+  - These two commands do not require `Shift`s representing the datetime range to take leave to be present. A bare-bones 
+  `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
+  (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
+  - The two commands handle other `Assignment`s differently:
+    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`).
+    - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
+    
+The following activity diagram describes the process behind `MassTakeLeaveCommand`.
+
+![MassTakeLeaveCommand Activity Diagram](images/MassTakeLeaveActivityDiagram.png)
+
+##### Future Extensions - Leave Quota
+
+The following leave quotas could be implemented, possibly using the existing `RoleRequirement` class:
+
+- Quota of leave per worker
+- Quota of leave per shift
 
 --------------------------------------------------------------------------------------------------------------------
 

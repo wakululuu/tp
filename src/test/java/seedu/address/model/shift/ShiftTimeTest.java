@@ -21,8 +21,8 @@ public class ShiftTimeTest {
 
     @Test
     public void constructor_validShiftTime() {
-        assertEquals(new ShiftTime("am"), new ShiftTime("AM")); // small caps equal to big caps
-        assertEquals(new ShiftTime("pM"), new ShiftTime("PM")); // mixed caps no difference
+        assertEquals(new ShiftTime("am"), new ShiftTime("AM")); // non-caps equal to caps
+        assertEquals(new ShiftTime("pM"), new ShiftTime("PM")); // mixed cases no difference
     }
 
     @Test
@@ -32,11 +32,11 @@ public class ShiftTimeTest {
 
         // invalid time
         assertFalse(ShiftTime.isValidTime("mp")); // not AM, PM
-        assertFalse(ShiftTime.isValidTime("pM")); // mix caps and small caps
-        assertFalse(ShiftTime.isValidTime("am")); // small caps
 
         // valid time
         assertTrue(ShiftTime.isValidTime("PM")); // caps time
+        assertTrue(ShiftTime.isValidTime("am")); // non-caps
+        assertTrue(ShiftTime.isValidTime("pM")); // mix caps and non-caps
     }
 
 }
