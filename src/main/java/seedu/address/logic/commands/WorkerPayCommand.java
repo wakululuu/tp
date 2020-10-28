@@ -20,7 +20,8 @@ public class WorkerPayCommand extends Command {
     public static final String COMMAND_WORD = "worker-pay";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Prints the pay earned by a worker identified by the index number used in the displayed worker list.\n"
+            + ": Calculates the weekly pay earned by a worker identified by the "
+            + "index number used in the displayed worker list.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
@@ -46,10 +47,6 @@ public class WorkerPayCommand extends Command {
 
         return new CommandResult(String.format(MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay));
     }
-
-
-
-
 
     @Override
     public boolean equals(Object other) {

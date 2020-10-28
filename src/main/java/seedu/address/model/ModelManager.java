@@ -23,7 +23,7 @@ import seedu.address.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-    private static final Integer HOURS_PER_SHIFT = 6;
+    private static final Integer HOURS_PER_SHIFT = 8;
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
