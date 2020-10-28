@@ -109,6 +109,7 @@ public class ShiftEditCommand extends Command {
     private void editShiftInAssignments(Model model, Shift shiftToEdit, Shift editedShift) throws CommandException {
         requireAllNonNull(model, shiftToEdit, editedShift);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
         List<Assignment> assignmentsToDelete = new ArrayList<>();
         Set<Role> newRoles = editedShift.getRoles();
@@ -124,11 +125,14 @@ public class ShiftEditCommand extends Command {
                     // This accounts for the case where the quantity needed for a particular role is less than the
                     // current quantity filled
                     throw new CommandException(MESSAGE_UNASSIGN_WORKERS);
+                } else if (assignment.getWorker().isUnavailable(editedShift)) {
+                    assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
                 }
             }
         }
+
         for (Assignment assignment : assignmentsToDelete) {
             model.deleteAssignment(assignment);
         }

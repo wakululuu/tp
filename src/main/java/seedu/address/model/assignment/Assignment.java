@@ -65,8 +65,8 @@ public class Assignment {
         }
 
         return otherAssignment != null
-                && otherAssignment.getShift().equals(getShift())
-                && otherAssignment.getWorker().equals(getWorker());
+                && otherAssignment.getShift().isSameShift(getShift())
+                && otherAssignment.getWorker().isSameWorker(getWorker());
     }
 
     /**

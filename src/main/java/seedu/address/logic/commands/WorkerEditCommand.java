@@ -128,6 +128,7 @@ public class WorkerEditCommand extends Command {
     private void editWorkerInAssignments(Model model, Worker workerToEdit, Worker editedWorker) {
         requireAllNonNull(model, workerToEdit, editedWorker);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
         List<Assignment> assignmentsToDelete = new ArrayList<>();
 
@@ -136,11 +137,14 @@ public class WorkerEditCommand extends Command {
                 Role assignedRole = assignment.getRole();
                 if (!editedWorker.isFitForRole(assignedRole)) {
                     assignmentsToDelete.add(assignment);
+                } else if (editedWorker.isUnavailable(assignment.getShift())) {
+                    assignmentsToDelete.add(assignment);
                 } else {
                     assignmentsToEdit.add(assignment);
                 }
             }
         }
+
         for (Assignment assignment : assignmentsToDelete) {
             model.deleteAssignment(assignment);
         }
