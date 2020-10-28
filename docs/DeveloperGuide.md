@@ -307,12 +307,12 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 
 ### MassOps Feature
 For certain commands that will be frequently used (`assign`, `unassign`, `take-leave`, `cancel-leave`), mass
- operations are supported to reduce the required number of command calls.
+operations are supported to reduce the required number of command calls.
  
 #### Implementation
-These operations consist of their own Command class and CommandParser class. In each of the supported 
-CommandParser class, Mass operations uses `ParserUtil`'s `GetAllValues()` method, which parses the user input 
-and returns all values that start with the specific prefix. In this case, the prefix is 'w/', 
+These operations consist of their own `*Command` class and `*CommandParser` class. In each of the supported 
+`*CommandParser class`, mass operations uses the `ArgumentMultimap#getAllValues(Prefix)` method, which parses the 
+user input and returns all values that start with the specific prefix. In this case, the prefix is 'w/', 
 signifying a `Worker`-`Role` relation.
 
 Once the Command object has its `shiftIndex` and Set of `WorkerRole`, it creates individual `Assignment`s and adds

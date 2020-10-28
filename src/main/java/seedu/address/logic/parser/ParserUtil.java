@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.assignment.WorkerRole;
+import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
@@ -318,25 +318,25 @@ public class ParserUtil {
      *
      * @throws ParseException if the given {@code roleRequirement} is invalid.
      */
-    public static WorkerRole parseWorkerRole(String workerRole) throws ParseException {
+    public static WorkerRolePair parseWorkerRole(String workerRole) throws ParseException {
         requireNonNull(workerRole);
         String trimmedWorkerRole = workerRole.trim();
-        if (!WorkerRole.isValidWorkerRole(trimmedWorkerRole)) {
-            throw new ParseException(WorkerRole.MESSAGE_CONSTRAINTS);
+        if (!WorkerRolePair.isValidWorkerRolePair(trimmedWorkerRole)) {
+            throw new ParseException(WorkerRolePair.MESSAGE_CONSTRAINTS);
         }
-        return new WorkerRole(trimmedWorkerRole);
+        return new WorkerRolePair(trimmedWorkerRole);
     }
 
     /**
-     * Parses {@code Collection<String> workerRoles} into a {@code Set<WorkerRole>}.
+     * Parses {@code Collection<String> workerRoles} into a {@code Set<WorkerRolePair>}.
      */
-    public static Set<WorkerRole> parseWorkerRoles(
+    public static Set<WorkerRolePair> parseWorkerRoles(
             Collection<String> workerRoles) throws ParseException {
         requireNonNull(workerRoles);
-        final Set<WorkerRole> workerRoleSet = new HashSet<>();
+        final Set<WorkerRolePair> workerRolePairSet = new HashSet<>();
         for (String workerRoleString : workerRoles) {
-            workerRoleSet.add(parseWorkerRole(workerRoleString));
+            workerRolePairSet.add(parseWorkerRole(workerRoleString));
         }
-        return workerRoleSet;
+        return workerRolePairSet;
     }
 }

@@ -28,13 +28,13 @@ public class UnassignCommand extends Command {
             + "from the McScheduler by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
             + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
-            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)\n"
+            + "{" + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)}...\n"
             + "Example: " + COMMAND_WORD
             + " s/1 "
             + "w/4 "
             + "w/2";
 
-    public static final String MESSAGE_UNASSIGN_SUCCESS = "%d shift assignment(s) removed.";
+    public static final String MESSAGE_UNASSIGN_SUCCESS = "%d shift assignment(s) removed:\n%1$s";
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -63,11 +63,13 @@ public class UnassignCommand extends Command {
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
-        for (Index workerIndex: workerIndexes) {
+        for (Index workerIndex : workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
             }
         }
+
+        StringBuilder unassignStringBuilder = new StringBuilder();
 
         for (Index workerIndex: workerIndexes) {
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
@@ -75,11 +77,13 @@ public class UnassignCommand extends Command {
             Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
             model.deleteAssignment(assignmentToDelete);
 
-            model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
-            model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
+            unassignStringBuilder.append(assignmentToDelete);
         }
+        model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
+        model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
 
-        return new CommandResult(String.format(MESSAGE_UNASSIGN_SUCCESS, workerIndexes.size()));
+        return new CommandResult(
+                String.format(MESSAGE_UNASSIGN_SUCCESS, workerIndexes.size(), unassignStringBuilder.toString()));
     }
 
     @Override

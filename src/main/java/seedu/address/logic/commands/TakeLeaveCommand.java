@@ -10,7 +10,7 @@ import java.util.Set;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.assignment.WorkerRole;
+import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.tag.Leave;
 
 /**
@@ -24,7 +24,7 @@ public class TakeLeaveCommand extends Command {
             + "during the specified shift by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
             + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
-            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)\n"
+            + "{" + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)}...\n"
             + "Example: " + COMMAND_WORD
             + " s/4 "
             + "w/1 "
@@ -49,9 +49,9 @@ public class TakeLeaveCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        Set<WorkerRole> workerLeaves = new HashSet<>();
+        Set<WorkerRolePair> workerLeaves = new HashSet<>();
         for (Index i: workerIndexes) {
-            workerLeaves.add(new WorkerRole(i, new Leave()));
+            workerLeaves.add(new WorkerRolePair(i, new Leave()));
         }
         CommandResult commandResult = new AssignCommand(shiftIndex, workerLeaves).execute(model);
 

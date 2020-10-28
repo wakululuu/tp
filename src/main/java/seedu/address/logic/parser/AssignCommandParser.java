@@ -12,7 +12,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AssignCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.assignment.WorkerRole;
+import seedu.address.model.assignment.WorkerRolePair;
 
 /**
  * Parses input arguments and creates a new AssignCommand object
@@ -36,19 +36,19 @@ public class AssignCommandParser implements Parser<AssignCommand> {
 
         Index shiftIndex;
         Index workerIndex;
-        Set<WorkerRole> workerRoles;
+        Set<WorkerRolePair> workerRolePairs;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT).get());
             //workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
-            workerRoles = ParserUtil.parseWorkerRoles(argMultimap.getAllValues(PREFIX_WORKER_ROLE));
+            workerRolePairs = ParserUtil.parseWorkerRoles(argMultimap.getAllValues(PREFIX_WORKER_ROLE));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    "AAAA"), ive);
+                    AssignCommand.MESSAGE_USAGE), ive);
         }
 
         //Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
-        return new AssignCommand(shiftIndex, workerRoles);
+        return new AssignCommand(shiftIndex, workerRolePairs);
     }
 
     /**

@@ -15,9 +15,9 @@ import seedu.address.model.tag.Role;
  * Represents a Worker being assigned to a Role for a shift in the App.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
-public class WorkerRole {
+public class WorkerRolePair {
 
-    public static final String MESSAGE_CONSTRAINTS = "Worker-Role must be of the form [ WORKER_INDEX ] [ ROLE ]"
+    public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form [ WORKER_INDEX ] [ ROLE ]"
             + "(e.g. \'2 Cashier\').";
 
     public static final String VALIDATION_REGEX = "[1-9] " + Role.VALIDATION_REGEX;
@@ -28,7 +28,7 @@ public class WorkerRole {
     /**
      * Every field must be present and not null.
      */
-    public WorkerRole(Index workerIndex, Role role) {
+    public WorkerRolePair(Index workerIndex, Role role) {
         requireAllNonNull(workerIndex, role);
         this.workerIndex = workerIndex;
         this.role = role;
@@ -37,9 +37,9 @@ public class WorkerRole {
     /**
      * String version constructor for easy parsing of sample data.
      */
-    public WorkerRole(String workerRoleInfo) throws ParseException {
+    public WorkerRolePair(String workerRoleInfo) throws ParseException {
         requireNonNull(workerRoleInfo);
-        checkArgument(isValidWorkerRole(workerRoleInfo), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidWorkerRolePair(workerRoleInfo), MESSAGE_CONSTRAINTS);
         int index = workerRoleInfo.indexOf(" ");
         this.workerIndex = ParserUtil.parseIndex(workerRoleInfo.substring(0, index));
         this.role = Role.createRole(workerRoleInfo.substring(index + 1));
@@ -48,7 +48,7 @@ public class WorkerRole {
     /**
      * Returns true if a given string is a valid worker-role
      */
-    public static boolean isValidWorkerRole(String test) {
+    public static boolean isValidWorkerRolePair(String test) {
         return test.matches(VALIDATION_REGEX);
     }
 
@@ -66,9 +66,9 @@ public class WorkerRole {
     @Override
     public boolean equals(Object other) {
         return other == this
-                || (other instanceof WorkerRole
-                && workerIndex == ((WorkerRole) other).workerIndex
-                && role.equals(((WorkerRole) other).role));
+                || (other instanceof WorkerRolePair
+                && workerIndex == ((WorkerRolePair) other).workerIndex
+                && role.equals(((WorkerRolePair) other).role));
     }
 
     @Override
