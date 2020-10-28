@@ -13,7 +13,6 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 
-
 /**
  * Deletes a shift identified using its displayed index from the McScheduler.
  */

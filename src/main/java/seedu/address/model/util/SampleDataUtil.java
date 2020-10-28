@@ -57,9 +57,9 @@ public class SampleDataUtil {
             getUnavailabilitySet("SUN AM", "MON AM"));
 
     private static final Shift SAMPLE_SHIFT_MON_AM = new Shift(
-            new ShiftDay("Mon"), new ShiftTime("AM"), getRoleRequirementSet("Cashier 1"));
+            new ShiftDay("Mon"), new ShiftTime("AM"), getRoleRequirementSet("Cashier 1 1"));
     private static final Shift SAMPLE_SHIFT_TUE_PM = new Shift(
-            new ShiftDay("Tue"), new ShiftTime("PM"), getRoleRequirementSet("Cleaner 2"));
+            new ShiftDay("Tue"), new ShiftTime("PM"), getRoleRequirementSet("Cleaner 2 2"));
 
     private static final Role SAMPLE_ROLE_CASHIER = Role.createRole("cashier");
     private static final Role SAMPLE_ROLE_CHEF = Role.createRole("chef");
