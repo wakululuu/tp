@@ -13,6 +13,8 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.MassCancelLeaveCommand;
+import seedu.address.logic.commands.MassTakeLeaveCommand;
 import seedu.address.logic.commands.ReassignCommand;
 import seedu.address.logic.commands.RoleAddCommand;
 import seedu.address.logic.commands.RoleDeleteCommand;
@@ -96,8 +98,14 @@ public class AddressBookParser {
         case TakeLeaveCommand.COMMAND_WORD:
             return new TakeLeaveCommandParser().parse(arguments);
 
+        case MassTakeLeaveCommand.COMMAND_WORD:
+            return new MassTakeLeaveCommandParser().parse(arguments);
+
         case CancelLeaveCommand.COMMAND_WORD:
             return new CancelLeaveCommandParser().parse(arguments);
+
+        case MassCancelLeaveCommand.COMMAND_WORD:
+            return new MassCancelLeaveCommandParser().parse(arguments);
 
         case ShiftAddCommand.COMMAND_WORD:
             return new ShiftAddCommandParser().parse(arguments);
