@@ -58,7 +58,7 @@ public class ShiftAddCommandTest {
 
     @Test
     public void execute_roleNotFound_throwsCommandException() {
-        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1").build();
+        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1 0").build();
         ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
         ModelStub modelStub = new ModelStubAcceptingShiftAdded();
 
