@@ -106,12 +106,21 @@ public class ShiftEditCommand extends Command {
     private void editShiftInAssignments(Model model, Shift shiftToEdit, Shift editedShift) {
         requireAllNonNull(model, shiftToEdit, editedShift);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
 
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
-                assignmentsToEdit.add(assignment);
+                if (assignment.getWorker().isUnavailable(editedShift)) {
+                    assignmentsToDelete.add(assignment);
+                } else {
+                    assignmentsToEdit.add(assignment);
+                }
             }
+        }
+
+        for (Assignment assignment : assignmentsToDelete) {
+            model.deleteAssignment(assignment);
         }
 
         for (Assignment assignment : assignmentsToEdit) {
