@@ -27,16 +27,17 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.model.tag.Role;
-//import Tag;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
+
+//import Tag;
 
 public class WorkerAddCommandParserTest {
     private AddCommandParser parser = new AddCommandParser();
@@ -52,11 +53,11 @@ public class WorkerAddCommandParserTest {
 
         // multiple names - last name accepted
         CommandParserTestUtil.assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
+            + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple phones - last phone accepted
         CommandParserTestUtil.assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
+            + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple addresses - last address accepted
         CommandParserTestUtil
@@ -64,7 +65,8 @@ public class WorkerAddCommandParserTest {
                 + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple roles - all accepted
-        Worker expectedWorkerMultipleTags = new WorkerBuilder(TypicalWorkers.BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
+        Worker expectedWorkerMultipleTags =
+            new WorkerBuilder(TypicalWorkers.BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
                 .build();
         CommandParserTestUtil
             .assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
@@ -76,7 +78,8 @@ public class WorkerAddCommandParserTest {
         // zero tags
         Worker expectedWorker = new WorkerBuilder(TypicalWorkers.AMY).build();
         CommandParserTestUtil
-            .assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER,
+            .assertParseSuccess(parser,
+                NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER,
                 new WorkerAddCommand(expectedWorker));
     }
 
@@ -145,8 +148,9 @@ public class WorkerAddCommandParserTest {
 
         // non-empty preamble
         CommandParserTestUtil
-            .assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+            .assertParseFailure(parser,
+                PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                    + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
     }
 }

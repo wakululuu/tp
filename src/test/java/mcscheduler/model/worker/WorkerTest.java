@@ -4,14 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-//import static CommandTestUtil.VALID_EMAIL_BOB;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
+import mcscheduler.testutil.Assert;
+import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
+
+//import static CommandTestUtil.VALID_EMAIL_BOB;
 
 public class WorkerTest {
 
@@ -40,7 +41,7 @@ public class WorkerTest {
         // same name, same phone, different attributes -> returns true
         editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withPay(CommandTestUtil.VALID_PAY_BOB).withAddress(
             CommandTestUtil.VALID_ADDRESS_BOB)
-                .withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
         assertTrue(TypicalWorkers.ALICE.isSameWorker(editedAlice));
     }
 

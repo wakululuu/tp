@@ -1,16 +1,16 @@
 package mcscheduler.model;
 
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
+import static mcscheduler.testutil.Assert.assertThrows;
+import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
+import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
+import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
-import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
-import static mcscheduler.testutil.Assert.assertThrows;
-import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
-import static mcscheduler.testutil.TypicalWorkers.ALICE;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,7 +57,7 @@ public class McSchedulerTest {
     public void resetData_withDuplicateWorkers_throwsDuplicateWorkerException() {
         // Two workers with the same identity fields
         Worker editedAlice = new WorkerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
-                .build();
+            .build();
         List<Worker> newWorkers = Arrays.asList(ALICE, editedAlice);
         McSchedulerStub newData = McSchedulerStub.createMcSchedulerStubWithWorkers(newWorkers);
 
@@ -84,7 +84,7 @@ public class McSchedulerTest {
     public void hasWorker_workerWithSameIdentityFieldsInMcScheduler_returnsTrue() {
         mcScheduler.addWorker(ALICE);
         Worker editedAlice = new WorkerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER)
-                .build();
+            .build();
         assertTrue(mcScheduler.hasWorker(editedAlice));
     }
 
@@ -96,7 +96,7 @@ public class McSchedulerTest {
     @Test
     public void resetData_withDuplicateShifts_throwsDuplicateShiftException() {
         Shift editedShift = new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF)
-                .build();
+            .build();
         List<Shift> newShifts = Arrays.asList(SHIFT_A, editedShift);
         McSchedulerStub newData = McSchedulerStub.createMcSchedulerStubWithShifts(newShifts);
 
@@ -124,7 +124,7 @@ public class McSchedulerTest {
     public void hasShift_workerWithSameIdentityFieldsInMcScheduler_returnsTrue() {
         mcScheduler.addShift(SHIFT_A);
         Shift editedShift = new ShiftBuilder(SHIFT_A).withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF)
-                .build();
+            .build();
         assertTrue(mcScheduler.hasShift(editedShift));
     }
 
@@ -173,7 +173,7 @@ public class McSchedulerTest {
         private final ObservableList<Role> validRoles = FXCollections.observableArrayList();
 
         private McSchedulerStub(Collection<Worker> workers, Collection<Shift> shifts,
-                Collection<Assignment> assignments, Collection<Role> validRoles) {
+                                Collection<Assignment> assignments, Collection<Role> validRoles) {
             this.workers.setAll(workers);
             this.shifts.setAll(shifts);
             this.assignments.setAll(assignments);
@@ -182,12 +182,12 @@ public class McSchedulerTest {
 
         public static McSchedulerStub createMcSchedulerStubWithWorkers(Collection<Worker> workers) {
             return new McSchedulerStub(workers, Collections.emptyList(), Collections.emptyList(),
-                    Collections.emptyList());
+                Collections.emptyList());
         }
 
         public static McSchedulerStub createMcSchedulerStubWithShifts(Collection<Shift> shifts) {
             return new McSchedulerStub(Collections.emptyList(), shifts, Collections.emptyList(),
-                    Collections.emptyList());
+                Collections.emptyList());
         }
 
         @Override

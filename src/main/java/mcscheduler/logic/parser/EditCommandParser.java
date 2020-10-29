@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerEditCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;

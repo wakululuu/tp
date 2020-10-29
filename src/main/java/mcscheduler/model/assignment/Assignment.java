@@ -1,10 +1,8 @@
 package mcscheduler.model.assignment;
 
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
-
 import java.util.Objects;
 
-import mcscheduler.commons.util.*;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;

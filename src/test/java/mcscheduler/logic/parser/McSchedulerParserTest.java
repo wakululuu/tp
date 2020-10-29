@@ -1,10 +1,9 @@
 package mcscheduler.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static mcscheduler.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static mcscheduler.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
-import static mcscheduler.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.ExitCommand;
 import mcscheduler.logic.commands.FindCommand;
@@ -25,7 +23,9 @@ import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 import mcscheduler.testutil.WorkerBuilder;
 import mcscheduler.testutil.WorkerUtil;
 
@@ -49,7 +49,7 @@ public class McSchedulerParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         WorkerDeleteCommand command = (WorkerDeleteCommand) parser.parseCommand(
-                WorkerDeleteCommand.COMMAND_WORD + " " + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased());
+            WorkerDeleteCommand.COMMAND_WORD + " " + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased());
         assertEquals(new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER), command);
     }
 
@@ -58,7 +58,8 @@ public class McSchedulerParserTest {
         Worker worker = new WorkerBuilder().build();
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder(worker).build();
         WorkerEditCommand command = (WorkerEditCommand) parser.parseCommand(WorkerEditCommand.COMMAND_WORD + " "
-                + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased() + " " + WorkerUtil.getEditWorkerDescriptorDetails(descriptor));
+            + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased() + " "
+            + WorkerUtil.getEditWorkerDescriptorDetails(descriptor));
         assertEquals(new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, descriptor), command);
     }
 
@@ -72,7 +73,7 @@ public class McSchedulerParserTest {
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
         FindCommand command = (FindCommand) parser.parseCommand(
-                FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+            FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
         assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
     }
 
@@ -90,8 +91,9 @@ public class McSchedulerParserTest {
 
     @Test
     public void parseCommand_unrecognisedInput_throwsParseException() {
-        Assert.assertThrows(ParseException.class, String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
-            -> parser.parseCommand(""));
+        Assert.assertThrows(ParseException.class,
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE), ()
+                -> parser.parseCommand(""));
     }
 
     @Test

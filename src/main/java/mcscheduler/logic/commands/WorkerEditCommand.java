@@ -1,7 +1,6 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_NAME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PAY;

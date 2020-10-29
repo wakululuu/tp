@@ -11,8 +11,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.testutil.ShiftBuilder;
+import mcscheduler.testutil.TypicalShifts;
 
 public class ShiftDayOrTimeContainsKeywordsPredicateTest {
 
@@ -23,7 +23,7 @@ public class ShiftDayOrTimeContainsKeywordsPredicateTest {
 
         ShiftDayOrTimeContainsKeywordsPredicate predicate = new ShiftDayOrTimeContainsKeywordsPredicate(keywords);
         ShiftDayOrTimeContainsKeywordsPredicate otherPredicate = new ShiftDayOrTimeContainsKeywordsPredicate(
-                otherKeywords);
+            otherKeywords);
 
         // null
         assertNotEquals(predicate, null);
@@ -45,7 +45,7 @@ public class ShiftDayOrTimeContainsKeywordsPredicateTest {
     public void test_dayOrTimeContainsKeywords_returnsTrue() {
         // One keyword day
         ShiftDayOrTimeContainsKeywordsPredicate predicate =
-                new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList("MON"));
+            new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList("MON"));
         assertTrue(predicate.test(new ShiftBuilder().withShiftDay("MON").build()));
 
         // One keyword time
@@ -81,13 +81,13 @@ public class ShiftDayOrTimeContainsKeywordsPredicateTest {
         // keywords match role requirement but not day nor time
         predicate = new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList("cashier", "1"));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 2 0").build()));
+            .withRoleRequirements("cashier 2 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 1 0").build()));
+            .withRoleRequirements("cashier 1 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("chef 1 0").build()));
+            .withRoleRequirements("chef 1 0").build()));
         assertFalse(predicate.test(new ShiftBuilder().withShiftDay("WED").withShiftTime("PM")
-                .withRoleRequirements("cashier 3 0", "cleaner 1 0").build()));
+            .withRoleRequirements("cashier 3 0", "cleaner 1 0").build()));
 
     }
 

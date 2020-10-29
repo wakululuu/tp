@@ -14,9 +14,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.CancelLeaveCommand;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class CancelLeaveCommandParserTest {
     private CancelLeaveCommandParser parser = new CancelLeaveCommandParser();
@@ -28,11 +28,11 @@ public class CancelLeaveCommandParserTest {
 
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_WORKER_INDEX_1 + VALID_SHIFT_INDEX_1,
-                new CancelLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex));
+            new CancelLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex));
 
         // different order
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1,
-                new CancelLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex));
+            new CancelLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex));
     }
 
     @Test
@@ -41,7 +41,8 @@ public class CancelLeaveCommandParserTest {
 
         assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + VALID_WORKER_INDEX_1, expectedMessage);
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + " " + TypicalIndexes.INDEX_FIRST_WORKER, expectedMessage);
-        assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER, expectedMessage);
+        assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER,
+            expectedMessage);
     }
 
     @Test

@@ -1,13 +1,11 @@
 package mcscheduler.model.worker;
 
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import mcscheduler.commons.util.*;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Leave;
 import mcscheduler.model.tag.Role;

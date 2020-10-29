@@ -1,19 +1,20 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -41,7 +42,8 @@ public class WorkerDeleteCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        CommandTestUtil
+            .assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test
@@ -70,7 +72,8 @@ public class WorkerDeleteCommandTest {
 
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        CommandTestUtil.assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        CommandTestUtil
+            .assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
 
     @Test

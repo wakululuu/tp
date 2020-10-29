@@ -3,7 +3,6 @@ package mcscheduler.model.worker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,10 +10,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
 import mcscheduler.model.worker.exceptions.DuplicateWorkerException;
 import mcscheduler.model.worker.exceptions.WorkerNotFoundException;
+import mcscheduler.testutil.Assert;
+import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
 
 public class UniqueWorkerListTest {
@@ -40,8 +40,9 @@ public class UniqueWorkerListTest {
     @Test
     public void contains_workerWithSameIdentityFieldsInList_returnsTrue() {
         uniqueWorkerList.add(TypicalWorkers.ALICE);
-        Worker editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withAddress(CommandTestUtil.VALID_ADDRESS_BOB).withRoles(
-            CommandTestUtil.VALID_ROLE_CASHIER)
+        Worker editedAlice =
+            new WorkerBuilder(TypicalWorkers.ALICE).withAddress(CommandTestUtil.VALID_ADDRESS_BOB).withRoles(
+                CommandTestUtil.VALID_ROLE_CASHIER)
                 .build();
         assertTrue(uniqueWorkerList.contains(editedAlice));
     }
@@ -69,7 +70,8 @@ public class UniqueWorkerListTest {
 
     @Test
     public void setWorker_targetWorkerNotInList_throwsWorkerNotFoundException() {
-        Assert.assertThrows(WorkerNotFoundException.class, () -> uniqueWorkerList.setWorker(TypicalWorkers.ALICE, TypicalWorkers.ALICE));
+        Assert.assertThrows(WorkerNotFoundException.class, () ->
+            uniqueWorkerList.setWorker(TypicalWorkers.ALICE, TypicalWorkers.ALICE));
     }
 
     @Test
@@ -84,8 +86,9 @@ public class UniqueWorkerListTest {
     @Test
     public void setWorker_editedWorkerHasSameIdentity_success() {
         uniqueWorkerList.add(TypicalWorkers.ALICE);
-        Worker editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withAddress(CommandTestUtil.VALID_ADDRESS_BOB).withRoles(
-            CommandTestUtil.VALID_ROLE_CASHIER)
+        Worker editedAlice =
+            new WorkerBuilder(TypicalWorkers.ALICE).withAddress(CommandTestUtil.VALID_ADDRESS_BOB).withRoles(
+                CommandTestUtil.VALID_ROLE_CASHIER)
                 .build();
         uniqueWorkerList.setWorker(TypicalWorkers.ALICE, editedAlice);
         UniqueWorkerList expectedUniqueWorkerList = new UniqueWorkerList();
@@ -106,7 +109,8 @@ public class UniqueWorkerListTest {
     public void setWorker_editedWorkerHasNonUniqueIdentity_throwsDuplicateWorkerException() {
         uniqueWorkerList.add(TypicalWorkers.ALICE);
         uniqueWorkerList.add(TypicalWorkers.BOB);
-        Assert.assertThrows(DuplicateWorkerException.class, () -> uniqueWorkerList.setWorker(TypicalWorkers.ALICE, TypicalWorkers.BOB));
+        Assert.assertThrows(DuplicateWorkerException.class, () ->
+            uniqueWorkerList.setWorker(TypicalWorkers.ALICE, TypicalWorkers.BOB));
     }
 
     @Test
@@ -159,7 +163,8 @@ public class UniqueWorkerListTest {
     @Test
     public void setWorkers_listWithDuplicateWorkers_throwsDuplicateWorkerException() {
         List<Worker> listWithDuplicateWorkers = Arrays.asList(TypicalWorkers.ALICE, TypicalWorkers.ALICE);
-        Assert.assertThrows(DuplicateWorkerException.class, () -> uniqueWorkerList.setWorkers(listWithDuplicateWorkers));
+        Assert
+            .assertThrows(DuplicateWorkerException.class, () -> uniqueWorkerList.setWorkers(listWithDuplicateWorkers));
     }
 
     @Test

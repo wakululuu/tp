@@ -1,14 +1,13 @@
 package mcscheduler.model.tag;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mcscheduler.commons.util.*;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.tag.exceptions.DuplicateRoleException;
 import mcscheduler.model.tag.exceptions.RoleNotFoundException;
 

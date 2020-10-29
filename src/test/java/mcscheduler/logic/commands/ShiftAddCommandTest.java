@@ -3,7 +3,6 @@ package mcscheduler.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -26,6 +24,7 @@ import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.ShiftBuilder;
 
 public class ShiftAddCommandTest {
@@ -38,7 +37,7 @@ public class ShiftAddCommandTest {
     @Test
     public void execute_shiftAcceptedByModel_addSuccessful() throws Exception {
         ShiftAddCommandTest.ModelStubAcceptingShiftAdded modelStub =
-                new ShiftAddCommandTest.ModelStubAcceptingShiftAdded();
+            new ShiftAddCommandTest.ModelStubAcceptingShiftAdded();
         Shift validShift = new ShiftBuilder().build();
 
         CommandResult commandResult = new ShiftAddCommand(validShift).execute(modelStub);
@@ -54,7 +53,7 @@ public class ShiftAddCommandTest {
         ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithShift(validShift);
 
         Assert.assertThrows(CommandException.class,
-                ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+            ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
     }
 
     @Test
@@ -64,8 +63,9 @@ public class ShiftAddCommandTest {
         ModelStub modelStub = new ModelStubAcceptingShiftAdded();
 
         Assert
-            .assertThrows(CommandException.class, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
-                shiftAddCommand.execute(modelStub));
+            .assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
+                    shiftAddCommand.execute(modelStub));
     }
 
     @Test
@@ -91,8 +91,6 @@ public class ShiftAddCommandTest {
         // different shift -> returns false
         assertNotEquals(addShift2Command, addShift1Command);
     }
-
-
 
 
     /**

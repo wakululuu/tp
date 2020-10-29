@@ -3,7 +3,7 @@ package mcscheduler.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;

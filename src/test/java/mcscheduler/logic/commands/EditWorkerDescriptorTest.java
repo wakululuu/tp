@@ -2,12 +2,13 @@ package mcscheduler.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//import static CommandTestUtil.VALID_EMAIL_BOB;
 
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+
+//import static CommandTestUtil.VALID_EMAIL_BOB;
 
 public class EditWorkerDescriptorTest {
 
@@ -35,11 +36,13 @@ public class EditWorkerDescriptorTest {
         assertNotEquals(editedAmy, CommandTestUtil.DESC_AMY);
 
         // different phone -> returns false
-        editedAmy = new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withPhone(CommandTestUtil.VALID_PHONE_BOB).build();
+        editedAmy = new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withPhone(CommandTestUtil.VALID_PHONE_BOB)
+            .build();
         assertNotEquals(editedAmy, CommandTestUtil.DESC_AMY);
 
         // different pay -> returns false
-        editedAmy = new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withPay(CommandTestUtil.VALID_PAY_BOB).build();
+        editedAmy =
+            new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withPay(CommandTestUtil.VALID_PAY_BOB).build();
         assertNotEquals(editedAmy, CommandTestUtil.DESC_AMY);
 
         // different address -> returns false
@@ -48,7 +51,8 @@ public class EditWorkerDescriptorTest {
         assertNotEquals(editedAmy, CommandTestUtil.DESC_AMY);
 
         // different roles -> returns false
-        editedAmy = new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withRoles(CommandTestUtil.VALID_ROLE_CHEF).build();
+        editedAmy = new EditWorkerDescriptorBuilder(CommandTestUtil.DESC_AMY).withRoles(CommandTestUtil.VALID_ROLE_CHEF)
+            .build();
         assertNotEquals(editedAmy, CommandTestUtil.DESC_AMY);
     }
 }

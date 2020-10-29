@@ -14,9 +14,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.UnassignCommand;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class UnassignCommandParserTest {
     private UnassignCommandParser parser = new UnassignCommandParser();
@@ -33,7 +33,7 @@ public class UnassignCommandParserTest {
 
         // different order
         CommandParserTestUtil.assertParseSuccess(parser, VALID_WORKER_INDEX_1 + VALID_SHIFT_INDEX_1,
-                new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, workerIndex));
+            new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, workerIndex));
 
         // multiple shift indexes - last shift index accepted
         CommandParserTestUtil
@@ -63,7 +63,8 @@ public class UnassignCommandParserTest {
 
         // all prefixes missing
         CommandParserTestUtil
-            .assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER, expectedMessage);
+            .assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER,
+                expectedMessage);
     }
 
     @Test

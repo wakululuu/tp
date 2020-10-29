@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import mcscheduler.logic.*;
+import mcscheduler.logic.Logic;
 import mcscheduler.logic.commands.CommandResult;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.logic.parser.exceptions.ParseException;

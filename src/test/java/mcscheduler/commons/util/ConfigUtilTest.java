@@ -2,7 +2,6 @@ package mcscheduler.commons.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,9 +12,9 @@ import java.util.logging.Level;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Config;
 import mcscheduler.commons.exceptions.DataConversionException;
+import mcscheduler.testutil.Assert;
 
 public class ConfigUtilTest {
 
@@ -109,8 +108,8 @@ public class ConfigUtilTest {
 
     private Path addToTestDataPathIfNotNull(String configFileInTestDataFolder) {
         return configFileInTestDataFolder != null
-                                  ? TEST_DATA_FOLDER.resolve(configFileInTestDataFolder)
-                                  : null;
+            ? TEST_DATA_FOLDER.resolve(configFileInTestDataFolder)
+            : null;
     }
 
 

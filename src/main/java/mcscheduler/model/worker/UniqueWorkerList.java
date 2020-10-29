@@ -1,14 +1,13 @@
 package mcscheduler.model.worker;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mcscheduler.commons.util.*;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.worker.exceptions.DuplicateWorkerException;
 import mcscheduler.model.worker.exceptions.WorkerNotFoundException;
 

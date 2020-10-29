@@ -1,8 +1,8 @@
 package mcscheduler.storage;
 
+import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
 
 import java.nio.file.Path;
 

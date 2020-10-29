@@ -11,7 +11,6 @@ import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
 
 
-
 /**
  * A utility class to help with building EditShiftDescriptor objects.
  */
@@ -59,7 +58,7 @@ public class EditShiftDescriptorBuilder {
      */
     public EditShiftDescriptorBuilder withRoleRequirements(String... roleRequirements) {
         Set<RoleRequirement> roleRequirementsSet = Stream.of(roleRequirements)
-                .map(RoleRequirement::new).collect(Collectors.toSet());
+            .map(RoleRequirement::new).collect(Collectors.toSet());
         descriptor.setRoleRequirements(roleRequirementsSet);
         return this;
     }

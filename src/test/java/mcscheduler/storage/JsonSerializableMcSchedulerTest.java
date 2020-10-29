@@ -1,7 +1,7 @@
 package mcscheduler.storage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static mcscheduler.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +23,7 @@ public class JsonSerializableMcSchedulerTest {
     @Test
     public void toModelType_typicalWorkersFile_success() throws Exception {
         JsonSerializableMcScheduler dataFromFile = JsonUtil.readJsonFile(TYPICAL_WORKERS_FILE,
-                JsonSerializableMcScheduler.class).get();
+            JsonSerializableMcScheduler.class).get();
         McScheduler mcSchedulerFromFile = dataFromFile.toModelType();
         McScheduler typicalWorkersMcScheduler = McSchedulerBuilder.getTypicalMcScheduler();
         assertEquals(mcSchedulerFromFile, typicalWorkersMcScheduler);
@@ -32,16 +32,16 @@ public class JsonSerializableMcSchedulerTest {
     @Test
     public void toModelType_invalidWorkerFile_throwsIllegalValueException() throws Exception {
         JsonSerializableMcScheduler dataFromFile = JsonUtil.readJsonFile(INVALID_WORKER_FILE,
-                JsonSerializableMcScheduler.class).get();
+            JsonSerializableMcScheduler.class).get();
         assertThrows(IllegalValueException.class, dataFromFile::toModelType);
     }
 
     @Test
     public void toModelType_duplicateWorkers_throwsIllegalValueException() throws Exception {
         JsonSerializableMcScheduler dataFromFile = JsonUtil.readJsonFile(DUPLICATE_WORKER_FILE,
-                JsonSerializableMcScheduler.class).get();
+            JsonSerializableMcScheduler.class).get();
         assertThrows(IllegalValueException.class, JsonSerializableMcScheduler.MESSAGE_DUPLICATE_WORKER,
-                dataFromFile::toModelType);
+            dataFromFile::toModelType);
     }
 
 }

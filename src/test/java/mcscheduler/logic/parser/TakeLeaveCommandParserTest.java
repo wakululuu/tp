@@ -12,9 +12,9 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.TakeLeaveCommand;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class TakeLeaveCommandParserTest {
     private TakeLeaveCommandParser parser = new TakeLeaveCommandParser();
@@ -43,7 +43,8 @@ public class TakeLeaveCommandParserTest {
         CommandParserTestUtil
             .assertParseFailure(parser, VALID_SHIFT_INDEX_1 + " " + TypicalIndexes.INDEX_FIRST_WORKER, expectedMessage);
         CommandParserTestUtil
-            .assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER, expectedMessage);
+            .assertParseFailure(parser, TypicalIndexes.INDEX_FIRST_SHIFT + " " + TypicalIndexes.INDEX_FIRST_WORKER,
+                expectedMessage);
     }
 
     @Test

@@ -2,7 +2,6 @@ package mcscheduler.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,7 +9,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
@@ -21,7 +19,10 @@ import mcscheduler.model.assignment.WorkerRolePair;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
+import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class UnassignCommandTest {
 
@@ -30,7 +31,7 @@ public class UnassignCommandTest {
         Set<Index> validWorker = new HashSet<>();
         validWorker.add(TypicalIndexes.INDEX_FIRST_WORKER);
         Assert.assertThrows(NullPointerException.class, () ->
-                new UnassignCommand(null, validWorker));
+            new UnassignCommand(null, validWorker));
     }
 
     @Test
@@ -38,13 +39,13 @@ public class UnassignCommandTest {
         Set<Index> nullWorker = new HashSet<>();
         nullWorker.add(null);
         Assert.assertThrows(NullPointerException.class, () ->
-                new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, nullWorker));
+            new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, nullWorker));
     }
 
     @Test
     public void constructor_nullWorkerIndexSet_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () ->
-                new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, null));
+            new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, null));
     }
 
     @Test
@@ -66,10 +67,10 @@ public class UnassignCommandTest {
         Worker workerToUnassign = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
         // the model has the role of cashier
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
-                .withWorker(workerToUnassign).withRole(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withWorker(workerToUnassign).withRole(CommandTestUtil.VALID_ROLE_CASHIER).build();
 
         assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS + "\n", 1, validAssignment),
-                commandResult.getFeedbackToUser());
+            commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(), model.getFullAssignmentList());
     }
 
@@ -105,12 +106,13 @@ public class UnassignCommandTest {
         workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
         UnassignCommand unassignCommand = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
 
-        String assignmentName = new Assignment(model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased()),
-                    model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()))
-                    .toString();
+        String assignmentName =
+            new Assignment(model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased()),
+                model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()))
+                .toString();
 
         CommandTestUtil.assertCommandFailure(unassignCommand, model,
-                    String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
+            String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
     }
 
     @Test

@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
 import mcscheduler.testutil.AssignmentBuilder;
+import mcscheduler.testutil.TypicalAssignments;
+import mcscheduler.testutil.TypicalShifts;
+import mcscheduler.testutil.TypicalWorkers;
 
 public class AssignmentTest {
 
@@ -23,28 +25,32 @@ public class AssignmentTest {
 
         // same content -> returns true
         assertTrue(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).build()));
 
         // different shift -> returns false
         assertFalse(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(
-                TypicalShifts.SHIFT_B).build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(
+                    TypicalShifts.SHIFT_B).build()));
 
         // different worker -> returns false
         assertFalse(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withWorker(
-                TypicalWorkers.BOB).build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withWorker(
+                    TypicalWorkers.BOB).build()));
 
         // different shift and worker -> returns false
         assertFalse(TypicalAssignments.ASSIGNMENT_A.isSameAssignment(
-                new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(TypicalShifts.SHIFT_B).withWorker(
-                    TypicalWorkers.BOB).build()));
+            new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(TypicalShifts.SHIFT_B).withWorker(
+                TypicalWorkers.BOB).build()));
 
         // different role -> returns true
         assertTrue(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withRole(
-                CommandTestUtil.VALID_ROLE_CHEF)
-                .build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withRole(
+                    CommandTestUtil.VALID_ROLE_CHEF)
+                    .build()));
     }
 
     @Test
@@ -67,24 +73,27 @@ public class AssignmentTest {
 
         // different shift -> returns false
         assertFalse(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(
-                TypicalShifts.SHIFT_B).build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(
+                    TypicalShifts.SHIFT_B).build()));
 
         // different worker -> returns false
         assertFalse(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withWorker(
-                TypicalWorkers.BOB).build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withWorker(
+                    TypicalWorkers.BOB).build()));
 
         // different shift and worker -> returns false
         assertFalse(TypicalAssignments.ASSIGNMENT_A.isSameAssignment(
-                new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(TypicalShifts.SHIFT_B).withWorker(
-                    TypicalWorkers.BOB).build()));
+            new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withShift(TypicalShifts.SHIFT_B).withWorker(
+                TypicalWorkers.BOB).build()));
 
         // different role -> returns true
         assertTrue(
-            TypicalAssignments.ASSIGNMENT_A.isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withRole(
-                CommandTestUtil.VALID_ROLE_CHEF)
-                .build()));
+            TypicalAssignments.ASSIGNMENT_A
+                .isSameAssignment(new AssignmentBuilder(TypicalAssignments.ASSIGNMENT_A).withRole(
+                    CommandTestUtil.VALID_ROLE_CHEF)
+                    .build()));
     }
 
 }

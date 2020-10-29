@@ -59,7 +59,7 @@ public class ShiftBuilder {
      * Parses the {@code roleRequirements} into a {@code Set<RoleRequirements>} and set it to the {@code Shift} that
      * we are building.
      */
-    public ShiftBuilder withRoleRequirements(String ... roleRequirements) {
+    public ShiftBuilder withRoleRequirements(String... roleRequirements) {
         this.roleRequirements = SampleDataUtil.getRoleRequirementSet(roleRequirements);
         return this;
     }

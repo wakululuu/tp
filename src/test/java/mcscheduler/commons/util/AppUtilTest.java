@@ -1,10 +1,10 @@
 package mcscheduler.commons.util;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-import mcscheduler.testutil.*;
+
+import mcscheduler.testutil.Assert;
 
 public class AppUtilTest {
 
@@ -33,6 +33,7 @@ public class AppUtilTest {
     public void checkArgument_falseWithErrorMessage_throwsIllegalArgumentException() {
         String errorMessage = "error message";
         Assert
-            .assertThrows(IllegalArgumentException.class, errorMessage, () -> AppUtil.checkArgument(false, errorMessage));
+            .assertThrows(IllegalArgumentException.class, errorMessage, () ->
+                AppUtil.checkArgument(false, errorMessage));
     }
 }

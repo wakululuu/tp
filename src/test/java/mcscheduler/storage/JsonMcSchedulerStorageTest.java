@@ -1,12 +1,12 @@
 package mcscheduler.storage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
 import static mcscheduler.testutil.Assert.assertThrows;
+import static mcscheduler.testutil.McSchedulerBuilder.getTypicalMcScheduler;
 import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static mcscheduler.testutil.TypicalWorkers.HOON;
 import static mcscheduler.testutil.TypicalWorkers.IDA;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,8 +36,8 @@ public class JsonMcSchedulerStorageTest {
 
     private Path addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
         return prefsFileInTestDataFolder != null
-                ? TEST_DATA_FOLDER.resolve(prefsFileInTestDataFolder)
-                : null;
+            ? TEST_DATA_FOLDER.resolve(prefsFileInTestDataFolder)
+            : null;
     }
 
     @Test
@@ -97,7 +97,7 @@ public class JsonMcSchedulerStorageTest {
     private void saveMcScheduler(ReadOnlyMcScheduler mcScheduler, String filePath) {
         try {
             new JsonMcSchedulerStorage(Paths.get(filePath))
-                    .saveMcScheduler(mcScheduler, addToTestDataPathIfNotNull(filePath));
+                .saveMcScheduler(mcScheduler, addToTestDataPathIfNotNull(filePath));
         } catch (IOException ioe) {
             throw new AssertionError("There should not be an error writing to the file.", ioe);
         }

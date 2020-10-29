@@ -1,13 +1,12 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
@@ -17,6 +16,8 @@ import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 import mcscheduler.testutil.WorkerBuilder;
 
 /**
@@ -49,10 +50,10 @@ public class WorkerEditCommandTest {
         WorkerBuilder workerInList = new WorkerBuilder(lastWorker);
         Worker editedWorker = workerInList.withName(CommandTestUtil.VALID_NAME_BOB).withPhone(
             CommandTestUtil.VALID_PHONE_BOB)
-                .withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
 
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB)
-                .withPhone(CommandTestUtil.VALID_PHONE_BOB).withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withPhone(CommandTestUtil.VALID_PHONE_BOB).withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(indexLastWorker, descriptor);
 
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
@@ -65,7 +66,8 @@ public class WorkerEditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, new EditWorkerDescriptor());
+        WorkerEditCommand workerEditCommand =
+            new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, new EditWorkerDescriptor());
         Worker editedWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
 
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
@@ -79,10 +81,11 @@ public class WorkerEditCommandTest {
     public void execute_filteredList_success() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
-        Worker workerInFilteredList = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker workerInFilteredList =
+            model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
         Worker editedWorker = new WorkerBuilder(workerInFilteredList).withName(CommandTestUtil.VALID_NAME_BOB).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER,
-                new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
+            new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
 
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
 
@@ -106,9 +109,10 @@ public class WorkerEditCommandTest {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
         // edit worker in filtered list into a duplicate in address book
-        Worker workerInList = model.getMcScheduler().getWorkerList().get(TypicalIndexes.INDEX_SECOND_WORKER.getZeroBased());
+        Worker workerInList =
+            model.getMcScheduler().getWorkerList().get(TypicalIndexes.INDEX_SECOND_WORKER.getZeroBased());
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER,
-                new EditWorkerDescriptorBuilder(workerInList).build());
+            new EditWorkerDescriptorBuilder(workerInList).build());
 
         CommandTestUtil.assertCommandFailure(workerEditCommand, model, WorkerEditCommand.MESSAGE_DUPLICATE_WORKER);
     }
@@ -116,7 +120,8 @@ public class WorkerEditCommandTest {
     @Test
     public void execute_invalidWorkerIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
-        EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build();
+        EditWorkerDescriptor descriptor =
+            new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(outOfBoundIndex, descriptor);
 
         CommandTestUtil.assertCommandFailure(workerEditCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
@@ -134,7 +139,7 @@ public class WorkerEditCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getWorkerList().size());
 
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(outOfBoundIndex,
-                new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
+            new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
 
         CommandTestUtil.assertCommandFailure(workerEditCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
     }
@@ -142,7 +147,7 @@ public class WorkerEditCommandTest {
     @Test
     public void execute_roleNotFound_throwsCommandException() {
         WorkerEditCommand editCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER,
-                new EditWorkerDescriptorBuilder().withRoles("random role").build());
+            new EditWorkerDescriptorBuilder().withRoles("random role").build());
 
         CommandTestUtil
             .assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "Random role"));
@@ -150,11 +155,13 @@ public class WorkerEditCommandTest {
 
     @Test
     public void equals() {
-        final WorkerEditCommand standardCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, CommandTestUtil.DESC_AMY);
+        final WorkerEditCommand standardCommand =
+            new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, CommandTestUtil.DESC_AMY);
 
         // same values -> returns true
         EditWorkerDescriptor copyDescriptor = new EditWorkerDescriptor(CommandTestUtil.DESC_AMY);
-        WorkerEditCommand commandWithSameValues = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, copyDescriptor);
+        WorkerEditCommand commandWithSameValues =
+            new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, copyDescriptor);
         assertEquals(commandWithSameValues, standardCommand);
 
         // same object -> returns true
@@ -167,10 +174,12 @@ public class WorkerEditCommandTest {
         assertNotEquals(new ClearCommand(), standardCommand);
 
         // different index -> returns false
-        assertNotEquals(new WorkerEditCommand(TypicalIndexes.INDEX_SECOND_WORKER, CommandTestUtil.DESC_AMY), standardCommand);
+        assertNotEquals(new WorkerEditCommand(TypicalIndexes.INDEX_SECOND_WORKER, CommandTestUtil.DESC_AMY),
+            standardCommand);
 
         // different descriptor -> returns false
-        assertNotEquals(new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, CommandTestUtil.DESC_BOB), standardCommand);
+        assertNotEquals(new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, CommandTestUtil.DESC_BOB),
+            standardCommand);
     }
 
 }

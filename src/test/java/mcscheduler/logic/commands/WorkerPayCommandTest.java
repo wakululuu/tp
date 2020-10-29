@@ -1,20 +1,20 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
-
+import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 
 /**
@@ -32,7 +32,7 @@ public class WorkerPayCommandTest {
 
         float calculatedPay = model.calculateWorkerPay(selectedWorker);
         String expectedMessage =
-                String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
+            String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
 
         ModelManager expectedModel = new ModelManager(model.getMcScheduler(), new UserPrefs());
 
@@ -56,7 +56,7 @@ public class WorkerPayCommandTest {
 
         float calculatedPay = model.calculateWorkerPay(selectedWorker);
         String expectedMessage =
-                String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
+            String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
 
         Model expectedModel = new ModelManager(model.getMcScheduler(), new UserPrefs());
         CommandTestUtil.showWorkerAtIndex(expectedModel, TypicalIndexes.INDEX_FIRST_WORKER);

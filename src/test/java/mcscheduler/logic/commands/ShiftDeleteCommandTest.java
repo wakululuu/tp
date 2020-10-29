@@ -1,19 +1,20 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.shift.Shift;
+import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class ShiftDeleteCommandTest {
 

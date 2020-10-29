@@ -9,7 +9,7 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 
 import java.util.stream.Stream;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.ReassignCommand;
@@ -32,7 +32,8 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
 
         if (!arePrefixesPresent(argMultimap, PREFIX_WORKER_OLD, PREFIX_WORKER_NEW, PREFIX_SHIFT_OLD,
                 PREFIX_SHIFT_NEW, PREFIX_ROLE)) {
-            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ReassignCommand.MESSAGE_USAGE));
+            throw new ParseException(
+                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ReassignCommand.MESSAGE_USAGE));
         }
 
         Index oldShiftIndex;

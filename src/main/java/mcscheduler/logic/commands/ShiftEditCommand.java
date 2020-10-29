@@ -1,7 +1,6 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;

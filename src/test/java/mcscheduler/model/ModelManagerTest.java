@@ -1,9 +1,5 @@
 package mcscheduler.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 import static mcscheduler.testutil.Assert.assertThrows;
@@ -11,6 +7,10 @@ import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
 import static mcscheduler.testutil.TypicalShifts.SHIFT_B;
 import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static mcscheduler.testutil.TypicalWorkers.BENSON;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -123,9 +123,9 @@ public class ModelManagerTest {
     @Test
     public void equals() {
         McScheduler mcScheduler = new McSchedulerBuilder()
-                .withWorker(ALICE).withWorker(BENSON)
-                .withShift(SHIFT_A).withShift(SHIFT_B)
-                .build();
+            .withWorker(ALICE).withWorker(BENSON)
+            .withShift(SHIFT_A).withShift(SHIFT_B)
+            .build();
         McScheduler differentMcScheduler = new McScheduler();
         UserPrefs userPrefs = new UserPrefs();
 

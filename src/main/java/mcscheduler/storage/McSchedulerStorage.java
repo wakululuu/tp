@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import mcscheduler.model.*;
 import mcscheduler.commons.exceptions.DataConversionException;
+import mcscheduler.model.McScheduler;
 import mcscheduler.model.ReadOnlyMcScheduler;
 
 /**

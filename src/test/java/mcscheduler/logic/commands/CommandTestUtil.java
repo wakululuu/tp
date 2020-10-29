@@ -1,7 +1,5 @@
 package mcscheduler.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_NAME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PAY;
@@ -16,13 +14,13 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
-import static mcscheduler.testutil.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.McScheduler;
@@ -31,8 +29,10 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.EditShiftDescriptorBuilder;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 /**
  * Contains helper methods for testing commands.
@@ -100,10 +100,14 @@ public class CommandTestUtil {
     public static final String INVALID_DAY = " " + PREFIX_SHIFT_DAY + "Mmon";
     public static final String INVALID_TIME = " " + PREFIX_SHIFT_TIME + "aam";
 
-    public static final String VALID_SHIFT_INDEX_1 = " " + PREFIX_SHIFT + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
-    public static final String VALID_SHIFT_INDEX_2 = " " + PREFIX_SHIFT + TypicalIndexes.INDEX_SECOND_SHIFT.getOneBased();
-    public static final String VALID_WORKER_INDEX_1 = " " + PREFIX_WORKER + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
-    public static final String VALID_WORKER_INDEX_2 = " " + PREFIX_WORKER + TypicalIndexes.INDEX_SECOND_WORKER.getOneBased();
+    public static final String VALID_SHIFT_INDEX_1 =
+        " " + PREFIX_SHIFT + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_SHIFT_INDEX_2 =
+        " " + PREFIX_SHIFT + TypicalIndexes.INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_WORKER_INDEX_1 =
+        " " + PREFIX_WORKER + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_WORKER_INDEX_2 =
+        " " + PREFIX_WORKER + TypicalIndexes.INDEX_SECOND_WORKER.getOneBased();
 
     public static final String INVALID_NEW_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
     public static final String INVALID_NEW_WORKER_INDEX = " " + PREFIX_WORKER_NEW + "a";
@@ -113,26 +117,32 @@ public class CommandTestUtil {
     public static final String INVALID_SHIFT_INDEX = " " + PREFIX_SHIFT + "a";
     public static final String INVALID_WORKER_INDEX = " " + PREFIX_WORKER + "a";
 
-    public static final String VALID_NEW_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_NEW + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
-    public static final String VALID_NEW_SHIFT_INDEX_2 = " " + PREFIX_SHIFT_NEW + TypicalIndexes.INDEX_SECOND_SHIFT.getOneBased();
-    public static final String VALID_NEW_WORKER_INDEX_1 = " " + PREFIX_WORKER_NEW + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
-    public static final String VALID_NEW_WORKER_INDEX_2 = " " + PREFIX_WORKER_NEW + TypicalIndexes.INDEX_SECOND_WORKER.getOneBased();
-    public static final String VALID_OLD_WORKER_INDEX_1 = " " + PREFIX_WORKER_OLD + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
-    public static final String VALID_OLD_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_OLD + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_NEW_SHIFT_INDEX_1 =
+        " " + PREFIX_SHIFT_NEW + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_NEW_SHIFT_INDEX_2 =
+        " " + PREFIX_SHIFT_NEW + TypicalIndexes.INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_1 =
+        " " + PREFIX_WORKER_NEW + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_2 =
+        " " + PREFIX_WORKER_NEW + TypicalIndexes.INDEX_SECOND_WORKER.getOneBased();
+    public static final String VALID_OLD_WORKER_INDEX_1 =
+        " " + PREFIX_WORKER_OLD + TypicalIndexes.INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_OLD_SHIFT_INDEX_1 =
+        " " + PREFIX_SHIFT_OLD + TypicalIndexes.INDEX_FIRST_SHIFT.getOneBased();
 
 
     static {
         DESC_AMY = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_AMY).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withRoles(VALID_ROLE_CASHIER).build();
+            .withPhone(VALID_PHONE_AMY).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
+            .withRoles(VALID_ROLE_CASHIER).build();
         DESC_BOB = new EditWorkerDescriptorBuilder().withName(VALID_NAME_BOB)
-                .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF).build();
+            .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB)
+            .withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF).build();
 
         DESC_FIRST_SHIFT = new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_MON).withShiftTime(VALID_TIME_AM)
-                .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF).build();
+            .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF).build();
         DESC_SECOND_SHIFT = new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_TUE).withShiftTime(VALID_TIME_PM)
-                .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF, VALID_ROLE_REQUIREMENT_CASHIER).build();
+            .withRoleRequirements(VALID_ROLE_REQUIREMENT_CHEF, VALID_ROLE_REQUIREMENT_CASHIER).build();
     }
 
     /**
@@ -141,7 +151,7 @@ public class CommandTestUtil {
      * - the {@code actualModel} matches {@code expectedModel}
      */
     public static void assertCommandSuccess(Command command, Model actualModel, CommandResult expectedCommandResult,
-            Model expectedModel) {
+                                            Model expectedModel) {
         try {
             CommandResult result = command.execute(actualModel);
             assertEquals(expectedCommandResult, result);
@@ -156,7 +166,7 @@ public class CommandTestUtil {
      * that takes a string {@code expectedMessage}.
      */
     public static void assertCommandSuccess(Command command, Model actualModel, String expectedMessage,
-            Model expectedModel) {
+                                            Model expectedModel) {
         CommandResult expectedCommandResult = new CommandResult(expectedMessage);
         assertCommandSuccess(command, actualModel, expectedCommandResult, expectedModel);
     }
@@ -177,6 +187,7 @@ public class CommandTestUtil {
         assertEquals(expectedMcScheduler, actualModel.getMcScheduler());
         assertEquals(expectedFilteredList, actualModel.getFilteredWorkerList());
     }
+
     /**
      * Updates {@code model}'s filtered list to show only the worker at the given {@code targetIndex} in the
      * {@code model}'s address book.
@@ -199,7 +210,7 @@ public class CommandTestUtil {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredShiftList().size());
 
         Shift shift = model.getFilteredShiftList().get(targetIndex.getZeroBased());
-        final String[] shiftDayKeywords = { shift.getShiftDay().toString() };
+        final String[] shiftDayKeywords = {shift.getShiftDay().toString()};
         model.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList(shiftDayKeywords)));
         assertEquals(1, model.getFilteredShiftList().size());
     }

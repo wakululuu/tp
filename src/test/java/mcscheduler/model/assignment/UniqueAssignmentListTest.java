@@ -3,7 +3,6 @@ package mcscheduler.model.assignment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,11 +10,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
 import mcscheduler.model.assignment.exceptions.DuplicateAssignmentException;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
+import mcscheduler.testutil.TypicalAssignments;
 
 public class UniqueAssignmentListTest {
 
@@ -68,7 +68,8 @@ public class UniqueAssignmentListTest {
     @Test
     public void setAssignment_nullTargetAssignment_throwsNullPointerException() {
         Assert
-            .assertThrows(NullPointerException.class, () -> uniqueAssignmentList.setAssignment(null, TypicalAssignments.ASSIGNMENT_A));
+            .assertThrows(NullPointerException.class, () ->
+                uniqueAssignmentList.setAssignment(null, TypicalAssignments.ASSIGNMENT_A));
     }
 
     @Test
@@ -80,7 +81,7 @@ public class UniqueAssignmentListTest {
     @Test
     public void setAssignment_targetAssignmentNotInList_throwsAssignmentNotFoundException() {
         Assert.assertThrows(AssignmentNotFoundException.class, () ->
-                uniqueAssignmentList.setAssignment(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_B));
+            uniqueAssignmentList.setAssignment(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_B));
     }
 
     @Test
@@ -117,7 +118,7 @@ public class UniqueAssignmentListTest {
         uniqueAssignmentList.add(TypicalAssignments.ASSIGNMENT_A);
         uniqueAssignmentList.add(TypicalAssignments.ASSIGNMENT_B);
         Assert.assertThrows(DuplicateAssignmentException.class, () ->
-                uniqueAssignmentList.setAssignment(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_B));
+            uniqueAssignmentList.setAssignment(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_B));
     }
 
     @Test
@@ -142,7 +143,7 @@ public class UniqueAssignmentListTest {
     @Test
     public void setAssignments_nullUniqueAssignmentList_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () ->
-                uniqueAssignmentList.setAssignments((UniqueAssignmentList) null));
+            uniqueAssignmentList.setAssignments((UniqueAssignmentList) null));
     }
 
     @Test
@@ -156,7 +157,8 @@ public class UniqueAssignmentListTest {
 
     @Test
     public void setAssignments_nullList_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () -> uniqueAssignmentList.setAssignments((List<Assignment>) null));
+        Assert.assertThrows(NullPointerException.class, () ->
+            uniqueAssignmentList.setAssignments((List<Assignment>) null));
     }
 
     @Test
@@ -171,14 +173,15 @@ public class UniqueAssignmentListTest {
 
     @Test
     public void setAssignments_listWithDuplicateAssignments_throwsDuplicateAssignmentException() {
-        List<Assignment> listWithDuplicateAssignments = Arrays.asList(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_A);
+        List<Assignment> listWithDuplicateAssignments =
+            Arrays.asList(TypicalAssignments.ASSIGNMENT_A, TypicalAssignments.ASSIGNMENT_A);
         Assert.assertThrows(DuplicateAssignmentException.class, () ->
-                uniqueAssignmentList.setAssignments(listWithDuplicateAssignments));
+            uniqueAssignmentList.setAssignments(listWithDuplicateAssignments));
     }
 
     @Test
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
         Assert.assertThrows(UnsupportedOperationException.class, () ->
-                uniqueAssignmentList.asUnmodifiableObservableList().remove(0));
+            uniqueAssignmentList.asUnmodifiableObservableList().remove(0));
     }
 }

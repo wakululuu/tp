@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.AssignCommand;
@@ -29,7 +29,8 @@ public class AssignCommandParser implements Parser<AssignCommand> {
                 CliSyntax.PREFIX_SHIFT, CliSyntax.PREFIX_WORKER_ROLE);
 
         if (!arePrefixesPresent(argMultimap, CliSyntax.PREFIX_SHIFT, CliSyntax.PREFIX_WORKER_ROLE)) {
-            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE));
+            throw new ParseException(
+                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE));
         }
 
         Index shiftIndex;

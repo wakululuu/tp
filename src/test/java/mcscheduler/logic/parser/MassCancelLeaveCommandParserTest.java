@@ -17,10 +17,10 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_WORKER_INDEX_1;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.commands.MassCancelLeaveCommand;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class MassCancelLeaveCommandParserTest {
     private MassCancelLeaveCommandParser parser = new MassCancelLeaveCommandParser();
@@ -33,8 +33,8 @@ public class MassCancelLeaveCommandParserTest {
     public void parser_allFieldsPresent_success() {
 
         CommandParserTestUtil.assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_WORKER_INDEX_1 + DAY_DESC_MON
-                        + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
-                new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, pm));
+                + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
+            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, pm));
 
 
         // change order should result in a different MassTakeLeaveCommand
@@ -48,7 +48,7 @@ public class MassCancelLeaveCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, MassCancelLeaveCommand.MESSAGE_USAGE);
 
         CommandParserTestUtil.assertParseFailure(parser, DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
-                expectedMessage); // missing index
+            expectedMessage); // missing index
         CommandParserTestUtil
             .assertParseFailure(parser, VALID_WORKER_INDEX_1 + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
                 expectedMessage); // missing day

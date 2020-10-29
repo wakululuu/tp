@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.ShiftEditCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
@@ -37,7 +37,8 @@ public class ShiftEditCommandParser implements Parser<ShiftEditCommand> {
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ShiftEditCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(
+                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ShiftEditCommand.MESSAGE_USAGE), pe);
         }
 
         ShiftEditCommand.EditShiftDescriptor editShiftDescriptor = new ShiftEditCommand.EditShiftDescriptor();

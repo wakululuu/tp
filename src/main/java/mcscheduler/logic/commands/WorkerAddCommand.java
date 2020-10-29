@@ -7,8 +7,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_PAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PHONE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
-//import static CliSyntax.PREFIX_EMAIL;
-//import static CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
 
@@ -17,6 +15,9 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
+
+//import static CliSyntax.PREFIX_EMAIL;
+//import static CliSyntax.PREFIX_TAG;
 
 /**
  * Adds a worker to the address book.

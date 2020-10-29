@@ -1,7 +1,6 @@
 package mcscheduler.model;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -10,9 +9,9 @@ import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import mcscheduler.commons.util.*;
 import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.LogsCenter;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Leave;

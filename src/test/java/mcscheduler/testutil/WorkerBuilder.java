@@ -4,15 +4,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import mcscheduler.model.tag.Role;
-//import Tag;
 import mcscheduler.model.util.SampleDataUtil;
 import mcscheduler.model.worker.Address;
-//import Email;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
+
+//import Tag;
+//import Email;
 
 /**
  * A utility class to help with building Worker objects.
@@ -71,7 +72,7 @@ public class WorkerBuilder {
     /**
      * Parses the {@code roles} into a {@code Set<Role>} and set it to the {@code Worker} that we are building.
      */
-    public WorkerBuilder withRoles(String ... roles) {
+    public WorkerBuilder withRoles(String... roles) {
         this.roles = SampleDataUtil.getRoleSet(roles);
         return this;
     }
@@ -80,7 +81,7 @@ public class WorkerBuilder {
      * Parses the {@code unavailableTimings} into a {@code Set<Unavailability>}
      * and set it to the {@code Worker} that we are building.
      */
-    public WorkerBuilder withUnavailableTimings(String ... unavailableTimings) {
+    public WorkerBuilder withUnavailableTimings(String... unavailableTimings) {
         this.unavailableTimings = SampleDataUtil.getUnavailabilitySet(unavailableTimings);
         return this;
     }

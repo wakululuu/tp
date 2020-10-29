@@ -6,14 +6,15 @@ import java.util.stream.Stream;
 
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import mcscheduler.model.tag.Role;
-//import Tag;
 import mcscheduler.model.worker.Address;
-//import Email;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
+
+//import Tag;
+//import Email;
 
 /**
  * A utility class to help with building EditWorkerDescriptor objects.
@@ -99,7 +100,7 @@ public class EditWorkerDescriptorBuilder {
      */
     public EditWorkerDescriptorBuilder withUnavailableTimings(String... unavailableTimings) {
         Set<Unavailability> unavailabilitySet = Stream.of(unavailableTimings)
-                .map(Unavailability::new).collect(Collectors.toSet());
+            .map(Unavailability::new).collect(Collectors.toSet());
         descriptor.setUnavailableTimings(unavailabilitySet);
         return this;
     }

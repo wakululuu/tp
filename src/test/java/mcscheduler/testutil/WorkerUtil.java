@@ -1,22 +1,23 @@
 package mcscheduler.testutil;
 
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static CliSyntax.PREFIX_EMAIL;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_NAME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PHONE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
-//import static CliSyntax.PREFIX_TAG;
 
 import java.util.Set;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import mcscheduler.model.tag.Role;
-//import Tag;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
+
+//import static CliSyntax.PREFIX_EMAIL;
+//import static CliSyntax.PREFIX_TAG;
+//import Tag;
 
 /**
  * A utility class for Worker.

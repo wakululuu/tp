@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.ShiftBuilder;
+import mcscheduler.testutil.TypicalShifts;
 
 public class ShiftTest {
 
@@ -41,12 +41,13 @@ public class ShiftTest {
 
         // different day and time
         assertFalse(TypicalShifts.SHIFT_A.isSameShift(
-                new ShiftBuilder().withShiftDay(CommandTestUtil.VALID_DAY_TUE).withShiftTime(
-                    CommandTestUtil.VALID_TIME_PM).build()));
+            new ShiftBuilder().withShiftDay(CommandTestUtil.VALID_DAY_TUE).withShiftTime(
+                CommandTestUtil.VALID_TIME_PM).build()));
 
         // same day and time but different role requirements
         assertTrue(TypicalShifts.SHIFT_A.isSameShift(
-                new ShiftBuilder(TypicalShifts.SHIFT_A).withRoleRequirements(CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF).build()));
+            new ShiftBuilder(TypicalShifts.SHIFT_A).withRoleRequirements(CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF)
+                .build()));
     }
 
     @Test
@@ -67,10 +68,12 @@ public class ShiftTest {
         assertNotEquals(TypicalShifts.SHIFT_C, TypicalShifts.SHIFT_B);
 
         // different day
-        assertNotEquals(new ShiftBuilder(TypicalShifts.SHIFT_A).withShiftDay(CommandTestUtil.VALID_DAY_TUE), TypicalShifts.SHIFT_A);
+        assertNotEquals(new ShiftBuilder(TypicalShifts.SHIFT_A).withShiftDay(CommandTestUtil.VALID_DAY_TUE),
+            TypicalShifts.SHIFT_A);
 
         // different time
-        assertNotEquals(new ShiftBuilder(TypicalShifts.SHIFT_A).withShiftTime(CommandTestUtil.VALID_TIME_PM), TypicalShifts.SHIFT_A);
+        assertNotEquals(new ShiftBuilder(TypicalShifts.SHIFT_A).withShiftTime(CommandTestUtil.VALID_TIME_PM),
+            TypicalShifts.SHIFT_A);
 
         // different role requirements
         assertNotEquals(new ShiftBuilder(TypicalShifts.SHIFT_A).withRoleRequirements(

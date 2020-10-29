@@ -4,21 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.model.tag.Role;
+import mcscheduler.testutil.Assert;
 
 public class RoleRequirementTest {
 
     private static final RoleRequirement ROLE_REQUIREMENT = new RoleRequirement("cleaner 3 0");
     private static final RoleRequirement DIFFERENT_ROLE_ROLE_REQUIREMENT = new RoleRequirement("cashier 3 0");
     private static final RoleRequirement DIFFERENT_QUANTITY_REQUIRED_ROLE_REQUIREMENT =
-            new RoleRequirement("cleaner 7 0");
+        new RoleRequirement("cleaner 7 0");
     private static final RoleRequirement DIFFERENT_QUANTITY_FILLED_ROLE_REQUIREMENT =
-            new RoleRequirement("cleaner 3 1");
+        new RoleRequirement("cleaner 3 1");
     private static final RoleRequirement DIFFERENT_ROLE_REQUIREMENT = new RoleRequirement("cashier 7 2");
 
     @Test
@@ -31,7 +30,7 @@ public class RoleRequirementTest {
         int quantityFilled = Integer.parseInt(testQuantityFilled);
 
         assertEquals(new RoleRequirement(testRole + " " + testQuantityRequired + " " + testQuantityFilled),
-                new RoleRequirement(role, quantityRequired, quantityFilled));
+            new RoleRequirement(role, quantityRequired, quantityFilled));
     }
 
     @Test
@@ -83,7 +82,7 @@ public class RoleRequirementTest {
 
         // same values
         assertEquals(new RoleRequirement(ROLE_REQUIREMENT.getRole(),
-                ROLE_REQUIREMENT.getQuantityRequired()), ROLE_REQUIREMENT);
+            ROLE_REQUIREMENT.getQuantityRequired()), ROLE_REQUIREMENT);
 
         // null -> returns false
         assertNotEquals(ROLE_REQUIREMENT, null);

@@ -4,18 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.logic.commands.*;
-import mcscheduler.testutil.*;
+import mcscheduler.logic.commands.CommandTestUtil;
 import mcscheduler.model.shift.exceptions.DuplicateShiftException;
 import mcscheduler.model.shift.exceptions.ShiftNotFoundException;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.ShiftBuilder;
+import mcscheduler.testutil.TypicalShifts;
 
 public class UniqueShiftListTest {
 
@@ -35,7 +35,7 @@ public class UniqueShiftListTest {
 
         // same identity shift in list
         assertTrue(uniqueShiftList.contains(new ShiftBuilder(TypicalShifts.SHIFT_A)
-                .withRoleRequirements(CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF).build()));
+            .withRoleRequirements(CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF).build()));
 
     }
 
@@ -58,14 +58,16 @@ public class UniqueShiftListTest {
 
     @Test
     public void setShift_targetShiftNotInList_throwsShiftNotFoundException() {
-        Assert.assertThrows(ShiftNotFoundException.class, () -> uniqueShiftList.setShift(TypicalShifts.SHIFT_A, TypicalShifts.SHIFT_B));
+        Assert.assertThrows(ShiftNotFoundException.class, () ->
+            uniqueShiftList.setShift(TypicalShifts.SHIFT_A, TypicalShifts.SHIFT_B));
     }
 
     @Test
     public void setShift_editedShiftHasDifferentNonUniqueIdentity_throwsDuplicateShiftException() {
         uniqueShiftList.add(TypicalShifts.SHIFT_A);
         uniqueShiftList.add(TypicalShifts.SHIFT_B);
-        Assert.assertThrows(DuplicateShiftException.class, () -> uniqueShiftList.setShift(TypicalShifts.SHIFT_A, TypicalShifts.SHIFT_B));
+        Assert.assertThrows(DuplicateShiftException.class, () ->
+            uniqueShiftList.setShift(TypicalShifts.SHIFT_A, TypicalShifts.SHIFT_B));
     }
 
     @Test
@@ -151,7 +153,7 @@ public class UniqueShiftListTest {
     @Test
     public void asUnmodifiableObservableList_modify_throwsUnsupportedOperationException() {
         Assert.assertThrows(UnsupportedOperationException.class, () -> uniqueShiftList
-                .asUnmodifiableObservableList().remove(0));
+            .asUnmodifiableObservableList().remove(0));
     }
 
     @Test

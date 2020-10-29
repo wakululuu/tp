@@ -3,11 +3,11 @@ package mcscheduler.logic;
 import java.nio.file.Path;
 
 import javafx.collections.ObservableList;
-import mcscheduler.model.*;
 import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.logic.commands.CommandResult;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.logic.parser.exceptions.ParseException;
+import mcscheduler.model.Model;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.shift.Shift;

@@ -2,10 +2,10 @@ package mcscheduler.commons.core.index;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
-import mcscheduler.testutil.*;
+
+import mcscheduler.testutil.Assert;
 
 public class IndexTest {
 

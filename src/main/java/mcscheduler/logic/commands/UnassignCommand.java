@@ -1,16 +1,15 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.util.*;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;

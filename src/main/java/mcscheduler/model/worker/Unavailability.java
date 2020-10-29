@@ -1,11 +1,10 @@
 package mcscheduler.model.worker;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.AppUtil.checkArgument;
 
 import java.util.Objects;
 
-import mcscheduler.commons.util.*;
+import mcscheduler.commons.util.AppUtil;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftDayValue;
 import mcscheduler.model.shift.ShiftTime;

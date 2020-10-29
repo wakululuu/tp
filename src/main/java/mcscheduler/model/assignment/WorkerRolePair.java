@@ -1,13 +1,12 @@
 package mcscheduler.model.assignment;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.AppUtil.checkArgument;
-import static mcscheduler.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 
-import mcscheduler.commons.util.*;
 import mcscheduler.commons.core.index.Index;
+import mcscheduler.commons.util.AppUtil;
+import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.parser.ParserUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.tag.Role;

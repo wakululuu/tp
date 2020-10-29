@@ -28,7 +28,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerEditCommand;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
@@ -38,13 +37,14 @@ import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class WorkerEditCommandParserTest {
 
     private static final String ROLE_EMPTY = " " + PREFIX_ROLE;
 
     private static final String MESSAGE_INVALID_FORMAT =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerEditCommand.MESSAGE_USAGE);
+        String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerEditCommand.MESSAGE_USAGE);
 
     private EditCommandParser parser = new EditCommandParser();
 
@@ -77,28 +77,39 @@ public class WorkerEditCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_PAY_DESC, Pay.MESSAGE_CONSTRAINTS); // invalid email
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC, Address.MESSAGE_CONSTRAINTS); // invalid address
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_PAY_DESC, Pay.MESSAGE_CONSTRAINTS); // invalid email
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC, Address.MESSAGE_CONSTRAINTS); // invalid address
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
 
         // invalid phone followed by valid email
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_PHONE_DESC + PAY_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_PHONE_DESC + PAY_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
 
         // valid phone followed by invalid phone. The test case for invalid phone followed by valid phone
         // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
-        CommandParserTestUtil.assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
 
         // while parsing {@code PREFIX_ROLE} alone will reset the tags of the {@code Worker} being edited,
         // parsing it together with a valid tag results in error
-        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY, Role.MESSAGE_CONSTRAINTS);
-        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_EMPTY + ROLE_DESC_CHEF, Role.MESSAGE_CONSTRAINTS);
-        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_EMPTY + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Role.MESSAGE_CONSTRAINTS);
+        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY,
+            Role.MESSAGE_CONSTRAINTS);
+        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_EMPTY + ROLE_DESC_CHEF,
+            Role.MESSAGE_CONSTRAINTS);
+        CommandParserTestUtil.assertParseFailure(parser, "1" + ROLE_EMPTY + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+            Role.MESSAGE_CONSTRAINTS);
 
         // multiple invalid values, but only the first invalid value is captured
         CommandParserTestUtil
-            .assertParseFailure(parser, "1" + INVALID_NAME_DESC + INVALID_PAY_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
+            .assertParseFailure(parser,
+                "1" + INVALID_NAME_DESC + INVALID_PAY_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
                 Name.MESSAGE_CONSTRAINTS);
     }
 
@@ -106,10 +117,10 @@ public class WorkerEditCommandParserTest {
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = TypicalIndexes.INDEX_SECOND_WORKER;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + ROLE_DESC_CASHIER + PAY_DESC_AMY
-                + ADDRESS_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_CHEF;
+            + ADDRESS_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_CHEF;
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)
-                .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withRoles(VALID_ROLE_CHEF, VALID_ROLE_CASHIER).build();
+            .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
+            .withRoles(VALID_ROLE_CHEF, VALID_ROLE_CASHIER).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
 
         CommandParserTestUtil.assertParseSuccess(parser, userInput, expectedCommand);
@@ -121,7 +132,7 @@ public class WorkerEditCommandParserTest {
         String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + PAY_DESC_AMY;
 
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB)
-                .withPay(VALID_PAY_AMY).build();
+            .withPay(VALID_PAY_AMY).build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
 
         CommandParserTestUtil.assertParseSuccess(parser, userInput, expectedCommand);
@@ -165,12 +176,12 @@ public class WorkerEditCommandParserTest {
     public void parse_multipleRepeatedFields_acceptsLast() {
         Index targetIndex = TypicalIndexes.INDEX_FIRST_WORKER;
         String userInput = targetIndex.getOneBased() + PHONE_DESC_AMY + ADDRESS_DESC_AMY + PAY_DESC_AMY
-                + ROLE_DESC_CASHIER + PHONE_DESC_AMY + ADDRESS_DESC_AMY + PAY_DESC_AMY + ROLE_DESC_CHEF
-                + PHONE_DESC_BOB + ADDRESS_DESC_BOB + PAY_DESC_BOB + ROLE_DESC_CASHIER;
+            + ROLE_DESC_CASHIER + PHONE_DESC_AMY + ADDRESS_DESC_AMY + PAY_DESC_AMY + ROLE_DESC_CHEF
+            + PHONE_DESC_BOB + ADDRESS_DESC_BOB + PAY_DESC_BOB + ROLE_DESC_CASHIER;
 
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB)
-                .withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
-                .build();
+            .withPay(VALID_PAY_BOB).withAddress(VALID_ADDRESS_BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
+            .build();
         WorkerEditCommand expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
 
         CommandParserTestUtil.assertParseSuccess(parser, userInput, expectedCommand);
@@ -187,9 +198,9 @@ public class WorkerEditCommandParserTest {
 
         // other valid values specified
         userInput = targetIndex.getOneBased() + PAY_DESC_BOB + INVALID_PHONE_DESC + ADDRESS_DESC_BOB
-                + PHONE_DESC_BOB;
+            + PHONE_DESC_BOB;
         descriptor = new EditWorkerDescriptorBuilder().withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_BOB)
-                .withAddress(VALID_ADDRESS_BOB).build();
+            .withAddress(VALID_ADDRESS_BOB).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         CommandParserTestUtil.assertParseSuccess(parser, userInput, expectedCommand);
     }

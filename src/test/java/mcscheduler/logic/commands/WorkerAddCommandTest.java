@@ -3,7 +3,6 @@ package mcscheduler.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.function.Predicate;
 import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -26,6 +24,7 @@ import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.WorkerBuilder;
 
 public class WorkerAddCommandTest {
@@ -38,7 +37,7 @@ public class WorkerAddCommandTest {
     @Test
     public void execute_workerAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingWorkerAdded modelStub = new ModelStubAcceptingWorkerAdded(
-                Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
+            Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
         Worker validWorker = new WorkerBuilder().build();
 
         CommandResult commandResult = new WorkerAddCommand(validWorker).execute(modelStub);
@@ -64,8 +63,9 @@ public class WorkerAddCommandTest {
         ModelStub modelStub = new ModelStubAcceptingWorkerAdded();
 
         Assert
-            .assertThrows(CommandException.class, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
-                addCommand.execute(modelStub));
+            .assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
+                    addCommand.execute(modelStub));
     }
 
     @Test

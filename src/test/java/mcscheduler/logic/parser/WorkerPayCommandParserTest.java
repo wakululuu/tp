@@ -4,9 +4,8 @@ import static mcscheduler.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.commands.WorkerPayCommand;
-
+import mcscheduler.testutil.TypicalIndexes;
 
 
 /**
@@ -28,6 +27,6 @@ public class WorkerPayCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                WorkerPayCommand.MESSAGE_USAGE));
+            WorkerPayCommand.MESSAGE_USAGE));
     }
 }

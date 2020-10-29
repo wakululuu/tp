@@ -13,7 +13,7 @@ import mcscheduler.model.worker.Worker;
 /**
  * A utility class to help with building Addressbook objects.
  * Example usage: <br>
- *     {@code McScheduler ab = new McSchedulerBuilder().withWorker("John", "Doe").build();}
+ * {@code McScheduler ab = new McSchedulerBuilder().withWorker("John", "Doe").build();}
  */
 public class McSchedulerBuilder {
 
@@ -43,6 +43,7 @@ public class McSchedulerBuilder {
         ab.addRole(Role.createRole(VALID_ROLE_JANITOR));
         return ab;
     }
+
     /**
      * Returns an {@code McScheduler} with all the typical workers, shifts, assignments and roles.
      */

@@ -8,15 +8,15 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.model.tag.Role;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class WorkerAvailableCommandParserTest {
 
     private static final String MESSAGE_INVALID_FORMAT =
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE);
+        String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE);
 
     private WorkerAvailableCommandParser parser = new WorkerAvailableCommandParser();
 
@@ -49,7 +49,8 @@ public class WorkerAvailableCommandParserTest {
 
     @Test
     public void parse_invalidRole_failure() {
-        CommandParserTestUtil.assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
+        CommandParserTestUtil
+            .assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
     }
 
     @Test

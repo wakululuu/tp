@@ -6,7 +6,7 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
 import java.util.Set;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.CancelLeaveCommand;
@@ -28,7 +28,8 @@ public class CancelLeaveCommandParser implements Parser<CancelLeaveCommand> {
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SHIFT, PREFIX_WORKER);
 
         if (!ParserUtil.arePrefixesPresent(argumentMultimap, PREFIX_SHIFT, PREFIX_WORKER)) {
-            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, CancelLeaveCommand.MESSAGE_USAGE));
+            throw new ParseException(
+                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, CancelLeaveCommand.MESSAGE_USAGE));
         }
 
         Index shiftIndex;

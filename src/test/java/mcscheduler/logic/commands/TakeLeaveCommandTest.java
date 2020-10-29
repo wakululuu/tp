@@ -3,7 +3,6 @@ package mcscheduler.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.ModelManager;
@@ -21,6 +19,10 @@ import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Leave;
 import mcscheduler.model.worker.Worker;
+import mcscheduler.testutil.Assert;
+import mcscheduler.testutil.TypicalIndexes;
+import mcscheduler.testutil.TypicalShifts;
+import mcscheduler.testutil.TypicalWorkers;
 
 public class TakeLeaveCommandTest {
 
@@ -30,7 +32,8 @@ public class TakeLeaveCommandTest {
         validIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
         Assert.assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(null, validIndex));
         Assert
-            .assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, null));
+            .assertThrows(NullPointerException.class, () ->
+                new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, null));
         Assert.assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(null, null));
     }
 
@@ -49,7 +52,7 @@ public class TakeLeaveCommandTest {
         Assignment assignment = new Assignment(TypicalShifts.SHIFT_A, TypicalWorkers.ALICE, new Leave());
 
         assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
-                + AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, assignment) + "\n", result.getFeedbackToUser());
+            + AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, assignment) + "\n", result.getFeedbackToUser());
         assertEquals(Arrays.asList(assignment), model.assignments);
 
     }
@@ -99,7 +102,7 @@ public class TakeLeaveCommandTest {
         Set<Index> validIndex = new HashSet<>();
         validIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
         Assert.assertThrows(CommandException.class, () ->
-                new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex).execute(model));
+            new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex).execute(model));
     }
 
     @Test
@@ -113,7 +116,8 @@ public class TakeLeaveCommandTest {
         TakeLeaveCommand firstShiftSecondWorker = new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndexTwo);
 
         assertTrue(firstIndexes.equals(firstIndexes)); // same object
-        assertTrue(firstIndexes.equals(new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex))); // same values
+        assertTrue(
+            firstIndexes.equals(new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex))); // same values
         assertFalse(firstIndexes.equals(123)); // different type
         assertFalse(firstIndexes.equals(null)); // null
         assertFalse(firstIndexes.equals(secondIndexes)); // different values
@@ -131,10 +135,10 @@ public class TakeLeaveCommandTest {
 
         public ModelStubAcceptingLeaveAdded(List<Worker> workers, List<Shift> shifts) {
             super();
-            for (Worker worker: workers) {
+            for (Worker worker : workers) {
                 addWorker(worker);
             }
-            for (Shift shift: shifts) {
+            for (Shift shift : shifts) {
                 addShift(shift);
             }
             this.assignments = new ArrayList<>();

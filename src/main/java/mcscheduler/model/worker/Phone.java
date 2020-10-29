@@ -1,8 +1,8 @@
 package mcscheduler.model.worker;
 
 import static java.util.Objects.requireNonNull;
-import static mcscheduler.commons.util.AppUtil.checkArgument;
-import mcscheduler.commons.util.*;
+
+import mcscheduler.commons.util.AppUtil;
 
 /**
  * Represents a Worker's phone number in the address book.

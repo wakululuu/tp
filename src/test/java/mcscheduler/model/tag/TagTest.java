@@ -1,9 +1,8 @@
 package mcscheduler.model.tag;
 
-import static mcscheduler.testutil.Assert.assertThrows;
-
 import org.junit.jupiter.api.Test;
-import mcscheduler.testutil.*;
+
+import mcscheduler.testutil.Assert;
 
 public class TagTest {
 

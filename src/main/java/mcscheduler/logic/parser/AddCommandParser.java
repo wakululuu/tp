@@ -3,7 +3,7 @@ package mcscheduler.logic.parser;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import mcscheduler.commons.core.*;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.tag.Role;
@@ -29,12 +29,13 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
      */
     public WorkerAddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_PAY, CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_ROLE,
-                        CliSyntax.PREFIX_UNAVAILABILITY);
+                ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_PAY,
+                    CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_ROLE, CliSyntax.PREFIX_UNAVAILABILITY);
 
-        if (!arePrefixesPresent(argMultimap, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_PAY)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
+        if (!arePrefixesPresent(argMultimap, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_ADDRESS,
+            CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_PAY) || !argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    WorkerAddCommand.MESSAGE_USAGE));
         }
 
         Name name = ParserUtil.parseName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());

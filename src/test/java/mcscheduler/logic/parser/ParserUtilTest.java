@@ -1,9 +1,8 @@
 package mcscheduler.logic.parser;
 
+import static mcscheduler.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static mcscheduler.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
-import static mcscheduler.testutil.Assert.assertThrows;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,13 +11,14 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.tag.Tag;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Email;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Phone;
+import mcscheduler.testutil.Assert;
+import mcscheduler.testutil.TypicalIndexes;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";

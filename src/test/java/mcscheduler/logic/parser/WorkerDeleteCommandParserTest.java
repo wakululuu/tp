@@ -4,8 +4,8 @@ import static mcscheduler.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.testutil.*;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
+import mcscheduler.testutil.TypicalIndexes;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -20,12 +20,13 @@ public class WorkerDeleteCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {
-        CommandParserTestUtil.assertParseSuccess(parser, "1", new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER));
+        CommandParserTestUtil
+            .assertParseSuccess(parser, "1", new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         CommandParserTestUtil.assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                WorkerDeleteCommand.MESSAGE_USAGE));
+            WorkerDeleteCommand.MESSAGE_USAGE));
     }
 }
