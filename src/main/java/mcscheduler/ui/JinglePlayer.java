@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package mcscheduler.ui;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
