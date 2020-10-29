@@ -13,6 +13,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
@@ -95,7 +96,11 @@ public class UnassignCommand extends Command {
             unassignStringBuilder.append(assignmentWithRole);
             unassignStringBuilder.append("\n");
 
-            model.deleteAssignment(assignmentToDelete);
+            try {
+                model.deleteAssignment(assignmentToDelete);
+            } catch (AssignmentNotFoundException e) {
+                throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
+            }
             Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
         }
 
@@ -111,7 +116,7 @@ public class UnassignCommand extends Command {
                 return assignment.getRole();
             }
         }
-        assert false; // a role should have been returned within the for loop
+        assert false : "Role returned is null"; // a non-null role should have been returned within the for loop
         return null;
     }
 
