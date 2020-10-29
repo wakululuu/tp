@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_NO_ASSIGNMENT_FOUND;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
@@ -14,6 +15,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
+import seedu.address.model.assignment.exceptions.AssignmentNotFoundException;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Leave;
 import seedu.address.model.worker.Worker;
@@ -80,7 +82,7 @@ public class CancelLeaveCommand extends Command {
 
             Optional<Assignment> assignmentInModelOptional = model.getAssignment(assignmentToCancelLeave);
             if (assignmentInModelOptional.isEmpty()) {
-                throw new CommandException(String.format(Messages.MESSAGE_NO_ASSIGNMENT_FOUND,
+                throw new CommandException(String.format(MESSAGE_NO_ASSIGNMENT_FOUND,
                         workerToCancelLeave, shiftToCancelLeaveFrom));
             }
 
