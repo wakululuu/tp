@@ -133,26 +133,6 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Role
-
-#### Role Implementation
-
-The `Role` attribute of the `Worker` class extends the existing `Tag` class. The `Role` constructor takes in a `String` and creates a `Role` object with the according `roleName`. In the future, we will change the 
-behavior of `Role` such that we have an enumeration of allowed `roleNames` and only these `Roles` can be 
-instantiated. We will also add support for adding new allowed `roleNames` to the enumeration mentioned above.
-
-#### Design consideration:
-
-We chose to simply extend the `Tag` class since both `Tag` and `Role` are optional fields so it makes sense
-for `Role` to inherit from `Tag`.
-
-<!--Todo: add class diagrams relating Role to Tag, Role Requirement, Worker and Shift-->
-
-### \[Proposed\] Undo/redo feature
-
-#### Proposed Implementation
-
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 ### Adding of a Worker feature
 
 The adding of workers is core to the functionality of the system. Users are able to add important information to each
@@ -277,6 +257,31 @@ Step 2. The user realises the previous command was a mistake and executes `unass
 from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
+
+### Role feature
+
+The role feature allows users to add roles to a `Worker`. When assigning a `Worker` to a `Shift` under a particular `Role`,
+we check that the `Worker` has the corresponding `Role` tagged to the `Worker`.
+
+#### Implementation
+
+The `Role` attribute of the `Worker` class extends the existing `Tag` class. The `Role` constructor takes in a `String` 
+and creates a `Role` object with the according `roleName`. In the future, we will change the 
+behavior of `Role` such that we have an enumeration of allowed `roleNames` and only these `Roles` can be 
+instantiated. We will also add support for adding new allowed `roleNames` to the enumeration mentioned above.
+
+![RoleClassDiagram](images/RoleClassDiagram.png)
+
+#### Design consideration:
+
+We chose to simply extend the `Tag` class since both `Tag` and `Role` are optional fields so it makes sense
+for `Role` to inherit from `Tag`.
+
+<!--Todo: add class diagrams relating Role to Tag, Role Requirement, Worker and Shift-->
+
+#### Example usage scenario
+
+![RoleSequenceDiagram](images/RoleSequenceDiagram.png)
 
 ### Take/cancel leave feature
 
