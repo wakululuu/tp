@@ -3,7 +3,7 @@ package mcscheduler.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.util.SampleDataUtil;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;

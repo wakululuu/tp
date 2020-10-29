@@ -2,8 +2,8 @@ package mcscheduler.model;
 
 import javafx.collections.ObservableList;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**

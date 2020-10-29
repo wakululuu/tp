@@ -11,11 +11,10 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.StringUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.assignment.WorkerRolePair;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
-import mcscheduler.model.tag.Role;
-import mcscheduler.model.tag.Tag;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Email;
 import mcscheduler.model.worker.Name;
@@ -141,33 +140,6 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String tag} into a {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code tag} is invalid.
-     */
-    public static Tag parseTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-        if (!Tag.isValidTagName(trimmedTag)) {
-            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
-        }
-        return new Tag(trimmedTag);
-    }
-
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
-     */
-    public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
-        requireNonNull(tags);
-        final Set<Tag> tagSet = new HashSet<>();
-        for (String tagName : tags) {
-            tagSet.add(parseTag(tagName));
-        }
-        return tagSet;
-    }
-
-    /**
      * Parses a {@code String day} into a {@code ShiftDay}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -206,7 +178,7 @@ public class ParserUtil {
     public static Role parseRole(String role) throws ParseException {
         requireNonNull(role);
         String trimmedRole = role.trim();
-        if (!Role.isValidTagName(trimmedRole)) {
+        if (!Role.isValidRoleName(trimmedRole)) {
             throw new ParseException(Role.MESSAGE_CONSTRAINTS);
         }
         return Role.createRole(trimmedRole);

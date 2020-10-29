@@ -11,7 +11,7 @@ import java.util.Set;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
@@ -41,7 +41,7 @@ public class WorkerUtil {
         sb.append(PREFIX_PAY + String.valueOf(worker.getPay().value) + " ");
         sb.append(PREFIX_ADDRESS + worker.getAddress().value + " ");
         worker.getRoles().stream().forEach(
-            s -> sb.append(PREFIX_ROLE + s.tagName + " ")
+            s -> sb.append(PREFIX_ROLE + s.roleName + " ")
         );
         worker.getUnavailableTimings().stream().forEach(
             s -> sb.append(PREFIX_ROLE + s.getString() + " ")
@@ -63,7 +63,7 @@ public class WorkerUtil {
             if (roles.isEmpty()) {
                 sb.append(PREFIX_ROLE);
             } else {
-                roles.forEach(s -> sb.append(PREFIX_ROLE).append(s.tagName).append(" "));
+                roles.forEach(s -> sb.append(PREFIX_ROLE).append(s.roleName).append(" "));
             }
         }
         if (descriptor.getUnavailableTimings().isPresent()) {

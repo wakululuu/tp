@@ -2,7 +2,7 @@ package mcscheduler.testutil;
 
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.assignment.WorkerRolePair;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 public class WorkerRolePairBuilder {
 

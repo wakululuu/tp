@@ -8,10 +8,10 @@ import java.util.Optional;
 import javafx.collections.ObservableList;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.UniqueAssignmentList;
+import mcscheduler.model.role.Role;
+import mcscheduler.model.role.UniqueRoleList;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.UniqueShiftList;
-import mcscheduler.model.tag.Role;
-import mcscheduler.model.tag.UniqueRoleList;
 import mcscheduler.model.worker.UniqueWorkerList;
 import mcscheduler.model.worker.Worker;
 

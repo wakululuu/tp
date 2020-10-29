@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;

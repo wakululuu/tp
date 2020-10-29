@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.AssignCommand;
 import mcscheduler.model.assignment.WorkerRolePair;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.TypicalIndexes;
 
 

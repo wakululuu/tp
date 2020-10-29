@@ -1,4 +1,4 @@
-package mcscheduler.model.tag;
+package mcscheduler.model.role;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,8 +8,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mcscheduler.commons.util.CollectionUtil;
-import mcscheduler.model.tag.exceptions.DuplicateRoleException;
-import mcscheduler.model.tag.exceptions.RoleNotFoundException;
+import mcscheduler.model.role.exceptions.DuplicateRoleException;
+import mcscheduler.model.role.exceptions.RoleNotFoundException;
 
 /**
  * A list of roles that enforces uniqueness between its elements and does not allow nulls.

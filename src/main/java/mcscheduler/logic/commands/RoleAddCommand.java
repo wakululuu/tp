@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Adds a role to the address book.

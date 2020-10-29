@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerEditCommand;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;

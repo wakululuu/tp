@@ -13,7 +13,7 @@ import java.util.Set;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Worker;
 
 //import static CliSyntax.PREFIX_EMAIL;

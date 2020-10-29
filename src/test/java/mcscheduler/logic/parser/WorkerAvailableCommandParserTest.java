@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class WorkerAvailableCommandParserTest {
