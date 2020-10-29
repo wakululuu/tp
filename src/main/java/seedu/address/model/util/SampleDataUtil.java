@@ -57,7 +57,7 @@ public class SampleDataUtil {
             getUnavailabilitySet("SUN AM", "MON AM"));
 
     private static final Shift SAMPLE_SHIFT_MON_AM = new Shift(
-            new ShiftDay("Mon"), new ShiftTime("AM"), getRoleRequirementSet("Cashier 1 1"));
+            new ShiftDay("Mon"), new ShiftTime("AM"), getRoleRequirementSet("Cashier 2 1"));
     private static final Shift SAMPLE_SHIFT_TUE_PM = new Shift(
             new ShiftDay("Tue"), new ShiftTime("PM"), getRoleRequirementSet("Cleaner 2 2"));
 

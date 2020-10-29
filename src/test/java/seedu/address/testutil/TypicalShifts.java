@@ -16,7 +16,7 @@ public class TypicalShifts {
             .withRoleRequirements("cashier 1 1").build();
     public static final Shift SHIFT_B = new ShiftBuilder().withShiftDay("FRI")
             .withShiftTime("PM")
-            .withRoleRequirements("cashier 1 0", "chef 3 1").build();
+            .withRoleRequirements("cashier 2 0", "chef 3 1").build();
     public static final Shift SHIFT_C = new ShiftBuilder().withShiftDay("TUE")
             .withShiftTime("AM")
             .withRoleRequirements("cleaner 4 0", "cashier 3 1").build();

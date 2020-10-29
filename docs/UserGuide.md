@@ -280,24 +280,25 @@ Example:
 
 Assigns an existing worker to take on an existing role in an existing shift.
 
-Format: `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE`
+Format: `assign s/SHIFT_INDEX [w/WORKER_INDEX ROLE]...`
 
-* Assigns the worker at the specified `WORKER_INDEX` to the shift at the specified `SHIFT_INDEX`. The indexes refer to
+* Assigns the worker(s) at the specified `WORKER_INDEX` to the shift at the specified `SHIFT_INDEX`. The indexes refer to
   the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1, 2,
   3, …​
-* The assigned worker will fill up the specified `ROLE` in the shift. The worker must be fit for the specified `ROLE`
+* The assigned worker(s) will fill up the specified `ROLE` in the shift. The worker(s) must be fit for the specified `ROLE`
   and the shift must require the `ROLE`.
 
 Example:
-* `assign s/3 w/2 r/Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
+* `assign s/3 w/2 Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
+* `assign s/3 w/2 Cashier w/3 Chef` Assigns the 2nd worker as a cashier and the 3rd worker as a chef to the 3rd shift.
 
 ### Removing a worker from a shift: `unassign`
 
 Removes a worker from a particular shift.
 
-Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX`
+Format: `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
-* Unassigns the worker at the specified `WORKER_INDEX` from the shift at the specified `SHIFT_ INDEX`. The indexes refer
+* Unassigns the worker(s) at the specified `WORKER_INDEX` from the shift at the specified `SHIFT_ INDEX`. The indexes refer
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
   
@@ -324,18 +325,19 @@ Examples:
 
 Assigns a worker to take leave at a particular day and time, as indicated by a shift.
 
-Format: `take-leave s/SHIFT_INDEX w/WORKER_INDEX`
+Format: `take-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
-* Assigns a worker to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker taking leave
-will be the worker at the specified `WORKER_INDEX` in the worker list.
+* Assigns worker(s) to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker(s) taking leave
+will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the 
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
 * An error message will be shown in the following situations:
-  * The worker is unavailable for that shift, since there is no reason to take leave then.
-  * The worker is already assigned to a role for that shift.
+  * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
+  * Any of the worker is already assigned to a role for that shift.
 
 Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
+* `take-leave s/4 w/1 w/3` Assigns the 1st and 4rd worker to take leave during the 4th shift.
 
 ### Assign a worker's leave over a range of days and times: `mass-take-leave`
 
@@ -365,18 +367,19 @@ Examples:
 
 Cancels a worker's leave at a particular day and time, as indicated by a shift.
 
-Format `cancel-leave s/SHIFT_INDEX w/WORKER_INDEX`
+Format `cancel-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
-* Cancel's a worker's leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is 
-cancelled will be the worker at the specified `WORKER_INDEX` in the worker list.
+* Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is 
+cancelled will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `cancel-leave s/4 w/1` is equivalent to `cancel-leave w/1 s/4`.
 * An error message will be shown in the following situations:
-  * No leave found for the worker at the specified shift.
-  * An assignment other than leave is found for the worker at the specified shift.
+  * No leave found for the worker(s) at the specified shift.
+  * An assignment other than leave is found for the worker(s) at the specified shift.
   
 Examples:
 * `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
+* `cancel-leave s/4 w/1 w/3` Cancels the leave of the 1st and the 3rd worker for the 4th shift.
 
 ### Cancel a worker's leave over a range of days and times: `mass-cancel-leave`
 
@@ -436,8 +439,8 @@ Shift | **List** | `shift-list`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Role | **List** | `role-list`
-Assignment | **Assign** | `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE`<br>e.g. `assign s/3 w/2 r/Cashier`
-Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX`<br>e.g. `unassign s/4 w/1`
+Assignment | **Assign** | `assign s/SHIFT_INDEX [w/WORKER_INDEX ROLE]...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
+Assignment | **Unassign** | `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g. `unassign s/4 w/1 w/5`
 Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`
 General | **Help** | `help`
 General | **Exit** | `exit`

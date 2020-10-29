@@ -20,6 +20,11 @@ run {
     enableAssertions = true
 }
 
+//compileJava {
+//    options.encoding = 'UTF-8'
+//    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//}
+
 checkstyle {
     toolVersion = '8.29'
 }
