@@ -177,6 +177,18 @@ Format: `worker-delete WORKER_INDEX`
 Example:
 * `worker-delete 4` Deletes the 4th worker shown in the worker list.
 
+### Calculate a worker's pay for the week: `worker-pay`
+
+Calculate a worker's pay for the week.
+
+Format: `worker-pay WORKER_INDEX`
+
+* Calculate the total pay for the week for the worker at the specified `WORKER_INDEX`. The index refers to the index number shown in the displayed worker
+  list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
+
+Example:
+* `worker-pay 4` Calculate the total pay for the week for the 4th worker shown in the worker list.
+
 ### Adding a shift: `shift-add`
 
 Adds a new shift to the McScheduler.
@@ -275,6 +287,21 @@ Format: `role-delete ROLE_INDEX`
 
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
+
+### Show the list of available workers for a particular shift and role: `worker-avail`
+
+Show the list of workers who are available for a particular shift under a particular role.
+
+Format: `worker-avail SHIFT_INDEX r/ROLE`
+
+* Show a list of available workers who can work as the specified `ROLE` for the shift at the specified `SHIFT_INDEX`. 
+  The index refers to the index number shown in the displayed shift
+  list. The shift index **must be a positive integer** i.e. 1, 2, 3, …​
+* `ROLE` must be a valid role that has already been added to the list of approved roles. See `role-add`.
+
+Example:
+* `worker-avail 4 r/Chef` Show a list of available workers who can work as chefs for the 4th shift shown in the shift list.
+
 
 ### Assigning a worker to a role in a shift: `assign`
 
@@ -432,6 +459,7 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7`
 Worker | **List** | `worker-list`
+Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`
 Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-edit 1 d/Mon t/PM r/Janitor 1`
@@ -439,6 +467,7 @@ Shift | **List** | `shift-list`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Role | **List** | `role-list`
+Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX [w/WORKER_INDEX ROLE]...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g. `unassign s/4 w/1 w/5`
 Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`
