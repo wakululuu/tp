@@ -91,7 +91,7 @@ Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u
 
 * Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s). The worker will be unavailable
 on the specified `UNAVAILABLE_DAY`(s) at the corresponding `UNAVAILABLE_TIME`.
-* `HOURLY_PAY` can have a maximum of 2 decimal places only. 
+* `HOURLY_PAY` can have a maximum of 2 decimal places only.
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
@@ -101,7 +101,7 @@ accepted).
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
-A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.  
+A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.
 A worker can have any number of unavailable timings (including zero) that can be added by multiple `u/` parameters.
 
 </div>
@@ -125,7 +125,7 @@ Format: `worker-list`
 
 Edits an existing worker in the McScheduler.
 
-Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]...`
+Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`
 
 * Edits the worker at the specified `WORKER_INDEX`. The worker index refers to the index number shown in the displayed
   worker list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
@@ -134,6 +134,11 @@ Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOUR
 * When editing roles, the existing roles of the worker will be removed i.e adding of roles is not cumulative.
 * The specified `ROLE`(s) must be an existing role in the McScheduler. A role can be added to the McScheduler using the
   [role-add](#adding-a-role-role-add) command.
+* When editing unavailabilities, the existing unavailabilities of the worker will be removed i.e. adding of unavailabilities is not cumulative.
+* `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
+  Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
+* `UNAVAILABLE_TIME` should take one of these values: **AM, PM, FULL**. These values are case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+accepted).
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
@@ -144,7 +149,7 @@ You can remove all of a worker’s roles by typing `r/` without specifying any r
 Examples:
 * `worker-edit 1 n/John r/Janitor` Edits the name and role of the 1st worker to be John and janitor respectively.
 
-* `worker-edit 2 n/Betsy Crower p/7` Edits the name and pay of the 2nd worker to be Betsy Crower and $7/hr respectively.
+* `worker-edit 2 n/Betsy Crower p/7 u/Mon full` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
 <!-- ### Locating workers by name: `worker find`
 
@@ -176,6 +181,18 @@ Format: `worker-delete WORKER_INDEX`
 
 Example:
 * `worker-delete 4` Deletes the 4th worker shown in the worker list.
+
+### Calculate a worker's pay for the week: `worker-pay`
+
+Calculate a worker's pay for the week.
+
+Format: `worker-pay WORKER_INDEX`
+
+* Calculate the total pay for the week for the worker at the specified `WORKER_INDEX`. The index refers to the index number shown in the displayed worker
+  list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
+
+Example:
+* `worker-pay 4` Calculate the total pay for the week for the 4th worker shown in the worker list.
 
 ### Adding a shift: `shift-add`
 
@@ -276,6 +293,21 @@ Format: `role-delete ROLE_INDEX`
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
 
+### Show the list of available workers for a particular shift and role: `worker-avail`
+
+Show the list of workers who are available for a particular shift under a particular role.
+
+Format: `worker-avail SHIFT_INDEX r/ROLE`
+
+* Show a list of available workers who can work as the specified `ROLE` for the shift at the specified `SHIFT_INDEX`.
+  The index refers to the index number shown in the displayed shift
+  list. The shift index **must be a positive integer** i.e. 1, 2, 3, …​
+* `ROLE` must be a valid role that has already been added to the list of approved roles. See `role-add`.
+
+Example:
+* `worker-avail 4 r/Chef` Show a list of available workers who can work as chefs for the 4th shift shown in the shift list.
+
+
 ### Assigning a worker to a role in a shift: `assign`
 
 Assigns an existing worker to take on an existing role in an existing shift.
@@ -301,7 +333,7 @@ Format: `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`
 * Unassigns the worker(s) at the specified `WORKER_INDEX` from the shift at the specified `SHIFT_ INDEX`. The indexes refer
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
-  
+ 
 ### Reassigning an existing assignment: `reassign`
 
 Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
@@ -329,7 +361,7 @@ Format: `take-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
 * Assigns worker(s) to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker(s) taking leave
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
-* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the 
+* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
 * An error message will be shown in the following situations:
   * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
@@ -345,7 +377,7 @@ Assigns a worker to take leave over a range of days and times given a start and 
 
 Format: `mass-take-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
 
-* Assigns a worker to take leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+* Assigns a worker to take leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and
 `END_TIME`. The worker taking leave will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
 and similarly for time). Specifying in the wrong order is likely to result in leave taken in the wrong shifts.
@@ -369,14 +401,14 @@ Cancels a worker's leave at a particular day and time, as indicated by a shift.
 
 Format `cancel-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
-* Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is 
+* Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is
 cancelled will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `cancel-leave s/4 w/1` is equivalent to `cancel-leave w/1 s/4`.
 * An error message will be shown in the following situations:
   * No leave found for the worker(s) at the specified shift.
   * An assignment other than leave is found for the worker(s) at the specified shift.
-  
+ 
 Examples:
 * `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
 * `cancel-leave s/4 w/1 w/3` Cancels the leave of the 1st and the 3rd worker for the 4th shift.
@@ -387,7 +419,7 @@ Cancels a worker's leave over a range of days and times given a start and end da
 
 Format: `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
 
-* Cancel's a worker's leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+* Cancel's a worker's leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and
 `END_TIME`. The worker cancelling leave will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
 and similarly for time). Specifying in the wrong order is likely to result in leave cancelled in the wrong shifts.
@@ -397,7 +429,7 @@ the same as `mass-cancel-leave t/AM t/PM d/MON d/FRI w/2`, though the latter syn
 work as intended - leave cancelled from Sunday morning to Monday morning.
 * An error message will be shown in the following situations:
   * The worker has no leave in the given day/time range.
-  
+ 
 Examples:
 * `mass-cancel-leave w/2 d/MON t/PM d/THU t/PM` Cancels the 2nd worker's leave between MON PM shift to THU PM shift (inclusive).
 
@@ -432,6 +464,7 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7`
 Worker | **List** | `worker-list`
+Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`
 Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-edit 1 d/Mon t/PM r/Janitor 1`
@@ -439,6 +472,7 @@ Shift | **List** | `shift-list`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Role | **List** | `role-list`
+Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX [w/WORKER_INDEX ROLE]...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g. `unassign s/4 w/1 w/5`
 Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`

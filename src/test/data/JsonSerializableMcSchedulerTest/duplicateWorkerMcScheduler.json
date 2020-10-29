@@ -1,0 +1,22 @@
+{
+  "workers": [
+    {
+      "name": "Alice Pauline",
+      "phone": "94351253",
+      "pay": "15.5",
+      "address": "123, Jurong West Ave 6, #08-111",
+      "roles": [
+        "chef"
+      ]
+    },
+    {
+      "name": "Alice Pauline",
+      "phone": "94351253",
+      "pay": "15.5",
+      "address": "4th street"
+    }
+  ],
+  "shifts": [],
+  "assignments": [],
+  "validRoles": []
+}

@@ -4,7 +4,7 @@
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":AddCommandParser" as AddCommandParser LOGIC_COLOR
+participant ":WorkerAddCommandParser" as WorkerAddCommandParser LOGIC_COLOR
 participant "d:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
 participant ":ParserUtil" as ParserUtil LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
@@ -20,36 +20,36 @@ activate LogicManager
 LogicManager -> AddressBookParser : parseCommand(command)
 activate AddressBookParser
 
-create AddCommandParser
-AddressBookParser -> AddCommandParser
-activate AddCommandParser
+create WorkerAddCommandParser
+AddressBookParser -> WorkerAddCommandParser
+activate WorkerAddCommandParser
 
-AddCommandParser --> AddressBookParser
-deactivate AddCommandParser
+WorkerAddCommandParser --> AddressBookParser
+deactivate WorkerAddCommandParser
 
-AddressBookParser -> AddCommandParser : parse(command)
-activate AddCommandParser
+AddressBookParser -> WorkerAddCommandParser : parse(command)
+activate WorkerAddCommandParser
 
-AddCommandParser -> ParserUtil : parseUnavailabilities(string)
+WorkerAddCommandParser -> ParserUtil : parseUnavailabilities(string)
 activate ParserUtil
 
-ParserUtil -> ParserUtil : createMorningUnavailability(day)
-ParserUtil -> ParserUtil : createAfternoonUnavailability(day)
+ParserUtil -> ParserUtil : createMorningUnavailabilityString(day)
+ParserUtil -> ParserUtil : createAfternoonUnavailabilityString(day)
 return
 deactivate ParserUtil
 
 create WorkerAddCommand
-AddCommandParser -> WorkerAddCommand
+WorkerAddCommandParser -> WorkerAddCommand
 activate WorkerAddCommand
 
-WorkerAddCommand --> AddCommandParser
+WorkerAddCommand --> WorkerAddCommandParser
 deactivate WorkerAddCommand
 
-AddCommandParser --> AddressBookParser : d
-deactivate AddCommandParser
+WorkerAddCommandParser --> AddressBookParser : d
+deactivate WorkerAddCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-AddCommandParser -[hidden]-> AddressBookParser
-destroy AddCommandParser
+WorkerAddCommandParser -[hidden]-> AddressBookParser
+destroy WorkerAddCommandParser
 
 AddressBookParser --> LogicManager : d
 deactivate AddressBookParser

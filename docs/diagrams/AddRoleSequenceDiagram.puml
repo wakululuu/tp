@@ -1,0 +1,106 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
+participant ":RoleAddCommandParser" as RoleAddCommandParser LOGIC_COLOR
+participant "<<class>>\n:ParserUtil" as ParserUtil LOGIC_COLOR
+participant "<<class>>\n:Role" as Role_CLASS LOGIC_COLOR
+participant ":Role" as Role LOGIC_COLOR
+participant ":RoleAddCommand" as RoleAddCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":ModelManager" as ModelManager MODEL_COLOR
+participant ":McScheduler" as McScheduler MODEL_COLOR
+participant ":UniqueRoleList" as UniqueRoleList MODEL_COLOR
+end box
+
+[-> LogicManager : execute(command)
+activate LogicManager
+
+LogicManager -> McSchedulerParser : parseCommand(command)
+activate McSchedulerParser
+
+create RoleAddCommandParser
+McSchedulerParser -> RoleAddCommandParser
+activate RoleAddCommandParser
+
+RoleAddCommandParser --> McSchedulerParser
+deactivate RoleAddCommandParser
+
+McSchedulerParser -> RoleAddCommandParser : parse(args)
+activate RoleAddCommandParser
+
+RoleAddCommandParser -> ParserUtil : parseRole(args)
+activate ParserUtil
+
+ParserUtil -> Role_CLASS : createRole(role)
+activate Role_CLASS
+
+create Role
+Role_CLASS -> Role
+activate Role
+
+return role
+deactivate Role
+
+Role_CLASS -> ParserUtil : role:Role
+deactivate Role_CLASS
+
+ParserUtil -> RoleAddCommandParser : role:Role
+deactivate ParserUtil
+
+create RoleAddCommand
+RoleAddCommandParser -> RoleAddCommand : RoleAddCommand(role:Role)
+activate RoleAddCommand
+
+
+RoleAddCommand --> RoleAddCommandParser
+deactivate RoleAddCommand
+
+RoleAddCommandParser --> McSchedulerParser
+deactivate RoleAddCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+RoleAddCommandParser -[hidden]-> McSchedulerParser
+destroy RoleAddCommandParser
+
+McSchedulerParser --> LogicManager
+deactivate McSchedulerParser
+
+LogicManager -> RoleAddCommand : execute(model)
+activate RoleAddCommand
+
+RoleAddCommand -> ModelManager : addRole(role)
+activate ModelManager
+
+ModelManager -> McScheduler : addRole(role)
+activate McScheduler
+
+McScheduler -> UniqueRoleList : add(role)
+activate UniqueRoleList
+
+UniqueRoleList -> McScheduler
+deactivate UniqueRoleList
+
+McScheduler -> ModelManager
+deactivate McScheduler
+
+ModelManager --> RoleAddCommand
+deactivate ModelManager
+
+create CommandResult
+RoleAddCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> RoleAddCommand
+deactivate CommandResult
+
+RoleAddCommand --> LogicManager : result
+deactivate RoleAddCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml
