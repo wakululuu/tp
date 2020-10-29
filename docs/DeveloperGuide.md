@@ -303,6 +303,39 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
 
+### Role feature
+
+The role feature allows users to add roles to a `Worker` and add `RoleRequirement` to a `Shift`. When assigning a `Worker` to a `Shift` under a particular `Role`,
+we check that the `Worker` has the corresponding `Role` tagged to the `Worker` as the `Role` in the `RoleRequirement` of the particular `Shift`.
+
+#### Implementation
+
+The `Role` constructor takes in a `String` and creates a `Role` object with the according `roleName`. When tagging a `Worker` with a `Role`, we check that the `Role` is an allowed `Role` by checking if it exists in the 
+`UniqueRoleList` of the McScheduler.
+
+![RoleClassDiagram](images/RoleClassDiagram.png)
+
+#### Commands
+The following commands have been implemented to work with `Role`:
+- `RoleAddCommand` to add new roles to `UniqueRoleList`
+- `RoleDeleteCommand` to delete existing roles in `UniqueRoleList`
+- `RoleListCommand` to list existing roles in `UniqueRoleList`
+
+#### Example usage scenario
+
+Step 1. The user executes `role-add cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
+If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleException` is thrown.
+
+![AddRoleSequenceDiagram](images/AddRoleSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `RoleAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
+
+Step 2. The user realises the previous command was a mistake and executes `role-list` to get the index of the cashier role in the `UniqueRoleList`.
+Using the role index in the `UniqueRoleList`, the user executes `role-delete ROLE_INDEX` to remove the cashier role from the `UniqueRoleList`.
+
+
 ### Take/cancel leave feature
 
 The take/cancel leave feature allows users to set workers status to leave given a day and time. 
