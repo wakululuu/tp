@@ -156,6 +156,11 @@ public class WorkerAddCommandTest {
         }
 
         @Override
+        public float calculateWorkerPay(Worker worker) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Worker> getFullWorkerList() {
             throw new AssertionError("This method should not be called.");
         }

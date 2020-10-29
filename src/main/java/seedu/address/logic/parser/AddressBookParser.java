@@ -29,6 +29,7 @@ import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.commands.WorkerDeleteCommand;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerListCommand;
+import seedu.address.logic.commands.WorkerPayCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -123,6 +124,9 @@ public class AddressBookParser {
 
         case RoleListCommand.COMMAND_WORD:
             return new RoleListCommand();
+
+        case WorkerPayCommand.COMMAND_WORD:
+            return new WorkerPayCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
