@@ -5,6 +5,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 
+import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
@@ -32,16 +33,16 @@ public class UnassignCommandParser implements Parser<UnassignCommand> {
         }
 
         Index shiftIndex;
-        Index workerIndex;
+        Set<Index> workerIndexes;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_SHIFT).get());
-            workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
+            workerIndexes = ParserUtil.parseIndexes(argMultimap.getAllValues(PREFIX_WORKER));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     UnassignCommand.MESSAGE_USAGE), ive);
         }
 
-        return new UnassignCommand(shiftIndex, workerIndex);
+        return new UnassignCommand(shiftIndex, workerIndexes);
     }
 
     /**
