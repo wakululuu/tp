@@ -12,16 +12,19 @@ import seedu.address.model.shift.RoleRequirement;
 public class JsonAdaptedRoleRequirement {
 
     private final JsonAdaptedRole role;
-    private final int quantity;
+    private final int quantityRequired;
+    private final int quantityFilled;
 
     /**
      * Constructs a {@code JsonAdaptedRoleRequirement} with the given details
      */
     @JsonCreator
     public JsonAdaptedRoleRequirement(@JsonProperty("role") JsonAdaptedRole role,
-                                      @JsonProperty("quantity") int quantity) {
+            @JsonProperty("quantityRequired") int quantityRequired,
+            @JsonProperty("quantityFilled") int quantityFilled) {
         this.role = role;
-        this.quantity = quantity;
+        this.quantityRequired = quantityRequired;
+        this.quantityFilled = quantityFilled;
     }
 
     /**
@@ -29,7 +32,8 @@ public class JsonAdaptedRoleRequirement {
      */
     public JsonAdaptedRoleRequirement(RoleRequirement source) {
         role = new JsonAdaptedRole(source.getRole());
-        quantity = source.getQuantity();
+        quantityRequired = source.getQuantityRequired();
+        quantityFilled = source.getQuantityFilled();
     }
 
     /**
@@ -38,6 +42,6 @@ public class JsonAdaptedRoleRequirement {
      * @throws IllegalValueException if there were any data constraints violated in the adapted role requirement.
      */
     public RoleRequirement toModelType() throws IllegalValueException {
-        return new RoleRequirement(role.toModelType(), quantity);
+        return new RoleRequirement(role.toModelType(), quantityRequired, quantityFilled);
     }
 }

@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -84,6 +85,9 @@ public interface Model {
      */
     void setWorker(Worker target, Worker editedWorker);
 
+    /** Returns the pay earned by a worker as float value */
+    float calculateWorkerPay(Worker worker);
+
     /** Returns an unmodifiable view of the full worker list */
     ObservableList<Worker> getFullWorkerList();
 
@@ -164,6 +168,12 @@ public interface Model {
      * address book.
      */
     void setAssignment(Assignment target, Assignment editedAssignment);
+
+    /**
+     * Returns an {@code Optional} containing assignment with same identity as query.
+     * If no assignment matching query found, an empty Optional is returned.
+     */
+    Optional<Assignment> getAssignment(Assignment toGet);
 
     /** Returns an unmodifiable view of the full assignment list */
     ObservableList<Assignment> getFullAssignmentList();

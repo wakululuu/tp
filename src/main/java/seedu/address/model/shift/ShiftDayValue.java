@@ -4,7 +4,7 @@ public enum ShiftDayValue {
     MON,
     TUE,
     WED,
-    THUR,
+    THU,
     FRI,
     SAT,
     SUN

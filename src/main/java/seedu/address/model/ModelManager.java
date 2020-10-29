@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
@@ -21,6 +23,7 @@ import seedu.address.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+    private static final Integer HOURS_PER_SHIFT = 8;
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
@@ -119,6 +122,20 @@ public class ModelManager implements Model {
 
         addressBook.setWorker(target, editedWorker);
     }
+    @Override
+    public float calculateWorkerPay(Worker worker) {
+        Integer numberOfShiftsAssigned = 0;
+        ObservableList<Assignment> assignments = getFullAssignmentList();
+        for (Assignment assignment : assignments) {
+            Worker assignedWorker = assignment.getWorker();
+            if (assignedWorker.equals(worker)) {
+                numberOfShiftsAssigned++;
+            }
+        }
+        assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
+
+        return worker.getPay().value * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+    }
 
     @Override
     public ObservableList<Worker> getFullWorkerList() {
@@ -179,6 +196,12 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return addressBook.getAssignment(toGet);
+    }
+
+    @Override
     public ObservableList<Assignment> getFullAssignmentList() {
         return addressBook.getAssignmentList();
     }
@@ -187,6 +210,9 @@ public class ModelManager implements Model {
     @Override
     public boolean hasRole(Role role) {
         requireNonNull(role);
+        if (role instanceof Leave) {
+            return true;
+        }
         return addressBook.hasRole(role);
     }
 

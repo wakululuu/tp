@@ -19,7 +19,6 @@ import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
-import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -69,7 +68,7 @@ public class AssignCommand extends Command {
         }
 
         List<Assignment> assignmentsToAdd = new ArrayList<>();
-        // Check for: worker existence, model hasRole, worker is fit, worker is available
+        // Check for: worker existence, model hasRole, worker is fit, worker is available, role required in shift
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX,
@@ -86,9 +85,12 @@ public class AssignCommand extends Command {
                 throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE,
                             workerToAssign.getName(), role));
             }
-            if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
-                            workerToAssign.getName(), shiftToAssign));
+            if (workerToAssign.isUnavailable(shiftToAssign)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+            }
+
+            if (!shiftToAssign.isRoleRequired(role)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
             }
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
@@ -106,6 +108,7 @@ public class AssignCommand extends Command {
 
             assignStringBuilder.append(assignment);
             assignStringBuilder.append("\n");
+            Shift.updateRoleRequirements(model, assignment.getShift(), assignment.getRole());
         }
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
@@ -114,17 +117,6 @@ public class AssignCommand extends Command {
                 String.format(MESSAGE_ASSIGN_SUCCESS, workerRolePairs.size(), assignStringBuilder.toString()));
     }
 
-    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
-        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
-        for (Unavailability unavailability : workerUnavailableTimings) {
-            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
-            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
-            if (hasSameDay && hasSameTime) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public boolean equals(Object other) {

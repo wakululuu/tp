@@ -14,6 +14,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -83,8 +84,10 @@ public class UnassignCommand extends Command {
         for (Index workerIndex : workerIndexes) {
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
-            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
+            Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
+            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign, roleToUnassign);
             model.deleteAssignment(assignmentToDelete);
+            Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
 
             unassignStringBuilder.append(assignmentToDelete);
             unassignStringBuilder.append("\n");
@@ -92,6 +95,18 @@ public class UnassignCommand extends Command {
 
         return new CommandResult(
                 String.format(MESSAGE_UNASSIGN_SUCCESS, workerIndexes.size(), unassignStringBuilder.toString()));
+    }
+
+    private static Role getRoleToUnassign(Model model, Shift shiftToUnassign, Worker workerToUnassign) {
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getShift().isSameShift(shiftToUnassign)
+                    && assignment.getWorker().isSameWorker(workerToUnassign)) {
+                return assignment.getRole();
+            }
+        }
+        assert false; // a role should have been returned within the for loop
+        return null;
     }
 
     @Override
@@ -112,4 +127,3 @@ public class UnassignCommand extends Command {
                 && workerIndexes.equals(e.workerIndexes);
     }
 }
-

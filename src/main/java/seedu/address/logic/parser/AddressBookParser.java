@@ -13,6 +13,8 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.MassCancelLeaveCommand;
+import seedu.address.logic.commands.MassTakeLeaveCommand;
 import seedu.address.logic.commands.ReassignCommand;
 import seedu.address.logic.commands.RoleAddCommand;
 import seedu.address.logic.commands.RoleDeleteCommand;
@@ -27,6 +29,7 @@ import seedu.address.logic.commands.WorkerAddCommand;
 import seedu.address.logic.commands.WorkerDeleteCommand;
 import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerListCommand;
+import seedu.address.logic.commands.WorkerPayCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -92,8 +95,14 @@ public class AddressBookParser {
         case TakeLeaveCommand.COMMAND_WORD:
             return new TakeLeaveCommandParser().parse(arguments);
 
+        case MassTakeLeaveCommand.COMMAND_WORD:
+            return new MassTakeLeaveCommandParser().parse(arguments);
+
         case CancelLeaveCommand.COMMAND_WORD:
             return new CancelLeaveCommandParser().parse(arguments);
+
+        case MassCancelLeaveCommand.COMMAND_WORD:
+            return new MassCancelLeaveCommandParser().parse(arguments);
 
         case ShiftAddCommand.COMMAND_WORD:
             return new ShiftAddCommandParser().parse(arguments);
@@ -115,6 +124,9 @@ public class AddressBookParser {
 
         case RoleListCommand.COMMAND_WORD:
             return new RoleListCommand();
+
+        case WorkerPayCommand.COMMAND_WORD:
+            return new WorkerPayCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

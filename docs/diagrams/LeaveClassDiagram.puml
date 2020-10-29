@@ -1,7 +1,12 @@
 @startuml
 !include style.puml
-skinparam arrowColor MODEL_COLOR
-skinparam classBackgroundColor MODEL_COLOR
+skinparam arrowThickness 1.1
+skinparam arrowColor LOGIC_COLOR_T4
+skinparam classBackgroundColor LOGIC_COLOR
+skinparam ClassAttributeFontColor #FFFFFF
+show members
+
+
 
 class Tag {
 tagName: String

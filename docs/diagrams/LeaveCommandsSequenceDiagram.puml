@@ -1,6 +1,34 @@
 @startuml
-Logic -> TakeLeaveCommand : execute()
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":TakeLeaveCommand" as TakeLeaveCommand LOGIC_COLOR
+participant ":AssignCommand" as AssignCommand LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute(userInput)
+activate LogicManager
+
+ref over LogicManager
+    Parsing user command.
+    Refer to Assignment
+    implementation.
+end ref
+
+
+LogicManager -> TakeLeaveCommand : execute()
 activate TakeLeaveCommand
+
+create AssignCommand
+TakeLeaveCommand -> AssignCommand
+activate AssignCommand
+AssignCommand --> TakeLeaveCommand
+deactivate AssignCommand
 
 TakeLeaveCommand -> AssignCommand : execute()
 activate AssignCommand
@@ -14,8 +42,11 @@ deactivate Model
 AssignCommand --> TakeLeaveCommand
 deactivate AssignCommand
 
-TakeLeaveCommand --> Logic : commandResult
+TakeLeaveCommand --> LogicManager : commandResult
 deactivate TakeLeaveCommand
+
+LogicManager -->[
+deactivate LogicManager
 
 
 @enduml

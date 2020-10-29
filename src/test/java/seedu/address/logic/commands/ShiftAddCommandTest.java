@@ -9,6 +9,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,7 @@ public class ShiftAddCommandTest {
 
     @Test
     public void execute_roleNotFound_throwsCommandException() {
-        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1").build();
+        Shift validShift = new ShiftBuilder().withRoleRequirements(VALID_ROLE_CASHIER + " 1 0").build();
         ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
         ModelStub modelStub = new ModelStubAcceptingShiftAdded();
 
@@ -158,6 +159,11 @@ public class ShiftAddCommandTest {
         }
 
         @Override
+        public float calculateWorkerPay(Worker worker) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Worker> getFullWorkerList() {
             throw new AssertionError("This method should not be called.");
         }
@@ -224,6 +230,11 @@ public class ShiftAddCommandTest {
 
         @Override
         public void setAssignment(Assignment target, Assignment editedAssignment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Optional<Assignment> getAssignment(Assignment toGet) {
             throw new AssertionError("This method should not be called.");
         }
 

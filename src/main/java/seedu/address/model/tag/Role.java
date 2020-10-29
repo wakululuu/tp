@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Role extends Tag {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric";
+    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain whitespaces";
 
     protected Role(@JsonProperty("tagName") String roleName) {
         super(roleName);
