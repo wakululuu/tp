@@ -61,16 +61,16 @@ public class AddressBookParser {
         switch (commandWord.toLowerCase()) {
 
         case WorkerAddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+            return new WorkerAddCommandParser().parse(arguments);
 
         case AssignCommand.COMMAND_WORD:
             return new AssignCommandParser().parse(arguments);
 
         case WorkerEditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
+            return new WorkerEditCommandParser().parse(arguments);
 
         case WorkerDeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
+            return new WorkerDeleteCommandParser().parse(arguments);
 
         case WorkerAvailableCommand.COMMAND_WORD:
             return new WorkerAvailableCommandParser().parse(arguments);

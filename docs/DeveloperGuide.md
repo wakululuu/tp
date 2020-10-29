@@ -152,9 +152,9 @@ Given below is an example usage scenario and how the add worker feature behaves 
 launched the application.
 
 Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `AddressBookParser`
-creates an `AddCommandParser` and calls the `AddCommandParser#parse()` method.
+creates a `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
-Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `AddCommandParser#parse()` and an instance of
+Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `WorkerAddCommandParser#parse()` and an instance of
 `Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as parameters to the `Worker`
 constructor and a new `Worker` object is created.
 
@@ -250,13 +250,13 @@ object for each
 Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
 launched the application.
 
-Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
-`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates a
+`WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
-Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
+Step 2. Within `WorkerAddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
 `Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
-the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
-is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
+the keyword `FULL` (case-insensitive) is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailabilityString()`
+is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailabilityString()` is called to generate a `MON PM`
 String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
 and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
 

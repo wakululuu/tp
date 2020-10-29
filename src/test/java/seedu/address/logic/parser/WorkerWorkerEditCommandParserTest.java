@@ -43,14 +43,14 @@ import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
 import seedu.address.testutil.EditWorkerDescriptorBuilder;
 
-public class WorkerEditCommandParserTest {
+public class WorkerWorkerEditCommandParserTest {
 
     private static final String ROLE_EMPTY = " " + PREFIX_ROLE;
 
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerEditCommand.MESSAGE_USAGE);
 
-    private EditCommandParser parser = new EditCommandParser();
+    private WorkerEditCommandParser parser = new WorkerEditCommandParser();
 
     @Test
     public void parse_missingParts_failure() {
