@@ -1,5 +1,5 @@
 {
-  "_comment": "AddressBook save file which contains the same Worker values as in AddressBookBuilder#getTypicalAddressBook()",
+  "_comment": "McScheduler save file which contains the same Worker values as in McSchedulerBuilder#getTypicalMcScheduler()",
   "workers" : [ {
     "name" : "Alice Pauline",
     "phone" : "94351253",
