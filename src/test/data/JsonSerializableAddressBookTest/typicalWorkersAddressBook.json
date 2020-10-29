@@ -67,7 +67,7 @@
     "time" : "PM",
     "roleRequirements" : [ {
       "role" : "cashier",
-      "quantityRequired" : 1,
+      "quantityRequired" : 2,
       "quantityFilled" : 0
     }, {
       "role" : "chef",
