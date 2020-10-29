@@ -26,15 +26,15 @@ public class TypicalWorkers {
             .withAddress("123, Jurong West Ave 6, #08-111").withPay("9.75")
             .withPhone("94351253")
             .withRoles("cashier")
-            .withUnavailableTimings("MON AM")
+            .withUnavailableTimings("TUE AM")
             .build();
     public static final Worker BENSON = new WorkerBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withPay("10.20").withPhone("98765432")
             .withRoles("chef", "cashier")
-            .withUnavailableTimings("TUE AM").build();
+            .withUnavailableTimings("MON AM").build();
     public static final Worker CARL = new WorkerBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withPay("15.01").withAddress("wall street").withRoles("chef").build();
+            .withPay("15.01").withAddress("wall street").withRoles("cashier").build();
     public static final Worker DANIEL = new WorkerBuilder().withName("Daniel Meier").withPhone("87652533")
             .withPay("16").withAddress("10th street").withRoles("chef").build();
     public static final Worker ELLE = new WorkerBuilder().withName("Elle Meyer").withPhone("9482224")

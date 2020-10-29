@@ -1,15 +1,16 @@
 package seedu.address.model.tag;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Represents a Worker Role in the App.
  * Guarantees: immutable, name is valid as declared in
  */
 public class Role extends Tag {
 
-    public static final String MESSAGE_CONSTRAINTS =
-            "Role names should be alphanumeric";
+    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain whitespaces";
 
-    protected Role(String roleName) {
+    protected Role(@JsonProperty("tagName") String roleName) {
         super(roleName);
     }
 
@@ -31,7 +32,7 @@ public class Role extends Tag {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof Role
-                && tagName.equals(((Role) other).tagName));
+                && tagName.equalsIgnoreCase(((Role) other).tagName));
     }
 
 }

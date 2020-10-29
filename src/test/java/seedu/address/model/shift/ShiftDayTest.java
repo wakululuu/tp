@@ -21,8 +21,8 @@ public class ShiftDayTest {
 
     @Test
     public void constructor_validShiftDay() {
-        assertEquals(new ShiftDay("wed"), new ShiftDay("WED")); // small caps
-        assertEquals(new ShiftDay("sUn"), new ShiftDay("SUN")); // mix of small caps and caps
+        assertEquals(new ShiftDay("wed"), new ShiftDay("WED")); // non-caps
+        assertEquals(new ShiftDay("sUn"), new ShiftDay("SUN")); // mix of caps and non-caps
     }
 
     @Test
@@ -32,11 +32,11 @@ public class ShiftDayTest {
 
         // invalid day
         assertFalse(ShiftDay.isValidDay("NOM")); //anything that isn't the seven days
-        assertFalse(ShiftDay.isValidDay("tue")); // non-caps day
-        assertFalse(ShiftDay.isValidDay("sUn")); // mix of caps and non-caps
 
         // valid day
         assertTrue(ShiftDay.isValidDay("MON")); // caps day
+        assertTrue(ShiftDay.isValidDay("tue")); // non-caps day
+        assertTrue(ShiftDay.isValidDay("sUn")); // mix of caps and non-caps
 
     }
 

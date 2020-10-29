@@ -133,55 +133,144 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+### Adding of a Worker feature
 
-### Take/cancel leave feature
-
-The take/cancel leave feature allows users to set workers status to leave given a day and time. 
-The setting prevents workers from being allocated to a work shift for which they are taking leave.
+The adding of workers is core to the functionality of the system. Users are able to add important information to each
+worker, which will help them assign workers to shifts they are most suited for.
 
 #### Implementation
 
-The proposed mechanism to indicate that individuals are on leave makes use of the existing system for assigning workers
-to shifts with a particular role. By making use of the existing assignment system, certain conflicts can be avoided:
+The mechanism for adding a worker is facilitated by a `Worker` class. A `Worker` has a `Name`, a
+`Phone`, a `Pay`, an optional `Role` set and an optional `Unavailability` set.
 
-- Assignment of a worker to a shift when they took leave for that shift will not result in two assignments to the same shift.
+![Worker Class Diagram](images/WorkerClassDiagram.png)
 
-##### Leave
+A user can add a `Worker` to the `McScheduler` by running a `worker-add` command. 
 
-Leave is represented as an extension of `Role`. To prevent conflicts between `new Leave()` and `new Role("Leave")`,
-these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
-be reconsidered if there should be a significant difference between these two objects.
+#### Example usage scenario
+Given below is an example usage scenario and how the add worker feature behaves at each step after the user has
+launched the application.
 
-![Leave Class Diagram](images/LeaveClassDiagram.png)
+Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `AddressBookParser`
+creates an `AddCommandParser` and calls the `AddCommandParser#parse()` method.
 
-Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
-through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
-This implementation prevents the creation of a role that has the same name as a leave.
+Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `AddCommandParser#parse()` and an instance of
+`Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as parameters to the `Worker`
+constructor and a new `Worker` object is created.
 
-##### Leave Assignment
+Step 3. A `WorkerAddCommand` with the newly created `Worker` object is returned and executed. The `Worker` object is
+added to and stored inside the `Model`.
 
-Assignment makes use of the `workerRoleAssignment` and `shiftRoleAssignment` features using `Leave` as the role.
+The following sequence diagram shows how `Worker` is added.
 
-##### Commands
+![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
 
-Commands are essentially wrappers for `AssignCommand` and `UnassignCommand`. The following diagram explains how 
-this works. 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
 
-![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
+### Shift feature
+Similar to workers, adding and manipulating shifts is a key functionality of the McScheduler. Managers will be able to make use of 
+shifts to set role requirements, add or remove workers and assign leave. 
 
-- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift.
-- Conversely, `CancelLeaveCommand` is a wrapper for `UnassignCommand` and cancels leave 
-(not represented in diagram, but works similarly).
+#### Implementation
 
-##### Future Extensions - Leave Quota
+Shifts are represented by a `Shift` class. It contains important detail related to shifts such as the day (through `ShiftDay`),
+the time (through `ShiftTime`) and role requirements (through `RoleRequirement`) that details how many workers are needed
+at which positions in a given shift.
 
-The following leave quotas could be implemented, using the existing `RoleRequirement` class:
+The following diagram details `Shift` and how it is represented in the App model.
 
-- Quota of leave per worker
-- Quota of leave per shift
+![Shift Class Diagram](images/ShiftClassDiagram.png)
+
+#### Commands
+The following commands have been implemented to work with `Shift`:
+- `ShiftAddCommand` to add new shifts
+- `ShiftEditCommand` to edit existing shifts
+- `ShiftDeleteCommand` to delete existing shifts
+
+These commands work similarly to the `Worker` based commands.
+
+#### Example Usage Scenario
+Given below is an example usage scenario and how the edit shift feature works at each step.
+
+Step 1. User enters the command `shift-edit 2 d/FRI`. `AddressBookParser` creates a `ShiftEditCommandParser` and calls
+the `ShiftEditCommandParser#parser()` method.
+
+Step 2. The preamble index and field `d/` are parsed within `ShiftEditCommandParser#parser()` and creates an instance of
+`ShiftEditCommandParser` then creates a `ShiftEditDescriptor` with a new `ShiftDay`. Should there be other optional fields
+such as `ShiftTime` or `RoleRequirement` as requested by the uder in their command, similar instances will be created and added
+to the `ShiftEditDescriptor`.
+
+Step 3. A `ShiftEditCommand` with the `ShiftEditDescriptor` and the index of the `Shift` of interest is returned and executed,
+setting the edited shift within the model. This results in the replacement of the `Shift` object within the model with a newly
+created `Shift` object based on the new attributes.
+
+The following sequence diagram demonstrates this editing process (as per the example).
+
+![Edit Shift Sequence Diagram](images/EditShiftSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** Should there be other information to be edited
+as requested by the user, there will be other objects created besides `ShiftDay`.
+</div>
+
+### Unavailability feature
+
+The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
+The setting prevents workers from being assigned to shift slots that they are unavailable for.
+
+#### Implementation
+
+The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
+
+#### Unavailability
+
+Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
+in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
+
+![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+
+Instances of `Unavailability` can be created on 2 occasions:
+
+1. During a `worker-add` command, prefixed with `u/`
+2. During a `worker-edit` command, prefixed with `u/`
+
+To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
+`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
+functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
+`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+
+- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
+- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
+- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
+- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
+object for each
+
+#### Example usage scenario
+
+Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
+launched the application.
+
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
+`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+
+Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
+`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
+the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
+is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
+String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
+and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
+
+Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
+with the unavailable timings `MON AM` and `MON PM`.
+
+The following sequence diagram shows how unavailable timings are added to a `Worker`.
+
+![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
 
 ### Assign/unassign feature
-
 
 The assign/unassign feature allows the user to assign/unassign a worker to/from a role in a shift.
 
@@ -214,58 +303,110 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 `Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
 `assignment` to be deleted from the list of `assignments` in the `model`.
 
-### Unavailability feature
+### Take/cancel leave feature
 
-The unavailability feature allows users to add unavailable timings to a worker, which comprise a day and a time.
-The setting prevents workers from being assigned to shift slots that they are unavailable for.
+The take/cancel leave feature allows users to set workers status to leave given a day and time. 
+The setting prevents workers from being allocated to a work shift for which they are taking leave.
 
-### Implementation
+#### Implementation
 
-The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
+The proposed mechanism to indicate that individuals are on leave makes use of the existing system for assigning workers
+to shifts with a particular role. By making use of the existing assignment system, certain conflicts can be avoided:
 
-#### Unavailability
+- Assignment of a worker to a shift when they took leave for that shift will not result in two assignments to the same shift.
 
-Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
-in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
+##### Leave
 
-![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+Leave is represented as an extension of `Role`. To prevent conflicts between `new Leave()` and `new Role("Leave")`,
+these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
+be reconsidered if there should be a significant difference between these two objects.
 
-Instances of `Unavailability` can be created on 2 occasions:
+![Leave Class Diagram](images/LeaveClassDiagram.png)
 
-1. During a `worker-add` command, prefixed with `u/`
-2. During a `worker-edit` command, prefixed with `u/`
+Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
+through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
+This implementation prevents the creation of a role that has the same name as a leave.
 
-To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
-`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
-functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
-`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+##### Leave Assignment
 
-- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
-- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
-- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
-- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
-object for each
+Assignment makes use of the `Assignment` class features using `Leave` as the role.
 
-Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
-launched the application.
+##### Commands
 
-Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
-`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+Since `Leave` is essentially an extension of the assignment system, commands related to leave are very similar
+to commands related to assignments.
 
-Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
-`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
-the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
-is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
-String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
-and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
+- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift. The following
+diagram demonstrates how this works.
 
-Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
-with the unavailable timings `MON AM` and `MON PM`.
+![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
 
-The following sequence diagram shows how unavailable timings are added to a `Worker`.
+- `CancelLeaveCommand` is very similar to `UnassignCommand`. However, there is a need to check if the assignment being
+removed represents a leave taken and not a normal role assignment. Hence, `CancelLeaveCommand` is implemented
+separately and not as a wrapper. However, its implementation details is almost identical to `UnassignCommand`.
 
-![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+For more information, see [Implementation for Assign/Unassign Feature](#assignunassign-feature).
 
+##### Mass Operation Commands
+
+To increase the convenience of use for our expected typist user, we introduced a few mass operations related to leave:
+
+- `TakeLeaveCommand` and `CancelLeaveCommand` both allow for many worker to one shift leave assignment similar to 
+`AssignCommand` and `UnassignCommand`.
+- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift leave assignment.
+  - These two mass commands allow for taking leave over a range of dates - similar to how leave is often planned 
+  by workers.
+  - These two commands do not require `Shift`s representing the datetime range to take leave to be present. A bare-bones 
+  `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
+  (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
+  - The two commands handle other `Assignment`s differently:
+    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`).
+    - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
+    
+The following activity diagram describes the process behind `MassTakeLeaveCommand`.
+
+![MassTakeLeaveCommand Activity Diagram](images/MassTakeLeaveActivityDiagram.png)
+
+##### Future Extensions - Leave Quota
+
+The following leave quotas could be implemented, possibly using the existing `RoleRequirement` class:
+
+- Quota of leave per worker
+- Quota of leave per shift
+
+
+### MassOps Feature
+For certain commands that will be frequently used (`assign`, `unassign`, `take-leave`, `cancel-leave`), mass
+operations are supported to reduce the required number of command calls.
+ 
+#### Implementation
+These operations consist of their own `*Command` class and `*CommandParser` class. In each of the supported 
+`*CommandParser class`, mass operations uses the `ArgumentMultimap#getAllValues(Prefix)` method, which parses the 
+user input and returns all values that start with the specific prefix. In this case, the prefix is 'w/', 
+signifying a `Worker`-`Role` relation.
+
+Once the Command object has its `shiftIndex` and Set of `WorkerRole`, it creates individual `Assignment`s and adds
+them to the Model.
+
+
+![Class Diagram of AssignCommand, highlighting its MassOps](images/MassAssignClassDiagram.png)
+
+#### Example Usage Scenario
+Let's say that the manager has a new Shift, and requires 3 of their existing staff members to work on 
+that shift immediately.
+
+Step 1. The manager creates a new Shift through the `shift-add` command if it was not already done.
+
+Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
+eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
+and Janitor respectively to Shift number 8.
+
+Step 3. McScheduler parses the input and creates 3 Assignments: 
+shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds them to the Model
+
+
+![Object Diagram of one AssignCommand used to assign 3 workers into a shift](images/MassAssignObjectDiagram.png)
 
 --------------------------------------------------------------------------------------------------------------------
 

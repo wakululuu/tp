@@ -1,12 +1,15 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -16,7 +19,7 @@ public interface Model {
     /** {@code Predicate} that always evaluate to true */
     Predicate<Worker> PREDICATE_SHOW_ALL_WORKERS = unused -> true;
     Predicate<Shift> PREDICATE_SHOW_ALL_SHIFTS = unused -> true;
-    Predicate<Assignment> PREDICATE_SHOW_ALL_ASSIGNMENTS = unused -> true;
+    Predicate<Role> PREDICATE_SHOW_ALL_ROLES_WITHOUT_LEAVE = role -> !Leave.isLeave(role);
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -82,6 +85,9 @@ public interface Model {
      */
     void setWorker(Worker target, Worker editedWorker);
 
+    /** Returns the pay earned by a worker as float value */
+    float calculateWorkerPay(Worker worker);
+
     /** Returns an unmodifiable view of the full worker list */
     ObservableList<Worker> getFullWorkerList();
 
@@ -137,6 +143,7 @@ public interface Model {
     ObservableList<Shift> getFilteredShiftList();
 
     // assignment-level operations
+
     /**
      * Returns true if an assignment with the same identity as {@code assignment} exists in the address book.
      */
@@ -162,16 +169,49 @@ public interface Model {
      */
     void setAssignment(Assignment target, Assignment editedAssignment);
 
+    /**
+     * Returns an {@code Optional} containing assignment with same identity as query.
+     * If no assignment matching query found, an empty Optional is returned.
+     */
+    Optional<Assignment> getAssignment(Assignment toGet);
+
     /** Returns an unmodifiable view of the full assignment list */
     ObservableList<Assignment> getFullAssignmentList();
 
-    /** Returns an unmodifiable view of the filtered assignment list */
-    ObservableList<Assignment> getFilteredAssignmentList();
+    // role-level operations
 
     /**
-     * Updates the filter of the filtered assignment list to filter by the given {@code predicate}.
+     * Returns true if a role with the same identity as {@code role} exists in the address book.
+     */
+    boolean hasRole(Role role);
+
+    /**
+     * Deletes the given role.
+     * The role must exist in the address book.
+     */
+    void deleteRole(Role target);
+
+    /**
+     * Adds the given role.
+     * {@code role} must not already exist in the address book.
+     */
+    void addRole(Role role);
+
+    /**
+     * Replaces the given role {@code target} with {@code editedRole}.
+     * {@code target} must exist in the address book.
+     * The role identity of {@code editedRole} must not be the same as another existing role in the
+     * address book.
+     */
+    void setRole(Role target, Role editedRole);
+
+    /** Returns an unmodifiable view of the filtered role list */
+    ObservableList<Role> getFilteredRoleList();
+
+    /**
+     * Updates the filter of the filtered role list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredAssignmentList(Predicate<Assignment> predicate);
+    void updateFilteredRoleList(Predicate<Role> predicate);
 
 }

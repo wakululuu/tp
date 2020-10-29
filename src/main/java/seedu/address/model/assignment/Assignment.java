@@ -65,8 +65,8 @@ public class Assignment {
         }
 
         return otherAssignment != null
-                && otherAssignment.getShift().equals(getShift())
-                && otherAssignment.getWorker().equals(getWorker());
+                && otherAssignment.getShift().isSameShift(getShift())
+                && otherAssignment.getWorker().isSameWorker(getWorker());
     }
 
     /**
@@ -99,11 +99,12 @@ public class Assignment {
         final StringBuilder builder = new StringBuilder();
         builder.append("Shift: ")
                 .append(getShift().toCondensedString())
-                .append(" Worker: ")
+                .append(" - Worker: ")
                 .append(getWorker().getName());
         if (role != null) {
-            builder.append(" Role: ")
-                    .append(getRole().getRole());
+            builder.append(" (Role: ")
+                    .append(getRole().getRole())
+                    .append(")");
         }
         return builder.toString();
     }

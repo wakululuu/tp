@@ -2,6 +2,7 @@ package seedu.address.model.shift;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_REQUIREMENT_CHEF;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -158,24 +159,24 @@ public class UniqueShiftListTest {
         uniqueShiftList.add(SHIFT_A);
 
         // same object
-        assertTrue(uniqueShiftList.equals(uniqueShiftList));
+        assertEquals(uniqueShiftList, uniqueShiftList);
 
         // null
-        assertFalse(uniqueShiftList.equals(null));
+        assertNotEquals(uniqueShiftList, null);
 
         // different type
-        assertFalse(uniqueShiftList.equals(123));
+        assertNotEquals(uniqueShiftList, 123);
 
         // same content
         UniqueShiftList sameList = new UniqueShiftList();
         sameList.setShifts(uniqueShiftList);
-        assertTrue(uniqueShiftList.equals(sameList));
+        assertEquals(sameList, uniqueShiftList);
 
         // different content
         UniqueShiftList differentList = new UniqueShiftList();
         differentList.add(SHIFT_B);
         differentList.add(SHIFT_A);
-        assertFalse(uniqueShiftList.equals(differentList));
+        assertNotEquals(differentList, uniqueShiftList);
     }
 
 }

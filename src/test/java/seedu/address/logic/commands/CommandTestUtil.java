@@ -3,14 +3,24 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 import static seedu.address.testutil.Assert.assertThrows;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,9 +50,12 @@ public class CommandTestUtil {
     public static final String VALID_PAY_BOB = "17";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
-    public static final String VALID_ROLE_CASHIER = "cashier";
-    public static final String VALID_ROLE_CHEF = "chef";
+    public static final String VALID_ROLE_CASHIER = "Cashier";
+    public static final String VALID_ROLE_CHEF = "Chef";
+    public static final String VALID_ROLE_JANITOR = "Janitor";
     public static final String VALID_UNAVAILABILITY = "MON AM";
+
+    public static final String INVALID_ROLE = "cashier*"; // '*' not allowed in roles
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -62,6 +75,8 @@ public class CommandTestUtil {
     //public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "cashier*"; // '*' not allowed in roles
+    public static final String NOT_FOUND_ROLE_DESC = " " + PREFIX_ROLE + "random role"; // role not in model
+    public static final String NOT_FOUND_ROLE = "Random role"; // role not in model
     public static final String INVALID_UNAVAILABILITY = " " + PREFIX_UNAVAILABILITY + "ddw w"; // not valid day or time
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
@@ -77,8 +92,37 @@ public class CommandTestUtil {
     public static final String VALID_DAY_TUE = "TUE";
     public static final String VALID_TIME_AM = "AM";
     public static final String VALID_TIME_PM = "PM";
-    public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1";
-    public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3";
+    public static final String VALID_ROLE_REQUIREMENT_CASHIER = VALID_ROLE_CASHIER + " 1 1";
+    public static final String VALID_ROLE_REQUIREMENT_CHEF = VALID_ROLE_CHEF + " 3 2";
+
+    public static final String DAY_DESC_MON = " " + PREFIX_SHIFT_DAY + VALID_DAY_MON;
+    public static final String DAY_DESC_TUE = " " + PREFIX_SHIFT_DAY + VALID_DAY_TUE;
+    public static final String TIME_DESC_AM = " " + PREFIX_SHIFT_TIME + VALID_TIME_AM;
+    public static final String TIME_DESC_PM = " " + PREFIX_SHIFT_TIME + VALID_TIME_PM;
+
+    public static final String INVALID_DAY = " " + PREFIX_SHIFT_DAY + "Mmon";
+    public static final String INVALID_TIME = " " + PREFIX_SHIFT_TIME + "aam";
+
+    public static final String VALID_SHIFT_INDEX_1 = " " + PREFIX_SHIFT + INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_SHIFT_INDEX_2 = " " + PREFIX_SHIFT + INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_WORKER_INDEX_1 = " " + PREFIX_WORKER + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_WORKER_INDEX_2 = " " + PREFIX_WORKER + INDEX_SECOND_WORKER.getOneBased();
+
+    public static final String INVALID_NEW_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
+    public static final String INVALID_NEW_WORKER_INDEX = " " + PREFIX_WORKER_NEW + "a";
+    public static final String INVALID_OLD_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
+    public static final String INVALID_OLD_WORKER_INDEX = " " + PREFIX_WORKER_OLD + "a";
+
+    public static final String INVALID_SHIFT_INDEX = " " + PREFIX_SHIFT + "a";
+    public static final String INVALID_WORKER_INDEX = " " + PREFIX_WORKER + "a";
+
+    public static final String VALID_NEW_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_NEW + INDEX_FIRST_SHIFT.getOneBased();
+    public static final String VALID_NEW_SHIFT_INDEX_2 = " " + PREFIX_SHIFT_NEW + INDEX_SECOND_SHIFT.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_1 = " " + PREFIX_WORKER_NEW + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_NEW_WORKER_INDEX_2 = " " + PREFIX_WORKER_NEW + INDEX_SECOND_WORKER.getOneBased();
+    public static final String VALID_OLD_WORKER_INDEX_1 = " " + PREFIX_WORKER_OLD + INDEX_FIRST_WORKER.getOneBased();
+    public static final String VALID_OLD_SHIFT_INDEX_1 = " " + PREFIX_SHIFT_OLD + INDEX_FIRST_SHIFT.getOneBased();
+
 
     static {
         DESC_AMY = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)

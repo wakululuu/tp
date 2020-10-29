@@ -3,12 +3,15 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.assignment.UniqueAssignmentList;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.UniqueShiftList;
+import seedu.address.model.tag.Role;
+import seedu.address.model.tag.UniqueRoleList;
 import seedu.address.model.worker.UniqueWorkerList;
 import seedu.address.model.worker.Worker;
 
@@ -21,6 +24,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     private final UniqueWorkerList workers;
     private final UniqueShiftList shifts;
     private final UniqueAssignmentList assignments;
+    private final UniqueRoleList validRoles;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -33,6 +37,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         workers = new UniqueWorkerList();
         shifts = new UniqueShiftList();
         assignments = new UniqueAssignmentList();
+        validRoles = new UniqueRoleList();
     }
 
     public AddressBook() {}
@@ -72,6 +77,14 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Replaces the contents of the valid role list with {@code roles}.
+     * {@code roles} must not contain duplicate roles.
+     */
+    public void setRoles(List<Role> roles) {
+        this.validRoles.setRoles(roles);
+    }
+
+    /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
     public void resetData(ReadOnlyAddressBook newData) {
@@ -80,6 +93,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         setWorkers(newData.getWorkerList());
         setShifts(newData.getShiftList());
         setAssignments(newData.getAssignmentList());
+        setRoles(newData.getRoleList());
     }
 
     // worker-level operations
@@ -193,13 +207,61 @@ public class AddressBook implements ReadOnlyAddressBook {
         assignments.remove(key);
     }
 
+    /**
+     * Returns {@code Optional} containing assignment in {@code AddressBook} that has same identity as query assignment.
+     * If none found, returns and empty Optional.
+     */
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return assignments.getAssignment(toGet);
+    }
+
+    // role-level operations
+
+    /**
+     * Returns true if an role with the same identity as {@code role} exists in the address book.
+     */
+    public boolean hasRole(Role role) {
+        requireNonNull(role);
+        return validRoles.contains(role);
+    }
+
+    /**
+     * Adds an role to the address book.
+     * The role must not already exist in the address book.
+     */
+    public void addRole(Role p) {
+        validRoles.add(p);
+    }
+
+    /**
+     * Replaces the given role {@code target} in the list with {@code editedRole}.
+     * {@code target} must exist in the address book.
+     * The role identity of {@code editedRole} must not be the same as another existing role in the
+     * address book.
+     */
+    public void setRole(Role target, Role editedRole) {
+        requireNonNull(editedRole);
+
+        validRoles.setRole(target, editedRole);
+    }
+
+    /**
+     * Removes {@code key} from this {@code AddressBook}.
+     * {@code key} must exist in the address book.
+     */
+    public void removeRole(Role key) {
+        validRoles.remove(key);
+    }
+
     //// util methods
 
     @Override
     public String toString() {
         return workers.asUnmodifiableObservableList().size() + " workers; "
                 + shifts.asUnmodifiableObservableList().size() + " shifts;"
-                + assignments.asUnmodifiableObservableList().size() + " assignments";
+                + assignments.asUnmodifiableObservableList().size() + " assignments"
+                + validRoles.asUnmodifiableObservableList().size() + " valid roles";
         // TODO: refine later
     }
 
@@ -219,6 +281,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
+    public ObservableList<Role> getRoleList() {
+        return validRoles.asUnmodifiableObservableList();
+    }
+
+    @Override
     public boolean equals(Object other) {
 
         if (other == this) {
@@ -231,7 +298,9 @@ public class AddressBook implements ReadOnlyAddressBook {
 
         AddressBook otherAddressBook = (AddressBook) other;
         return workers.equals(otherAddressBook.workers)
-                && shifts.equals(otherAddressBook.shifts);
+                && shifts.equals(otherAddressBook.shifts)
+                && assignments.equals(otherAddressBook.assignments)
+                && validRoles.equals(otherAddressBook.validRoles);
 
     }
 

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -13,6 +14,8 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Leave;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -20,12 +23,13 @@ import seedu.address.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
+    private static final Integer HOURS_PER_SHIFT = 8;
 
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Worker> filteredWorkers;
     private final FilteredList<Shift> filteredShifts;
-    private final FilteredList<Assignment> filteredAssignments;
+    private final FilteredList<Role> filteredRoles;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -40,7 +44,7 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredWorkers = new FilteredList<>(this.addressBook.getWorkerList());
         filteredShifts = new FilteredList<>(this.addressBook.getShiftList());
-        filteredAssignments = new FilteredList<>(this.addressBook.getAssignmentList());
+        filteredRoles = new FilteredList<>(this.addressBook.getRoleList());
     }
 
     public ModelManager() {
@@ -118,6 +122,20 @@ public class ModelManager implements Model {
 
         addressBook.setWorker(target, editedWorker);
     }
+    @Override
+    public float calculateWorkerPay(Worker worker) {
+        Integer numberOfShiftsAssigned = 0;
+        ObservableList<Assignment> assignments = getFullAssignmentList();
+        for (Assignment assignment : assignments) {
+            Worker assignedWorker = assignment.getWorker();
+            if (assignedWorker.equals(worker)) {
+                numberOfShiftsAssigned++;
+            }
+        }
+        assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
+
+        return worker.getPay().value * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+    }
 
     @Override
     public ObservableList<Worker> getFullWorkerList() {
@@ -168,7 +186,6 @@ public class ModelManager implements Model {
     @Override
     public void addAssignment(Assignment assignment) {
         addressBook.addAssignment(assignment);
-        updateFilteredAssignmentList(PREDICATE_SHOW_ALL_ASSIGNMENTS);
     }
 
     @Override
@@ -179,8 +196,56 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+        return addressBook.getAssignment(toGet);
+    }
+
+    @Override
     public ObservableList<Assignment> getFullAssignmentList() {
         return addressBook.getAssignmentList();
+    }
+
+    // Role related methods
+    @Override
+    public boolean hasRole(Role role) {
+        requireNonNull(role);
+        if (role instanceof Leave) {
+            return true;
+        }
+        return addressBook.hasRole(role);
+    }
+
+    @Override
+    public void deleteRole(Role target) {
+        addressBook.removeRole(target);
+    }
+
+    @Override
+    public void addRole(Role role) {
+        addressBook.addRole(role);
+    }
+
+    @Override
+    public void setRole(Role target, Role editedRole) {
+        requireAllNonNull(target, editedRole);
+
+        addressBook.setRole(target, editedRole);
+    }
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Role} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList<Role> getFilteredRoleList() {
+        return filteredRoles;
+    }
+
+    @Override
+    public void updateFilteredRoleList(Predicate<Role> predicate) {
+        requireNonNull(predicate);
+        filteredRoles.setPredicate(predicate);
     }
 
     //=========== Filtered Worker List Accessors =============================================================
@@ -211,23 +276,6 @@ public class ModelManager implements Model {
     public void updateFilteredShiftList(Predicate<Shift> predicate) {
         requireNonNull(predicate);
         filteredShifts.setPredicate(predicate);
-    }
-
-    //=========== Filtered Assignment List Accessors =============================================================
-
-    /**
-     * Returns an unmodifiable view of the list of {@code Assignment} backed by the internal list of
-     * {@code versionedAddressBook}
-     */
-    @Override
-    public ObservableList<Assignment> getFilteredAssignmentList() {
-        return filteredAssignments;
-    }
-
-    @Override
-    public void updateFilteredAssignmentList(Predicate<Assignment> predicate) {
-        requireNonNull(predicate);
-        filteredAssignments.setPredicate(predicate);
     }
 
     @Override

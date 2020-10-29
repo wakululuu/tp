@@ -1,6 +1,8 @@
 package seedu.address.model.worker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 //import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
@@ -51,38 +53,38 @@ public class WorkerTest {
     public void equals() {
         // same values -> returns true
         Worker aliceCopy = new WorkerBuilder(ALICE).build();
-        assertTrue(ALICE.equals(aliceCopy));
+        assertEquals(aliceCopy, ALICE);
 
         // same object -> returns true
-        assertTrue(ALICE.equals(ALICE));
+        assertEquals(ALICE, ALICE);
 
         // null -> returns false
-        assertFalse(ALICE.equals(null));
+        assertNotEquals(ALICE, null);
 
         // different type -> returns false
-        assertFalse(ALICE.equals(5));
+        assertNotEquals(ALICE, 5);
 
         // different worker -> returns false
-        assertFalse(ALICE.equals(BOB));
+        assertNotEquals(BOB, ALICE);
 
         // different name -> returns false
         Worker editedAlice = new WorkerBuilder(ALICE).withName(VALID_NAME_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        assertNotEquals(editedAlice, ALICE);
 
         // different phone -> returns false
         editedAlice = new WorkerBuilder(ALICE).withPhone(VALID_PHONE_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        assertNotEquals(editedAlice, ALICE);
 
         // different pay -> returns false
         editedAlice = new WorkerBuilder(ALICE).withPay(VALID_PAY_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        assertNotEquals(editedAlice, ALICE);
 
         // different address -> returns false
         editedAlice = new WorkerBuilder(ALICE).withAddress(VALID_ADDRESS_BOB).build();
-        assertFalse(ALICE.equals(editedAlice));
+        assertNotEquals(editedAlice, ALICE);
 
         // different roles -> returns false
         editedAlice = new WorkerBuilder(ALICE).withRoles(VALID_ROLE_CHEF).build();
-        assertFalse(ALICE.equals(editedAlice));
+        assertNotEquals(editedAlice, ALICE);
     }
 }

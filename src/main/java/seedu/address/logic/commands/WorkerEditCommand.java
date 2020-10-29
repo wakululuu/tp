@@ -93,6 +93,13 @@ public class WorkerEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_WORKER);
         }
 
+        Set<Role> roleSet = editedWorker.getRoles();
+        for (Role role : roleSet) {
+            if (!model.hasRole(role)) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
+            }
+        }
+
         editWorkerInAssignments(model, workerToEdit, editedWorker);
         model.setWorker(workerToEdit, editedWorker);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);
@@ -110,7 +117,6 @@ public class WorkerEditCommand extends Command {
         Name updatedName = editWorkerDescriptor.getName().orElse(workerToEdit.getName());
         Phone updatedPhone = editWorkerDescriptor.getPhone().orElse(workerToEdit.getPhone());
         Pay updatedPay = editWorkerDescriptor.getPay().orElse(workerToEdit.getPay());
-        //Email updatedEmail = editWorkerDescriptor.getEmail().orElse(workerToEdit.getEmail());
         Address updatedAddress = editWorkerDescriptor.getAddress().orElse(workerToEdit.getAddress());
         Set<Role> updatedRoles = editWorkerDescriptor.getRoles().orElse(workerToEdit.getRoles());
         Set<Unavailability> updatedUnavailabilities = editWorkerDescriptor.getUnavailableTimings()
@@ -122,12 +128,22 @@ public class WorkerEditCommand extends Command {
     private void editWorkerInAssignments(Model model, Worker workerToEdit, Worker editedWorker) {
         requireAllNonNull(model, workerToEdit, editedWorker);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
 
         for (Assignment assignment : fullAssignmentList) {
             if (workerToEdit.isSameWorker(assignment.getWorker())) {
-                assignmentsToEdit.add(assignment);
+                Role assignedRole = assignment.getRole();
+                if (!editedWorker.isFitForRole(assignedRole) || editedWorker.isUnavailable(assignment.getShift())) {
+                    assignmentsToDelete.add(assignment);
+                } else {
+                    assignmentsToEdit.add(assignment);
+                }
             }
+        }
+
+        for (Assignment assignment : assignmentsToDelete) {
+            model.deleteAssignment(assignment);
         }
 
         for (Assignment assignment : assignmentsToEdit) {

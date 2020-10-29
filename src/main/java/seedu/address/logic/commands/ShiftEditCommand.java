@@ -24,6 +24,7 @@ import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
+import seedu.address.model.tag.Role;
 
 /**
  * Edits the details of an existing shift in the App.
@@ -46,6 +47,8 @@ public class ShiftEditCommand extends Command {
     public static final String MESSAGE_EDIT_SHIFT_SUCCESS = "Edited Shift: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided";
     public static final String MESSAGE_DUPLICATE_SHIFT = "This shift already exists in the App";
+    public static final String MESSAGE_UNASSIGN_WORKERS = "Some workers must be unassigned from their roles"
+            + "to make this edit";
 
     private final Index index;
     private final EditShiftDescriptor editShiftDescriptor;
@@ -78,6 +81,13 @@ public class ShiftEditCommand extends Command {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
         }
 
+        Set<RoleRequirement> roleRequirementSet = editedShift.getRoleRequirements();
+        for (RoleRequirement requirement : roleRequirementSet) {
+            if (!model.hasRole(requirement.getRole())) {
+                throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, requirement.getRole()));
+            }
+        }
+
         editShiftInAssignments(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
@@ -96,21 +106,50 @@ public class ShiftEditCommand extends Command {
         return new Shift(updatedDay, updatedTime, updatedRoleRequirements);
     }
 
-    private void editShiftInAssignments(Model model, Shift shiftToEdit, Shift editedShift) {
+    private void editShiftInAssignments(Model model, Shift shiftToEdit, Shift editedShift) throws CommandException {
         requireAllNonNull(model, shiftToEdit, editedShift);
         List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
         List<Assignment> assignmentsToEdit = new ArrayList<>();
+        Set<Role> newRoles = editedShift.getRoles();
 
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
-                assignmentsToEdit.add(assignment);
+                Role assignmentRole = assignment.getRole();
+                if (!newRoles.contains(assignmentRole) || assignment.getWorker().isUnavailable(editedShift)) {
+                    // This accounts for the case where the shift no longer has the role specified in the assignment
+                    assignmentsToDelete.add(assignment);
+                } else if (Shift.countRoleQuantityFilled(model, shiftToEdit, assignmentRole)
+                        > getQuantityRequiredForRole(editedShift, assignmentRole)) {
+                    // This accounts for the case where the quantity needed for a particular role is less than the
+                    // current quantity filled
+                    throw new CommandException(MESSAGE_UNASSIGN_WORKERS);
+                } else {
+                    assignmentsToEdit.add(assignment);
+                }
             }
+        }
+
+        for (Assignment assignment : assignmentsToDelete) {
+            model.deleteAssignment(assignment);
         }
 
         for (Assignment assignment : assignmentsToEdit) {
             Assignment updatedAssignment = createEditedAssignment(assignment, editedShift);
             model.setAssignment(assignment, updatedAssignment);
         }
+    }
+
+    private static int getQuantityRequiredForRole(Shift shift, Role role) {
+        Set<RoleRequirement> roleRequirements = shift.getRoleRequirements();
+        int quantityRequiredForRole = 0;
+        for (RoleRequirement roleRequirement : roleRequirements) {
+            if (roleRequirement.getRole().equals(role)) {
+                quantityRequiredForRole = roleRequirement.getQuantityRequired();
+            }
+        }
+        assert quantityRequiredForRole != 0;
+        return quantityRequiredForRole;
     }
 
     private static Assignment createEditedAssignment(Assignment assignmentToEdit, Shift editedShift) {

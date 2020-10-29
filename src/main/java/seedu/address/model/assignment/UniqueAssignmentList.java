@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +34,18 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     public boolean contains(Assignment toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameAssignment);
+    }
+
+    /**
+     * Returns {@code Optional} containing assignment with same identity as query.
+     */
+    public Optional<Assignment> getAssignment(Assignment toGet) {
+        requireNonNull(toGet);
+
+        return internalList
+                .stream()
+                .filter(assignment -> assignment.isSameAssignment(toGet))
+                .findFirst();
     }
 
     /**
@@ -79,7 +92,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
         }
     }
 
-    public void setAssignments(seedu.address.model.assignment.UniqueAssignmentList replacement) {
+    public void setAssignments(UniqueAssignmentList replacement) {
         requireNonNull(replacement);
         internalList.setAll(replacement.internalList);
     }
@@ -112,8 +125,8 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof seedu.address.model.assignment.UniqueAssignmentList // instanceof handles nulls
-                && internalList.equals(((seedu.address.model.assignment.UniqueAssignmentList) other).internalList));
+                || (other instanceof UniqueAssignmentList // instanceof handles nulls
+                && internalList.equals(((UniqueAssignmentList) other).internalList));
     }
 
     @Override

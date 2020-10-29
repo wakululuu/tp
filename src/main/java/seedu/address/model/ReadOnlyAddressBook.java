@@ -3,6 +3,7 @@ package seedu.address.model;
 import javafx.collections.ObservableList;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -27,4 +28,10 @@ public interface ReadOnlyAddressBook {
      * This list will not contain any duplicate assignments.
      */
     ObservableList<Assignment> getAssignmentList();
+
+    /**
+     * Returns an unmodifiable view of the role list.
+     * This list will not contain any duplicate roles.
+     */
+    ObservableList<Role> getRoleList();
 }
