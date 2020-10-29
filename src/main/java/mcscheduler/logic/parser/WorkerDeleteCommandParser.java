@@ -8,7 +8,7 @@ import mcscheduler.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new WorkerDeleteCommand object
  */
-public class DeleteCommandParser implements Parser<WorkerDeleteCommand> {
+public class WorkerDeleteCommandParser implements Parser<WorkerDeleteCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerDeleteCommand
