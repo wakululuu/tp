@@ -153,85 +153,202 @@ for `Role` to inherit from `Tag`.
 #### Proposed Implementation
 
 The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+### Adding of a Worker feature
 
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
+The adding of workers is core to the functionality of the system. Users are able to add important information to each
+worker, which will help them assign workers to shifts they are most suited for.
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+#### Implementation
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+The mechanism for adding a worker is facilitated by a `Worker` class. A `Worker` has a `Name`, a
+`Phone`, a `Pay`, an optional `Role` set and an optional `Unavailability` set.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+![Worker Class Diagram](images/WorkerClassDiagram.png)
 
-![UndoRedoState0](images/UndoRedoState0.png)
+A user can add a `Worker` to the `McScheduler` by running a `worker-add` command. 
 
-Step 2. The user executes `worker-delete 5` command to delete the 5th worker in the address book. The `worker-delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+#### Example usage scenario
+Given below is an example usage scenario and how the add worker feature behaves at each step after the user has
+launched the application.
 
-![UndoRedoState1](images/UndoRedoState1.png)
+Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `AddressBookParser`
+creates an `AddCommandParser` and calls the `AddCommandParser#parse()` method.
 
-Step 3. The user executes `worker-add n/David …​` to add a new worker. The `worker-add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `AddCommandParser#parse()` and an instance of
+`Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as parameters to the `Worker`
+constructor and a new `Worker` object is created.
 
-![UndoRedoState2](images/UndoRedoState2.png)
+Step 3. A `WorkerAddCommand` with the newly created `Worker` object is returned and executed. The `Worker` object is
+added to and stored inside the `Model`.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+The following sequence diagram shows how `Worker` is added.
 
+![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-Step 4. The user now decides that adding the worker was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+### Unavailability feature
 
-![UndoRedoState3](images/UndoRedoState3.png)
+The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
+The setting prevents workers from being assigned to shift slots that they are unavailable for.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index 0, pointing to the initial AddressBook state, then there are no previous AddressBook states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather
-than attempting to perform the undo.
+#### Implementation
 
+The proposed mechanism is facilitated by `ParserUtil` and the existing system for adding and editing workers.
+
+#### Unavailability
+
+Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
+in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
+
+![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+
+Instances of `Unavailability` can be created on 2 occasions:
+
+1. During a `worker-add` command, prefixed with `u/`
+2. During a `worker-edit` command, prefixed with `u/`
+
+To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
+`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
+functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
+`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+
+- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
+- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
+- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
+- `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
+object for each
+
+#### Example usage scenario
+
+Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
+launched the application.
+
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates an
+`AddCommandParser` and calls the `AddCommandParser#parse()` method.
+
+Step 2. Within `AddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
+`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
+the keyword `FULL` is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailability()`
+is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailability()` is called to generate a `MON PM`
+String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
+and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
+
+Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
+with the unavailable timings `MON AM` and `MON PM`.
+
+The following sequence diagram shows how unavailable timings are added to a `Worker`.
+
+![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-The following sequence diagram shows how the undo operation works:
+### Assign/unassign feature
 
-![UndoSequenceDiagram](images/UndoSequenceDiagram.png)
+The assign/unassign feature allows the user to assign/unassign a worker to/from a role in a shift.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+#### Implementation
 
+This mechanism is facilitated by adding/deleting `Assignment` objects in the `McScheduler`. Each `Assignment` object
+stores a `Shift`, `Worker` and `Role` object. The `McScheduler` maintains a `UniqueAssignmentList`, which enforces
+uniqueness between `Assignment` objects by comparing them using `Assignment#isSameAssignment(Assignment)`.
+
+![AssignmentClassDiagram](images/AssignmentClassDiagram.png)
+
+The operations supporting the adding/deleting of `Assignment` objects are exposed in the `Model` interface as
+`Model#addAssignment(Assignment)` and `Model#deleteAssignment(Assignment)`.
+
+#### Example usage scenario
+
+Step 1. The user executes `assign s/1 w/1 r/Cashier` to assign the 1st worker the role of a cashier in the 1st shift in
+the McScheduler. The `assign` command creates an `Assignment` object, storing the 1st `Shift`, 1st `Worker` and cashier
+`Role` objects. The command then checks if there already exists an `assignment` with the same `shift` and `worker` in
+the model, as well as the `unavailability` of the `worker` to be assigned. If the `assignment` is unique and the
+`worker` is available, the `assignment` is added to the list of `assignments` in the `model`.
+
+![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AssignCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+Step 2. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
+from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
+`Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
+`assignment` to be deleted from the list of `assignments` in the `model`.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+### Take/cancel leave feature
 
-</div>
+The take/cancel leave feature allows users to set workers status to leave given a day and time. 
+The setting prevents workers from being allocated to a work shift for which they are taking leave.
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+#### Implementation
 
-![UndoRedoState4](images/UndoRedoState4.png)
+The proposed mechanism to indicate that individuals are on leave makes use of the existing system for assigning workers
+to shifts with a particular role. By making use of the existing assignment system, certain conflicts can be avoided:
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+- Assignment of a worker to a shift when they took leave for that shift will not result in two assignments to the same shift.
 
-![UndoRedoState5](images/UndoRedoState5.png)
+##### Leave
 
-The following activity diagram summarizes what happens when a user executes a new command:
+Leave is represented as an extension of `Role`. To prevent conflicts between `new Leave()` and `new Role("Leave")`,
+these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
+be reconsidered if there should be a significant difference between these two objects.
 
-![CommitActivityDiagram](images/CommitActivityDiagram.png)
+![Leave Class Diagram](images/LeaveClassDiagram.png)
 
-#### Design consideration:
+Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
+through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
+This implementation prevents the creation of a role that has the same name as a leave.
 
-##### Aspect: How undo & redo executes
+##### Leave Assignment
 
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
+Assignment makes use of the `Assignment` class features using `Leave` as the role.
 
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the worker being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
+##### Commands
 
-_{more aspects and alternatives to be added}_
+Since `Leave` is essentially an extension of the assignment system, commands related to leave are very similar
+to commands related to assignments.
 
-### \[Proposed\] Data archiving
+- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift. The following
+diagram demonstrates how this works.
 
-_{Explain here how the data archiving feature will be implemented}_
+![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
 
+- `CancelLeaveCommand` is very similar to `UnassignCommand`. However, there is a need to check if the assignment being
+removed represents a leave taken and not a normal role assignment. Hence, `CancelLeaveCommand` is implemented
+separately and not as a wrapper. However, its implementation details is almost identical to `UnassignCommand`.
+
+For more information, see [Implementation for Assign/Unassign Feature](#assignunassign-feature).
+
+##### Mass Operation Commands
+
+To increase the convenience of use for our expected typist user, we introduced a few mass operations related to leave:
+
+- `TakeLeaveCommand` and `CancelLeaveCommand` both allow for many worker to one shift leave assignment similar to 
+`AssignCommand` and `UnassignCommand`.
+- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift leave assignment.
+  - These two mass commands allow for taking leave over a range of dates - similar to how leave is often planned 
+  by workers.
+  - These two commands do not require `Shift`s representing the datetime range to take leave to be present. A bare-bones 
+  `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
+  (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
+  - The two commands handle other `Assignment`s differently:
+    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`).
+    - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
+    
+The following activity diagram describes the process behind `MassTakeLeaveCommand`.
+
+![MassTakeLeaveCommand Activity Diagram](images/MassTakeLeaveActivityDiagram.png)
+
+##### Future Extensions - Leave Quota
+
+The following leave quotas could be implemented, possibly using the existing `RoleRequirement` class:
+
+- Quota of leave per worker
+- Quota of leave per shift
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -277,7 +394,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | user                                       | add a new shift                                                                      | assign workers to shifts                                               |
 | `* * *`  | user                                       | view a list of all shifts                                                            | know which shifts need a worker                                        |
 | `* * *`  | user                                       | add roles that need to be filled in a shift                                          | assign workers into those roles based on what is needed                |
-| `* * *`  | user                                       | set the number of workers needed for each role in a shift                            | schedule workers based on what is needed                                       |
+| `* * *`  | user                                       | set the number of workers needed for each role in a shift                            | schedule workers based on what is needed                               |
 | `* * *`  | user                                       | assign a worker to a shift                                                           | fill shift positions                                                   |
 | `* * *`  | user                                       | edit the details of a shift                                                          | reflect any changes in the number of workers needed for the shift      |
 | `* * *`  | user                                       | unassign a worker from a shift                                                       | find a replacement if the worker is no longer available for that shift |

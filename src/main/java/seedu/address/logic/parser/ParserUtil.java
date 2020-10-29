@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.UnavailabilitySyntax.WHOLE_DAY;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
@@ -30,6 +31,14 @@ import seedu.address.model.worker.Unavailability;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
+    }
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -188,7 +197,7 @@ public class ParserUtil {
         if (!Role.isValidTagName(trimmedRole)) {
             throw new ParseException(Role.MESSAGE_CONSTRAINTS);
         }
-        return new Role(trimmedRole);
+        return Role.createRole(trimmedRole);
     }
 
     /**
@@ -259,7 +268,6 @@ public class ParserUtil {
         return unavailabilitySet;
     }
 
-
     /**
      * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
      * Leading and trailing whitespaces will be trimmed.
@@ -272,14 +280,19 @@ public class ParserUtil {
         if (!RoleRequirement.isValidRoleRequirement(trimmedRoleRequirement)) {
             throw new ParseException(RoleRequirement.MESSAGE_CONSTRAINTS);
         }
-        return new RoleRequirement(trimmedRoleRequirement);
+
+        int index = trimmedRoleRequirement.lastIndexOf(" ");
+        Role role = parseRole(trimmedRoleRequirement.substring(0, index));
+        int quantity = Integer.parseInt(trimmedRoleRequirement.substring(index + 1));
+
+        return new RoleRequirement(role, quantity);
     }
 
     /**
      * Parses {@code Collection<String> roleRequirements} into a {@code Set<RoleRequirement>}.
      */
-    public static Set<RoleRequirement> parseRoleRequirements(
-            Collection<String> roleRequirements) throws ParseException {
+    public static Set<RoleRequirement> parseRoleRequirements(Collection<String> roleRequirements)
+            throws ParseException {
         requireNonNull(roleRequirements);
         final Set<RoleRequirement> roleRequirementSet = new HashSet<>();
         for (String roleRequirementString : roleRequirements) {

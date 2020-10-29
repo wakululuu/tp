@@ -4,8 +4,14 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
+import seedu.address.model.tag.Leave;
+import seedu.address.model.tag.Role;
 
 /**
  * Represents a Shift in the App.
@@ -19,7 +25,6 @@ public class Shift {
 
     // Data fields
     private final Set<RoleRequirement> roleRequirements = new HashSet<>();
-    private final Set<WorkerRoleAssignment> workerRoleAssignments = new HashSet<>();
 
     /**
      * Standard constructor, start with empty {@code workers}. Every field must be present and not null
@@ -29,19 +34,6 @@ public class Shift {
         this.shiftDay = shiftDay;
         this.shiftTime = shiftTime;
         this.roleRequirements.addAll(roleRequirements);
-    }
-
-    /**
-     * Constructor with non-empty {@code workers} for Assign and Unassign commands.
-     * Every field must be present and not null.
-     */
-    public Shift(ShiftDay shiftDay, ShiftTime shiftTime, Set<RoleRequirement> roleRequirements,
-            Set<WorkerRoleAssignment> workerRoleAssignments) {
-        requireAllNonNull(shiftDay, shiftTime, roleRequirements);
-        this.shiftDay = shiftDay;
-        this.shiftTime = shiftTime;
-        this.roleRequirements.addAll(roleRequirements);
-        this.workerRoleAssignments.addAll(workerRoleAssignments);
     }
 
     public ShiftDay getShiftDay() {
@@ -61,11 +53,84 @@ public class Shift {
     }
 
     /**
-     * Returns an immutable worker-role assignment set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable role set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<WorkerRoleAssignment> getWorkerRoleAssignments() {
-        return workerRoleAssignments;
+    public Set<Role> getRoles() {
+        Set<Role> roles = new HashSet<>();
+        this.roleRequirements.forEach(roleRequirement -> roles.add(roleRequirement.getRole()));
+        return Collections.unmodifiableSet(roles);
+    }
+
+
+    /**
+     * Returns true if the specified {@code role} is required in the shift and has yet to be filled.
+     */
+    public boolean isRoleRequired(Role role) {
+        if (role instanceof Leave) {
+            return true;
+        }
+        for (RoleRequirement requirement : roleRequirements) {
+            if (requirement.getRole().equals(role)) {
+                return !requirement.isFilled();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Updates the quantity of the specified {@code role} that is filled in the specified {@code shift}.
+     *
+     * @param model storing the shift to be updated.
+     * @param shiftToUpdate in the model.
+     * @param role of the role requirement to be updated.
+     */
+    public static void updateRoleRequirements(Model model, Shift shiftToUpdate, Role role) {
+        requireAllNonNull(model, shiftToUpdate, role);
+        int quantityFilled = countRoleQuantityFilled(model, shiftToUpdate, role);
+        Set<RoleRequirement> updatedRoleRequirements = getUpdatedRoleRequirements(shiftToUpdate, role, quantityFilled);
+
+        Shift updatedShift = new Shift(shiftToUpdate.getShiftDay(), shiftToUpdate.getShiftTime(),
+                updatedRoleRequirements);
+        model.setShift(shiftToUpdate, updatedShift);
+    }
+
+    /**
+     * Counts the quantity filled of the specified {@code role} in the specified {@code shift}.
+     *
+     * @param model storing the shift to be updated.
+     * @param shiftToUpdate in the model.
+     * @param role whose quantity filled needs to be calculated.
+     */
+    public static int countRoleQuantityFilled(Model model, Shift shiftToUpdate, Role role) {
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+        int quantityFilled = 0;
+
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getShift().isSameShift(shiftToUpdate) && assignment.getRole().equals(role)) {
+                quantityFilled++;
+            }
+        }
+
+        return quantityFilled;
+    }
+
+    private static Set<RoleRequirement> getUpdatedRoleRequirements(Shift shiftToUpdate, Role role, int quantityFilled) {
+        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(shiftToUpdate.getRoleRequirements());
+
+        for (RoleRequirement requirement : updatedRoleRequirements) {
+            if (requirement.getRole().equals(role)) {
+                RoleRequirement updatedRoleRequirement = new RoleRequirement(role, requirement.getQuantityRequired(),
+                        quantityFilled);
+                assert updatedRoleRequirement.getQuantityFilled() <= updatedRoleRequirement.getQuantityRequired();
+
+                updatedRoleRequirements.remove(requirement);
+                updatedRoleRequirements.add(updatedRoleRequirement);
+                break;
+            }
+        }
+
+        return updatedRoleRequirements;
     }
 
     /**
@@ -99,14 +164,13 @@ public class Shift {
         Shift otherShift = (Shift) other;
         return otherShift.getShiftDay().equals(getShiftDay())
                 && otherShift.getShiftTime().equals(getShiftTime())
-                && otherShift.getRoleRequirements().equals(getRoleRequirements())
-                && otherShift.getWorkerRoleAssignments().equals(getWorkerRoleAssignments());
+                && otherShift.getRoleRequirements().equals(getRoleRequirements());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(shiftDay, shiftTime, roleRequirements, workerRoleAssignments);
+        return Objects.hash(shiftDay, shiftTime, roleRequirements);
     }
 
     /**
@@ -126,8 +190,6 @@ public class Shift {
                 .append(getShiftTime())
                 .append(" Role requirements: ");
         getRoleRequirements().forEach(builder::append);
-        builder.append(" Workers: ");
-        getWorkerRoleAssignments().forEach(builder::append);
         return builder.toString();
     }
 

@@ -7,9 +7,8 @@
     "address" : "123, Jurong West Ave 6, #08-111",
     "roles" : [ "cashier" ],
     "unavailableTimings" : [ {
-      "unavailability" : "MON AM"
-    } ],
-    "shiftRoleAssignments" : [ ]
+      "unavailability" : "TUE AM"
+    } ]
   }, {
     "name" : "Benson Meier",
     "phone" : "98765432",
@@ -17,96 +16,77 @@
     "address" : "311, Clementi Ave 2, #02-25",
     "roles" : [ "chef", "cashier" ],
     "unavailableTimings" : [ {
-      "unavailability" : "TUE AM"
-    } ],
-    "shiftRoleAssignments" : [
-      {
-        "shift": {
-          "day": "MON",
-          "time": "PM",
-          "roleRequirements": [ ],
-          "workerRoleAssignments": [ ]
-        },
-        "role": "cashier"
-      }, {
-        "shift": {
-          "day": "TUE",
-          "time": "PM",
-          "roleRequirements": [ ],
-          "workerRoleAssignments": [ ]
-        },
-        "role": "chef"
+      "unavailability" : "MON AM"
     } ]
   }, {
     "name" : "Carl Kurz",
     "phone" : "95352563",
     "pay" : "15.01",
     "address" : "wall street",
-    "roles" : [ "chef" ],
-    "unavailableTimings" : [ ],
-    "shiftRoleAssignments" : [ ]
+    "roles" : [ "cashier" ],
+    "unavailableTimings" : [ ]
   }, {
     "name" : "Daniel Meier",
     "phone" : "87652533",
     "pay" : "16",
     "address" : "10th street",
     "roles" : [ "chef" ],
-    "unavailableTimings" : [ ],
-    "shiftRoleAssignments" : [ ]
+    "unavailableTimings" : [ ]
   }, {
     "name" : "Elle Meyer",
     "phone" : "9482224",
     "pay" : "5.99",
     "address" : "michegan ave",
     "roles" : [ "chef" ],
-    "unavailableTimings" : [ ],
-    "shiftRoleAssignments" : [ ]
+    "unavailableTimings" : [ ]
   }, {
     "name" : "Fiona Kunz",
     "phone" : "9482427",
     "pay" : "21.86",
     "address" : "little tokyo",
     "roles" : [ "chef" ],
-    "unavailableTimings" : [ ],
-    "shiftRoleAssignments" : [ ]
+    "unavailableTimings" : [ ]
   }, {
     "name" : "George Best",
     "phone" : "9482442",
     "pay" : "24",
     "address" : "4th street",
     "roles" : [ "chef" ],
-    "unavailableTimings" : [ ],
-    "shiftRoleAssignments" : [ ]
+    "unavailableTimings" : [ ]
   } ],
   "shifts" : [ {
     "day" : "MON",
     "time" : "AM",
     "roleRequirements" : [ {
       "role" : "cashier",
-      "quantity" : 1
-    } ],
-    "workerRoleAssignments" : [ ]
+      "quantityRequired" : 1,
+      "quantityFilled" : 1
+    } ]
   }, {
     "day" : "FRI",
     "time" : "PM",
     "roleRequirements" : [ {
       "role" : "cashier",
-      "quantity" : 1
+      "quantityRequired" : 1,
+      "quantityFilled" : 0
     }, {
       "role" : "chef",
-      "quantity" : 3
-    } ],
-    "workerRoleAssignments" : [ ]
+      "quantityRequired" : 3,
+      "quantityFilled" : 1
+    } ]
   }, {
     "day": "TUE",
     "time": "AM",
     "roleRequirements" : [ {
       "role" : "cleaner",
-      "quantity" : 4
+      "quantityRequired" : 4,
+      "quantityFilled" : 0
     }, {
       "role": "cashier",
-      "quantity" : 3
-    } ],
-    "workerRoleAssignments" : [ ]
-  } ]
+      "quantityRequired" : 3,
+      "quantityFilled" : 1
+    } ]
+  } ],
+  "assignments": [],
+  "validRoles": [ "cashier", "chef", "janitor"]
 }

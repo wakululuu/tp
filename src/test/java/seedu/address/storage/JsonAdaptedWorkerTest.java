@@ -36,11 +36,6 @@ public class JsonAdaptedWorkerTest {
             VALID_UNAVAILABILITIES = BENSON.getUnavailableTimings().stream()
             .map(JsonAdaptedUnavailability::new)
             .collect(Collectors.toList());
-    private static final List<JsonAdaptedShiftRoleAssignment> VALID_SHIFT_ROLE_ASSIGNMENTS = BENSON
-            .getShiftRoleAssignments()
-            .stream()
-            .map(JsonAdaptedShiftRoleAssignment::new)
-            .collect(Collectors.toList());
 
     @Test
     public void toModelType_validWorkerDetails_returnsWorker() throws Exception {
@@ -52,7 +47,7 @@ public class JsonAdaptedWorkerTest {
     public void toModelType_invalidName_throwsIllegalValueException() {
         JsonAdaptedWorker worker =
                 new JsonAdaptedWorker(INVALID_NAME, VALID_PHONE, VALID_PAY, VALID_ADDRESS, VALID_ROLES,
-                        VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                        VALID_UNAVAILABILITIES);
         String expectedMessage = Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -60,7 +55,7 @@ public class JsonAdaptedWorkerTest {
     @Test
     public void toModelType_nullName_throwsIllegalValueException() {
         JsonAdaptedWorker worker = new JsonAdaptedWorker(null, VALID_PHONE, VALID_PAY, VALID_ADDRESS, VALID_ROLES,
-                VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                VALID_UNAVAILABILITIES);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -69,7 +64,7 @@ public class JsonAdaptedWorkerTest {
     public void toModelType_invalidPhone_throwsIllegalValueException() {
         JsonAdaptedWorker worker =
                 new JsonAdaptedWorker(VALID_NAME, INVALID_PHONE, VALID_PAY, VALID_ADDRESS, VALID_ROLES,
-                        VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                        VALID_UNAVAILABILITIES);
         String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -77,7 +72,7 @@ public class JsonAdaptedWorkerTest {
     @Test
     public void toModelType_nullPhone_throwsIllegalValueException() {
         JsonAdaptedWorker worker = new JsonAdaptedWorker(VALID_NAME, null, VALID_PAY, VALID_ADDRESS, VALID_ROLES,
-                VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                VALID_UNAVAILABILITIES);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -86,7 +81,7 @@ public class JsonAdaptedWorkerTest {
     public void toModelType_invalidPay_throwsIllegalValueException() {
         JsonAdaptedWorker worker =
                 new JsonAdaptedWorker(VALID_NAME, VALID_PHONE, INVALID_PAY, VALID_ADDRESS, VALID_ROLES,
-                        VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                        VALID_UNAVAILABILITIES);
         String expectedMessage = Pay.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -94,7 +89,7 @@ public class JsonAdaptedWorkerTest {
     @Test
     public void toModelType_nullPay_throwsIllegalValueException() {
         JsonAdaptedWorker worker = new JsonAdaptedWorker(VALID_NAME, VALID_PHONE, null, VALID_ADDRESS, VALID_ROLES,
-                VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                VALID_UNAVAILABILITIES);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Pay.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -103,7 +98,7 @@ public class JsonAdaptedWorkerTest {
     public void toModelType_invalidAddress_throwsIllegalValueException() {
         JsonAdaptedWorker worker =
                 new JsonAdaptedWorker(VALID_NAME, VALID_PHONE, VALID_PAY, INVALID_ADDRESS, VALID_ROLES,
-                        VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                        VALID_UNAVAILABILITIES);
         String expectedMessage = Address.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -111,7 +106,7 @@ public class JsonAdaptedWorkerTest {
     @Test
     public void toModelType_nullAddress_throwsIllegalValueException() {
         JsonAdaptedWorker worker = new JsonAdaptedWorker(VALID_NAME, VALID_PHONE, VALID_PAY, null, VALID_ROLES,
-                VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                VALID_UNAVAILABILITIES);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, worker::toModelType);
     }
@@ -122,7 +117,7 @@ public class JsonAdaptedWorkerTest {
         invalidRoles.add(new JsonAdaptedRole(INVALID_ROLE));
         JsonAdaptedWorker worker =
                 new JsonAdaptedWorker(VALID_NAME, VALID_PHONE, VALID_PAY, VALID_ADDRESS, invalidRoles,
-                        VALID_UNAVAILABILITIES, VALID_SHIFT_ROLE_ASSIGNMENTS);
+                        VALID_UNAVAILABILITIES);
         assertThrows(IllegalValueException.class, worker::toModelType);
     }
 

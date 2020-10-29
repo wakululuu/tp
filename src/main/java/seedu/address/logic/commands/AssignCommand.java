@@ -1,33 +1,30 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
-import seedu.address.model.shift.WorkerRoleAssignment;
 import seedu.address.model.tag.Role;
-import seedu.address.model.worker.ShiftRoleAssignment;
-import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
- * Assigns a worker to a shift.
+ * Adds a shift, worker and shift assignment to the McScheduler.
  */
 public class AssignCommand extends Command {
     public static final String COMMAND_WORD = "assign";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Assigns the specified worker to the specified shift"
-            + "by the index numbers used in the last worker and shift listings. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a shift, worker and role assignment to the "
+            + "McScheduler by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
             + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
             + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer) "
@@ -37,18 +34,18 @@ public class AssignCommand extends Command {
             + "w/1 "
             + "r/Cashier";
 
-    public static final String MESSAGE_ASSIGN_SUCCESS = "New shift assignment added:\n"
-            + "Shift: %1$s, Worker: %2$s, Role: %3$s";
+    public static final String MESSAGE_ASSIGN_SUCCESS = "New assignment added:\n%1$s";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
 
     private final Index shiftIndex;
     private final Index workerIndex;
     private final Role role;
 
     /**
-     * Creates an AssignCommand to assign the specified {@code Worker} to the specified {@code Shift}.
+     * Creates an AssignCommand to add an assignment of the specified {@code Shift}, {@code Worker} and {@code Role}.
      *
-     * @param shiftIndex  of the shift in the filtered shift list to assign the worker to.
-     * @param workerIndex of the worker in the filtered worker list to assign to the shift.
+     * @param shiftIndex  of the shift in the filtered shift list.
+     * @param workerIndex of the worker in the filtered worker list.
      * @param role        of the worker in the shift.
      */
     public AssignCommand(Index shiftIndex, Index workerIndex, Role role) {
@@ -61,6 +58,12 @@ public class AssignCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+
+        if (!model.hasRole(role)) {
+            throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
+        }
+
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
@@ -73,66 +76,30 @@ public class AssignCommand extends Command {
 
         Worker workerToAssign = lastShownWorkerList.get(workerIndex.getZeroBased());
         Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
+        Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
 
-        if (isWorkerUnavailable(workerToAssign, shiftToAssign)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT);
+        if (model.hasAssignment(assignmentToAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
         }
 
-        Worker assignedWorker = createAssignedWorker(workerToAssign, shiftToAssign, role);
-        Shift assignedShift = createAssignedShift(shiftToAssign, workerToAssign, role);
-
-        model.setWorker(workerToAssign, assignedWorker);
-        model.setShift(shiftToAssign, assignedShift);
-
-        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignedShift.toCondensedString(),
-                assignedWorker.getName(), role.getRole()));
-    }
-
-    private static boolean isWorkerUnavailable(Worker workerToAssign, Shift shiftToAssign) {
-        Set<Unavailability> workerUnavailableTimings = workerToAssign.getUnavailableTimings();
-        for (Unavailability unavailability : workerUnavailableTimings) {
-            boolean hasSameDay = unavailability.getDay().equals(shiftToAssign.getShiftDay());
-            boolean hasSameTime = unavailability.getTime().equals(shiftToAssign.getShiftTime());
-            if (hasSameDay && hasSameTime) {
-                return true;
-            }
+        if (!workerToAssign.isFitForRole(role)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
         }
-        return false;
-    }
-    /**
-     * Creates and returns a {@code Worker} with the {@code shiftToAssign} and {@code role} assigned.
-     */
-    private static Worker createAssignedWorker(Worker workerToAssign, Shift shiftToAssign, Role role) {
-        assert workerToAssign != null;
 
-        Set<ShiftRoleAssignment> updatedShiftRoleAssignments = new HashSet<>(
-                workerToAssign.getShiftRoleAssignments());
-        updatedShiftRoleAssignments.removeIf(assignment -> assignment.getShift().isSameShift(shiftToAssign));
+        if (workerToAssign.isUnavailable(shiftToAssign)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+        }
 
-        ShiftRoleAssignment shiftRoleToAssign = new ShiftRoleAssignment(shiftToAssign, role);
-        updatedShiftRoleAssignments.add(shiftRoleToAssign);
+        if (!shiftToAssign.isRoleRequired(role)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
+        }
 
-        return new Worker(workerToAssign.getName(), workerToAssign.getPhone(), workerToAssign.getPay(),
-                workerToAssign.getAddress(), workerToAssign.getRoles(), workerToAssign.getUnavailableTimings(),
-                updatedShiftRoleAssignments);
+        model.addAssignment(assignmentToAdd);
+        Shift.updateRoleRequirements(model, shiftToAssign, role);
+
+        return new CommandResult(String.format(MESSAGE_ASSIGN_SUCCESS, assignmentToAdd));
     }
 
-    /**
-     * Creates and returns a {@code Shift} with the {@code workerToAssign} and {@code role} assigned.
-     */
-    private static Shift createAssignedShift(Shift shiftToAssign, Worker workerToAssign, Role role) {
-        assert shiftToAssign != null;
-
-        Set<WorkerRoleAssignment> updatedWorkerRoleAssignments = new HashSet<>(
-                shiftToAssign.getWorkerRoleAssignments());
-        updatedWorkerRoleAssignments.removeIf(assignment -> assignment.getWorker().isSameWorker(workerToAssign));
-
-        WorkerRoleAssignment workerRoleToAssign = new WorkerRoleAssignment(workerToAssign, role);
-        updatedWorkerRoleAssignments.add(workerRoleToAssign);
-
-        return new Shift(shiftToAssign.getShiftDay(), shiftToAssign.getShiftTime(),
-                shiftToAssign.getRoleRequirements(), updatedWorkerRoleAssignments);
-    }
 
     @Override
     public boolean equals(Object other) {

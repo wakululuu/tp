@@ -74,9 +74,8 @@ public class WorkerAddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Worker expectedWorker = new WorkerBuilder(AMY).withShiftRoleAssignments().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY
-                        + ROLE_DESC_CASHIER,
+        Worker expectedWorker = new WorkerBuilder(AMY).build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER,
                 new WorkerAddCommand(expectedWorker));
     }
 
@@ -130,11 +129,11 @@ public class WorkerAddCommandParserTest {
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
-                        + ROLE_DESC_CASHIER, Name.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER, Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
-        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
-                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
     }
 }

@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
@@ -20,8 +21,10 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.shift.exceptions.DuplicateShiftException;
+import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Worker;
 import seedu.address.model.worker.exceptions.DuplicateWorkerException;
 import seedu.address.testutil.AddressBookBuilder;
@@ -140,22 +143,22 @@ public class AddressBookTest {
         AddressBook emptyAddressBook = new AddressBook();
 
         //same object returns true
-        assertTrue(addressBook.equals(addressBook));
+        assertEquals(addressBook, addressBook);
 
         //different class object returns false
-        assertFalse(addressBook.equals(123));
+        assertNotEquals(addressBook, 123);
 
         //same content returns true
-        assertTrue(addressBook.equals(new AddressBook(addressBook)));
+        assertEquals(new AddressBook(addressBook), addressBook);
 
         //same shifts different workers returns false
-        assertFalse(addressBook.equals(noWorkerAddressBook));
+        assertNotEquals(noWorkerAddressBook, addressBook);
 
         //same workers different shifts returns false
-        assertFalse(addressBook.equals(noShiftAddressBook));
+        assertNotEquals(noShiftAddressBook, addressBook);
 
         //different workers different shifts returns false
-        assertFalse(addressBook.equals(emptyAddressBook));
+        assertNotEquals(emptyAddressBook, addressBook);
 
     }
 
@@ -166,20 +169,26 @@ public class AddressBookTest {
     private static class AddressBookStub implements ReadOnlyAddressBook {
         private final ObservableList<Worker> workers = FXCollections.observableArrayList();
         private final ObservableList<Shift> shifts = FXCollections.observableArrayList();
+        private final ObservableList<Assignment> assignments = FXCollections.observableArrayList();
+        private final ObservableList<Role> validRoles = FXCollections.observableArrayList();
 
-        private AddressBookStub(Collection<Worker> workers, Collection<Shift> shifts) {
+        private AddressBookStub(Collection<Worker> workers, Collection<Shift> shifts,
+                Collection<Assignment> assignments, Collection<Role> validRoles) {
             this.workers.setAll(workers);
             this.shifts.setAll(shifts);
+            this.assignments.setAll(assignments);
+            this.validRoles.setAll(validRoles);
         }
 
         public static AddressBookStub createAddressBookStubWithWorkers(Collection<Worker> workers) {
-            return new AddressBookStub(workers, Collections.emptyList());
+            return new AddressBookStub(workers, Collections.emptyList(), Collections.emptyList(),
+                    Collections.emptyList());
         }
 
         public static AddressBookStub createAddressBookStubWithShifts(Collection<Shift> shifts) {
-            return new AddressBookStub(Collections.emptyList(), shifts);
+            return new AddressBookStub(Collections.emptyList(), shifts, Collections.emptyList(),
+                    Collections.emptyList());
         }
-
 
         @Override
         public ObservableList<Worker> getWorkerList() {
@@ -189,6 +198,16 @@ public class AddressBookTest {
         @Override
         public ObservableList<Shift> getShiftList() {
             return shifts;
+        }
+
+        @Override
+        public ObservableList<Assignment> getAssignmentList() {
+            return assignments;
+        }
+
+        @Override
+        public ObservableList<Role> getRoleList() {
+            return validRoles;
         }
     }
 

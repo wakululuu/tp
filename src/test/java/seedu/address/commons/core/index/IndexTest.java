@@ -1,8 +1,7 @@
 package seedu.address.commons.core.index;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -42,19 +41,19 @@ public class IndexTest {
         final Index fifthWorkerIndex = Index.fromOneBased(5);
 
         // same values -> returns true
-        assertTrue(fifthWorkerIndex.equals(Index.fromOneBased(5)));
-        assertTrue(fifthWorkerIndex.equals(Index.fromZeroBased(4)));
+        assertEquals(Index.fromOneBased(5), fifthWorkerIndex);
+        assertEquals(Index.fromZeroBased(4), fifthWorkerIndex);
 
         // same object -> returns true
-        assertTrue(fifthWorkerIndex.equals(fifthWorkerIndex));
+        assertEquals(fifthWorkerIndex, fifthWorkerIndex);
 
         // null -> returns false
-        assertFalse(fifthWorkerIndex.equals(null));
+        assertNotEquals(fifthWorkerIndex, null);
 
         // different types -> returns false
-        assertFalse(fifthWorkerIndex.equals(5.0f));
+        assertNotEquals(fifthWorkerIndex, 5.0f);
 
         // different index -> returns false
-        assertFalse(fifthWorkerIndex.equals(Index.fromOneBased(1)));
+        assertNotEquals(Index.fromOneBased(1), fifthWorkerIndex);
     }
 }

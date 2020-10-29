@@ -1,0 +1,14 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor STORAGE_COLOR
+skinparam classBackgroundColor STORAGE_COLOR
+
+Class Unavailability
+Class ShiftTime
+Class ShiftDay
+
+Unavailability -down-> "1" ShiftTime
+Unavailability -down-> "1" ShiftDay
+@enduml
+

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Role;
-import seedu.address.model.tag.Tag;
 
 /**
  * Jackson-friendly version of {@link Role}.
@@ -20,10 +19,10 @@ class JsonAdaptedRole extends JsonAdaptedTag {
     }
 
     /**
-     * Converts a given {@code Tag} into this class for Jackson use.
+     * Converts a given {@code Role} into this class for Jackson use.
      * Note that {@code Role} objects are also {@code Tag} objects.
      */
-    public JsonAdaptedRole(Tag source) {
+    public JsonAdaptedRole(Role source) {
         super(source);
     }
 
@@ -37,7 +36,7 @@ class JsonAdaptedRole extends JsonAdaptedTag {
         if (!Role.isValidTagName(tagName)) {
             throw new IllegalValueException((Role.MESSAGE_CONSTRAINTS));
         }
-        return new Role(tagName);
+        return Role.createRole(tagName);
     }
 
 }

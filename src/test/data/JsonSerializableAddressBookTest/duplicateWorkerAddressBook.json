@@ -11,5 +11,7 @@
     "pay": "15.5",
     "address": "4th street"
   } ],
-  "shifts": []
+  "shifts": [],
+  "assignments": [],
+  "validRoles": []
 }

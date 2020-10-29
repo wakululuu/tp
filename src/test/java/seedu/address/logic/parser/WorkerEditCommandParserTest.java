@@ -3,10 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
-//import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
-//import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
-//import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PAY_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
@@ -20,8 +17,6 @@ import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.ROLE_DESC_CHEF;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-//import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
-//import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PAY_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PAY_BOB;
@@ -30,7 +25,6 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
-//import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
@@ -44,13 +38,10 @@ import seedu.address.logic.commands.WorkerEditCommand;
 import seedu.address.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import seedu.address.model.tag.Role;
 import seedu.address.model.worker.Address;
-//import seedu.address.model.worker.Email;
 import seedu.address.model.worker.Name;
 import seedu.address.model.worker.Pay;
 import seedu.address.model.worker.Phone;
 import seedu.address.testutil.EditWorkerDescriptorBuilder;
-//import seedu.address.model.tag.Tag;
-
 
 public class WorkerEditCommandParserTest {
 
@@ -117,8 +108,8 @@ public class WorkerEditCommandParserTest {
     @Test
     public void parse_allFieldsSpecified_success() {
         Index targetIndex = INDEX_SECOND_WORKER;
-        String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + ROLE_DESC_CASHIER
-                + PAY_DESC_AMY + ADDRESS_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_CHEF;
+        String userInput = targetIndex.getOneBased() + PHONE_DESC_BOB + ROLE_DESC_CASHIER + PAY_DESC_AMY
+                + ADDRESS_DESC_AMY + NAME_DESC_AMY + ROLE_DESC_CHEF;
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_BOB).withPay(VALID_PAY_AMY).withAddress(VALID_ADDRESS_AMY)
                 .withRoles(VALID_ROLE_CHEF, VALID_ROLE_CASHIER).build();
@@ -166,7 +157,7 @@ public class WorkerEditCommandParserTest {
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
-        // rolss
+        // roles
         userInput = targetIndex.getOneBased() + ROLE_DESC_CASHIER;
         descriptor = new EditWorkerDescriptorBuilder().withRoles(VALID_ROLE_CASHIER).build();
         expectedCommand = new WorkerEditCommand(targetIndex, descriptor);

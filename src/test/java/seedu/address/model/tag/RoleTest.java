@@ -10,12 +10,12 @@ public class RoleTest {
 
     @Test
     public void constructor_null_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new Role(null));
+        assertThrows(NullPointerException.class, () -> Role.createRole(null));
     }
 
     @Test
     public void constructor_invalidTagName_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new Role(""));
+        assertThrows(IllegalArgumentException.class, () -> Role.createRole(""));
     }
 
     @Test
