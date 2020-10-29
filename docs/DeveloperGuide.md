@@ -168,6 +168,51 @@ The following sequence diagram shows how `Worker` is added.
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
+### Shift feature
+Similar to workers, adding and manipulating shifts is a key functionality of the McScheduler. Managers will be able to make use of 
+shifts to set role requirements, add or remove workers and assign leave. 
+
+#### Implementation
+
+Shifts are represented by a `Shift` class. It contains important detail related to shifts such as the day (through `ShiftDay`),
+the time (through `ShiftTime`) and role requirements (through `RoleRequirement`) that details how many workers are needed
+at which positions in a given shift.
+
+The following diagram details `Shift` and how it is represented in the App model.
+
+![Shift Class Diagram](images/ShiftClassDiagram.png)
+
+#### Commands
+The following commands have been implemented to work with `Shift`:
+- `ShiftAddCommand` to add new shifts
+- `ShiftEditCommand` to edit existing shifts
+- `ShiftDeleteCommand` to delete existing shifts
+
+These commands work similarly to the `Worker` based commands.
+
+#### Example Usage Scenario
+Given below is an example usage scenario and how the edit shift feature works at each step.
+
+Step 1. User enters the command `shift-edit 2 d/FRI`. `AddressBookParser` creates a `ShiftEditCommandParser` and calls
+the `ShiftEditCommandParser#parser()` method.
+
+Step 2. The preamble index and field `d/` are parsed within `ShiftEditCommandParser#parser()` and creates an instance of
+`ShiftEditCommandParser` then creates a `ShiftEditDescriptor` with a new `ShiftDay`. Should there be other optional fields
+such as `ShiftTime` or `RoleRequirement` as requested by the uder in their command, similar instances will be created and added
+to the `ShiftEditDescriptor`.
+
+Step 3. A `ShiftEditCommand` with the `ShiftEditDescriptor` and the index of the `Shift` of interest is returned and executed,
+setting the edited shift within the model. This results in the replacement of the `Shift` object within the model with a newly
+created `Shift` object based on the new attributes.
+
+The following sequence diagram demonstrates this editing process (as per the example).
+
+![Edit Shift Sequence Diagram](images/EditShiftSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** Should there be other information to be edited
+as requested by the user, there will be other objects created besides `ShiftDay`.
+</div>
+
 ### Unavailability feature
 
 The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
@@ -329,6 +374,39 @@ The following leave quotas could be implemented, possibly using the existing `Ro
 
 - Quota of leave per worker
 - Quota of leave per shift
+
+
+### MassOps Feature
+For certain commands that will be frequently used (`assign`, `unassign`, `take-leave`, `cancel-leave`), mass
+operations are supported to reduce the required number of command calls.
+ 
+#### Implementation
+These operations consist of their own `*Command` class and `*CommandParser` class. In each of the supported 
+`*CommandParser class`, mass operations uses the `ArgumentMultimap#getAllValues(Prefix)` method, which parses the 
+user input and returns all values that start with the specific prefix. In this case, the prefix is 'w/', 
+signifying a `Worker`-`Role` relation.
+
+Once the Command object has its `shiftIndex` and Set of `WorkerRole`, it creates individual `Assignment`s and adds
+them to the Model.
+
+
+![Class Diagram of AssignCommand, highlighting its MassOps](images/MassAssignClassDiagram.png)
+
+#### Example Usage Scenario
+Let's say that the manager has a new Shift, and requires 3 of their existing staff members to work on 
+that shift immediately.
+
+Step 1. The manager creates a new Shift through the `shift-add` command if it was not already done.
+
+Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
+eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
+and Janitor respectively to Shift number 8.
+
+Step 3. McScheduler parses the input and creates 3 Assignments: 
+shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds them to the Model
+
+
+![Object Diagram of one AssignCommand used to assign 3 workers into a shift](images/MassAssignObjectDiagram.png)
 
 --------------------------------------------------------------------------------------------------------------------
 

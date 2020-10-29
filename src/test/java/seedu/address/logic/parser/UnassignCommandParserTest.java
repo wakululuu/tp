@@ -12,9 +12,14 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UnassignCommand;
 
 public class UnassignCommandParserTest {
@@ -22,21 +27,27 @@ public class UnassignCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
+        Set<Index> workerIndex = new HashSet<>();
+        workerIndex.add(INDEX_FIRST_WORKER);
+
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1,
-                new UnassignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
 
         // different order
         assertParseSuccess(parser, VALID_WORKER_INDEX_1 + VALID_SHIFT_INDEX_1,
-                new UnassignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
 
         // multiple shift indexes - last shift index accepted
         assertParseSuccess(parser, VALID_SHIFT_INDEX_2 + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1,
-                new UnassignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
 
-        // multiple worker indexes - last worker index accepted
+        // add index for mass ops
+        workerIndex.add(INDEX_SECOND_WORKER);
+
+        // multiple worker indexes - mass ops
         assertParseSuccess(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_2 + VALID_WORKER_INDEX_1,
-                new UnassignCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
     }
 
     @Test

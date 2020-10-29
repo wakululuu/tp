@@ -50,10 +50,12 @@ public class CommandTestUtil {
     public static final String VALID_PAY_BOB = "17";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
-    public static final String VALID_ROLE_CASHIER = "cashier";
-    public static final String VALID_ROLE_CHEF = "chef";
-    public static final String VALID_ROLE_JANITOR = "janitor";
+    public static final String VALID_ROLE_CASHIER = "Cashier";
+    public static final String VALID_ROLE_CHEF = "Chef";
+    public static final String VALID_ROLE_JANITOR = "Janitor";
     public static final String VALID_UNAVAILABILITY = "MON AM";
+
+    public static final String INVALID_ROLE = "cashier*"; // '*' not allowed in roles
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -74,6 +76,7 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "cashier*"; // '*' not allowed in roles
     public static final String NOT_FOUND_ROLE_DESC = " " + PREFIX_ROLE + "random role"; // role not in model
+    public static final String NOT_FOUND_ROLE = "Random role"; // role not in model
     public static final String INVALID_UNAVAILABILITY = " " + PREFIX_UNAVAILABILITY + "ddw w"; // not valid day or time
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
