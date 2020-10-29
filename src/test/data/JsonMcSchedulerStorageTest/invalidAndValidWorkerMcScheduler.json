@@ -1,0 +1,19 @@
+{
+  "workers": [
+    {
+      "name": "Valid Worker",
+      "phone": "9482424",
+      "pay": "199.10",
+      "address": "4th street"
+    },
+    {
+      "name": "Worker With Invalid Phone Field",
+      "phone": "948asdf2424",
+      "pay": "199.10",
+      "address": "4th street"
+    }
+  ],
+  "shifts": [],
+  "assignments": [],
+  "validRoles": []
+}
