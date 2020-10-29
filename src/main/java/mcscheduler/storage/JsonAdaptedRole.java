@@ -1,7 +1,6 @@
 package mcscheduler.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.model.role.Role;
@@ -22,21 +21,15 @@ class JsonAdaptedRole {
 
     /**
      * Converts a given {@code Role} into this class for Jackson use.
-     * Note that {@code Role} objects are also {@code Tag} objects.
      */
     public JsonAdaptedRole(Role source) {
         this.roleName = source.roleName;
     }
 
-    @JsonValue
-    public String getRoleName() {
-        return roleName;
-    }
-
     /**
      * Converts this Jackson-friendly adapted role object into the model's {@code Role} object.
      *
-     * @throws IllegalValueException if there were any data constraints violated in the adapted tag.
+     * @throws IllegalValueException if there were any data constraints violated in the adapted role.
      */
     public Role toModelType() throws IllegalValueException {
         if (!Role.isValidRoleName(roleName)) {
