@@ -15,8 +15,8 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
 import mcscheduler.model.worker.Worker;
 
 

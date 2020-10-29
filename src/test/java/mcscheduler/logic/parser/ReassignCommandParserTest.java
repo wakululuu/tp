@@ -21,7 +21,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.ReassignCommand;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class ReassignCommandParserTest {

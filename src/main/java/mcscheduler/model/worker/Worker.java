@@ -6,9 +6,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import mcscheduler.commons.util.CollectionUtil;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
 
 /**
  * Represents a Worker in the address book.

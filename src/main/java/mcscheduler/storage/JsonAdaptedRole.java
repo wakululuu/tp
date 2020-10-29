@@ -1,21 +1,23 @@
 package mcscheduler.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import mcscheduler.commons.exceptions.IllegalValueException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Jackson-friendly version of {@link Role}.
  */
-class JsonAdaptedRole extends JsonAdaptedTag {
+class JsonAdaptedRole {
+    protected final String roleName;
 
     /**
      * Constructs a {@code JsonAdaptedRole} with the given {@code roleName}.
      */
     @JsonCreator
     public JsonAdaptedRole(String roleName) {
-        super(roleName);
+        this.roleName = roleName;
     }
 
     /**
@@ -23,7 +25,12 @@ class JsonAdaptedRole extends JsonAdaptedTag {
      * Note that {@code Role} objects are also {@code Tag} objects.
      */
     public JsonAdaptedRole(Role source) {
-        super(source);
+        this.roleName = source.roleName;
+    }
+
+    @JsonValue
+    public String getRoleName() {
+        return roleName;
     }
 
     /**
@@ -31,12 +38,11 @@ class JsonAdaptedRole extends JsonAdaptedTag {
      *
      * @throws IllegalValueException if there were any data constraints violated in the adapted tag.
      */
-    @Override
     public Role toModelType() throws IllegalValueException {
-        if (!Role.isValidTagName(tagName)) {
+        if (!Role.isValidRoleName(roleName)) {
             throw new IllegalValueException((Role.MESSAGE_CONSTRAINTS));
         }
-        return Role.createRole(tagName);
+        return Role.createRole(roleName);
     }
 
 }

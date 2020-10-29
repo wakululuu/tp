@@ -1,4 +1,4 @@
-package mcscheduler.model.tag;
+package mcscheduler.model.role;
 
 public class Leave extends Role {
 
@@ -9,7 +9,7 @@ public class Leave extends Role {
     }
 
     public static boolean isLeave(Role role) {
-        return role.tagName.equalsIgnoreCase(ROLE_NAME);
+        return role.roleName.equalsIgnoreCase(ROLE_NAME);
     }
 
     /**
@@ -21,7 +21,7 @@ public class Leave extends Role {
         return other == this
                 || other instanceof Leave
                 || (other instanceof Role
-                && ((Role) other).tagName.equalsIgnoreCase(ROLE_NAME));
+                && ((Role) other).roleName.equalsIgnoreCase(ROLE_NAME));
     }
 
 }

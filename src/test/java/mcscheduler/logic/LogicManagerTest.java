@@ -28,7 +28,7 @@ import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.UserPrefs;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.storage.JsonMcSchedulerStorage;
 import mcscheduler.storage.JsonUserPrefsStorage;

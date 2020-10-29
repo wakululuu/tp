@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import mcscheduler.commons.util.AppUtil;
 import mcscheduler.commons.util.CollectionUtil;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Represents a Role Requirement for a shift in the App.

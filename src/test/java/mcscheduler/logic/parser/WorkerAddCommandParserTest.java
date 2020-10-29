@@ -28,7 +28,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;

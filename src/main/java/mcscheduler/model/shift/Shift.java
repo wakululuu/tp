@@ -9,8 +9,8 @@ import java.util.Set;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 
 /**
  * Represents a Shift in the App.

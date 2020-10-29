@@ -19,10 +19,10 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
-import mcscheduler.model.tag.Leave;
 import mcscheduler.model.worker.Worker;
 
 /**

@@ -11,7 +11,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.WorkerRolePair;
-import mcscheduler.model.tag.Leave;
+import mcscheduler.model.role.Leave;
 
 /**
  * Assign a worker to take leave for a particular shift.

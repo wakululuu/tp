@@ -11,7 +11,7 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TypicalIndexes;
 

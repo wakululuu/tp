@@ -9,7 +9,7 @@ import mcscheduler.commons.util.AppUtil;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.parser.ParserUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Represents a Worker being assigned to a Role for a shift in the App.

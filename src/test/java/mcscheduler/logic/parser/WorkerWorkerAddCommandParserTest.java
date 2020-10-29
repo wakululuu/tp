@@ -32,7 +32,7 @@ import static mcscheduler.testutil.TypicalWorkers.BOB;
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 //import mcscheduler.model.tag.Tag;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;

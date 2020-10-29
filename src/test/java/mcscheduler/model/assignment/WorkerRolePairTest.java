@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.CommandTestUtil;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.TypicalIndexes;
 import mcscheduler.testutil.WorkerRolePairBuilder;

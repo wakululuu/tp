@@ -13,9 +13,9 @@ import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.LogsCenter;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
