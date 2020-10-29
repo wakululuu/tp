@@ -379,7 +379,8 @@
 }
 
 #unavailableTimings .label {
-    -fx-background-color: #d92c0d;
+    -fx-text-fill: white;
+    -fx-background-color: #383838;
 }
 
 #shiftAssignments .label,
@@ -389,5 +390,5 @@
 
 #leaveShiftAssignments .label,
 #leaveWorkerAssignments .label {
-    -fx-background-color: darkblue;
+    -fx-background-color: #383838;
 }
