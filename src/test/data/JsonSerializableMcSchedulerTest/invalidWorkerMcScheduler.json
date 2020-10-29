@@ -1,0 +1,13 @@
+{
+  "workers": [
+    {
+      "name": "Hans Muster",
+      "phone": "9482424",
+      "pay": "1337.101",
+      "address": "4th street"
+    }
+  ],
+  "shifts": [],
+  "assignments": [],
+  "validRoles": []
+}
