@@ -2,6 +2,7 @@ package mcscheduler.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.model.role.Role;
 
@@ -24,6 +25,11 @@ class JsonAdaptedRole {
      */
     public JsonAdaptedRole(Role source) {
         this.roleName = source.roleName;
+    }
+
+    @JsonValue
+    public String getRoleName() {
+        return roleName;
     }
 
     /**
