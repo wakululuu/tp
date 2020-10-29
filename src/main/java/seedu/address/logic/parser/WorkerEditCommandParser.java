@@ -24,7 +24,7 @@ import seedu.address.model.worker.Unavailability;
 /**
  * Parses input arguments and creates a new WorkerEditCommand object
  */
-public class EditCommandParser implements Parser<WorkerEditCommand> {
+public class WorkerEditCommandParser implements Parser<WorkerEditCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerEditCommand
