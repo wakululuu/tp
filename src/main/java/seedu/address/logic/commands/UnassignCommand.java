@@ -90,14 +90,13 @@ public class UnassignCommand extends Command {
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
             Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
             Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
-            if (!model.hasAssignment(assignmentToDelete)) {
-                throw new CommandException(String.format(MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentToDelete));
-            }
+
+            Assignment assignmentWithRole = new Assignment(shiftToUnassign, workerToUnassign, roleToUnassign);
+            unassignStringBuilder.append(assignmentWithRole);
+            unassignStringBuilder.append("\n");
+
             model.deleteAssignment(assignmentToDelete);
             Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
-
-            unassignStringBuilder.append(assignmentToDelete);
-            unassignStringBuilder.append("\n");
         }
 
         return new CommandResult(
