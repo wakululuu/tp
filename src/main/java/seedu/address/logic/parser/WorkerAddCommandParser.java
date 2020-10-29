@@ -27,7 +27,7 @@ import seedu.address.model.worker.Worker;
 /**
  * Parses input arguments and creates a new WorkerAddCommand object
  */
-public class AddCommandParser implements Parser<WorkerAddCommand> {
+public class WorkerAddCommandParser implements Parser<WorkerAddCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerAddCommand

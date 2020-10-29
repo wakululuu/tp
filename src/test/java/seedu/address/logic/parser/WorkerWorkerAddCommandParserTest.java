@@ -41,8 +41,8 @@ import seedu.address.model.worker.Phone;
 import seedu.address.model.worker.Worker;
 import seedu.address.testutil.WorkerBuilder;
 
-public class WorkerAddCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+public class WorkerWorkerAddCommandParserTest {
+    private WorkerAddCommandParser parser = new WorkerAddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
