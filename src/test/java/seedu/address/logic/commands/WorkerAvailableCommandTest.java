@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.NOT_FOUND_ROLE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -56,10 +57,10 @@ public class WorkerAvailableCommandTest {
     @Test
     public void execute_roleNotFound_throwsCommandException() {
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(INDEX_FIRST_SHIFT,
-                Role.createRole("random role"));
+                Role.createRole(NOT_FOUND_ROLE));
 
         assertCommandFailure(workerAvailableCommand, model,
-                String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "random role"));
+                String.format(Messages.MESSAGE_ROLE_NOT_FOUND, NOT_FOUND_ROLE));
     }
 
     @Test
@@ -83,10 +84,10 @@ public class WorkerAvailableCommandTest {
         assertNotEquals(new ClearCommand(), standardCommand);
 
         // different index -> returns false
-        assertNotEquals(new WorkerAvailableCommand(INDEX_SECOND_SHIFT, role), standardCommand);
+        assertNotEquals(standardCommand, new WorkerAvailableCommand(INDEX_SECOND_SHIFT, role));
 
         // different role -> returns false
-        assertNotEquals(new WorkerAvailableCommand(INDEX_FIRST_SHIFT, differentRole), standardCommand);
+        assertNotEquals(standardCommand, new WorkerAvailableCommand(INDEX_FIRST_SHIFT, differentRole));
     }
 
 }

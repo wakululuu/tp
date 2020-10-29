@@ -5,7 +5,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javafx.util.Pair;
 import seedu.address.commons.core.Messages;
@@ -15,7 +14,6 @@ import seedu.address.model.Model;
 import seedu.address.model.assignment.Assignment;
 import seedu.address.model.shift.Shift;
 import seedu.address.model.tag.Role;
-import seedu.address.model.worker.Unavailability;
 import seedu.address.model.worker.Worker;
 
 /**
@@ -103,22 +101,11 @@ public class WorkerAvailableCommand extends Command {
 
         for (int i = 0; i < lastShownWorkerList.size(); i++) {
             Worker worker = lastShownWorkerList.get(i);
-            if (checkIfWorkerAlreadyAssigned(assignmentsForSelectedShift, worker) || !checkIfWorkerHasRole(worker)) {
+            if (checkIfWorkerAlreadyAssigned(assignmentsForSelectedShift, worker) || !worker.isFitForRole(this.role)) {
                 continue;
             }
 
-            Set<Unavailability> workerUnavailableTimings = worker.getUnavailableTimings();
-
-            boolean isWorkerAvailable = true;
-
-            for (Unavailability unavail : workerUnavailableTimings) {
-                if (selectedShift.getShiftDay().equals(unavail.getDay())
-                        && selectedShift.getShiftTime().equals(unavail.getTime())) {
-                    isWorkerAvailable = false;
-                    break;
-                }
-            }
-            if (isWorkerAvailable) {
+            if (!worker.isUnavailable(selectedShift)) {
                 Index currentIndex = Index.fromZeroBased(i);
                 availableWorkers.add(new Pair<>(worker, currentIndex));
             }
@@ -129,16 +116,6 @@ public class WorkerAvailableCommand extends Command {
     private boolean checkIfWorkerAlreadyAssigned(List<Assignment> assignmentList, Worker worker) {
         for (Assignment assignment : assignmentList) {
             if (worker.equals(assignment.getWorker())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean checkIfWorkerHasRole(Worker worker) {
-        Set<Role> workerRoles = worker.getRoles();
-        for (Role workerRole : workerRoles) {
-            if (workerRole.equals(this.role)) {
                 return true;
             }
         }
