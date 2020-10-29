@@ -305,28 +305,36 @@ from the 1st shift in the McScheduler. The `unassign` command creates a dummy `A
 
 ### Role feature
 
-The role feature allows users to add roles to a `Worker`. When assigning a `Worker` to a `Shift` under a particular `Role`,
-we check that the `Worker` has the corresponding `Role` tagged to the `Worker`.
+The role feature allows users to add roles to a `Worker` and add `RoleRequirement` to a `Shift`. When assigning a `Worker` to a `Shift` under a particular `Role`,
+we check that the `Worker` has the corresponding `Role` tagged to the `Worker` as the `Role` in the `RoleRequirement` of the particular `Shift`.
 
 #### Implementation
 
-The `Role` attribute of the `Worker` class extends the existing `Tag` class. The `Role` constructor takes in a `String` 
-and creates a `Role` object with the according `roleName`. In the future, we will change the 
-behavior of `Role` such that we have an enumeration of allowed `roleNames` and only these `Roles` can be 
-instantiated. We will also add support for adding new allowed `roleNames` to the enumeration mentioned above.
+The `Role` constructor takes in a `String` and creates a `Role` object with the according `roleName`. When tagging a `Worker` with a `Role`, we check that the `Role` is an allowed `Role` by checking if it exists in the 
+`UniqueRoleList` of the McScheduler.
 
 ![RoleClassDiagram](images/RoleClassDiagram.png)
 
-#### Design consideration:
-
-We chose to simply extend the `Tag` class since both `Tag` and `Role` are optional fields so it makes sense
-for `Role` to inherit from `Tag`.
-
-<!--Todo: add class diagrams relating Role to Tag, Role Requirement, Worker and Shift-->
+#### Commands
+The following commands have been implemented to work with `Role`:
+- `RoleAddCommand` to add new roles to `UniqueRoleList`
+- `RoleDeleteCommand` to delete existing roles in `UniqueRoleList`
+- `RoleListCommand` to list existing roles in `UniqueRoleList`
 
 #### Example usage scenario
 
-![RoleSequenceDiagram](images/RoleSequenceDiagram.png)
+Step 1. The user executes `role-add cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
+If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleException` is thrown.
+
+![AddRoleSequenceDiagram](images/AddRoleSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `RoleAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+</div>
+
+
+Step 2. The user realises the previous command was a mistake and executes `role-list` to get the index of the cashier role in the `UniqueRoleList`.
+Using the role index in the `UniqueRoleList`, the user executes `role-delete ROLE_INDEX` to remove the cashier role from the `UniqueRoleList`.
+
 
 ### Take/cancel leave feature
 
