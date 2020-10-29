@@ -152,7 +152,7 @@ public class WorkerEditCommandTest {
         WorkerEditCommand editCommand = new WorkerEditCommand(INDEX_FIRST_WORKER,
                 new EditWorkerDescriptorBuilder().withRoles("random role").build());
 
-        assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "random role"));
+        assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "Random role"));
     }
 
     @Test
