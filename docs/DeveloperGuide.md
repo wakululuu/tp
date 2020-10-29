@@ -80,7 +80,7 @@ The `UI` component,
 **API** :
 [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
-1. `Logic` uses the `AddressBookParser` class to parse the user command.
+1. `Logic` uses the `McSchedulerParser` class to parse the user command.
 1. This results in a `Command` object which is executed by the `LogicManager`.
 1. The command execution can affect the `Model` (e.g. adding a worker).
 1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
@@ -107,7 +107,7 @@ The `Model`,
 * does not depend on any of the other three components.
 
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Worker` references. This allows `AddressBook` to only require one `Tag` object per unique `Tag`, instead of each `Worker` needing their own `Tag` object.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `McScheduler`, which `Worker` references. This allows `McScheduler` to only require one `Tag` object per unique `Tag`, instead of each `Worker` needing their own `Tag` object.<br>
 ![BetterModelClassDiagram](images/BetterModelClassDiagram.png)
 
 </div>
@@ -125,7 +125,7 @@ The `Storage` component,
 
 ### Common classes
 
-Classes used by multiple components are in the `seedu.addressbook.commons` package.
+Classes used by multiple components are in the `mcscheduler.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -151,7 +151,7 @@ A user can add a `Worker` to the `McScheduler` by running a `worker-add` command
 Given below is an example usage scenario and how the add worker feature behaves at each step after the user has
 launched the application.
 
-Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `AddressBookParser`
+Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `McSchedulerParser`
 creates a `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
 Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `WorkerAddCommandParser#parse()` and an instance of
@@ -193,7 +193,7 @@ These commands work similarly to the `Worker` based commands.
 #### Example Usage Scenario
 Given below is an example usage scenario and how the edit shift feature works at each step.
 
-Step 1. User enters the command `shift-edit 2 d/FRI`. `AddressBookParser` creates a `ShiftEditCommandParser` and calls
+Step 1. User enters the command `shift-edit 2 d/FRI`. `McSchedulerParser` creates a `ShiftEditCommandParser` and calls
 the `ShiftEditCommandParser#parser()` method.
 
 Step 2. The preamble index and field `d/` are parsed within `ShiftEditCommandParser#parser()` and creates an instance of
@@ -250,7 +250,7 @@ object for each
 Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
 launched the application.
 
-Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `AddressBookParser` creates a
+Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `McSchedulerParser` creates a
 `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
 Step 2. Within `WorkerAddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
