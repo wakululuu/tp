@@ -168,6 +168,51 @@ The following sequence diagram shows how `Worker` is added.
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
+### Shift feature
+Similar to workers, adding and manipulating shifts is a key functionality of the McScheduler. Managers will be able to make use of 
+shifts to set role requirements, add or remove workers and assign leave. 
+
+#### Implementation
+
+Shifts are represented by a `Shift` class. It contains important detail related to shifts such as the day (through `ShiftDay`),
+the time (through `ShiftTime`) and role requirements (through `RoleRequirement`) that details how many workers are needed
+at which positions in a given shift.
+
+The following diagram details `Shift` and how it is represented in the App model.
+
+![Shift Class Diagram](images/ShiftClassDiagram.png)
+
+#### Commands
+The following commands have been implemented to work with `Shift`:
+- `ShiftAddCommand` to add new shifts
+- `ShiftEditCommand` to edit existing shifts
+- `ShiftDeleteCommand` to delete existing shifts
+
+These commands work similarly to the `Worker` based commands.
+
+#### Example Usage Scenario
+Given below is an example usage scenario and how the edit shift feature works at each step.
+
+Step 1. User enters the command `shift-edit 2 d/FRI`. `AddressBookParser` creates a `ShiftEditCommandParser` and calls
+the `ShiftEditCommandParser#parser()` method.
+
+Step 2. The preamble index and field `d/` are parsed within `ShiftEditCommandParser#parser()` and creates an instance of
+`ShiftEditCommandParser` then creates a `ShiftEditDescriptor` with a new `ShiftDay`. Should there be other optional fields
+such as `ShiftTime` or `RoleRequirement` as requested by the uder in their command, similar instances will be created and added
+to the `ShiftEditDescriptor`.
+
+Step 3. A `ShiftEditCommand` with the `ShiftEditDescriptor` and the index of the `Shift` of interest is returned and executed,
+setting the edited shift within the model. This results in the replacement of the `Shift` object within the model with a newly
+created `Shift` object based on the new attributes.
+
+The following sequence diagram demonstrates this editing process (as per the example).
+
+![Edit Shift Sequence Diagram](images/EditShiftSequenceDiagram.png)
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** Should there be other information to be edited
+as requested by the user, there will be other objects created besides `ShiftDay`.
+</div>
+
 ### Unavailability feature
 
 The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
