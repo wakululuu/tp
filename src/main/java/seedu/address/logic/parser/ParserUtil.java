@@ -269,7 +269,7 @@ public class ParserUtil {
         requireNonNull(unavailabilities);
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
         for (String unavailability : unavailabilities) {
-            if (unavailability.contains(WHOLE_DAY)) {
+            if (unavailability.toUpperCase().contains(WHOLE_DAY)) {
                 String[] tempString = unavailability.split(" ");
                 String day = tempString[0];
                 String morningUnavailability = createMorningUnavailabilityString(day);
