@@ -5,10 +5,9 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_WORKER;
 
-import java.util.Set;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -95,7 +94,8 @@ public class CancelLeaveCommand extends Command {
             assignStringBuilder.append(assignmentInModel + "\n");
         }
 
-        return new CommandResult(String.format(MESSAGE_CANCEL_LEAVE_SUCCESS, assignStringBuilder.toString()));
+        return new CommandResult(String.format(
+                MESSAGE_CANCEL_LEAVE_SUCCESS, workerIndexes.size(), assignStringBuilder.toString()));
     }
 
     @Override
@@ -110,6 +110,6 @@ public class CancelLeaveCommand extends Command {
 
         CancelLeaveCommand e = (CancelLeaveCommand) other;
         return shiftIndex.equals(e.shiftIndex)
-                && workerIndexes.equals(e.workerIndexes);
+                && workerIndexes.toString().equals(e.workerIndexes.toString());
     }
 }

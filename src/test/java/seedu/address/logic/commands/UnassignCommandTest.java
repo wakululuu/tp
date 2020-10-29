@@ -68,8 +68,9 @@ public class UnassignCommandTest {
 
         Shift shiftToUnassign = model.getFilteredShiftList().get(INDEX_SECOND_SHIFT.getZeroBased());
         Worker workerToUnassign = model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased());
+        // the model has the role of cashier
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
-                .withWorker(workerToUnassign).buildDummy();
+                .withWorker(workerToUnassign).withRole(VALID_ROLE_CASHIER).build();
 
         assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS + "\n", 1, validAssignment),
                 commandResult.getFeedbackToUser());

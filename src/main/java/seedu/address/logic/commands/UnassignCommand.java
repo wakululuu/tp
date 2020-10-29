@@ -64,7 +64,7 @@ public class UnassignCommand extends Command {
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
         }
-        StringBuilder unassignStringBuilder = new StringBuilder();
+
 
         // Check if any is not found
         for (Index workerIndex : workerIndexes) {
@@ -80,12 +80,19 @@ public class UnassignCommand extends Command {
             }
         }
 
+        StringBuilder unassignStringBuilder = new StringBuilder();
         // Remove assignments
         for (Index workerIndex : workerIndexes) {
+            lastShownWorkerList = model.getFilteredWorkerList();
+            lastShownShiftList = model.getFilteredShiftList();
+
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
+            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
             Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
-            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign, roleToUnassign);
+            if (!model.hasAssignment(assignmentToDelete)) {
+                throw new CommandException(String.format(MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentToDelete));
+            }
             model.deleteAssignment(assignmentToDelete);
             Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
 

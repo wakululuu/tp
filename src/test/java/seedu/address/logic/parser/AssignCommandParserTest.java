@@ -49,6 +49,9 @@ public class AssignCommandParserTest {
                 VALID_SHIFT_INDEX_2 + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER,
                 new AssignCommand(INDEX_FIRST_SHIFT, validWorkerRole));
 
+        // add pair for mass ops
+        validWorkerRole.add(new WorkerRolePair(INDEX_SECOND_WORKER, Role.createRole(VALID_ROLE_CHEF)));
+
         // multiple worker-role indexes - mass ops
         assertParseSuccess(parser,
                 VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CASHIER

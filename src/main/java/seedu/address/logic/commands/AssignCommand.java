@@ -86,7 +86,8 @@ public class AssignCommand extends Command {
                             workerToAssign.getName(), role));
             }
             if (workerToAssign.isUnavailable(shiftToAssign)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+                throw new CommandException(String.format(
+                        Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerToAssign.getName(), shiftToAssign));
             }
 
             if (!shiftToAssign.isRoleRequired(role)) {
@@ -95,7 +96,7 @@ public class AssignCommand extends Command {
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
             if (model.hasAssignment(assignmentToAdd)) {
-                throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
             }
             assignmentsToAdd.add(assignmentToAdd);
         }

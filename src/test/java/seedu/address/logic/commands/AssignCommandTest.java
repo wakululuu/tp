@@ -94,7 +94,12 @@ public class AssignCommandTest {
         AssignCommand assignCommand = new AssignCommand(INDEX_SECOND_SHIFT, validWorkerRole);
         assignCommand.execute(model);
 
-        assertThrows(CommandException.class, AssignCommand.MESSAGE_DUPLICATE_ASSIGNMENT, () ->
+        Assignment assignmentName = new Assignment(model.getFilteredShiftList().get(INDEX_SECOND_SHIFT.getZeroBased()),
+                model.getFilteredWorkerList().get(INDEX_FIRST_WORKER.getZeroBased()),
+                Role.createRole(VALID_ROLE_CASHIER));
+
+        assertThrows(CommandException.class,
+                String.format(AssignCommand.MESSAGE_DUPLICATE_ASSIGNMENT, assignmentName), () ->
                 assignCommand.execute(model));
     }
 

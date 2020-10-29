@@ -11,8 +11,12 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.CancelLeaveCommand;
 
 public class CancelLeaveCommandParserTest {
@@ -20,13 +24,16 @@ public class CancelLeaveCommandParserTest {
 
     @Test
     public void parse_allFieldPresent_success() {
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+
         // whitespace only preamble
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_WORKER_INDEX_1 + VALID_SHIFT_INDEX_1,
-                new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new CancelLeaveCommand(INDEX_FIRST_SHIFT, validIndex));
 
         // different order
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1,
-                new CancelLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER));
+                new CancelLeaveCommand(INDEX_FIRST_SHIFT, validIndex));
     }
 
     @Test

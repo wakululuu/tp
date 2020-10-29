@@ -12,6 +12,7 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailur
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +42,10 @@ public class UnassignCommandParserTest {
         assertParseSuccess(parser, VALID_SHIFT_INDEX_2 + VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1,
                 new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
 
-        // multiple worker indexes - last worker index accepted
+        // add index for mass ops
+        workerIndex.add(INDEX_SECOND_WORKER);
+
+        // multiple worker indexes - mass ops
         assertParseSuccess(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_2 + VALID_WORKER_INDEX_1,
                 new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex));
     }
