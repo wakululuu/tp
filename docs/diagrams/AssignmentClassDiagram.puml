@@ -1,4 +1,8 @@
 @startuml
+!include style.puml
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+
 title Assignment - Class Diagram
 skinparam backgroundColor transparent
 

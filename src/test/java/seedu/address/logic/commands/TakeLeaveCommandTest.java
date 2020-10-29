@@ -15,10 +15,13 @@ import static seedu.address.testutil.TypicalWorkers.DANIEL;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ModelManager;
 import seedu.address.model.assignment.Assignment;
@@ -30,7 +33,9 @@ public class TakeLeaveCommandTest {
 
     @Test
     public void constructor_nullIndex_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(null, INDEX_FIRST_WORKER));
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(null, validIndex));
         assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(INDEX_FIRST_SHIFT, null));
         assertThrows(NullPointerException.class, () -> new TakeLeaveCommand(null, null));
     }
@@ -41,14 +46,16 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
-        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex);
         CommandResult result;
         result = takeLeaveCommand.execute(model);
 
         Assignment assignment = new Assignment(SHIFT_A, ALICE, new Leave());
 
         assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
-                + AssignCommand.MESSAGE_ASSIGN_SUCCESS, assignment), result.getFeedbackToUser());
+                + AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, assignment) + "\n", result.getFeedbackToUser());
         assertEquals(Arrays.asList(assignment), model.assignments);
 
     }
@@ -59,7 +66,9 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
-        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex);
         assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
     }
 
@@ -69,7 +78,9 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAlreadyHasAssignment model = new ModelStubAlreadyHasAssignment(workers, shifts);
 
-        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex);
         assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
     }
 
@@ -79,7 +90,9 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
-        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex);
         assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
     }
 
@@ -89,18 +102,24 @@ public class TakeLeaveCommandTest {
         List<Shift> shifts = Arrays.asList();
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
         assertThrows(CommandException.class, () ->
-                new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER).execute(model));
+                new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex).execute(model));
     }
 
     @Test
     public void equals() {
-        TakeLeaveCommand firstIndexes = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER);
-        TakeLeaveCommand secondIndexes = new TakeLeaveCommand(INDEX_SECOND_SHIFT, INDEX_SECOND_WORKER);
-        TakeLeaveCommand firstShiftSecondWorker = new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_SECOND_WORKER);
+        Set<Index> validIndex = new HashSet<>();
+        validIndex.add(INDEX_FIRST_WORKER);
+        Set<Index> validIndexTwo = new HashSet<>();
+        validIndexTwo.add(INDEX_SECOND_WORKER);
+        TakeLeaveCommand firstIndexes = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex);
+        TakeLeaveCommand secondIndexes = new TakeLeaveCommand(INDEX_SECOND_SHIFT, validIndexTwo);
+        TakeLeaveCommand firstShiftSecondWorker = new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndexTwo);
 
         assertTrue(firstIndexes.equals(firstIndexes)); // same object
-        assertTrue(firstIndexes.equals(new TakeLeaveCommand(INDEX_FIRST_SHIFT, INDEX_FIRST_WORKER))); // same values
+        assertTrue(firstIndexes.equals(new TakeLeaveCommand(INDEX_FIRST_SHIFT, validIndex))); // same values
         assertFalse(firstIndexes.equals(123)); // different type
         assertFalse(firstIndexes.equals(null)); // null
         assertFalse(firstIndexes.equals(secondIndexes)); // different values

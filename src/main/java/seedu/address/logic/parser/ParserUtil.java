@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.assignment.WorkerRolePair;
 import seedu.address.model.shift.RoleRequirement;
 import seedu.address.model.shift.ShiftDay;
 import seedu.address.model.shift.ShiftTime;
@@ -51,6 +52,20 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    /**
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
+     * trimmed.
+     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     */
+    public static Set<Index> parseIndexes(Collection<String> oneBasedIndexes) throws ParseException {
+        requireNonNull(oneBasedIndexes);
+        final Set<Index> indexSet = new HashSet<>();
+        for (String oneBasedIndex : oneBasedIndexes) {
+            indexSet.add(parseIndex(oneBasedIndex));
+        }
+        return indexSet;
     }
 
     /**
@@ -254,7 +269,7 @@ public class ParserUtil {
         requireNonNull(unavailabilities);
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
         for (String unavailability : unavailabilities) {
-            if (unavailability.contains(WHOLE_DAY)) {
+            if (unavailability.toUpperCase().contains(WHOLE_DAY)) {
                 String[] tempString = unavailability.split(" ");
                 String day = tempString[0];
                 String morningUnavailability = createMorningUnavailabilityString(day);
@@ -299,5 +314,33 @@ public class ParserUtil {
             roleRequirementSet.add(parseRoleRequirement(roleRequirementString));
         }
         return roleRequirementSet;
+    }
+
+    /**
+     * Parses a {@code String roleRequirement} into a {@code RoleRequirement}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code roleRequirement} is invalid.
+     */
+    public static WorkerRolePair parseWorkerRole(String workerRole) throws ParseException {
+        requireNonNull(workerRole);
+        String trimmedWorkerRole = workerRole.trim();
+        if (!WorkerRolePair.isValidWorkerRolePair(trimmedWorkerRole)) {
+            throw new ParseException(WorkerRolePair.MESSAGE_CONSTRAINTS);
+        }
+        return new WorkerRolePair(trimmedWorkerRole);
+    }
+
+    /**
+     * Parses {@code Collection<String> workerRoles} into a {@code Set<WorkerRolePair>}.
+     */
+    public static Set<WorkerRolePair> parseWorkerRoles(
+            Collection<String> workerRoles) throws ParseException {
+        requireNonNull(workerRoles);
+        final Set<WorkerRolePair> workerRolePairSet = new HashSet<>();
+        for (String workerRoleString : workerRoles) {
+            workerRolePairSet.add(parseWorkerRole(workerRoleString));
+        }
+        return workerRolePairSet;
     }
 }
