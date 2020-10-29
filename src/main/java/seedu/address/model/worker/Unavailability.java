@@ -16,7 +16,7 @@ import seedu.address.model.shift.ShiftTimeValue;
  */
 public class Unavailability {
     public static final String MESSAGE_CONSTRAINTS =
-            "Unavailability must contain one of the days: MON, TUE, WED, THUR, FRI, SAT, SUN and "
+            "Unavailability must contain one of the days: MON, TUE, WED, THU, FRI, SAT, SUN and "
                     + "one of the times: AM, PM, FULL";
     private final ShiftDay day;
     private final ShiftTime time;

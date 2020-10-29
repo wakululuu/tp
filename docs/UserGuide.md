@@ -87,18 +87,17 @@ Format: `help`
 
 Adds a new worker to the McScheduler.
 
-Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABILITY]...`
+Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`
 
-* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY`, `ROLE`(s) and
-`UNAVAILABILITY`(s).
+* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s). The worker will be unavailable
+on the specified `UNAVAILABLE_DAY`(s) at the corresponding `UNAVAILABLE_TIME`.
 * `HOURLY_PAY` can have a maximum of 2 decimal places only. 
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
-* `UNAVAILABILITY` must be in the format {u/DAY TIME}. `DAY` should take one of these values: **Mon, Tue, Wed, Thu,
-Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon`, `mOn` etc. are all accepted). `TIME` should
-take one of these values: **AM, PM, FULL**. These values are also case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
-accepted). The worker will be unavailable during the specified `UNAVAILABILITY`(s). A worker cannot be assigned to a shift
-they are unavailable for with the [assign](#assigning-a-worker-to-a-role-in-a-shift-assign) command.
+* `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
+Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
+* `UNAVAILABLE_TIME` should take one of these values: **AM, PM, FULL**. These values are case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+accepted).
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
@@ -310,14 +309,15 @@ Format: `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/N
 
 * Reassigns an existing assignment using the indexes provided such that the worker at `NEW_WORKER_INDEX` will be assigned to the
 shift at `NEW_SHIFT_INDEX` for the specified `ROLE`. The indexes **must be positive integers** i.e. 1,2, 3, …​
-* The old assignment involving the worker at the specified `OLD_WORKER_INDEX` and the shift at `OLD_SHIFT_INDEX` must be valid.
+* The old assignment involving the worker at the specified `OLD_WORKER_INDEX` and the shift at `OLD_SHIFT_INDEX` must exist.
 The old assignment will be edited during a successful `reassign` call.
 * The `OLD_WORKER_INDEX` can be the same as the `NEW_WORKER_INDEX`. The `OLD_SHIFT_INDEX` can be the same as the `NEW_SHIFT_INDEX`.
 This allows workers to be reassigned to the same shift but under a different `ROLE`.
 * No reassignment will be made if there already exists a duplicate assignment in the McScheduler.
 
-Example:
+Examples:
 * `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.
+
 * `reassign so/1 wo/2 sn/3 wn/2 r/Cashier` Reassigns the 2nd worker on the worker list to the 3rd shift on the shift list as a Cashier.
 
 ### Assign worker to take leave during shift: `take-leave`
@@ -334,7 +334,7 @@ will be the worker at the specified `WORKER_INDEX` in the worker list.
   * The worker is unavailable for that shift, since there is no reason to take leave then.
   * The worker is already assigned to a role for that shift.
 
-Examples:
+Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
 
 ### Assign a worker's leave over a range of days and times: `mass-take-leave`
@@ -358,6 +358,7 @@ present within the McScheduler. These shifts will have no role requirements.
   
 Examples:
 * `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
+
 * `mass-take-leave w/1 d/THU t/PM d/MON t/PM` Assigns the 1st worker to take leave from THU PM shift to MON PM shift (inclusive).
 
 ### Cancel a worker's leave during a shift: `cancel-leave`
@@ -396,6 +397,7 @@ work as intended - leave cancelled from Sunday morning to Monday morning.
   
 Examples:
 * `mass-cancel-leave w/2 d/MON t/PM d/THU t/PM` Cancels the 2nd worker's leave between MON PM shift to THU PM shift (inclusive).
+
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
 
 ### Exiting the program : `exit`
@@ -436,6 +438,6 @@ Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Role | **List** | `role-list`
 Assignment | **Assign** | `assign s/SHIFT_INDEX w/WORKER_INDEX r/ROLE`<br>e.g. `assign s/3 w/2 r/Cashier`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX`<br>e.g. `unassign s/4 w/1`
-Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wo/1 r/Chef`
+Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`
 General | **Help** | `help`
 General | **Exit** | `exit`
