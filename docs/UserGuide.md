@@ -125,7 +125,7 @@ Format: `worker-list`
 
 Edits an existing worker in the McScheduler.
 
-Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]...`
+Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`
 
 * Edits the worker at the specified `WORKER_INDEX`. The worker index refers to the index number shown in the displayed
   worker list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
@@ -134,6 +134,11 @@ Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOUR
 * When editing roles, the existing roles of the worker will be removed i.e adding of roles is not cumulative.
 * The specified `ROLE`(s) must be an existing role in the McScheduler. A role can be added to the McScheduler using the
   [role-add](#adding-a-role-role-add) command.
+* When editing unavailabilities, the existing unavailabilities of the worker will be removed i.e. adding of unavailabilities is not cumulative.
+* `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
+  Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
+* `UNAVAILABLE_TIME` should take one of these values: **AM, PM, FULL**. These values are case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+accepted).
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
@@ -144,7 +149,7 @@ You can remove all of a worker’s roles by typing `r/` without specifying any r
 Examples:
 * `worker-edit 1 n/John r/Janitor` Edits the name and role of the 1st worker to be John and janitor respectively.
 
-* `worker-edit 2 n/Betsy Crower p/7` Edits the name and pay of the 2nd worker to be Betsy Crower and $7/hr respectively.
+* `worker-edit 2 n/Betsy Crower p/7 u/Mon full` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
 <!-- ### Locating workers by name: `worker find`
 
