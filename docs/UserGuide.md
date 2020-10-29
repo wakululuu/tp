@@ -91,7 +91,7 @@ Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u
 
 * Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s). The worker will be unavailable
 on the specified `UNAVAILABLE_DAY`(s) at the corresponding `UNAVAILABLE_TIME`.
-* `HOURLY_PAY` can have a maximum of 2 decimal places only. 
+* `HOURLY_PAY` can have a maximum of 2 decimal places only.
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
@@ -101,7 +101,7 @@ accepted).
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
-A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.  
+A worker can be fit for any number of roles (including zero) that can be added by multiple `r/` parameters.
 A worker can have any number of unavailable timings (including zero) that can be added by multiple `u/` parameters.
 
 </div>
@@ -294,7 +294,7 @@ Show the list of workers who are available for a particular shift under a partic
 
 Format: `worker-avail SHIFT_INDEX r/ROLE`
 
-* Show a list of available workers who can work as the specified `ROLE` for the shift at the specified `SHIFT_INDEX`. 
+* Show a list of available workers who can work as the specified `ROLE` for the shift at the specified `SHIFT_INDEX`.
   The index refers to the index number shown in the displayed shift
   list. The shift index **must be a positive integer** i.e. 1, 2, 3, …​
 * `ROLE` must be a valid role that has already been added to the list of approved roles. See `role-add`.
@@ -328,7 +328,7 @@ Format: `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`
 * Unassigns the worker(s) at the specified `WORKER_INDEX` from the shift at the specified `SHIFT_ INDEX`. The indexes refer
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
-  
+ 
 ### Reassigning an existing assignment: `reassign`
 
 Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
@@ -356,7 +356,7 @@ Format: `take-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
 * Assigns worker(s) to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker(s) taking leave
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
-* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the 
+* The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
 * An error message will be shown in the following situations:
   * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
@@ -372,7 +372,7 @@ Assigns a worker to take leave over a range of days and times given a start and 
 
 Format: `mass-take-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
 
-* Assigns a worker to take leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+* Assigns a worker to take leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and
 `END_TIME`. The worker taking leave will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
 and similarly for time). Specifying in the wrong order is likely to result in leave taken in the wrong shifts.
@@ -396,14 +396,14 @@ Cancels a worker's leave at a particular day and time, as indicated by a shift.
 
 Format `cancel-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
-* Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is 
+* Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is
 cancelled will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `cancel-leave s/4 w/1` is equivalent to `cancel-leave w/1 s/4`.
 * An error message will be shown in the following situations:
   * No leave found for the worker(s) at the specified shift.
   * An assignment other than leave is found for the worker(s) at the specified shift.
-  
+ 
 Examples:
 * `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
 * `cancel-leave s/4 w/1 w/3` Cancels the leave of the 1st and the 3rd worker for the 4th shift.
@@ -414,7 +414,7 @@ Cancels a worker's leave over a range of days and times given a start and end da
 
 Format: `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`
 
-* Cancel's a worker's leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and 
+* Cancel's a worker's leave on all shifts between the specified `START_DAY` and `START_TIME` to `END_DAY` and
 `END_TIME`. The worker cancelling leave will be the worker at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying **does matter** between the two sets of days and times (i.e. `START_DAY` must come before `END_DAY`
 and similarly for time). Specifying in the wrong order is likely to result in leave cancelled in the wrong shifts.
@@ -424,7 +424,7 @@ the same as `mass-cancel-leave t/AM t/PM d/MON d/FRI w/2`, though the latter syn
 work as intended - leave cancelled from Sunday morning to Monday morning.
 * An error message will be shown in the following situations:
   * The worker has no leave in the given day/time range.
-  
+ 
 Examples:
 * `mass-cancel-leave w/2 d/MON t/PM d/THU t/PM` Cancels the 2nd worker's leave between MON PM shift to THU PM shift (inclusive).
 
