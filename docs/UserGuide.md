@@ -359,6 +359,7 @@ Assigns a worker to take leave at a particular day and time, as indicated by a s
 
 Format: `take-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
+* **At least one worker must be specified.**
 * Assigns worker(s) to take leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker(s) taking leave
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
@@ -401,6 +402,7 @@ Cancels a worker's leave at a particular day and time, as indicated by a shift.
 
 Format `cancel-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`
 
+* **At least one worker must be specified.**
 * Cancel's worker(s)' leave on the shift at the specified `SHIFT_INDEX` in the shift list. The worker whose leave is
 cancelled will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
@@ -476,5 +478,9 @@ Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e
 Assignment | **Assign** | `assign s/SHIFT_INDEX [w/WORKER_INDEX ROLE]...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g. `unassign s/4 w/1 w/5`
 Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`
+Leave | **Take** | `take-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g. `take-leave s/2 w/1 w/4`
+Leave | **Take over range of dates** | `mass-take-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`<br>e.g. `mass-take-leave w/2 d/Sat t/AM d/Tue t/PM`
+Leave | **Cancel** | `cancel-leave s/SHIFT_INDEX [w/WORKER_INDEX]...`<br>e.g.`cancel-leave s/3 w/2 w/3`
+Leave | **Cancel over a range of dates** | `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`<br> e.g. `mass-cancel-leave w/3 d/Mon t/AM d/Mon t/PM`
 General | **Help** | `help`
 General | **Exit** | `exit`
