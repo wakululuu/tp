@@ -12,8 +12,6 @@ import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
 
-//import static CommandTestUtil.VALID_EMAIL_BOB;
-
 public class WorkerTest {
 
     @Test

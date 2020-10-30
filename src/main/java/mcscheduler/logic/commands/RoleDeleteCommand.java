@@ -19,7 +19,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Deletes a role identified using its displayed index from the address book.
+ * Deletes a role identified using its displayed index from the McScheduler.
  */
 public class RoleDeleteCommand extends Command {
 

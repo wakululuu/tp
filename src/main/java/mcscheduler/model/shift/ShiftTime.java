@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Shift's time in the App.
+ * Represents a Shift's time in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidTime(String)}
  */
 public class ShiftTime {

@@ -36,7 +36,6 @@ public class EditWorkerDescriptorBuilder {
         descriptor.setName(worker.getName());
         descriptor.setPhone(worker.getPhone());
         descriptor.setPay(worker.getPay());
-        //descriptor.setEmail(worker.getEmail());
         descriptor.setAddress(worker.getAddress());
         descriptor.setRoles(worker.getRoles());
         descriptor.setUnavailableTimings(worker.getUnavailableTimings());

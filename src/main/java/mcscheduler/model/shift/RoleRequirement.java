@@ -9,7 +9,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.role.Role;
 
 /**
- * Represents a Role Requirement for a shift in the App.
+ * Represents a Role Requirement for a shift in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class RoleRequirement {

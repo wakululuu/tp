@@ -35,7 +35,7 @@ public class WorkerAvailableCommandTest {
 
     /**
      * Edit filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of the McScheduler
      */
     @Test
     public void execute_invalidShiftIndexFilteredList_failure() {

@@ -162,7 +162,6 @@ public class McSchedulerTest {
 
     }
 
-
     /**
      * A stub ReadOnlyMcScheduler whose workers list can violate interface constraints.
      */

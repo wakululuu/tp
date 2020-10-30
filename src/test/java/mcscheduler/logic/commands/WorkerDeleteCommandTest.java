@@ -68,7 +68,7 @@ public class WorkerDeleteCommandTest {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_WORKER;
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // ensures that outOfBoundIndex is still in bounds of the McScheduler list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getWorkerList().size());
 
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);

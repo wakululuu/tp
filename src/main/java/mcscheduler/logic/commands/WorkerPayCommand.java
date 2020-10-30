@@ -10,8 +10,6 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.worker.Worker;
 
-
-
 /**
  * Prints the pay earned by a worker identified using their displayed index.
  */

@@ -5,8 +5,8 @@ import static java.util.Objects.requireNonNull;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Worker Role in the App.
- * Guarantees: immutable, name is valid as declared in
+ * Represents a Worker Role in the McScheduler.
+ * Guarantees: immutable, name is valid as declared in {@link #isValidRoleName(String)}
  */
 public class Role {
 

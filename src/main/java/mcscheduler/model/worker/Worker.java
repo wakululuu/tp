@@ -11,7 +11,7 @@ import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 
 /**
- * Represents a Worker in the address book.
+ * Represents a Worker in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Worker {

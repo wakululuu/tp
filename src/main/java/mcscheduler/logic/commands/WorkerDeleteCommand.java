@@ -14,7 +14,7 @@ import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Deletes a worker identified using its displayed index from the address book.
+ * Deletes a worker identified using its displayed index from the McScheduler.
  */
 public class WorkerDeleteCommand extends Command {
 

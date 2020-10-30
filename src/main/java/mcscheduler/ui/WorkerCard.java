@@ -61,7 +61,6 @@ public class WorkerCard extends UiPart<Region> {
         phone.setText(worker.getPhone().value);
         address.setText(worker.getAddress().value);
         pay.setText(worker.getPay().toString());
-        //email.setText(worker.getEmail().value);
         worker.getRoles().stream()
                 .sorted(Comparator.comparing(role -> role.roleName))
                 .forEach(role -> roles.getChildren().add(new Label(role.roleName)));

@@ -11,7 +11,7 @@ import mcscheduler.model.shift.ShiftTime;
 import mcscheduler.model.shift.ShiftTimeValue;
 
 /**
- * Represents a Worker's unavailability in the address book.
+ * Represents a Worker's unavailability in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidUnavailability(String)}
  */
 public class Unavailability {

@@ -31,7 +31,7 @@ import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Edits the details of an existing worker in the address book.
+ * Edits the details of an existing worker in the McScheduler.
  */
 public class WorkerEditCommand extends Command {
 
@@ -44,19 +44,16 @@ public class WorkerEditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_PAY + "HOURLY PAY] "
-            //+ "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            //+ "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_ROLE + "ROLE]...\n"
             + "[" + PREFIX_UNAVAILABILITY + "UNAVAILABLE TIMINGS]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            //+ PREFIX_EMAIL + "johndoe@example.com";
             + PREFIX_PAY + "10.20";
 
     public static final String MESSAGE_EDIT_WORKER_SUCCESS = "Edited worker: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the McScheduler.";
 
     private final Index index;
     private final EditWorkerDescriptor editWorkerDescriptor;
@@ -193,7 +190,6 @@ public class WorkerEditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setPay(toCopy.pay);
-            //setEmail(toCopy.email);
             setAddress(toCopy.address);
             setRoles(toCopy.roles);
             setUnavailableTimings(toCopy.unavailableTimings);
@@ -283,7 +279,6 @@ public class WorkerEditCommand extends Command {
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())
                     && getPay().equals(e.getPay())
-                    //&& getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getRoles().equals(e.getRoles())
                     && getUnavailableTimings().equals(e.getUnavailableTimings());

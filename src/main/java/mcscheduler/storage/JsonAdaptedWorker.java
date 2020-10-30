@@ -17,7 +17,6 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Tag;
 
 /**
  * Jackson-friendly version of {@link Worker}.

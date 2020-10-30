@@ -105,7 +105,7 @@ public class ShiftEditCommandTest {
     public void execute_duplicateShiftFilteredList_failure() {
         CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
 
-        // edit shift in filtered list into a duplicate in address book
+        // edit shift in filtered list into a duplicate in the McScheduler
         Shift shiftInList = model.getMcScheduler().getShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased());
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(TypicalIndexes.INDEX_FIRST_SHIFT,
             new EditShiftDescriptorBuilder(shiftInList).build());
@@ -126,13 +126,13 @@ public class ShiftEditCommandTest {
 
     /**
      * Edit filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of the McScheduler
      */
     @Test
     public void execute_invalidShiftIndexFilteredList_failure() {
         CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_SHIFT;
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // ensures that outOfBoundIndex is still in bounds of the McScheduler list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getShiftList().size());
 
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(outOfBoundIndex,

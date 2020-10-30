@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Worker's address in the address book.
+ * Represents a Worker's address in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidAddress(String)}
  */
 public class Address {

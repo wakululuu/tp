@@ -5,11 +5,10 @@ import static java.util.Objects.requireNonNull;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Worker's phone number in the address book.
+ * Represents a Worker's phone number in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidPhone(String)}
  */
 public class Phone {
-
 
     public static final String MESSAGE_CONSTRAINTS =
             "Phone numbers should only contain numbers, and it should be at least 3 digits long";

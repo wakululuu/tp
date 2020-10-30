@@ -37,8 +37,6 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
 
-//import Tag;
-
 public class WorkerAddCommandParserTest {
     private final AddCommandParser parser = new AddCommandParser();
 

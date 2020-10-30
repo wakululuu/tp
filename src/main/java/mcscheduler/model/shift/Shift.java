@@ -13,7 +13,7 @@ import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 
 /**
- * Represents a Shift in the App.
+ * Represents a Shift in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Shift {

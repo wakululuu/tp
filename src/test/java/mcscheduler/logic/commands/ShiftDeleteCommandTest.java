@@ -63,7 +63,7 @@ public class ShiftDeleteCommandTest {
         CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
 
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_SHIFT;
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // ensures that outOfBoundIndex is still in bounds of McScheduler list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getShiftList().size());
 
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);

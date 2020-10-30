@@ -60,7 +60,7 @@ class JsonSerializableMcScheduler {
     }
 
     /**
-     * Converts this address book into the model's {@code McScheduler} object.
+     * Converts this McScheduler into the model's {@code McScheduler} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */

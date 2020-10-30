@@ -11,7 +11,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
- * A utility class to help with building Addressbook objects.
+ * A utility class to help with building McScheduler objects.
  * Example usage: <br>
  * {@code McScheduler ab = new McSchedulerBuilder().withWorker("John", "Doe").build();}
  */

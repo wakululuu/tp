@@ -15,10 +15,6 @@ import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
-//import static CliSyntax.PREFIX_EMAIL;
-//import static CliSyntax.PREFIX_TAG;
-//import Tag;
-
 /**
  * A utility class for Worker.
  */

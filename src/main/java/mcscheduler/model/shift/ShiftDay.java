@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Shift's day in the App.
+ * Represents a Shift's day in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidDay(String)}
  */
 public class ShiftDay {

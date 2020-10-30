@@ -19,7 +19,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the McScheduler data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -38,7 +38,7 @@ public class ModelManager implements Model {
         super();
         CollectionUtil.requireAllNonNull(mcScheduler, userPrefs);
 
-        logger.fine("Initializing with address book: " + mcScheduler + " and user prefs " + userPrefs);
+        logger.fine("Initializing with McScheduler: " + mcScheduler + " and user prefs " + userPrefs);
 
         this.mcScheduler = new McScheduler(mcScheduler);
         this.userPrefs = new UserPrefs(userPrefs);

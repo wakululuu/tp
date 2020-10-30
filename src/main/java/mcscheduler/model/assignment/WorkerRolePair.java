@@ -12,7 +12,7 @@ import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.role.Role;
 
 /**
- * Represents a Worker being assigned to a Role for a shift in the App.
+ * Represents a Worker being assigned to a Role for a shift in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class WorkerRolePair {

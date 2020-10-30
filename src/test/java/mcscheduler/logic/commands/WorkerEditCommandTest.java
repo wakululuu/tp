@@ -108,7 +108,7 @@ public class WorkerEditCommandTest {
     public void execute_duplicateWorkerFilteredList_failure() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
-        // edit worker in filtered list into a duplicate in address book
+        // edit worker in filtered list into a duplicate in the McScheduler
         Worker workerInList =
             model.getMcScheduler().getWorkerList().get(TypicalIndexes.INDEX_SECOND_WORKER.getZeroBased());
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER,
@@ -129,13 +129,13 @@ public class WorkerEditCommandTest {
 
     /**
      * Edit filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of the McScheduler
      */
     @Test
     public void execute_invalidWorkerIndexFilteredList_failure() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_WORKER;
-        // ensures that outOfBoundIndex is still in bounds of address book list
+        // ensures that outOfBoundIndex is still in bounds of the McScheduler list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getWorkerList().size());
 
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(outOfBoundIndex,
