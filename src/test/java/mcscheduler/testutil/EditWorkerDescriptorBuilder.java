@@ -21,7 +21,7 @@ import mcscheduler.model.worker.Worker;
  */
 public class EditWorkerDescriptorBuilder {
 
-    private EditWorkerDescriptor descriptor;
+    private final EditWorkerDescriptor descriptor;
 
     public EditWorkerDescriptorBuilder() {
         descriptor = new EditWorkerDescriptor();

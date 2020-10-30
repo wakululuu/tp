@@ -19,7 +19,7 @@ import mcscheduler.logic.commands.UnassignCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class UnassignCommandParserTest {
-    private UnassignCommandParser parser = new UnassignCommandParser();
+    private final UnassignCommandParser parser = new UnassignCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {

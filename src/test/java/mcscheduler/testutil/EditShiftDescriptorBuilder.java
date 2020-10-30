@@ -16,7 +16,7 @@ import mcscheduler.model.shift.ShiftTime;
  */
 public class EditShiftDescriptorBuilder {
 
-    private ShiftEditCommand.EditShiftDescriptor descriptor;
+    private final ShiftEditCommand.EditShiftDescriptor descriptor;
 
     public EditShiftDescriptorBuilder() {
         descriptor = new ShiftEditCommand.EditShiftDescriptor();

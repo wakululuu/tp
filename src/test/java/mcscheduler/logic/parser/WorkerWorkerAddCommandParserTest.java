@@ -42,7 +42,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.WorkerBuilder;
 
 public class WorkerWorkerAddCommandParserTest {
-    private WorkerAddCommandParser parser = new WorkerAddCommandParser();
+    private final WorkerAddCommandParser parser = new WorkerAddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {

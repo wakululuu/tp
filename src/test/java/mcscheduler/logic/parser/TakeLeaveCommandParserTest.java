@@ -17,7 +17,7 @@ import mcscheduler.logic.commands.TakeLeaveCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class TakeLeaveCommandParserTest {
-    private TakeLeaveCommandParser parser = new TakeLeaveCommandParser();
+    private final TakeLeaveCommandParser parser = new TakeLeaveCommandParser();
 
     @Test
     public void parse_allFieldPresent_success() {

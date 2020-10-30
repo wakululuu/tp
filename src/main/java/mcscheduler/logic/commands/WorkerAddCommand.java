@@ -43,7 +43,7 @@ public class WorkerAddCommand extends Command {
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_ROLE + "chef "
             + PREFIX_ROLE + "cashier "
-            + PREFIX_UNAVAILABILITY + "MON PM";;
+            + PREFIX_UNAVAILABILITY + "MON PM";
 
     public static final String MESSAGE_SUCCESS = "New worker added: %1$s";
     public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book";

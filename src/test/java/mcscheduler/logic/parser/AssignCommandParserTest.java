@@ -26,7 +26,7 @@ import mcscheduler.testutil.TypicalIndexes;
 
 
 public class AssignCommandParserTest {
-    private AssignCommandParser parser = new AssignCommandParser();
+    private final AssignCommandParser parser = new AssignCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {

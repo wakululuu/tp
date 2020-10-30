@@ -19,7 +19,7 @@ import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class CancelLeaveCommandParserTest {
-    private CancelLeaveCommandParser parser = new CancelLeaveCommandParser();
+    private final CancelLeaveCommandParser parser = new CancelLeaveCommandParser();
 
     @Test
     public void parse_allFieldPresent_success() {

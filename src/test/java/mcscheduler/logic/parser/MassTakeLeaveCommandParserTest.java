@@ -23,11 +23,11 @@ import mcscheduler.model.shift.ShiftTime;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class MassTakeLeaveCommandParserTest {
-    private MassTakeLeaveCommandParser parser = new MassTakeLeaveCommandParser();
-    private ShiftDay mon = new ShiftDay(VALID_DAY_MON);
-    private ShiftTime am = new ShiftTime(VALID_TIME_AM);
-    private ShiftDay tue = new ShiftDay(VALID_DAY_TUE);
-    private ShiftTime pm = new ShiftTime(VALID_TIME_PM);
+    private final MassTakeLeaveCommandParser parser = new MassTakeLeaveCommandParser();
+    private final ShiftDay mon = new ShiftDay(VALID_DAY_MON);
+    private final ShiftTime am = new ShiftTime(VALID_TIME_AM);
+    private final ShiftDay tue = new ShiftDay(VALID_DAY_TUE);
+    private final ShiftTime pm = new ShiftTime(VALID_TIME_PM);
 
     @Test
     public void parser_allFieldsPresent_success() {

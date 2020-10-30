@@ -25,7 +25,7 @@ import mcscheduler.model.role.Role;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class ReassignCommandParserTest {
-    private ReassignCommandParser parser = new ReassignCommandParser();
+    private final ReassignCommandParser parser = new ReassignCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {

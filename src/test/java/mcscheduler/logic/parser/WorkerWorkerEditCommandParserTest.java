@@ -50,7 +50,7 @@ public class WorkerWorkerEditCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
             String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerEditCommand.MESSAGE_USAGE);
 
-    private WorkerEditCommandParser parser = new WorkerEditCommandParser();
+    private final WorkerEditCommandParser parser = new WorkerEditCommandParser();
 
     @Test
     public void parse_missingParts_failure() {

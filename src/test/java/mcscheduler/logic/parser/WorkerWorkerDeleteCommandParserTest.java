@@ -16,7 +16,7 @@ import mcscheduler.testutil.TypicalIndexes;
  */
 public class WorkerWorkerDeleteCommandParserTest {
 
-    private WorkerDeleteCommandParser parser = new WorkerDeleteCommandParser();
+    private final WorkerDeleteCommandParser parser = new WorkerDeleteCommandParser();
 
     @Test
     public void parse_validArgs_returnsDeleteCommand() {

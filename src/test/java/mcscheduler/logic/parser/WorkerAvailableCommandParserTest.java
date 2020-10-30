@@ -18,7 +18,7 @@ public class WorkerAvailableCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
         String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE);
 
-    private WorkerAvailableCommandParser parser = new WorkerAvailableCommandParser();
+    private final WorkerAvailableCommandParser parser = new WorkerAvailableCommandParser();
 
     @Test
     public void parse_missingParts_failure() {

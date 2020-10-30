@@ -20,7 +20,7 @@ import mcscheduler.testutil.TypicalIndexes;
  * and unit tests for WorkerAvailableCommand.
  */
 public class WorkerAvailableCommandTest {
-    private Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
+    private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
     @Test
     public void execute_invalidShiftIndexUnfilteredList_failure() {

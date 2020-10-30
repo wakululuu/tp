@@ -17,7 +17,7 @@ import mcscheduler.model.worker.Worker;
  */
 public class McSchedulerBuilder {
 
-    private McScheduler mcScheduler;
+    private final McScheduler mcScheduler;
 
     public McSchedulerBuilder() {
         mcScheduler = new McScheduler();

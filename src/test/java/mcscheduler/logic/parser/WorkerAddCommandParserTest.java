@@ -40,7 +40,7 @@ import mcscheduler.testutil.WorkerBuilder;
 //import Tag;
 
 public class WorkerAddCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+    private final AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {

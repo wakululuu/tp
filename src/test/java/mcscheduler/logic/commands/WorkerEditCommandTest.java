@@ -26,7 +26,7 @@ import mcscheduler.testutil.WorkerBuilder;
  */
 public class WorkerEditCommandTest {
 
-    private Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
+    private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
     @Test
     public void execute_allFieldsSpecifiedUnfilteredList_success() {

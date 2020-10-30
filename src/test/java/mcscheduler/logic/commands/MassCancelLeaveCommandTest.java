@@ -28,10 +28,10 @@ import mcscheduler.testutil.TypicalWorkers;
 public class MassCancelLeaveCommandTest {
 
     private Model model = new ModelManager(new McScheduler(), new UserPrefs());
-    private ShiftDay mon = new ShiftDay(CommandTestUtil.VALID_DAY_MON);
-    private ShiftTime am = new ShiftTime(CommandTestUtil.VALID_TIME_AM);
-    private ShiftDay tue = new ShiftDay(CommandTestUtil.VALID_DAY_TUE);
-    private ShiftTime pm = new ShiftTime(CommandTestUtil.VALID_TIME_PM);
+    private final ShiftDay mon = new ShiftDay(CommandTestUtil.VALID_DAY_MON);
+    private final ShiftTime am = new ShiftTime(CommandTestUtil.VALID_TIME_AM);
+    private final ShiftDay tue = new ShiftDay(CommandTestUtil.VALID_DAY_TUE);
+    private final ShiftTime pm = new ShiftTime(CommandTestUtil.VALID_TIME_PM);
 
     @BeforeEach
     public void initModel() {

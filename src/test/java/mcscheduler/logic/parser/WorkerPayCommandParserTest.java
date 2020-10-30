@@ -17,7 +17,7 @@ import mcscheduler.testutil.TypicalIndexes;
  */
 public class WorkerPayCommandParserTest {
 
-    private WorkerPayCommandParser parser = new WorkerPayCommandParser();
+    private final WorkerPayCommandParser parser = new WorkerPayCommandParser();
 
     @Test
     public void parse_validArgs_returnsWorkerPayCommand() {
