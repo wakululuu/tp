@@ -13,9 +13,6 @@ import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
-//import Tag;
-//import Email;
-
 /**
  * A utility class to help with building EditWorkerDescriptor objects.
  */
@@ -68,13 +65,6 @@ public class EditWorkerDescriptorBuilder {
         descriptor.setPay(new Pay(pay));
         return this;
     }
-
-    /*
-    public EditWorkerDescriptorBuilder withEmail(String email) {
-        descriptor.setEmail(new Email(email));
-        return this;
-    }
-     */
 
     /**
      * Sets the {@code Address} of the {@code EditWorkerDescriptor} that we are building.

@@ -18,7 +18,6 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Email;
 
 /**
  * Contains utility methods for populating {@code McScheduler} with sample data.

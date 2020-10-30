@@ -29,9 +29,6 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Email;
-
-//import Tag;
 
 /**
  * Edits the details of an existing worker in the address book.
@@ -182,7 +179,6 @@ public class WorkerEditCommand extends Command {
         private Name name;
         private Phone phone;
         private Pay pay;
-        //private Email email;
         private Address address;
         private Set<Role> roles;
         private Set<Unavailability> unavailableTimings;
@@ -234,16 +230,6 @@ public class WorkerEditCommand extends Command {
         public Optional<Pay> getPay() {
             return Optional.ofNullable(pay);
         }
-
-        /*
-        public void setEmail(Email email) {
-            this.email = email;
-        }
-
-        public Optional<Email> getEmail() {
-            return Optional.ofNullable(email);
-        }
-         */
 
         public void setAddress(Address address) {
             this.address = address;
