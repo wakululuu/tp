@@ -2,10 +2,17 @@ package mcscheduler.logic.parser;
 
 import static mcscheduler.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.parser.exceptions.ParseException;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Email;
 import mcscheduler.model.worker.Name;
@@ -18,14 +25,14 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_ROLE = "#friend";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "123456";
     private static final String VALID_ADDRESS = "123 Main Street #0505";
     private static final String VALID_EMAIL = "rachel@example.com";
-    private static final String VALID_TAG_1 = "friend";
-    private static final String VALID_TAG_2 = "neighbour";
+    private static final String VALID_ROLE_1 = "friend";
+    private static final String VALID_ROLE_2 = "neighbour";
 
     private static final String WHITESPACE = " \t\r\n";
 
@@ -139,5 +146,53 @@ public class ParserUtilTest {
         String emailWithWhitespace = WHITESPACE + VALID_EMAIL + WHITESPACE;
         Email expectedEmail = new Email(VALID_EMAIL);
         assertEquals(expectedEmail, ParserUtil.parseEmail(emailWithWhitespace));
+    }
+
+    @Test
+    public void parseRole_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseRole(null));
+    }
+
+    @Test
+    public void parseRole_invalidValue_throwsParseException() {
+        Assert.assertThrows(ParseException.class, () -> ParserUtil.parseRole(INVALID_ROLE));
+    }
+
+    @Test
+    public void parseRole_validValueWithoutWhitespace_returnsRole() throws Exception {
+        Role expectedRole = Role.createRole(VALID_ROLE_1);
+        assertEquals(expectedRole, ParserUtil.parseRole(VALID_ROLE_1));
+    }
+
+    @Test
+    public void parseRole_validValueWithWhitespace_returnsTrimmedRole() throws Exception {
+        String roleWithWhitespace = WHITESPACE + VALID_ROLE_1 + WHITESPACE;
+        Role expectedRole = Role.createRole(VALID_ROLE_1);
+        assertEquals(expectedRole, ParserUtil.parseRole(roleWithWhitespace));
+    }
+
+    @Test
+    public void parseRoles_null_throwsNullPointerException() {
+        Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseRoles(null));
+    }
+
+    @Test
+    public void parseRoles_collectionWithInvalidRoles_throwsParseException() {
+        Assert.assertThrows(ParseException.class, () -> ParserUtil.parseRoles(
+                Arrays.asList(VALID_ROLE_1, INVALID_ROLE)));
+    }
+
+    @Test
+    public void parseRoles_emptyCollection_returnsEmptySet() throws Exception {
+        assertTrue(ParserUtil.parseRoles(Collections.emptyList()).isEmpty());
+    }
+
+    @Test
+    public void parseRoles_collectionWithValidRoles_returnsRoleSet() throws Exception {
+        Set<Role> actualRoleSet = ParserUtil.parseRoles(Arrays.asList(VALID_ROLE_1, VALID_ROLE_2));
+        Set<Role> expectedRoleSet = new HashSet<>(Arrays.asList(Role.createRole(VALID_ROLE_1),
+                Role.createRole(VALID_ROLE_2)));
+
+        assertEquals(expectedRoleSet, actualRoleSet);
     }
 }
