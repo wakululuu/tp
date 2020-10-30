@@ -14,6 +14,7 @@ import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 /**
@@ -26,7 +27,7 @@ public class WorkerDeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Worker workerToDelete = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker workerToDelete = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER);
 
         String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);
@@ -39,7 +40,7 @@ public class WorkerDeleteCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
         CommandTestUtil
@@ -50,7 +51,7 @@ public class WorkerDeleteCommandTest {
     public void execute_validIndexFilteredList_success() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
-        Worker workerToDelete = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker workerToDelete = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER);
 
         String expectedMessage = String.format(WorkerDeleteCommand.MESSAGE_DELETE_WORKER_SUCCESS, workerToDelete);

@@ -17,6 +17,7 @@ import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 import mcscheduler.testutil.WorkerBuilder;
 
@@ -37,15 +38,15 @@ public class WorkerEditCommandTest {
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
 
         Model expectedModel = new ModelManager(new McScheduler(model.getMcScheduler()), new UserPrefs());
-        expectedModel.setWorker(model.getFilteredWorkerList().get(0), editedWorker);
+        expectedModel.setWorker(TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER), editedWorker);
 
         assertCommandSuccess(workerEditCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
-        Index indexLastWorker = Index.fromOneBased(model.getFilteredWorkerList().size());
-        Worker lastWorker = model.getFilteredWorkerList().get(indexLastWorker.getZeroBased());
+        Index indexLastWorker = TestUtil.getLastWorkerIndex(model);
+        Worker lastWorker = TestUtil.getWorker(model, indexLastWorker);
 
         WorkerBuilder workerInList = new WorkerBuilder(lastWorker);
         Worker editedWorker = workerInList.withName(CommandTestUtil.VALID_NAME_BOB).withPhone(
@@ -68,7 +69,7 @@ public class WorkerEditCommandTest {
     public void execute_noFieldSpecifiedUnfilteredList_success() {
         WorkerEditCommand workerEditCommand =
             new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER, new EditWorkerDescriptor());
-        Worker editedWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker editedWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
 
@@ -81,8 +82,7 @@ public class WorkerEditCommandTest {
     public void execute_filteredList_success() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
-        Worker workerInFilteredList =
-            model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker workerInFilteredList = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         Worker editedWorker = new WorkerBuilder(workerInFilteredList).withName(CommandTestUtil.VALID_NAME_BOB).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_FIRST_WORKER,
             new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build());
@@ -90,14 +90,14 @@ public class WorkerEditCommandTest {
         String expectedMessage = String.format(WorkerEditCommand.MESSAGE_EDIT_WORKER_SUCCESS, editedWorker);
 
         Model expectedModel = new ModelManager(new McScheduler(model.getMcScheduler()), new UserPrefs());
-        expectedModel.setWorker(model.getFilteredWorkerList().get(0), editedWorker);
+        expectedModel.setWorker(TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER), editedWorker);
 
         assertCommandSuccess(workerEditCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_duplicateWorkerUnfilteredList_failure() {
-        Worker firstWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker firstWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         EditWorkerDescriptor descriptor = new EditWorkerDescriptorBuilder(firstWorker).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(TypicalIndexes.INDEX_SECOND_WORKER, descriptor);
 
@@ -119,7 +119,7 @@ public class WorkerEditCommandTest {
 
     @Test
     public void execute_invalidWorkerIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
         EditWorkerDescriptor descriptor =
             new EditWorkerDescriptorBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build();
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(outOfBoundIndex, descriptor);

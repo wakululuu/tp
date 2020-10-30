@@ -20,6 +20,7 @@ public class Role {
         AppUtil.checkArgument(isValidRoleName(roleName), MESSAGE_CONSTRAINTS);
         this.roleName = roleName.substring(0, 1).toUpperCase() + roleName.substring(1).toLowerCase();
     }
+
     /**
      * Factory method for creating a {@code Role}. Returns a {@code Leave} if {@code roleName} is {@code "Leave"}.
      */
@@ -40,7 +41,6 @@ public class Role {
     public static boolean isValidRoleName(String test) {
         return test.matches(VALIDATION_REGEX);
     }
-
 
     @Override
     public int hashCode() {

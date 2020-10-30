@@ -13,10 +13,6 @@ public class RoleAddCommand extends Command {
 
     public static final String COMMAND_WORD = "role-add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a role to the address book. "
-            + "Parameters: ROLE"
-            + "Example: " + COMMAND_WORD + " cashier";
-
     public static final String MESSAGE_SUCCESS = "New role added: %1$s";
     public static final String MESSAGE_DUPLICATE_ROLE = "This role already exists in the address book";
 

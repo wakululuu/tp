@@ -22,6 +22,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class UnassignCommandTest {
@@ -63,8 +64,8 @@ public class UnassignCommandTest {
         UnassignCommand validUnassignCommand = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
         CommandResult commandResult = validUnassignCommand.execute(model);
 
-        Shift shiftToUnassign = model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased());
-        Worker workerToUnassign = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Shift shiftToUnassign = TestUtil.getShift(model, TypicalIndexes.INDEX_SECOND_SHIFT);
+        Worker workerToUnassign = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         // the model has the role of cashier
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
             .withWorker(workerToUnassign).withRole(CommandTestUtil.VALID_ROLE_CASHIER).build();
@@ -77,7 +78,7 @@ public class UnassignCommandTest {
     @Test
     public void execute_invalidShiftIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
 
         Set<Index> workerIndex = new HashSet<>();
         workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
@@ -89,7 +90,7 @@ public class UnassignCommandTest {
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
 
         Set<Index> outOfBoundWorkerIndex = new HashSet<>();
         outOfBoundWorkerIndex.add(outOfBoundIndex);
@@ -106,10 +107,8 @@ public class UnassignCommandTest {
         workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
         UnassignCommand unassignCommand = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
 
-        String assignmentName =
-            new Assignment(model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased()),
-                model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()))
-                .toString();
+        String assignmentName = new Assignment(TestUtil.getShift(model, TypicalIndexes.INDEX_SECOND_SHIFT),
+                TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER)).toString();
 
         CommandTestUtil.assertCommandFailure(unassignCommand, model,
             String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));

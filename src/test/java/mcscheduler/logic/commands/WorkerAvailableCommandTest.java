@@ -13,6 +13,7 @@ import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.role.Role;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 /**
@@ -24,7 +25,7 @@ public class WorkerAvailableCommandTest {
 
     @Test
     public void execute_invalidShiftIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
         Role role = Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER);
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(outOfBoundIndex, role);
 

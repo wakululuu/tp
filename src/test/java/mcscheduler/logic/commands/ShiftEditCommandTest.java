@@ -17,6 +17,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.testutil.EditShiftDescriptorBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.ShiftBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class ShiftEditCommandTest {
@@ -32,15 +33,15 @@ public class ShiftEditCommandTest {
         String expectedMessage = String.format(ShiftEditCommand.MESSAGE_EDIT_SHIFT_SUCCESS, editedShift);
 
         Model expectedModel = new ModelManager(new McScheduler(model.getMcScheduler()), new UserPrefs());
-        expectedModel.setShift(model.getFilteredShiftList().get(0), editedShift);
+        expectedModel.setShift(TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT), editedShift);
 
         assertCommandSuccess(shiftEditCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
-        Index indexLastShift = Index.fromOneBased(model.getFilteredShiftList().size());
-        Shift lastShift = model.getFilteredShiftList().get(indexLastShift.getZeroBased());
+        Index indexLastShift = TestUtil.getLastShiftIndex(model);
+        Shift lastShift = TestUtil.getShift(model, indexLastShift);
 
         ShiftBuilder shiftInList = new ShiftBuilder(lastShift);
         Shift editedShift = shiftInList.withShiftDay(CommandTestUtil.VALID_DAY_TUE)
@@ -65,7 +66,7 @@ public class ShiftEditCommandTest {
     public void execute_noFieldSpecifiedUnfilteredList_success() {
         ShiftEditCommand shiftEditCommand =
             new ShiftEditCommand(TypicalIndexes.INDEX_FIRST_SHIFT, new ShiftEditCommand.EditShiftDescriptor());
-        Shift editedShift = model.getFilteredShiftList().get(TypicalIndexes.INDEX_FIRST_SHIFT.getZeroBased());
+        Shift editedShift = TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT);
 
         String expectedMessage = String.format(ShiftEditCommand.MESSAGE_EDIT_SHIFT_SUCCESS, editedShift);
 
@@ -78,7 +79,7 @@ public class ShiftEditCommandTest {
     public void execute_filteredList_success() {
         CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
 
-        Shift shiftInFilteredList = model.getFilteredShiftList().get(TypicalIndexes.INDEX_FIRST_SHIFT.getZeroBased());
+        Shift shiftInFilteredList = TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         Shift editedShift = new ShiftBuilder(shiftInFilteredList).withShiftTime(CommandTestUtil.VALID_TIME_PM).build();
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(TypicalIndexes.INDEX_FIRST_SHIFT,
             new EditShiftDescriptorBuilder().withShiftTime(CommandTestUtil.VALID_TIME_PM).build());
@@ -86,14 +87,14 @@ public class ShiftEditCommandTest {
         String expectedMessage = String.format(ShiftEditCommand.MESSAGE_EDIT_SHIFT_SUCCESS, editedShift);
 
         Model expectedModel = new ModelManager(new McScheduler(model.getMcScheduler()), new UserPrefs());
-        expectedModel.setShift(model.getFilteredShiftList().get(0), editedShift);
+        expectedModel.setShift(TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT), editedShift);
 
         assertCommandSuccess(shiftEditCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
     public void execute_duplicateShiftUnfilteredList_failure() {
-        Shift firstShift = model.getFilteredShiftList().get(TypicalIndexes.INDEX_FIRST_SHIFT.getZeroBased());
+        Shift firstShift = TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         ShiftEditCommand.EditShiftDescriptor descriptor = new EditShiftDescriptorBuilder(firstShift).build();
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(TypicalIndexes.INDEX_SECOND_SHIFT, descriptor);
 
@@ -114,7 +115,7 @@ public class ShiftEditCommandTest {
 
     @Test
     public void execute_invalidShiftIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
         ShiftEditCommand.EditShiftDescriptor descriptor = new EditShiftDescriptorBuilder().withShiftDay(
             CommandTestUtil.VALID_DAY_MON)
             .withShiftTime(CommandTestUtil.VALID_TIME_AM).build();

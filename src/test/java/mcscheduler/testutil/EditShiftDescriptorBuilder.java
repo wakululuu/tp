@@ -22,10 +22,6 @@ public class EditShiftDescriptorBuilder {
         descriptor = new ShiftEditCommand.EditShiftDescriptor();
     }
 
-    public EditShiftDescriptorBuilder(ShiftEditCommand.EditShiftDescriptor descriptor) {
-        this.descriptor = new ShiftEditCommand.EditShiftDescriptor(descriptor);
-    }
-
     /**
      * Returns an {@code EditShiftDescriptor} with fields containing {@code shift}'s details
      */

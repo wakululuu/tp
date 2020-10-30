@@ -26,6 +26,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class AssignCommandTest {
@@ -46,8 +47,8 @@ public class AssignCommandTest {
         AssignCommand validAssignCommand = new AssignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, validWorkerRole);
         CommandResult commandResult = validAssignCommand.execute(model);
 
-        Shift shiftToAssign = model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased());
-        Worker workerToAssign = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Shift shiftToAssign = TestUtil.getShift(model, TypicalIndexes.INDEX_SECOND_SHIFT);
+        Worker workerToAssign = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToAssign)
             .withWorker(workerToAssign)
             .withRole(VALID_ROLE_CASHIER).build();
@@ -60,7 +61,7 @@ public class AssignCommandTest {
     @Test
     public void execute_invalidShiftIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
 
         Set<WorkerRolePair> validWorkerRole = new HashSet<>();
         validWorkerRole.add(new WorkerRolePair(TypicalIndexes.INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CHEF)));
@@ -72,7 +73,7 @@ public class AssignCommandTest {
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
 
         Set<WorkerRolePair> invalidWorkerIndex = new HashSet<>();
         invalidWorkerIndex.add(new WorkerRolePair(outOfBoundIndex, Role.createRole(VALID_ROLE_CASHIER)));
@@ -92,8 +93,8 @@ public class AssignCommandTest {
         assignCommand.execute(model);
 
         Assignment assignmentName =
-            new Assignment(model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased()),
-                model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()),
+            new Assignment(TestUtil.getShift(model, TypicalIndexes.INDEX_SECOND_SHIFT),
+                TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER),
                 Role.createRole(VALID_ROLE_CASHIER));
 
         Assert.assertThrows(CommandException.class,
@@ -109,8 +110,7 @@ public class AssignCommandTest {
         notFitWorkerRole.add(new WorkerRolePair(TypicalIndexes.INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CHEF)));
         AssignCommand assignCommand = new AssignCommand(TypicalIndexes.INDEX_THIRD_SHIFT, notFitWorkerRole);
 
-        String workerName =
-            model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()).getName().toString();
+        String workerName = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER).getName().toString();
 
         Assert.assertThrows(CommandException.class,
             String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, workerName, VALID_ROLE_CHEF), () ->
@@ -125,9 +125,8 @@ public class AssignCommandTest {
         validWorkerRole.add(new WorkerRolePair(TypicalIndexes.INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
         AssignCommand assignCommand = new AssignCommand(TypicalIndexes.INDEX_THIRD_SHIFT, validWorkerRole);
 
-        String workerName =
-            model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()).getName().toString();
-        String shiftName = model.getFilteredShiftList().get(TypicalIndexes.INDEX_THIRD_SHIFT.getZeroBased()).toString();
+        String workerName = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER).getName().toString();
+        String shiftName = TestUtil.getShift(model, TypicalIndexes.INDEX_THIRD_SHIFT).toString();
 
         Assert.assertThrows(CommandException.class,
             String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerName, shiftName), () ->

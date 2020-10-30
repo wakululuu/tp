@@ -20,6 +20,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class ReassignCommandTest {
@@ -70,13 +71,13 @@ public class ReassignCommandTest {
             TypicalIndexes.INDEX_SECOND_WORKER, TypicalIndexes.INDEX_THIRD_SHIFT, TypicalIndexes.INDEX_SECOND_SHIFT,
             Role.createRole(CommandTestUtil.VALID_ROLE_CHEF));
         CommandResult commandResult = validReassignCommand.execute(model);
-        Shift oldShift = model.getFilteredShiftList().get(TypicalIndexes.INDEX_THIRD_SHIFT.getZeroBased());
-        Worker oldWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_THIRD_WORKER.getZeroBased());
+        Shift oldShift = TestUtil.getShift(model, TypicalIndexes.INDEX_THIRD_SHIFT);
+        Worker oldWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_THIRD_WORKER);
         Assignment oldAssignment = new AssignmentBuilder().withShift(oldShift).withWorker(oldWorker)
             .withRole(CommandTestUtil.VALID_ROLE_CASHIER).build();
 
-        Shift newShift = model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased());
-        Worker newWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_SECOND_WORKER.getZeroBased());
+        Shift newShift = TestUtil.getShift(model, TypicalIndexes.INDEX_SECOND_SHIFT);
+        Worker newWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_SECOND_WORKER);
         Assignment validReassignment = new AssignmentBuilder().withShift(newShift)
             .withWorker(newWorker)
             .withRole(CommandTestUtil.VALID_ROLE_CHEF).build();
@@ -91,7 +92,7 @@ public class ReassignCommandTest {
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcSchedulerWithAssignments(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
         ReassignCommand reassignCommand = new ReassignCommand(TypicalIndexes.INDEX_THIRD_WORKER, outOfBoundIndex,
             TypicalIndexes.INDEX_THIRD_SHIFT, TypicalIndexes.INDEX_SECOND_SHIFT, Role.createRole(
             CommandTestUtil.VALID_ROLE_CASHIER));
@@ -102,7 +103,7 @@ public class ReassignCommandTest {
     @Test
     public void execute_invalidShiftIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcSchedulerWithAssignments(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
         ReassignCommand reassignCommand = new ReassignCommand(TypicalIndexes.INDEX_THIRD_WORKER, outOfBoundIndex,
             TypicalIndexes.INDEX_THIRD_SHIFT, outOfBoundIndex, Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
 

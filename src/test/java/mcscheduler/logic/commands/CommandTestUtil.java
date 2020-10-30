@@ -10,7 +10,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
-import static mcscheduler.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
@@ -32,6 +31,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.EditShiftDescriptorBuilder;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 /**
@@ -64,17 +64,13 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String ROLE_DESC_CASHIER = " " + PREFIX_ROLE + VALID_ROLE_CASHIER;
     public static final String ROLE_DESC_CHEF = " " + PREFIX_ROLE + VALID_ROLE_CHEF;
-    public static final String UNAVAILABILITY = " " + PREFIX_UNAVAILABILITY + VALID_UNAVAILABILITY;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
     public static final String INVALID_PAY_DESC = " " + PREFIX_PAY + "12.101"; // limit of 2 digits behind decimal
-    //public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "cashier*"; // '*' not allowed in roles
-    public static final String NOT_FOUND_ROLE_DESC = " " + PREFIX_ROLE + "random role"; // role not in model
     public static final String NOT_FOUND_ROLE = "Random role"; // role not in model
-    public static final String INVALID_UNAVAILABILITY = " " + PREFIX_UNAVAILABILITY + "ddw w"; // not valid day or time
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -195,7 +191,7 @@ public class CommandTestUtil {
     public static void showWorkerAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredWorkerList().size());
 
-        Worker worker = model.getFilteredWorkerList().get(targetIndex.getZeroBased());
+        Worker worker = TestUtil.getWorker(model, targetIndex);
         final String[] splitName = worker.getName().fullName.split("\\s+");
         model.updateFilteredWorkerList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
@@ -209,7 +205,7 @@ public class CommandTestUtil {
     public static void showShiftAtIndex(Model model, Index targetIndex) {
         assertTrue(targetIndex.getZeroBased() < model.getFilteredShiftList().size());
 
-        Shift shift = model.getFilteredShiftList().get(targetIndex.getZeroBased());
+        Shift shift = TestUtil.getShift(model, targetIndex);
         final String[] shiftDayKeywords = {shift.getShiftDay().toString()};
         model.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList(shiftDayKeywords)));
         assertEquals(1, model.getFilteredShiftList().size());

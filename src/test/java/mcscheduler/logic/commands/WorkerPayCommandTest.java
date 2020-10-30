@@ -14,8 +14,8 @@ import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
-
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
@@ -27,7 +27,7 @@ public class WorkerPayCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Worker selectedWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker selectedWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(TypicalIndexes.INDEX_FIRST_WORKER);
 
         float calculatedPay = model.calculateWorkerPay(selectedWorker);
@@ -41,7 +41,7 @@ public class WorkerPayCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(outOfBoundIndex);
 
         CommandTestUtil.assertCommandFailure(workerPayCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
@@ -51,7 +51,7 @@ public class WorkerPayCommandTest {
     public void execute_validIndexFilteredList_success() {
         CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
-        Worker selectedWorker = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Worker selectedWorker = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(TypicalIndexes.INDEX_FIRST_WORKER);
 
         float calculatedPay = model.calculateWorkerPay(selectedWorker);

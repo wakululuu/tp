@@ -14,6 +14,7 @@ import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class ShiftDeleteCommandTest {
@@ -22,7 +23,7 @@ public class ShiftDeleteCommandTest {
 
     @Test
     public void execute_validIndexUnfilteredList_success() {
-        Shift shiftToDelete = model.getFilteredShiftList().get(TypicalIndexes.INDEX_FIRST_SHIFT.getZeroBased());
+        Shift shiftToDelete = TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(TypicalIndexes.INDEX_FIRST_SHIFT);
 
         String expectedMessage = String.format(ShiftDeleteCommand.MESSAGE_DELETE_SHIFT_SUCCESS, shiftToDelete);
@@ -35,7 +36,7 @@ public class ShiftDeleteCommandTest {
 
     @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);
 
         CommandTestUtil.assertCommandFailure(shiftDeleteCommand, model, Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
@@ -45,7 +46,7 @@ public class ShiftDeleteCommandTest {
     public void execute_validIndexFilteredList_success() {
         CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
 
-        Shift shiftToDelete = model.getFilteredShiftList().get(TypicalIndexes.INDEX_FIRST_SHIFT.getZeroBased());
+        Shift shiftToDelete = TestUtil.getShift(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(TypicalIndexes.INDEX_FIRST_SHIFT);
 
         String expectedMessage = String.format(ShiftDeleteCommand.MESSAGE_DELETE_SHIFT_SUCCESS, shiftToDelete);
