@@ -134,7 +134,7 @@ public class ModelManager implements Model {
         }
         assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
 
-        return worker.getPay().value * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+        return worker.getPay().getValue() * numberOfShiftsAssigned * HOURS_PER_SHIFT;
     }
 
     @Override

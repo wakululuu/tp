@@ -26,7 +26,7 @@ public class JsonAdaptedWorkerTest {
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
-    private static final String VALID_PAY = BENSON.getPay().toString();
+    private static final String VALID_PAY = String.format("%.2f", BENSON.getPay().getValue());
     private static final String VALID_ADDRESS = BENSON.getAddress().toString();
     private static final List<JsonAdaptedRole> VALID_ROLES = BENSON.getRoles().stream()
         .map(JsonAdaptedRole::new)

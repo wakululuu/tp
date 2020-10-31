@@ -13,7 +13,7 @@ public class Pay {
     public static final String VALIDATION_REGEX = "^[0-9]+(\\.[0-9]{1,2})?$";
     public static final int MAXIMUM_PAY = 1000;
 
-    public final float value;
+    private final float value;
 
     /**
      * Constructs a {@code Pay}.
@@ -24,6 +24,10 @@ public class Pay {
         requireNonNull(amount);
         AppUtil.checkArgument(isValidPay(amount), MESSAGE_CONSTRAINTS);
         value = Float.parseFloat(amount);
+    }
+
+    public float getValue() {
+        return value;
     }
 
     /**

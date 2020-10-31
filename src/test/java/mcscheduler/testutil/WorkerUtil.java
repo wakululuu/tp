@@ -34,7 +34,7 @@ public class WorkerUtil {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + worker.getName().fullName + " ");
         sb.append(PREFIX_PHONE + worker.getPhone().value + " ");
-        sb.append(PREFIX_PAY + String.valueOf(worker.getPay().value) + " ");
+        sb.append(PREFIX_PAY + String.valueOf(worker.getPay().getValue()) + " ");
         sb.append(PREFIX_ADDRESS + worker.getAddress().value + " ");
         worker.getRoles().stream().forEach(
             s -> sb.append(PREFIX_ROLE + s.roleName + " ")
@@ -52,7 +52,7 @@ public class WorkerUtil {
         StringBuilder sb = new StringBuilder();
         descriptor.getName().ifPresent(name -> sb.append(PREFIX_NAME).append(name.fullName).append(" "));
         descriptor.getPhone().ifPresent(phone -> sb.append(PREFIX_PHONE).append(phone.value).append(" "));
-        descriptor.getPay().ifPresent(pay -> sb.append(PREFIX_PAY).append(pay.value).append(" "));
+        descriptor.getPay().ifPresent(pay -> sb.append(PREFIX_PAY).append(pay.getValue()).append(" "));
         descriptor.getAddress().ifPresent(address -> sb.append(PREFIX_ADDRESS).append(address.value).append(" "));
         if (descriptor.getRoles().isPresent()) {
             Set<Role> roles = descriptor.getRoles().get();

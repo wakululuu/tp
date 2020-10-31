@@ -58,7 +58,7 @@ class JsonAdaptedWorker {
     public JsonAdaptedWorker(Worker source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
-        pay = String.valueOf(source.getPay().value);
+        pay = String.valueOf(source.getPay().getValue());
         address = source.getAddress().value;
         roles.addAll(source.getRoles().stream()
                 .map(JsonAdaptedRole::new)
