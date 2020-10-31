@@ -20,8 +20,8 @@ public class RoleDeleteCommandParser implements Parser<RoleDeleteCommand> {
             Index index = ParserUtil.parseIndex(args);
             return new RoleDeleteCommand(index);
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, RoleDeleteCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    pe.getMessage() + RoleDeleteCommand.MESSAGE_USAGE), pe);
         }
     }
 

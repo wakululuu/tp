@@ -16,7 +16,7 @@ import mcscheduler.commons.util.AppUtil;
 public class ShiftTime {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Shift time should only contain one of the following values: AM, PM";
+            "Shift time should only contain one of the following values: AM, PM\n";
     public final ShiftTimeValue time;
 
     /**

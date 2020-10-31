@@ -14,6 +14,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.testutil.TypicalIndexes;
@@ -47,10 +48,13 @@ public class CancelLeaveCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CancelLeaveCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                "%1$s" + CancelLeaveCommand.MESSAGE_USAGE);
+        String invalidIndexExpectedMessage = String.format(expectedMessage,
+                String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, "a"));
 
-        assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1, expectedMessage);
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX, expectedMessage);
-        assertParseFailure(parser, INVALID_SHIFT_INDEX + INVALID_WORKER_INDEX, expectedMessage);
+        assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1, invalidIndexExpectedMessage);
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX, invalidIndexExpectedMessage);
+        assertParseFailure(parser, INVALID_SHIFT_INDEX + INVALID_WORKER_INDEX, invalidIndexExpectedMessage);
     }
 }

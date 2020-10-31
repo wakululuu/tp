@@ -9,7 +9,7 @@ import mcscheduler.commons.util.AppUtil;
 public class Pay {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Hourly pay should be a positive number not exceeding 1000, with a maximum of 2 decimal places.";
+            "Hourly pay should be a positive number not exceeding 1000, with a maximum of 2 decimal places\n";
     public static final String VALIDATION_REGEX = "^[0-9]+(\\.[0-9]{1,2})?$";
     public static final int MAXIMUM_PAY = 1000;
 

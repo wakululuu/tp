@@ -1,6 +1,5 @@
 package mcscheduler.logic.parser;
 
-import static mcscheduler.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -11,6 +10,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
@@ -40,8 +40,9 @@ public class ParserUtilTest {
 
     @Test
     public void parseIndex_outOfRangeInput_throwsParseException() {
-        Assert.assertThrows(ParseException.class, MESSAGE_INVALID_INDEX, ()
-            -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, Integer.MAX_VALUE + 1), ()
+                -> ParserUtil.parseIndex(Long.toString(Integer.MAX_VALUE + 1)));
     }
 
     @Test

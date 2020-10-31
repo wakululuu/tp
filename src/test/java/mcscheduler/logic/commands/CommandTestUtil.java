@@ -107,7 +107,7 @@ public class CommandTestUtil {
 
     public static final String INVALID_NEW_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
     public static final String INVALID_NEW_WORKER_INDEX = " " + PREFIX_WORKER_NEW + "a";
-    public static final String INVALID_OLD_SHIFT_INDEX = " " + PREFIX_SHIFT_NEW + "a";
+    public static final String INVALID_OLD_SHIFT_INDEX = " " + PREFIX_SHIFT_OLD + "a";
     public static final String INVALID_OLD_WORKER_INDEX = " " + PREFIX_WORKER_OLD + "a";
 
     public static final String INVALID_SHIFT_INDEX = " " + PREFIX_SHIFT + "a";

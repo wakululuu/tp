@@ -17,8 +17,8 @@ import mcscheduler.model.role.Role;
  */
 public class WorkerRolePair {
 
-    public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form [ WORKER_INDEX ] [ ROLE ]"
-            + "(e.g. '2 Cashier').";
+    public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form 'WORKER_INDEX ROLE'"
+            + "(e.g. '2 Cashier').\n";
 
     public static final String VALIDATION_REGEX = "[1-9][0-9]* " + Role.VALIDATION_REGEX;
 

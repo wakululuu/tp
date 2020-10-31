@@ -50,7 +50,7 @@ public class MassCancelLeaveCommandParser implements Parser<MassCancelLeaveComma
             endTime = ParserUtil.parseShiftTime(argumentMultimap.getAllValues(PREFIX_SHIFT_TIME).get(1));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    MassCancelLeaveCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + MassCancelLeaveCommand.MESSAGE_USAGE), ive);
         }
 
         return new MassCancelLeaveCommand(workerIndex, startDay, startTime, endDay, endTime);

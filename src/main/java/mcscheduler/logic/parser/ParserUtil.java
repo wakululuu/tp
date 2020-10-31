@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.StringUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
@@ -26,8 +27,6 @@ import mcscheduler.model.worker.Unavailability;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.
@@ -44,7 +43,7 @@ public class ParserUtil {
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, trimmedIndex));
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }

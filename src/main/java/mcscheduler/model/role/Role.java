@@ -10,7 +10,7 @@ import mcscheduler.commons.util.AppUtil;
  */
 public class Role {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain whitespaces";
+    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain spaces\n";
     public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
     public final String roleName;

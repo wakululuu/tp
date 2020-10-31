@@ -44,7 +44,8 @@ public class RoleDeleteCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX);
+            throw new CommandException(String.format(
+                    Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());

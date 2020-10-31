@@ -41,7 +41,7 @@ public class TakeLeaveCommandParser implements Parser<TakeLeaveCommand> {
             workerIndexes = ParserUtil.parseIndexes(argumentMultimap.getAllValues(PREFIX_WORKER));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    TakeLeaveCommand.MESSAGE_USAGE, ive));
+                    ive.getMessage() + TakeLeaveCommand.MESSAGE_USAGE, ive));
         }
 
         return new TakeLeaveCommand(shiftIndex, workerIndexes);
