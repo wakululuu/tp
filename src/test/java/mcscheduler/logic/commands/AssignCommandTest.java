@@ -67,7 +67,8 @@ public class AssignCommandTest {
         validWorkerRole.add(new WorkerRolePair(TypicalIndexes.INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CHEF)));
         AssignCommand assignCommand = new AssignCommand(outOfBoundIndex, validWorkerRole);
 
-        assertCommandFailure(assignCommand, model, Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        assertCommandFailure(assignCommand, model,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test

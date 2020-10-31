@@ -1,6 +1,8 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandFailure;
 import static mcscheduler.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static mcscheduler.logic.commands.CommandTestUtil.showWorkerAtIndex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,13 +45,13 @@ public class WorkerDeleteCommandTest {
         Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        CommandTestUtil
-            .assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
     public void execute_validIndexFilteredList_success() {
-        CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
+        showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
         Worker workerToDelete = TestUtil.getWorker(model, TypicalIndexes.INDEX_FIRST_WORKER);
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(TypicalIndexes.INDEX_FIRST_WORKER);
@@ -65,7 +67,7 @@ public class WorkerDeleteCommandTest {
 
     @Test
     public void execute_invalidIndexFilteredList_throwsCommandException() {
-        CommandTestUtil.showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
+        showWorkerAtIndex(model, TypicalIndexes.INDEX_FIRST_WORKER);
 
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_WORKER;
         // ensures that outOfBoundIndex is still in bounds of the McScheduler list
@@ -73,8 +75,8 @@ public class WorkerDeleteCommandTest {
 
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
-        CommandTestUtil
-            .assertCommandFailure(workerDeleteCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(workerDeleteCommand, model,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
