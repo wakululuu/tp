@@ -116,7 +116,7 @@ public class WorkerEditCommandTest {
 
         // edit worker in filtered list into a duplicate in the McScheduler
         Worker workerInList = model.getMcScheduler().getWorkerList().get(INDEX_SECOND_WORKER.getZeroBased());
-        WorkerEditCommand workerEditCommand = new WorkerEditCommand(INDEX_FIRST_WORKER, 
+        WorkerEditCommand workerEditCommand = new WorkerEditCommand(INDEX_FIRST_WORKER,
                 new EditWorkerDescriptorBuilder(workerInList).build());
 
         assertCommandFailure(workerEditCommand, model, WorkerEditCommand.MESSAGE_DUPLICATE_WORKER);
@@ -152,7 +152,7 @@ public class WorkerEditCommandTest {
 
     @Test
     public void execute_roleNotFound_throwsCommandException() {
-        WorkerEditCommand editCommand = new WorkerEditCommand(INDEX_FIRST_WORKER, 
+        WorkerEditCommand editCommand = new WorkerEditCommand(INDEX_FIRST_WORKER,
                 new EditWorkerDescriptorBuilder().withRoles("random role").build());
 
         assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "Random role"));

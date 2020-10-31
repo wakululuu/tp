@@ -72,7 +72,7 @@ public class ShiftEditCommandTest {
 
     @Test
     public void execute_noFieldSpecifiedUnfilteredList_success() {
-        ShiftEditCommand shiftEditCommand = 
+        ShiftEditCommand shiftEditCommand =
                 new ShiftEditCommand(INDEX_FIRST_SHIFT, new ShiftEditCommand.EditShiftDescriptor());
         Shift editedShift = TestUtil.getShift(model, INDEX_FIRST_SHIFT);
 
@@ -89,7 +89,7 @@ public class ShiftEditCommandTest {
 
         Shift shiftInFilteredList = TestUtil.getShift(model, INDEX_FIRST_SHIFT);
         Shift editedShift = new ShiftBuilder(shiftInFilteredList).withShiftTime(VALID_TIME_PM).build();
-        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, 
+        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT,
                 new EditShiftDescriptorBuilder().withShiftTime(VALID_TIME_PM).build());
 
         String expectedMessage = String.format(ShiftEditCommand.MESSAGE_EDIT_SHIFT_SUCCESS, editedShift);
@@ -115,7 +115,7 @@ public class ShiftEditCommandTest {
 
         // edit shift in filtered list into a duplicate in the McScheduler
         Shift shiftInList = model.getMcScheduler().getShiftList().get(INDEX_SECOND_SHIFT.getZeroBased());
-        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, 
+        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT,
                 new EditShiftDescriptorBuilder(shiftInList).build());
 
         assertCommandFailure(shiftEditCommand, model, ShiftEditCommand.MESSAGE_DUPLICATE_SHIFT);
@@ -143,7 +143,7 @@ public class ShiftEditCommandTest {
         // ensures that outOfBoundIndex is still in bounds of the McScheduler list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getShiftList().size());
 
-        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(outOfBoundIndex, 
+        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(outOfBoundIndex,
                 new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_MON).withShiftTime(VALID_TIME_PM).build());
 
         assertCommandFailure(shiftEditCommand, model,
@@ -152,7 +152,7 @@ public class ShiftEditCommandTest {
 
     @Test
     public void execute_roleNotFound_throwsCommandException() {
-        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, 
+        ShiftEditCommand shiftEditCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT,
                 new EditShiftDescriptorBuilder().withRoleRequirements("random role 1 0").build());
 
         assertCommandFailure(shiftEditCommand, model,
@@ -164,7 +164,7 @@ public class ShiftEditCommandTest {
         final ShiftEditCommand standardCommand = new ShiftEditCommand(INDEX_FIRST_SHIFT, DESC_FIRST_SHIFT);
 
         // same values -> returns true
-        ShiftEditCommand.EditShiftDescriptor copyDescriptor = 
+        ShiftEditCommand.EditShiftDescriptor copyDescriptor =
                 new ShiftEditCommand.EditShiftDescriptor(DESC_FIRST_SHIFT);
         ShiftEditCommand commandWithSameValues = new ShiftEditCommand(INDEX_FIRST_SHIFT, copyDescriptor);
         assertEquals(commandWithSameValues, standardCommand);

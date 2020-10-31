@@ -112,7 +112,7 @@ public class ReassignCommandTest {
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, outOfBoundIndex, INDEX_THIRD_SHIFT,
                 outOfBoundIndex, Role.createRole(VALID_ROLE_CASHIER));
 
-        assertCommandFailure(reassignCommand, model, 
+        assertCommandFailure(reassignCommand, model,
                 String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
