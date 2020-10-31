@@ -23,7 +23,7 @@ public class WorkerPayCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_SHOW_PAY_SUCCESS = "Pay earned by worker (%1$s): $ %2$.2f";
+    public static final String MESSAGE_SHOW_PAY_SUCCESS = "%1$s's pay for the week: $%2$,.2f";
 
     private final Index targetIndex;
 

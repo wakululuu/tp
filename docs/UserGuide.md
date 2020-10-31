@@ -91,7 +91,7 @@ Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u
 
 * Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s). The worker will be unavailable
 on the specified `UNAVAILABLE_DAY`(s) at the corresponding `UNAVAILABLE_TIME`.
-* `HOURLY_PAY` can have a maximum of 2 decimal places only.
+* `HOURLY_PAY` must be a **positive number not exceeding 1000**, with a maximum of 2 decimal places.
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
@@ -131,6 +131,7 @@ Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOUR
   worker list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* `HOURLY_PAY` must be a **positive number not exceeding 1000**, with a maximum of 2 decimal places.
 * When editing roles, the existing roles of the worker will be removed i.e adding of roles is not cumulative.
 * The specified `ROLE`(s) must be an existing role in the McScheduler. A role can be added to the McScheduler using the
   [role-add](#adding-a-role-role-add) command.
