@@ -39,7 +39,8 @@ public class ShiftDeleteCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Shift shiftToDelete = lastShownList.get(targetIndex.getZeroBased());

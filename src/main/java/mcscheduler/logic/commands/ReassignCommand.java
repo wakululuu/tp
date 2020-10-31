@@ -73,13 +73,21 @@ public class ReassignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
         List<Assignment> assignmentList = model.getFullAssignmentList();
 
-        if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()
-                || newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, oldShiftIndex.getOneBased()));
         }
-        if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()
-                || newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        if (newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, newShiftIndex.getOneBased()));
+        }
+        if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, oldWorkerIndex.getOneBased()));
+        }
+        if (newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, newWorkerIndex.getOneBased()));
         }
         if (!model.hasRole(newRole)) {
             throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));

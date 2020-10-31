@@ -39,7 +39,8 @@ public class WorkerDeleteCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Worker workerToDelete = lastShownList.get(targetIndex.getZeroBased());

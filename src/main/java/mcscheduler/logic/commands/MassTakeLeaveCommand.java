@@ -79,7 +79,8 @@ public class MassTakeLeaveCommand extends Command {
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
 
         if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 

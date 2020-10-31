@@ -14,11 +14,11 @@ import mcscheduler.model.role.Role;
  */
 public class RoleRequirement {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role Requirements must be of the form 'ROLE QUANTITY_REQUIRED'"
-            + " (e.g. 'Cashier 1'). \nQuantity must be greater than zero.\n";
-    public static final String MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR = "Role Requirements must be of the form 'ROLE "
-            + "QUANTITY_REQUIRED QUANTITY_FILLED' (e.g. 'Cashier 1 0').\nQuantity required must be positive. "
-            + "Quantity filled must be non-negative and at most the quantity required\n";
+    public static final String MESSAGE_CONSTRAINTS = "Role requirements must be of the form 'ROLE QUANTITY_REQUIRED'"
+            + " (e.g. 'Cashier 1')\nThe quantity required must be a positive integer.\n";
+    public static final String MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR = "Role requirements must be of the form 'ROLE "
+            + "QUANTITY_REQUIRED QUANTITY_FILLED' (e.g. 'Cashier 1 0')\nThe quantity required must be a positive "
+            + "integer\nThe quantity filled must be a non-negative integer and at most the quantity required\n";
 
     public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + " [1-9]\\d*$";
     public static final String VALIDATION_REGEX_STRING_CONSTRUCTOR = Role.VALIDATION_REGEX + " [1-9]\\d* \\d+$";

@@ -76,7 +76,8 @@ public class WorkerEditCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, index.getOneBased()));
         }
 
         Worker workerToEdit = lastShownList.get(index.getZeroBased());
