@@ -19,8 +19,9 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.WorkerRolePair;
-import mcscheduler.model.shift.RoleRequirement;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
+import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
@@ -82,15 +83,6 @@ public class AssignCommand extends Command {
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
             Role role = workerRolePair.getRole();
-            // Count for RoleRequirements
-            if (!requiredRoles.containsKey(role)) {
-                requiredRoles.put(role, getQuantityRequiredForRole(shiftToAssign, role));
-            }
-            requiredRoles.put(role, requiredRoles.get(role) - 1);
-            if (requiredRoles.get(role) < 0) {
-                // This assignCommand will exceed the role's requirement
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
-            }
 
             if (!model.hasRole(role)) {
                 throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, workerRolePair.getRole()));
@@ -109,6 +101,18 @@ public class AssignCommand extends Command {
                 throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
             }
              */
+            // Count for RoleRequirements
+            if (!(role instanceof Leave)) {
+                if (!requiredRoles.containsKey(role)) {
+                    requiredRoles.put(role, getQuantityRequiredForRole(shiftToAssign, role));
+                }
+                requiredRoles.put(role, requiredRoles.get(role) - 1);
+                if (requiredRoles.get(role) < 0) {
+                    // This assignCommand will exceed the role's requirement
+                    throw new CommandException(
+                        String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED, role, shiftToAssign));
+                }
+            }
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
             // Prevent duplicates in model & Prevent duplicates in a single call

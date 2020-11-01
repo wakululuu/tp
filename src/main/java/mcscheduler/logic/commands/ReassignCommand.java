@@ -125,7 +125,8 @@ public class ReassignCommand extends Command {
         }
 
         if (!newShift.isRoleRequired(newRole)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
+            throw new CommandException(
+                String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED, newRole, newShift));
         }
 
         model.setAssignment(assignmentToRemove, assignmentToAdd);
