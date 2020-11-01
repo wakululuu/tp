@@ -1,8 +1,8 @@
 package mcscheduler.testutil;
 
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 public class AssignmentBuilder {
@@ -57,13 +57,6 @@ public class AssignmentBuilder {
 
     public Assignment build() {
         return new Assignment(shift, worker, role);
-    }
-
-    /**
-     * Creates a dummy assignment used by {@code UnassignCommandTest}.
-     */
-    public Assignment buildDummy() {
-        return new Assignment(shift, worker);
     }
 
 }

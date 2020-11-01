@@ -17,7 +17,7 @@ import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerEditCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Unavailability;
 
 /**
@@ -42,7 +42,7 @@ public class WorkerEditCommandParser implements Parser<WorkerEditCommand> {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    WorkerEditCommand.MESSAGE_USAGE), pe);
+                    pe.getMessage() + WorkerEditCommand.MESSAGE_USAGE), pe);
         }
 
         WorkerEditCommand.EditWorkerDescriptor editWorkerDescriptor = new WorkerEditCommand.EditWorkerDescriptor();

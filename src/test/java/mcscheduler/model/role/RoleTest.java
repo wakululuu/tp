@@ -1,4 +1,4 @@
-package mcscheduler.model.tag;
+package mcscheduler.model.role;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,23 +15,23 @@ public class RoleTest {
     }
 
     @Test
-    public void constructor_invalidTagName_throwsIllegalArgumentException() {
+    public void constructor_invalidRoleName_throwsIllegalArgumentException() {
         Assert.assertThrows(IllegalArgumentException.class, () -> Role.createRole(""));
     }
 
     @Test
     public void isValidRoleName() {
         // null
-        Assert.assertThrows(NullPointerException.class, () -> Role.isValidTagName(null));
+        Assert.assertThrows(NullPointerException.class, () -> Role.isValidRoleName(null));
 
         // invalid names
-        assertFalse(Role.isValidTagName("")); // empty string
-        assertFalse(Role.isValidTagName("sigh @__@")); // symbols and letters
+        assertFalse(Role.isValidRoleName("")); // empty string
+        assertFalse(Role.isValidRoleName("sigh @__@")); // symbols and letters
 
         // valid names
-        assertTrue(Role.isValidTagName("cashier")); // simple role name
-        assertTrue(Role.isValidTagName("Burger Flipper")); // with space
-        assertTrue(Role.isValidTagName("Level 2 Chef")); //with numbers
+        assertTrue(Role.isValidRoleName("cashier")); // simple role name
+        assertTrue(Role.isValidRoleName("Burger Flipper")); // with space
+        assertTrue(Role.isValidRoleName("Level 2 Chef")); //with numbers
     }
 
 }

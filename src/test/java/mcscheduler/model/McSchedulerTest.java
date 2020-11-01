@@ -22,9 +22,9 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.exceptions.DuplicateShiftException;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.model.worker.exceptions.DuplicateWorkerException;
 import mcscheduler.testutil.McSchedulerBuilder;
@@ -161,7 +161,6 @@ public class McSchedulerTest {
         assertNotEquals(emptyMcScheduler, mcScheduler);
 
     }
-
 
     /**
      * A stub ReadOnlyMcScheduler whose workers list can violate interface constraints.

@@ -7,18 +7,17 @@ import java.util.stream.Collectors;
 import mcscheduler.model.McScheduler;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Email;
 
 /**
  * Contains utility methods for populating {@code McScheduler} with sample data.
@@ -33,7 +32,7 @@ public class SampleDataUtil {
     private static final Worker SAMPLE_WORKER_BERNICE = new Worker(
             new Name("Bernice Yu"), new Phone("99272758"), new Pay("11.2"),
             new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-            getRoleSet("cashier", "cleaner"),
+            getRoleSet("cashier", "janitor"),
             getUnavailabilitySet("TUE AM"));
     private static final Worker SAMPLE_WORKER_CHARLOTTE = new Worker(
             new Name("Charlotte Oliveiro"), new Phone("93210283"), new Pay("9.87"),
@@ -53,24 +52,24 @@ public class SampleDataUtil {
     private static final Worker SAMPLE_WORKER_ROY = new Worker(
             new Name("Roy Balakrishnan"), new Phone("92624417"), new Pay("11.10"),
             new Address("Blk 45 Aljunied Street 85, #11-31"),
-            getRoleSet("cleaner"),
+            getRoleSet("janitor"),
             getUnavailabilitySet("SUN AM", "MON AM"));
 
     private static final Shift SAMPLE_SHIFT_MON_AM = new Shift(
             new ShiftDay("Mon"), new ShiftTime("AM"), getRoleRequirementSet("Cashier 2 1"));
     private static final Shift SAMPLE_SHIFT_TUE_PM = new Shift(
-            new ShiftDay("Tue"), new ShiftTime("PM"), getRoleRequirementSet("Cleaner 2 2"));
+            new ShiftDay("Tue"), new ShiftTime("PM"), getRoleRequirementSet("janitor 2 2"));
 
     private static final Role SAMPLE_ROLE_CASHIER = Role.createRole("cashier");
     private static final Role SAMPLE_ROLE_CHEF = Role.createRole("chef");
-    private static final Role SAMPLE_ROLE_CLEANER = Role.createRole("cleaner");
+    private static final Role SAMPLE_ROLE_JANITOR = Role.createRole("janitor");
 
     private static final Assignment SAMPLE_ASSIGNMENT_1 = new Assignment(
             SAMPLE_SHIFT_MON_AM, SAMPLE_WORKER_ALEX, SAMPLE_ROLE_CASHIER);
     private static final Assignment SAMPLE_ASSIGNMENT_2 = new Assignment(
-            SAMPLE_SHIFT_TUE_PM, SAMPLE_WORKER_BERNICE, SAMPLE_ROLE_CLEANER);
+            SAMPLE_SHIFT_TUE_PM, SAMPLE_WORKER_BERNICE, SAMPLE_ROLE_JANITOR);
     private static final Assignment SAMPLE_ASSIGNMENT_3 = new Assignment(
-            SAMPLE_SHIFT_TUE_PM, SAMPLE_WORKER_ROY, SAMPLE_ROLE_CLEANER);
+            SAMPLE_SHIFT_TUE_PM, SAMPLE_WORKER_ROY, SAMPLE_ROLE_JANITOR);
 
     public static Worker[] getSampleWorkers() {
         return new Worker[] {
@@ -87,7 +86,7 @@ public class SampleDataUtil {
 
     public static Role[] getSampleRoles() {
         return new Role[] {
-            SAMPLE_ROLE_CASHIER, SAMPLE_ROLE_CHEF, SAMPLE_ROLE_CLEANER
+            SAMPLE_ROLE_CASHIER, SAMPLE_ROLE_CHEF, SAMPLE_ROLE_JANITOR
         };
     }
 

@@ -11,7 +11,6 @@ import mcscheduler.model.UserPrefs;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TypicalIndexes;
 
-
 public class ShiftListCommandTest {
     private Model model;
     private Model expectedModel;

@@ -15,8 +15,8 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
 import mcscheduler.model.worker.Worker;
 
 
@@ -66,13 +66,15 @@ public class CancelLeaveCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased()));
         }
 
         StringBuilder assignStringBuilder = new StringBuilder();
         for (Index workerIndex: workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+                throw new CommandException(
+                        String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
             }
 
             Worker workerToCancelLeave = lastShownWorkerList.get(workerIndex.getZeroBased());

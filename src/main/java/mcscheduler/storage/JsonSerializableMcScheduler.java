@@ -12,8 +12,8 @@ import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.model.McScheduler;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
@@ -60,7 +60,7 @@ class JsonSerializableMcScheduler {
     }
 
     /**
-     * Converts this address book into the model's {@code McScheduler} object.
+     * Converts this McScheduler into the model's {@code McScheduler} object.
      *
      * @throws IllegalValueException if there were any data constraints violated.
      */

@@ -21,7 +21,7 @@ public class JsonMcSchedulerStorage implements McSchedulerStorage {
 
     private static final Logger logger = LogsCenter.getLogger(JsonMcSchedulerStorage.class);
 
-    private Path filePath;
+    private final Path filePath;
 
     public JsonMcSchedulerStorage(Path filePath) {
         this.filePath = filePath;

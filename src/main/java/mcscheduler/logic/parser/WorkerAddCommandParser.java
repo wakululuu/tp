@@ -13,16 +13,13 @@ import java.util.stream.Stream;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import mcscheduler.model.worker.Email;
-
-//import mcscheduler.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new WorkerAddCommand object

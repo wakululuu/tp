@@ -10,14 +10,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import mcscheduler.commons.exceptions.IllegalValueException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Tag;
 
 /**
  * Jackson-friendly version of {@link Worker}.
@@ -59,7 +58,7 @@ class JsonAdaptedWorker {
     public JsonAdaptedWorker(Worker source) {
         name = source.getName().fullName;
         phone = source.getPhone().value;
-        pay = String.valueOf(source.getPay().value);
+        pay = String.valueOf(source.getPay().getValue());
         address = source.getAddress().value;
         roles.addAll(source.getRoles().stream()
                 .map(JsonAdaptedRole::new)

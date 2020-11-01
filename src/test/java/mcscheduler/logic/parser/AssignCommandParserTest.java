@@ -19,14 +19,15 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.AssignCommand;
 import mcscheduler.model.assignment.WorkerRolePair;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.TypicalIndexes;
 
 
 public class AssignCommandParserTest {
-    private AssignCommandParser parser = new AssignCommandParser();
+    private final AssignCommandParser parser = new AssignCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
@@ -77,26 +78,29 @@ public class AssignCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, "%1$s" + AssignCommand.MESSAGE_USAGE);
+        String invalidIndexExpectedMessage = String.format(expectedMessage,
+                String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, "a"));
 
         // invalid shift index
         assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CHEF,
-            expectedMessage);
+                invalidIndexExpectedMessage);
 
         // invalid worker index
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX + " " + VALID_ROLE_CHEF,
-            expectedMessage);
+            String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // multiple indexes in worker-role prefix
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " "
-            + TypicalIndexes.INDEX_SECOND_WORKER + VALID_ROLE_CASHIER, expectedMessage);
+            + TypicalIndexes.INDEX_SECOND_WORKER + VALID_ROLE_CASHIER,
+                String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // invalid worker-role regex
         assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + INVALID_ROLE,
-            String.format(MESSAGE_INVALID_COMMAND_FORMAT, AssignCommand.MESSAGE_USAGE));
+            String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1 + " " + INVALID_ROLE,
-            expectedMessage);
+                invalidIndexExpectedMessage);
     }
 }

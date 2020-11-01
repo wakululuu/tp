@@ -5,10 +5,10 @@ import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_ROLES_WITHOUT_LEAVE;
 
 import javafx.collections.ObservableList;
 import mcscheduler.model.Model;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
- * Lists all roles in the address book to the user.
+ * Lists all roles in the McScheduler to the user.
  */
 public class RoleListCommand extends Command {
 

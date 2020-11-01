@@ -39,7 +39,7 @@ public class CancelLeaveCommandParser implements Parser<CancelLeaveCommand> {
             workerIndexes = ParserUtil.parseIndexes(argumentMultimap.getAllValues(PREFIX_WORKER));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    CancelLeaveCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + CancelLeaveCommand.MESSAGE_USAGE), ive);
         }
 
         return new CancelLeaveCommand(shiftIndex, workerIndexes);

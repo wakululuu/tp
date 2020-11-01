@@ -12,12 +12,13 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.TakeLeaveCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
 public class TakeLeaveCommandParserTest {
-    private TakeLeaveCommandParser parser = new TakeLeaveCommandParser();
+    private final TakeLeaveCommandParser parser = new TakeLeaveCommandParser();
 
     @Test
     public void parse_allFieldPresent_success() {
@@ -49,10 +50,15 @@ public class TakeLeaveCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, TakeLeaveCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, "%1$s" + TakeLeaveCommand.MESSAGE_USAGE);
+        String invalidIndexExpectedMessage = String.format(expectedMessage,
+                String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, "a"));
 
-        CommandParserTestUtil.assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1, expectedMessage);
-        CommandParserTestUtil.assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX, expectedMessage);
-        CommandParserTestUtil.assertParseFailure(parser, INVALID_SHIFT_INDEX + INVALID_WORKER_INDEX, expectedMessage);
+        CommandParserTestUtil.assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1,
+                invalidIndexExpectedMessage);
+        CommandParserTestUtil.assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX,
+                invalidIndexExpectedMessage);
+        CommandParserTestUtil.assertParseFailure(parser, INVALID_SHIFT_INDEX + INVALID_WORKER_INDEX,
+                invalidIndexExpectedMessage);
     }
 }

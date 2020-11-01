@@ -3,7 +3,7 @@ package mcscheduler.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.util.SampleDataUtil;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
@@ -11,9 +11,6 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-
-//import Tag;
-//import Email;
 
 /**
  * A utility class to help with building Worker objects.
@@ -23,14 +20,12 @@ public class WorkerBuilder {
     public static final String DEFAULT_NAME = "Alice Pauline";
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_PAY = "12.20";
-    //public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_ROLE = "cashier";
 
     private Name name;
     private Phone phone;
     private Pay pay;
-    //private Email email;
     private Address address;
     private Set<Role> roles;
     private Set<Unavailability> unavailableTimings;
@@ -42,7 +37,6 @@ public class WorkerBuilder {
         name = new Name(DEFAULT_NAME);
         phone = new Phone(DEFAULT_PHONE);
         pay = new Pay(DEFAULT_PAY);
-        //email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         roles = new HashSet<>();
         roles.add(Role.createRole(DEFAULT_ROLE));
@@ -109,17 +103,6 @@ public class WorkerBuilder {
         this.pay = new Pay(pay);
         return this;
     }
-
-    /*
-    /**
-     * Sets the {@code Email} of the {@code Worker} that we are building.
-     */
-    /*
-    public WorkerBuilder withEmail(String email) {
-        this.email = new Email(email);
-        return this;
-    }
-     */
 
     public Worker build() {
         return new Worker(name, phone, pay, address, roles, unavailableTimings);

@@ -42,7 +42,7 @@ public class AssignCommandParser implements Parser<AssignCommand> {
             workerRolePairs = ParserUtil.parseWorkerRoles(argMultimap.getAllValues(CliSyntax.PREFIX_WORKER_ROLE));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    AssignCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + AssignCommand.MESSAGE_USAGE), ive);
         }
 
         //Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
