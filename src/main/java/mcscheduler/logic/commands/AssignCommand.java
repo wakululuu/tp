@@ -7,7 +7,9 @@ import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_SHIFTS;
 import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import mcscheduler.commons.core.Messages;
@@ -17,6 +19,7 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.WorkerRolePair;
+import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
@@ -68,6 +71,7 @@ public class AssignCommand extends Command {
         }
 
         List<Assignment> assignmentsToAdd = new ArrayList<>();
+        Map<Role, Integer> requiredRoles = new HashMap<>(); // Hashmap to count if multiple r
         // Check for: worker existence, model hasRole, worker is fit, worker is available, role required in shift
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
@@ -77,6 +81,15 @@ public class AssignCommand extends Command {
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
             Role role = workerRolePair.getRole();
+            // Count for RoleRequirements
+            if (!requiredRoles.containsKey(role)) {
+                requiredRoles.put(role, getQuantityRequiredForRole(shiftToAssign, role));
+            }
+            requiredRoles.put(role, requiredRoles.get(role) - 1);
+            if (requiredRoles.get(role) < 0) {
+                // This assignCommand will exceed the role's requirement
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
+            }
 
             if (!model.hasRole(role)) {
                 throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, workerRolePair.getRole()));
@@ -90,12 +103,15 @@ public class AssignCommand extends Command {
                         Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerToAssign.getName(), shiftToAssign));
             }
 
+            /*
             if (!shiftToAssign.isRoleRequired(role)) {
                 throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
             }
+             */
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
-            if (model.hasAssignment(assignmentToAdd)) {
+            // Prevent duplicates in model & Prevent duplicates in a single call
+            if (model.hasAssignment(assignmentToAdd) || assignmentsToAdd.contains(assignmentToAdd)) {
                 throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
             }
             assignmentsToAdd.add(assignmentToAdd);
@@ -118,6 +134,16 @@ public class AssignCommand extends Command {
                 String.format(MESSAGE_ASSIGN_SUCCESS, workerRolePairs.size(), assignStringBuilder.toString()));
     }
 
+    private static int getQuantityRequiredForRole(Shift shift, Role role) {
+        Set<RoleRequirement> roleRequirements = shift.getRoleRequirements();
+        int quantityRequiredForRole = 0;
+        for (RoleRequirement roleRequirement : roleRequirements) {
+            if (roleRequirement.getRole().equals(role)) {
+                quantityRequiredForRole = roleRequirement.getQuantityRequired() - roleRequirement.getQuantityFilled();
+            }
+        }
+        return quantityRequiredForRole;
+    }
 
     @Override
     public boolean equals(Object other) {
