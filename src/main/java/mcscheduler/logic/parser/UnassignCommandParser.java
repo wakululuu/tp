@@ -40,7 +40,7 @@ public class UnassignCommandParser implements Parser<UnassignCommand> {
             workerIndexes = ParserUtil.parseIndexes(argMultimap.getAllValues(PREFIX_WORKER));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    UnassignCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + UnassignCommand.MESSAGE_USAGE), ive);
         }
 
         return new UnassignCommand(shiftIndex, workerIndexes);

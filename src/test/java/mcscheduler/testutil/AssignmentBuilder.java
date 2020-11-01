@@ -59,11 +59,4 @@ public class AssignmentBuilder {
         return new Assignment(shift, worker, role);
     }
 
-    /**
-     * Creates a dummy assignment used by {@code UnassignCommandTest}.
-     */
-    public Assignment buildDummy() {
-        return new Assignment(shift, worker);
-    }
-
 }

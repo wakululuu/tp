@@ -13,15 +13,12 @@ import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
-//import Tag;
-//import Email;
-
 /**
  * A utility class to help with building EditWorkerDescriptor objects.
  */
 public class EditWorkerDescriptorBuilder {
 
-    private EditWorkerDescriptor descriptor;
+    private final EditWorkerDescriptor descriptor;
 
     public EditWorkerDescriptorBuilder() {
         descriptor = new EditWorkerDescriptor();
@@ -39,7 +36,6 @@ public class EditWorkerDescriptorBuilder {
         descriptor.setName(worker.getName());
         descriptor.setPhone(worker.getPhone());
         descriptor.setPay(worker.getPay());
-        //descriptor.setEmail(worker.getEmail());
         descriptor.setAddress(worker.getAddress());
         descriptor.setRoles(worker.getRoles());
         descriptor.setUnavailableTimings(worker.getUnavailableTimings());
@@ -68,13 +64,6 @@ public class EditWorkerDescriptorBuilder {
         descriptor.setPay(new Pay(pay));
         return this;
     }
-
-    /*
-    public EditWorkerDescriptorBuilder withEmail(String email) {
-        descriptor.setEmail(new Email(email));
-        return this;
-    }
-     */
 
     /**
      * Sets the {@code Address} of the {@code EditWorkerDescriptor} that we are building.

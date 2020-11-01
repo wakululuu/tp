@@ -14,7 +14,7 @@ import mcscheduler.model.assignment.WorkerRolePair;
 import mcscheduler.model.role.Leave;
 
 /**
- * Assign a worker to take leave for a particular shift.
+ * Assigns a worker to take leave for a particular shift.
  */
 public class TakeLeaveCommand extends Command {
 
@@ -50,7 +50,7 @@ public class TakeLeaveCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         Set<WorkerRolePair> workerLeaves = new HashSet<>();
-        for (Index i: workerIndexes) {
+        for (Index i : workerIndexes) {
             workerLeaves.add(new WorkerRolePair(i, new Leave()));
         }
         CommandResult commandResult = new AssignCommand(shiftIndex, workerLeaves).execute(model);

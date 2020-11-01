@@ -24,62 +24,58 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_PAY_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static mcscheduler.testutil.TypicalWorkers.AMY;
+import static mcscheduler.testutil.TypicalWorkers.BOB;
 
 import org.junit.jupiter.api.Test;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.model.role.Role;
+//import mcscheduler.model.tag.Tag;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Worker;
-import mcscheduler.testutil.TypicalWorkers;
 import mcscheduler.testutil.WorkerBuilder;
 
-//import Tag;
-
 public class WorkerAddCommandParserTest {
-    private AddCommandParser parser = new AddCommandParser();
+    private final WorkerAddCommandParser parser = new WorkerAddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
-        Worker expectedWorker = new WorkerBuilder(TypicalWorkers.BOB).withRoles(VALID_ROLE_CASHIER).build();
+        Worker expectedWorker = new WorkerBuilder(BOB).withRoles(VALID_ROLE_CASHIER).build();
 
         // whitespace only preamble
-        CommandParserTestUtil
-            .assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
+        assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
                 + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple names - last name accepted
-        CommandParserTestUtil.assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
-            + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
+        assertParseSuccess(parser, NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple phones - last phone accepted
-        CommandParserTestUtil.assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + PAY_DESC_BOB
-            + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB + PAY_DESC_BOB
+                + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple addresses - last address accepted
-        CommandParserTestUtil
-            .assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_AMY
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_AMY
                 + ADDRESS_DESC_BOB + ROLE_DESC_CASHIER, new WorkerAddCommand(expectedWorker));
 
         // multiple roles - all accepted
-        Worker expectedWorkerMultipleTags =
-            new WorkerBuilder(TypicalWorkers.BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
+        Worker expectedWorkerMultipleTags = new WorkerBuilder(BOB).withRoles(VALID_ROLE_CASHIER, VALID_ROLE_CHEF)
                 .build();
-        CommandParserTestUtil
-            .assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, new WorkerAddCommand(expectedWorkerMultipleTags));
     }
 
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Worker expectedWorker = new WorkerBuilder(TypicalWorkers.AMY).build();
-        CommandParserTestUtil
-            .assertParseSuccess(parser,
-                NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER,
+        Worker expectedWorker = new WorkerBuilder(AMY).build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + PAY_DESC_AMY + ADDRESS_DESC_AMY + ROLE_DESC_CASHIER,
                 new WorkerAddCommand(expectedWorker));
     }
 
@@ -88,69 +84,56 @@ public class WorkerAddCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE);
 
         // missing name prefix
-        CommandParserTestUtil
-            .assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, VALID_NAME_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing phone prefix
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing pay prefix
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_PAY_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_PAY_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER, expectedMessage);
 
         // missing address prefix
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + VALID_ADDRESS_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + VALID_ADDRESS_BOB
                 + ROLE_DESC_CASHIER, expectedMessage);
 
 
         // all prefixes missing
-        CommandParserTestUtil
-            .assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
+        assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
                 + VALID_ROLE_CASHIER, expectedMessage);
     }
 
     @Test
     public void parse_invalidValue_failure() {
         // invalid name
-        CommandParserTestUtil
-            .assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Name.MESSAGE_CONSTRAINTS);
 
         // invalid phone
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Phone.MESSAGE_CONSTRAINTS);
 
         // invalid pay
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_PAY_DESC + ADDRESS_DESC_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_PAY_DESC + ADDRESS_DESC_BOB
                 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Pay.MESSAGE_CONSTRAINTS);
 
         // invalid address
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
                 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Address.MESSAGE_CONSTRAINTS);
 
         // invalid role
-        CommandParserTestUtil
-            .assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
                 + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
-        CommandParserTestUtil
-            .assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
+        assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
                 + ROLE_DESC_CASHIER, Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
-        CommandParserTestUtil
-            .assertParseFailure(parser,
-                PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                    + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+        assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
     }
 }

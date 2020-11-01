@@ -1,5 +1,10 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandFailure;
+import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
+import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static mcscheduler.testutil.TypicalIndexes.INDEX_SECOND_SHIFT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -22,14 +27,14 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.AssignmentBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
-import mcscheduler.testutil.TypicalIndexes;
+import mcscheduler.testutil.TestUtil;
 
 public class UnassignCommandTest {
 
     @Test
     public void constructor_nullShiftIndex_throwsNullPointerException() {
         Set<Index> validWorker = new HashSet<>();
-        validWorker.add(TypicalIndexes.INDEX_FIRST_WORKER);
+        validWorker.add(INDEX_FIRST_WORKER);
         Assert.assertThrows(NullPointerException.class, () ->
             new UnassignCommand(null, validWorker));
     }
@@ -39,13 +44,13 @@ public class UnassignCommandTest {
         Set<Index> nullWorker = new HashSet<>();
         nullWorker.add(null);
         Assert.assertThrows(NullPointerException.class, () ->
-            new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, nullWorker));
+            new UnassignCommand(INDEX_FIRST_SHIFT, nullWorker));
     }
 
     @Test
     public void constructor_nullWorkerIndexSet_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () ->
-            new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, null));
+            new UnassignCommand(INDEX_FIRST_SHIFT, null));
     }
 
     @Test
@@ -53,21 +58,20 @@ public class UnassignCommandTest {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
         Set<WorkerRolePair> validWorkerRole = new HashSet<>();
-        validWorkerRole.add(new WorkerRolePair(
-            TypicalIndexes.INDEX_FIRST_WORKER, Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER)));
-        AssignCommand validAssignCommand = new AssignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, validWorkerRole);
+        validWorkerRole.add(new WorkerRolePair(INDEX_FIRST_WORKER, Role.createRole(VALID_ROLE_CASHIER)));
+        AssignCommand validAssignCommand = new AssignCommand(INDEX_SECOND_SHIFT, validWorkerRole);
         validAssignCommand.execute(model);
 
         Set<Index> workerIndex = new HashSet<>();
-        workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
-        UnassignCommand validUnassignCommand = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
+        workerIndex.add(INDEX_FIRST_WORKER);
+        UnassignCommand validUnassignCommand = new UnassignCommand(INDEX_SECOND_SHIFT, workerIndex);
         CommandResult commandResult = validUnassignCommand.execute(model);
 
-        Shift shiftToUnassign = model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased());
-        Worker workerToUnassign = model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased());
+        Shift shiftToUnassign = TestUtil.getShift(model, INDEX_SECOND_SHIFT);
+        Worker workerToUnassign = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
         // the model has the role of cashier
         Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
-            .withWorker(workerToUnassign).withRole(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withWorker(workerToUnassign).withRole(VALID_ROLE_CASHIER).build();
 
         assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS + "\n", 1, validAssignment),
             commandResult.getFeedbackToUser());
@@ -77,25 +81,27 @@ public class UnassignCommandTest {
     @Test
     public void execute_invalidShiftIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
 
         Set<Index> workerIndex = new HashSet<>();
-        workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
+        workerIndex.add(INDEX_FIRST_WORKER);
         UnassignCommand unassignCommand = new UnassignCommand(outOfBoundIndex, workerIndex);
 
-        CommandTestUtil.assertCommandFailure(unassignCommand, model, Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        assertCommandFailure(unassignCommand, model,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundWorkerIndex(model);
 
         Set<Index> outOfBoundWorkerIndex = new HashSet<>();
         outOfBoundWorkerIndex.add(outOfBoundIndex);
-        UnassignCommand unassignCommand = new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, outOfBoundWorkerIndex);
+        UnassignCommand unassignCommand = new UnassignCommand(INDEX_FIRST_SHIFT, outOfBoundWorkerIndex);
 
-        CommandTestUtil.assertCommandFailure(unassignCommand, model, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+        assertCommandFailure(unassignCommand, model,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
@@ -103,31 +109,29 @@ public class UnassignCommandTest {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
         Set<Index> workerIndex = new HashSet<>();
-        workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
-        UnassignCommand unassignCommand = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
+        workerIndex.add(INDEX_FIRST_WORKER);
+        UnassignCommand unassignCommand = new UnassignCommand(INDEX_SECOND_SHIFT, workerIndex);
 
-        String assignmentName =
-            new Assignment(model.getFilteredShiftList().get(TypicalIndexes.INDEX_SECOND_SHIFT.getZeroBased()),
-                model.getFilteredWorkerList().get(TypicalIndexes.INDEX_FIRST_WORKER.getZeroBased()))
-                .toString();
+        String assignmentName = new Assignment(TestUtil.getShift(model, INDEX_SECOND_SHIFT),
+                TestUtil.getWorker(model, INDEX_FIRST_WORKER)).toString();
 
-        CommandTestUtil.assertCommandFailure(unassignCommand, model,
+        assertCommandFailure(unassignCommand, model,
             String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
     }
 
     @Test
     public void equals() {
         Set<Index> workerIndex = new HashSet<>();
-        workerIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
+        workerIndex.add(INDEX_FIRST_WORKER);
 
-        UnassignCommand unassignCommand1 = new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, workerIndex);
-        UnassignCommand unassignCommand2 = new UnassignCommand(TypicalIndexes.INDEX_SECOND_SHIFT, workerIndex);
+        UnassignCommand unassignCommand1 = new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex);
+        UnassignCommand unassignCommand2 = new UnassignCommand(INDEX_SECOND_SHIFT, workerIndex);
 
         // same object -> returns true
         assertEquals(unassignCommand1, unassignCommand1);
 
         // same values -> returns true
-        UnassignCommand unassignCommand1Copy = new UnassignCommand(TypicalIndexes.INDEX_FIRST_SHIFT, workerIndex);
+        UnassignCommand unassignCommand1Copy = new UnassignCommand(INDEX_FIRST_SHIFT, workerIndex);
         assertEquals(unassignCommand1, unassignCommand1Copy);
 
         // different types -> returns false

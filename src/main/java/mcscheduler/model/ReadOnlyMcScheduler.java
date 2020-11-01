@@ -7,7 +7,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Unmodifiable view of an address book
+ * Unmodifiable view of a McScheduler
  */
 public interface ReadOnlyMcScheduler {
 

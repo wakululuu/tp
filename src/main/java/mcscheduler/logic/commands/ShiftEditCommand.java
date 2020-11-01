@@ -70,7 +70,8 @@ public class ShiftEditCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, index.getOneBased()));
         }
 
         Shift shiftToEdit = lastShownList.get(index.getZeroBased());

@@ -5,12 +5,12 @@ import static java.util.Objects.requireNonNull;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Worker Role in the App.
- * Guarantees: immutable, name is valid as declared in
+ * Represents a Worker Role in the McScheduler.
+ * Guarantees: immutable, name is valid as declared in {@link #isValidRoleName(String)}
  */
 public class Role {
 
-    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain whitespaces";
+    public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain spaces\n";
     public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
     public final String roleName;
@@ -20,6 +20,7 @@ public class Role {
         AppUtil.checkArgument(isValidRoleName(roleName), MESSAGE_CONSTRAINTS);
         this.roleName = roleName.substring(0, 1).toUpperCase() + roleName.substring(1).toLowerCase();
     }
+
     /**
      * Factory method for creating a {@code Role}. Returns a {@code Leave} if {@code roleName} is {@code "Leave"}.
      */
@@ -40,7 +41,6 @@ public class Role {
     public static boolean isValidRoleName(String test) {
         return test.matches(VALIDATION_REGEX);
     }
-
 
     @Override
     public int hashCode() {

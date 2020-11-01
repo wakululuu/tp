@@ -5,9 +5,12 @@ import static mcscheduler.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CHEF;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.model.role.Role;
@@ -18,39 +21,46 @@ public class WorkerAvailableCommandParserTest {
     private static final String MESSAGE_INVALID_FORMAT =
         String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE);
 
-    private WorkerAvailableCommandParser parser = new WorkerAvailableCommandParser();
+    private final WorkerAvailableCommandParser parser = new WorkerAvailableCommandParser();
 
     @Test
     public void parse_missingParts_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                "%1$s" + WorkerAvailableCommand.MESSAGE_USAGE);
+        String invalidIndexErrorMessage = String.format(expectedMessage, Messages.MESSAGE_INVALID_DISPLAYED_INDEX);
+
         // no index specified
-        CommandParserTestUtil.assertParseFailure(parser, ROLE_DESC_CASHIER, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, ROLE_DESC_CASHIER, String.format(invalidIndexErrorMessage, ""));
 
         // no field specified
-        CommandParserTestUtil.assertParseFailure(parser, "1", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1", MESSAGE_INVALID_FORMAT);
 
         // no index and no field specified
-        CommandParserTestUtil.assertParseFailure(parser, "", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "", String.format(invalidIndexErrorMessage, ""));
     }
 
     @Test
     public void parse_invalidPreamble_failure() {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                "%1$s" + WorkerAvailableCommand.MESSAGE_USAGE);
+        String invalidIndexErrorMessage = String.format(expectedMessage, Messages.MESSAGE_INVALID_DISPLAYED_INDEX);
+
         // negative index
-        CommandParserTestUtil.assertParseFailure(parser, "-5" + ROLE_DESC_CASHIER, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "-5" + ROLE_DESC_CASHIER, String.format(invalidIndexErrorMessage, "-5"));
 
         // zero index
-        CommandParserTestUtil.assertParseFailure(parser, "0" + ROLE_DESC_CASHIER, MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "0" + ROLE_DESC_CASHIER, String.format(invalidIndexErrorMessage, "0"));
 
         // invalid arguments being parsed as preamble
-        CommandParserTestUtil.assertParseFailure(parser, "1 some random string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1 random string", String.format(invalidIndexErrorMessage, "1 random string"));
 
         // invalid prefix being parsed as preamble
-        CommandParserTestUtil.assertParseFailure(parser, "1 i/ string", MESSAGE_INVALID_FORMAT);
+        assertParseFailure(parser, "1 i/ string", String.format(invalidIndexErrorMessage, "1 i/ string"));
     }
 
     @Test
     public void parse_invalidRole_failure() {
-        CommandParserTestUtil
-            .assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
+        assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
     }
 
     @Test
@@ -60,7 +70,7 @@ public class WorkerAvailableCommandParserTest {
         Role role = Role.createRole(VALID_ROLE_CHEF);
         WorkerAvailableCommand expectedCommand = new WorkerAvailableCommand(targetIndex, role);
 
-        CommandParserTestUtil.assertParseSuccess(parser, userInput, expectedCommand);
+        assertParseSuccess(parser, userInput, expectedCommand);
     }
 
 }

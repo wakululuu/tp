@@ -43,7 +43,7 @@ public interface Logic {
     ObservableList<Assignment> getFullAssignmentList();
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' McScheduler file path.
      */
     Path getMcSchedulerFilePath();
 

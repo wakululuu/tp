@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
 
-//import static CommandTestUtil.VALID_EMAIL_BOB;
-
 public class EditWorkerDescriptorTest {
 
     @Test

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.StringUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
@@ -16,7 +17,6 @@ import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
 import mcscheduler.model.worker.Address;
-import mcscheduler.model.worker.Email;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
@@ -26,8 +26,6 @@ import mcscheduler.model.worker.Unavailability;
  * Contains utility methods used for parsing strings in the various *Parser classes.
  */
 public class ParserUtil {
-
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
@@ -45,7 +43,7 @@ public class ParserUtil {
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
-            throw new ParseException(MESSAGE_INVALID_INDEX);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, trimmedIndex));
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
     }
@@ -107,21 +105,6 @@ public class ParserUtil {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
         return new Address(trimmedAddress);
-    }
-
-    /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code email} is invalid.
-     */
-    public static Email parseEmail(String email) throws ParseException {
-        requireNonNull(email);
-        String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
-        }
-        return new Email(trimmedEmail);
     }
 
     /**

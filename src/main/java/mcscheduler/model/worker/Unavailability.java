@@ -11,13 +11,13 @@ import mcscheduler.model.shift.ShiftTime;
 import mcscheduler.model.shift.ShiftTimeValue;
 
 /**
- * Represents a Worker's unavailability in the address book.
+ * Represents a Worker's unavailability in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidUnavailability(String)}
  */
 public class Unavailability {
     public static final String MESSAGE_CONSTRAINTS =
             "Unavailability must contain one of the days: MON, TUE, WED, THU, FRI, SAT, SUN and "
-                    + "one of the times: AM, PM, FULL";
+                    + "one of the times: AM, PM, FULL\n";
     private final ShiftDay day;
     private final ShiftTime time;
     private final String unavailability;

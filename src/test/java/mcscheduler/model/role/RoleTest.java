@@ -15,7 +15,7 @@ public class RoleTest {
     }
 
     @Test
-    public void constructor_invalidTagName_throwsIllegalArgumentException() {
+    public void constructor_invalidRoleName_throwsIllegalArgumentException() {
         Assert.assertThrows(IllegalArgumentException.class, () -> Role.createRole(""));
     }
 

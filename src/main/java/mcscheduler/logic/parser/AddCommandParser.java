@@ -13,9 +13,6 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Email;
-
-//import Tag;
 
 /**
  * Parses input arguments and creates a new WorkerAddCommand object

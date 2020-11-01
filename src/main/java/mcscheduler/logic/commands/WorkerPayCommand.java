@@ -10,8 +10,6 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.worker.Worker;
 
-
-
 /**
  * Prints the pay earned by a worker identified using their displayed index.
  */
@@ -25,7 +23,7 @@ public class WorkerPayCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_SHOW_PAY_SUCCESS = "Pay earned by worker (%1$s): $ %2$.2f";
+    public static final String MESSAGE_SHOW_PAY_SUCCESS = "%1$s's pay for the week: $%2$,.2f";
 
     private final Index targetIndex;
 
@@ -39,7 +37,8 @@ public class WorkerPayCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Worker selectedWorker = lastShownList.get(targetIndex.getZeroBased());

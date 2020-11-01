@@ -42,7 +42,7 @@ public class WorkerEditCommandParser implements Parser<WorkerEditCommand> {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    WorkerEditCommand.MESSAGE_USAGE), pe);
+                    pe.getMessage() + WorkerEditCommand.MESSAGE_USAGE), pe);
         }
 
         WorkerEditCommand.EditWorkerDescriptor editWorkerDescriptor = new WorkerEditCommand.EditWorkerDescriptor();

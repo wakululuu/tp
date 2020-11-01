@@ -8,7 +8,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Represents a {@code Worker}, {@code Shift} and {@code Role} Assignment in the App.
+ * Represents a {@code Worker}, {@code Shift} and {@code Role} Assignment in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Assignment {

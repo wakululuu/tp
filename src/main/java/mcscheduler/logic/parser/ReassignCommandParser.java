@@ -47,7 +47,7 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
             newWorkerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER_NEW).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    ReassignCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + ReassignCommand.MESSAGE_USAGE), ive);
         }
 
         Role newRole = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());

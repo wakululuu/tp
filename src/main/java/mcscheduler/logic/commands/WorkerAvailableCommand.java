@@ -58,15 +58,16 @@ public class WorkerAvailableCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (targetIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
-        if (!model.hasRole(this.role)) {
+        if (!model.hasRole(role)) {
             throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, role));
         }
 
         Shift selectedShift = lastShownShiftList.get(targetIndex.getZeroBased());
-        if (!selectedShift.isRoleRequired(this.role)) {
+        if (!selectedShift.isRoleRequired(role)) {
             throw new CommandException(MESSAGE_ROLE_FULL_OR_NOT_REQUIRED);
         }
 
@@ -74,15 +75,14 @@ public class WorkerAvailableCommand extends Command {
 
         if (availableWorkers.size() == 0) {
             return new CommandResult(
-                    String.format(MESSAGE_NO_AVAIL_WORKERS_SUCCESS,
-                            this.targetIndex.getOneBased(), this.role.getRole()));
+                    String.format(MESSAGE_NO_AVAIL_WORKERS_SUCCESS, targetIndex.getOneBased(), role.getRole()));
         }
 
         String printableListOfAvailableWorkers = printListOfAvailableWorkers(availableWorkers);
 
         return new CommandResult(
-                String.format(MESSAGE_HAS_AVAIL_WORKERS_SUCCESS, this.targetIndex.getOneBased(),
-                        this.role.getRole(), printableListOfAvailableWorkers));
+                String.format(MESSAGE_HAS_AVAIL_WORKERS_SUCCESS, targetIndex.getOneBased(), role.getRole(),
+                        printableListOfAvailableWorkers));
     }
 
     private List<Pair<Worker, Index>> findAvailableWorkers(Model model, Shift selectedShift) {

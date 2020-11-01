@@ -19,7 +19,7 @@ import mcscheduler.testutil.TypicalShifts;
 
 public class UniqueShiftListTest {
 
-    private UniqueShiftList uniqueShiftList = new UniqueShiftList();
+    private final UniqueShiftList uniqueShiftList = new UniqueShiftList();
 
     @Test
     public void contains() {

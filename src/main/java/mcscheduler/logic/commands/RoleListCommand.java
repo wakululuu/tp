@@ -8,7 +8,7 @@ import mcscheduler.model.Model;
 import mcscheduler.model.role.Role;
 
 /**
- * Lists all roles in the address book to the user.
+ * Lists all roles in the McScheduler to the user.
  */
 public class RoleListCommand extends Command {
 

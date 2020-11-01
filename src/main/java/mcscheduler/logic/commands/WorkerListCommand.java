@@ -6,7 +6,7 @@ import static mcscheduler.model.Model.PREDICATE_SHOW_ALL_WORKERS;
 import mcscheduler.model.Model;
 
 /**
- * Lists all workers in the address book to the user.
+ * Lists all workers in the McScheduler to the user.
  */
 public class WorkerListCommand extends Command {
 
