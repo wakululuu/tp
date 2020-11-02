@@ -16,7 +16,7 @@ import mcscheduler.model.worker.UniqueWorkerList;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the McScheduler level
  * Duplicates are not allowed (by .isSameWorker, .isSameShift and .isSameAssignment comparison)
  */
 public class McScheduler implements ReadOnlyMcScheduler {

@@ -129,8 +129,6 @@ public class ReassignCommand extends Command {
         }
 
         model.setAssignment(assignmentToRemove, assignmentToAdd);
-        Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
-        Shift.updateRoleRequirements(model, newShift, newRole);
 
         return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
     }
