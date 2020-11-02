@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:id="placeHolder" styleClass="pane-with-border" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1">
+  <StackPane fx:id="roleTitlePlaceholder" styleClass="cell_header">
+    <Label fx:id="roleTitle" styleClass="cell_big_title" text="Roles" />
+  </StackPane>
+  <ListView fx:id="roleListView" VBox.vgrow="ALWAYS" />
+</VBox>

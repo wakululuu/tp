@@ -33,6 +33,7 @@ public class MainWindow extends UiPart<Stage> {
     // Independent Ui parts residing in this Ui container
     private WorkerListPanel workerListPanel;
     private ShiftListPanel shiftListPanel;
+    private RoleListPanel roleListPanel;
     private ResultDisplay resultDisplay;
     private final HelpWindow helpWindow;
 
@@ -47,6 +48,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane shiftListPanelPlaceholder;
+
+    @FXML
+    private StackPane roleListPanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -119,6 +123,9 @@ public class MainWindow extends UiPart<Stage> {
 
         shiftListPanel = new ShiftListPanel(logic.getFilteredShiftList(), logic.getFullAssignmentList());
         shiftListPanelPlaceholder.getChildren().add(shiftListPanel.getRoot());
+
+        roleListPanel = new RoleListPanel(logic.getFilteredRoleList());
+        roleListPanelPlaceholder.getChildren().add(roleListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
