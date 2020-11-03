@@ -364,9 +364,7 @@ Format: `take-leave s/SHIFT_INDEX w/WORKER_INDEX...`
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
-* An error message will be shown in the following situations:
-  * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
-  * Any of the worker is already assigned to a role for that shift.
+* An error message will be shown if any of the workers are unavailable for that shift, since there is no reason to take leave then.
 
 Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
@@ -388,8 +386,7 @@ the same as `mass-take-leave t/AM t/PM d/MON d/FRI w/2`, though the latter synta
 work as intended - leave taken on Sunday morning to Monday morning.
 * Shifts will be created for all day and time combinations within the specified range that does not have a shift already
 present within the McScheduler. These shifts will have no role requirements.
-* An error message will be shown in the following situations:
-  * The worker has an assigned role in any one of the shifts within the day/time range.
+* While the command will still go through, a warning message will be shown when the worker has an assigned role in any one of the shifts within the day/time range.
   
 Examples:
 * `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
