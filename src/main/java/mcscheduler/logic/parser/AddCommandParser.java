@@ -1,7 +1,8 @@
 package mcscheduler.logic.parser;
 
+import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
+
 import java.util.Set;
-import java.util.stream.Stream;
 
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.WorkerAddCommand;
@@ -46,14 +47,6 @@ public class AddCommandParser implements Parser<WorkerAddCommand> {
         Worker worker = new Worker(name, phone, pay, address, roleList, unavailableTimings);
 
         return new WorkerAddCommand(worker);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }
