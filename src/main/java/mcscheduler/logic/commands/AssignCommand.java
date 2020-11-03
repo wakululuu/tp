@@ -75,7 +75,6 @@ public class AssignCommand extends Command {
         List<Assignment> assignmentsToAdd = new ArrayList<>();
         // Hashmap to count if multiple assigns goes over the role requirement
         Map<Role, Integer> requiredRoles = new HashMap<>();
-        
         // Check for: worker existence, model hasRole, worker is fit, worker is available, role required in shift
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
