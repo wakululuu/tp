@@ -86,6 +86,11 @@ public class Shift {
      */
     public static void updateRoleRequirements(Model model, Shift shiftToUpdate, Role role) {
         CollectionUtil.requireAllNonNull(model, shiftToUpdate, role);
+        assert model.hasShift(shiftToUpdate);
+        if (role.equals(new Leave())) {
+            return; // no need to update role requirements for leave
+        }
+
         int quantityFilled = shiftToUpdate.countRoleQuantityFilled(model, role);
         Set<RoleRequirement> updatedRoleRequirements = shiftToUpdate.getUpdatedRoleRequirements(role, quantityFilled);
 
