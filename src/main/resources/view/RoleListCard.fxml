@@ -23,7 +23,7 @@
                         <Region fx:constant="USE_PREF_SIZE" />
                     </minWidth>
                 </Label>
-                <Label fx:id="roleLabel" text="\$first" styleClass="cell_big_label" />
+                <Label fx:id="roleLabel" text="\$first" styleClass="cell_big_label" wrapText="true" />
             </HBox>
         </VBox>
     </GridPane>
