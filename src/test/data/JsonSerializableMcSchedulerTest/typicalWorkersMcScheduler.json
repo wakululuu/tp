@@ -124,12 +124,33 @@
           "quantityFilled": 1
         }
       ]
+    },
+    {
+      "day": "TUE",
+      "time": "PM",
+      "roleRequirements": [
+        {
+          "role": "cashier",
+          "quantityRequired": 2,
+          "quantityFilled": 0
+        },
+        {
+          "role": "cleaner",
+          "quantityRequired": 2,
+          "quantityFilled": 0
+        },
+        {
+          "role": "chef",
+          "quantityRequired": 2,
+          "quantityFilled": 0
+        }
+      ]
     }
   ],
   "assignments": [],
   "validRoles": [
     "cashier",
     "chef",
-    "janitor"
+    "cleaner"
   ]
 }

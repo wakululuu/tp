@@ -25,7 +25,7 @@ public class TypicalShifts {
             .withRoleRequirements("cashier 2 0", "cleaner 2 0", "chef 2 0").build();
 
     public static List<Shift> getTypicalShifts() {
-        return new ArrayList<>(Arrays.asList(SHIFT_A, SHIFT_B, SHIFT_C));
+        return new ArrayList<>(Arrays.asList(SHIFT_A, SHIFT_B, SHIFT_C, SHIFT_D));
     }
 
 }
