@@ -258,6 +258,11 @@ public class WorkerAddCommandTest {
         }
 
         @Override
+        public void setRole(Role target, Role editedRole) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public ObservableList<Role> getFilteredRoleList() {
             throw new AssertionError("This method should not be called.");
         }

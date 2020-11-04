@@ -3,7 +3,6 @@ package mcscheduler.logic.parser;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.RoleEditCommand;
-import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.role.Role;
 
