@@ -16,8 +16,8 @@ import mcscheduler.model.shift.ShiftTimeValue;
  */
 public class Unavailability {
     public static final String MESSAGE_CONSTRAINTS =
-            "Unavailability must contain one of the days: MON, TUE, WED, THU, FRI, SAT, SUN and "
-                    + "one of the times: AM, PM, FULL\n";
+            "An unavailability can only contain one of the days: MON, TUE, WED, THU, FRI, SAT, SUN and/or "
+                    + "one of the times: AM, PM\n";
     private final ShiftDay day;
     private final ShiftTime time;
     private final String unavailability;
@@ -31,7 +31,10 @@ public class Unavailability {
         requireNonNull(unavailability);
         AppUtil.checkArgument(isValidUnavailability(unavailability), MESSAGE_CONSTRAINTS);
         this.day = new ShiftDay(unavailability.split(" ")[0]);
-        this.time = new ShiftTime(unavailability.split(" ")[1]);
+
+        // To account for white spaces between day and time
+        int timeIndex = unavailability.split(" ").length - 1;
+        this.time = new ShiftTime(unavailability.split(" ")[timeIndex]);
         this.unavailability = unavailability;
     }
 
@@ -40,9 +43,16 @@ public class Unavailability {
      */
     public static boolean isValidUnavailability(String test) {
         String[] splitString = test.split(" ");
+        boolean hasTwoKeywords = test.split("\\s+").length == 2;
         try {
+            if (!hasTwoKeywords) {
+                return false;
+            }
             ShiftDayValue.valueOf(splitString[0].toUpperCase());
-            ShiftTimeValue.valueOf(splitString[1].toUpperCase());
+
+            // To account for white spaces between day and time
+            int shiftTimeIndex = splitString.length - 1;
+            ShiftTimeValue.valueOf(splitString[shiftTimeIndex].toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         } catch (ArrayIndexOutOfBoundsException e) {
