@@ -80,7 +80,7 @@ public class MassTakeLeaveCommandTest {
 
         assertEquals(model, expectedModel);
         assertEquals(result.getFeedbackToUser(), String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
-            new Shift(mon, am, Collections.emptySet()), shiftTueAm));
+            mon, am, tue, am, BENSON.getName()));
     }
 
     @Test
@@ -105,9 +105,8 @@ public class MassTakeLeaveCommandTest {
         assertTrue(assignmentInModel.isPresent());
         assertEquals(assignmentInModel.get().getRole(), new Leave());
         assertEquals(String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
-                new Shift(mon, am, Collections.emptySet()),
-                new Shift(tue, pm, Collections.emptySet()))
-                + String.format(MESSAGE_REASSIGNED, "\n" + assignment1.toString()),
+                mon, am, tue, pm, ALICE.getName())
+                + "\n" + String.format(MESSAGE_REASSIGNED, "\n" + assignment1.toString()),
                 commandResult1.getFeedbackToUser());
 
     }

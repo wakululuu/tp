@@ -87,8 +87,8 @@ public class ReassignCommandTest {
             .withWorker(newWorker)
             .withRole(VALID_ROLE_CHEF).build();
 
-        assertEquals(String.format(ReassignCommand.MESSAGE_REASSIGN_SUCCESS, validReassignment),
-            commandResult.getFeedbackToUser());
+        assertEquals(String.format(ReassignCommand.MESSAGE_REASSIGN_SUCCESS,
+                validReassignment, oldAssignment.getRole()), commandResult.getFeedbackToUser());
         assertFalse(model.hasAssignment(oldAssignment));
         assertTrue(model.hasAssignment(validReassignment));
         model.setAssignment(validReassignment, oldAssignment);

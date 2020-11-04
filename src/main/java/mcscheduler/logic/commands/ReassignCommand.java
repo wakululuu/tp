@@ -37,7 +37,7 @@ public class ReassignCommand extends Command {
             + "sn/2 "
             + "r/Cashier";
 
-    public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made: %1$s";
+    public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made: %1$s | Previous Role: %2$s ";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
     public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
@@ -129,7 +129,8 @@ public class ReassignCommand extends Command {
         Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
         Shift.updateRoleRequirements(model, newShift, newRole);
 
-        return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
+        return new CommandResult(
+                String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd, assignmentToRemove.getRole()));
     }
 
 

@@ -10,7 +10,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import mcscheduler.commons.core.Messages;
@@ -43,8 +42,8 @@ public class MassTakeLeaveCommand extends Command {
             + "Example: " + COMMAND_WORD
             + " w/2 d/Mon t/PM d/Wed t/AM ";
 
-    public static final String MESSAGE_MASS_TAKE_LEAVE_SUCCESS = "Leave added from shift {%1$s} to shift {%2$s}. ";
-    public static final String MESSAGE_REASSIGNED = ReassignCommand.MESSAGE_REASSIGN_SUCCESS;
+    public static final String MESSAGE_MASS_TAKE_LEAVE_SUCCESS = "Leave added for %5$s from %1$s %2$s to %3$s %4$s. ";
+    public static final String MESSAGE_REASSIGNED = "Reassignments made: %1$s";
 
     private final Index workerIndex;
     private final ShiftDay startDay;
@@ -105,14 +104,13 @@ public class MassTakeLeaveCommand extends Command {
         }
 
         String resultMessage = String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
-                new Shift(startDay, startTime, Collections.emptySet()),
-                new Shift(endDay, endTime, Collections.emptySet()));
+                startDay, startTime, endDay, endTime, worker.getName());
         if (reassignedAssignments.size() > 0) {
             String reassignedMessage = reassignedAssignments
                     .stream()
                     .map(Assignment::toString)
                     .reduce("", (str1, str2) -> str1 + "\n" + str2);
-            resultMessage += String.format(MESSAGE_REASSIGNED, reassignedMessage);
+            resultMessage += "\n" + String.format(MESSAGE_REASSIGNED, reassignedMessage);
         }
 
         return new CommandResult(resultMessage);

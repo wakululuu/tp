@@ -75,7 +75,8 @@ public class TakeLeaveCommandTest {
         Assignment assignment = new Assignment(SHIFT_A, DANIEL, new Leave());
 
         assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
-                + "\n" + ReassignCommand.MESSAGE_REASSIGN_SUCCESS, assignment), result.getFeedbackToUser());
+                + "\n" + ReassignCommand.MESSAGE_REASSIGN_SUCCESS, assignment, Role.createRole("test")),
+                result.getFeedbackToUser());
         assertEquals(Arrays.asList(assignment), model.assignments);
     }
 
