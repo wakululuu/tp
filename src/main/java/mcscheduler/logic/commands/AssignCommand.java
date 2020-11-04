@@ -121,7 +121,6 @@ public class AssignCommand extends Command {
                 throw new CommandException(
                     String.format(MESSAGE_DUPLICATE_ASSIGNMENT, model.getAssignment(assignmentToAdd).get()));
             }
-            
             assignmentsToAdd.add(assignmentToAdd);
         }
 
