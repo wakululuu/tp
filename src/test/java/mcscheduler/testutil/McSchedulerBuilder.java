@@ -3,7 +3,6 @@ package mcscheduler.testutil;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CLEANER;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_JANITOR;
 
 import mcscheduler.model.McScheduler;
 import mcscheduler.model.assignment.Assignment;

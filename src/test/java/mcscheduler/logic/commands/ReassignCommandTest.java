@@ -3,7 +3,6 @@ package mcscheduler.logic.commands;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CLEANER;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_JANITOR;
 import static mcscheduler.logic.commands.CommandTestUtil.assertCommandFailure;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
