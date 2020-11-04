@@ -219,7 +219,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     // role-level operations
 
     /**
-     * Returns true if an role with the same identity as {@code role} exists in the McScheduler.
+     * Returns true if a role with the same identity as {@code role} exists in the McScheduler.
      */
     public boolean hasRole(Role role) {
         requireNonNull(role);
@@ -227,7 +227,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     }
 
     /**
-     * Adds an role to the McScheduler.
+     * Adds a role to the McScheduler.
      * The role must not already exist in the McScheduler.
      */
     public void addRole(Role p) {

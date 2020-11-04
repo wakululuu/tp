@@ -19,6 +19,7 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
+//@@author WangZijun97
 public class CancelLeaveCommandParserTest {
     private final CancelLeaveCommandParser parser = new CancelLeaveCommandParser();
 

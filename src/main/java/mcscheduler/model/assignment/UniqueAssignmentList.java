@@ -14,13 +14,9 @@ import mcscheduler.model.assignment.exceptions.DuplicateAssignmentException;
 
 /**
  * A list of assignments that enforces uniqueness between its elements and does not allow nulls.
- * An assignment is considered unique by comparing using {@code Assignment#isSameAssignment(Assignment)}. As such,
- * adding and updating of assignments uses Assignment#isSameAssignment(Assignment) for equality so as to ensure that
- * the assignment being added or updated is unique in terms of identity in the UniqueAssignmentList.
+ * An assignment is considered unique by comparing using {@code Assignment#equals(Assignment)}.
  *
  * Supports a minimal set of list operations.
- *
- * @see Assignment#isSameAssignment(Assignment)
  */
 public class UniqueAssignmentList implements Iterable<Assignment> {
 
@@ -33,7 +29,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
      */
     public boolean contains(Assignment toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::isSameAssignment);
+        return internalList.stream().anyMatch(toCheck::equals);
     }
 
     /**
@@ -44,7 +40,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
 
         return internalList
                 .stream()
-                .filter(assignment -> assignment.isSameAssignment(toGet))
+                .filter(assignment -> assignment.equals(toGet))
                 .findFirst();
     }
 
@@ -74,7 +70,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
             throw new AssignmentNotFoundException();
         }
 
-        if (!target.isSameAssignment(editedAssignment) && contains(editedAssignment)) {
+        if (!target.equals(editedAssignment) && contains(editedAssignment)) {
             throw new DuplicateAssignmentException();
         }
 
@@ -140,7 +136,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
     private boolean assignmentsAreUnique(List<Assignment> assignments) {
         for (int i = 0; i < assignments.size() - 1; i++) {
             for (int j = i + 1; j < assignments.size(); j++) {
-                if (assignments.get(i).isSameAssignment(assignments.get(j))) {
+                if (assignments.get(i).equals(assignments.get(j))) {
                     return false;
                 }
             }

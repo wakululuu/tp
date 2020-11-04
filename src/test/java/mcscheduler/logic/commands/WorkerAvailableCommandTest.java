@@ -21,6 +21,7 @@ import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
+//@@author plosslaw
 /**
  * Contains integration tests (interaction with the Model)
  * and unit tests for WorkerAvailableCommand.

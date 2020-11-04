@@ -37,9 +37,9 @@ class JsonAdaptedWorker {
      */
     @JsonCreator
     public JsonAdaptedWorker(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                             @JsonProperty("pay") String pay, @JsonProperty("address") String address,
-                             @JsonProperty("roles") List<JsonAdaptedRole> roles,
-                             @JsonProperty("unavailableTimings") List<JsonAdaptedUnavailability> unavailableTimings) {
+            @JsonProperty("pay") String pay, @JsonProperty("address") String address,
+            @JsonProperty("roles") List<JsonAdaptedRole> roles,
+            @JsonProperty("unavailableTimings") List<JsonAdaptedUnavailability> unavailableTimings) {
         this.name = name;
         this.phone = phone;
         this.pay = pay;

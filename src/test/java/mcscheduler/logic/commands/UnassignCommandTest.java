@@ -35,22 +35,19 @@ public class UnassignCommandTest {
     public void constructor_nullShiftIndex_throwsNullPointerException() {
         Set<Index> validWorker = new HashSet<>();
         validWorker.add(INDEX_FIRST_WORKER);
-        Assert.assertThrows(NullPointerException.class, () ->
-            new UnassignCommand(null, validWorker));
+        Assert.assertThrows(NullPointerException.class, () -> new UnassignCommand(null, validWorker));
     }
 
     @Test
     public void constructor_nullWorkerIndex_throwsNullPointerException() {
         Set<Index> nullWorker = new HashSet<>();
         nullWorker.add(null);
-        Assert.assertThrows(NullPointerException.class, () ->
-            new UnassignCommand(INDEX_FIRST_SHIFT, nullWorker));
+        Assert.assertThrows(NullPointerException.class, () -> new UnassignCommand(INDEX_FIRST_SHIFT, nullWorker));
     }
 
     @Test
     public void constructor_nullWorkerIndexSet_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () ->
-            new UnassignCommand(INDEX_FIRST_SHIFT, null));
+        Assert.assertThrows(NullPointerException.class, () -> new UnassignCommand(INDEX_FIRST_SHIFT, null));
     }
 
     @Test
@@ -70,11 +67,14 @@ public class UnassignCommandTest {
         Shift shiftToUnassign = TestUtil.getShift(model, INDEX_SECOND_SHIFT);
         Worker workerToUnassign = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
         // the model has the role of cashier
-        Assignment validAssignment = new AssignmentBuilder().withShift(shiftToUnassign)
-            .withWorker(workerToUnassign).withRole(VALID_ROLE_CASHIER).build();
+        Assignment validAssignment = new AssignmentBuilder()
+                .withShift(shiftToUnassign)
+                .withWorker(workerToUnassign)
+                .withRole(VALID_ROLE_CASHIER)
+                .build();
 
         assertEquals(String.format(UnassignCommand.MESSAGE_UNASSIGN_SUCCESS + "\n", 1, validAssignment),
-            commandResult.getFeedbackToUser());
+                commandResult.getFeedbackToUser());
         assertEquals(Arrays.asList(), model.getFullAssignmentList());
     }
 
@@ -116,7 +116,7 @@ public class UnassignCommandTest {
                 TestUtil.getWorker(model, INDEX_FIRST_WORKER)).toString();
 
         assertCommandFailure(unassignCommand, model,
-            String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
+                String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
     }
 
     @Test

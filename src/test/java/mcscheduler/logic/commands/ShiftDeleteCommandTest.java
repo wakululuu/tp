@@ -20,6 +20,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 
+//@@author plosslaw
 public class ShiftDeleteCommandTest {
 
     private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());

@@ -34,18 +34,14 @@ public class AssignCommandParser implements Parser<AssignCommand> {
         }
 
         Index shiftIndex;
-        //Index workerIndex;
         Set<WorkerRolePair> workerRolePairs;
         try {
             shiftIndex = ParserUtil.parseIndex(argMultimap.getValue(CliSyntax.PREFIX_SHIFT).get());
-            //workerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER).get());
             workerRolePairs = ParserUtil.parseWorkerRoles(argMultimap.getAllValues(CliSyntax.PREFIX_WORKER_ROLE));
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     ive.getMessage() + AssignCommand.MESSAGE_USAGE), ive);
         }
-
-        //Role role = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
         return new AssignCommand(shiftIndex, workerRolePairs);
     }

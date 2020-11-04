@@ -14,7 +14,7 @@ public class ShiftDay {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Shift day should only contain one of the following values: MON, TUE, WED, THUR, FRI, SAT, SUN\n";
+            "Shift day should only contain one of the following values: MON, TUE, WED, THU, FRI, SAT, SUN\n";
     public final ShiftDayValue day;
 
     /**

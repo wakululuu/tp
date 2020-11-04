@@ -123,6 +123,7 @@ public class ParserUtilTest {
         assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithWhitespace));
     }
 
+    //@@author tnsyn
     @Test
     public void parseRole_null_throwsNullPointerException() {
         Assert.assertThrows(NullPointerException.class, () -> ParserUtil.parseRole(null));

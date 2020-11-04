@@ -31,6 +31,7 @@ import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.ShiftBuilder;
 import mcscheduler.testutil.TestUtil;
 
+//@@author
 public class ShiftEditCommandTest {
 
     private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());

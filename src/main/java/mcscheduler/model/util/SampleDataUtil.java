@@ -19,6 +19,7 @@ import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
 
+//@@author
 /**
  * Contains utility methods for populating {@code McScheduler} with sample data.
  */
@@ -84,6 +85,7 @@ public class SampleDataUtil {
         };
     }
 
+    //@@author wakululuu
     public static Role[] getSampleRoles() {
         return new Role[] {
             SAMPLE_ROLE_CASHIER, SAMPLE_ROLE_CHEF, SAMPLE_ROLE_JANITOR
@@ -96,6 +98,7 @@ public class SampleDataUtil {
         };
     }
 
+    //@@author
     public static ReadOnlyMcScheduler getSampleMcScheduler() {
         McScheduler sampleAb = new McScheduler();
         for (Worker sampleWorker : getSampleWorkers()) {
