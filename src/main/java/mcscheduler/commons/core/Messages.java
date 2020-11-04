@@ -23,7 +23,8 @@ public class Messages {
             "No assignment found between worker: %1$s and shift: %2$s";
     public static final String MESSAGE_NO_LEAVE_FOUND =
             "No leave found between worker: %1$s and shift: %2$s";
-    public static final String MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED = "The role is not required for this shift";
+    public static final String MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED =
+            "The %1$s role is not required or is filled for %2$s";
 
 
 }
