@@ -39,7 +39,8 @@ public class WorkerTest {
         // same name, same phone, different attributes -> returns true
         editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withPay(CommandTestUtil.VALID_PAY_BOB).withAddress(
             CommandTestUtil.VALID_ADDRESS_BOB)
-            .withRoles(CommandTestUtil.VALID_ROLE_CASHIER).build();
+            .withRoles(CommandTestUtil.VALID_ROLE_CASHIER)
+                .withUnavailableTimings(CommandTestUtil.VALID_UNAVAILABILITY).build();
         assertTrue(TypicalWorkers.ALICE.isSameWorker(editedAlice));
     }
 
@@ -79,6 +80,11 @@ public class WorkerTest {
 
         // different roles -> returns false
         editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withRoles(CommandTestUtil.VALID_ROLE_CHEF).build();
+        assertNotEquals(editedAlice, TypicalWorkers.ALICE);
+
+        // different unavailabilities -> returns false
+        editedAlice = new WorkerBuilder(TypicalWorkers.ALICE)
+                .withUnavailableTimings(CommandTestUtil.VALID_UNAVAILABILITY).build();
         assertNotEquals(editedAlice, TypicalWorkers.ALICE);
     }
 }
