@@ -152,7 +152,7 @@ Examples:
 
 * `worker-edit 2 n/Betsy Crower p/7 u/Mon full` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
-<!-- ### Locating workers by name: `worker find`
+### Locating workers by name: `worker-find`
 
 Finds workers whose names contain any of the given keywords.
 
@@ -168,8 +168,7 @@ Format: `worker find KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `worker find John` returns `john` and `John Doe`
 
-* `worker find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'worker find alex david'](images/findAlexDavidResult.png) -->
+* `worker find alex david` returns `Alex Yeoh`, `David Li`
 
 ### Deleting a worker: `worker-delete`
 
@@ -465,6 +464,7 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon am`
 Worker | **List** | `worker-list`
+Worker | **Find** | `worker-find KEYWORD [MORE_KEYWORDS]`
 Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`

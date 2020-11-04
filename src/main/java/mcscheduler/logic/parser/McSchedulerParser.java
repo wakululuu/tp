@@ -9,7 +9,6 @@ import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.Command;
 import mcscheduler.logic.commands.ExitCommand;
-import mcscheduler.logic.commands.FindCommand;
 import mcscheduler.logic.commands.HelpCommand;
 import mcscheduler.logic.commands.MassCancelLeaveCommand;
 import mcscheduler.logic.commands.MassTakeLeaveCommand;
@@ -27,6 +26,7 @@ import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerEditCommand;
+import mcscheduler.logic.commands.WorkerFindCommand;
 import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.commands.WorkerPayCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
@@ -76,7 +76,7 @@ public class McSchedulerParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
+        case WorkerFindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
         case WorkerListCommand.COMMAND_WORD:
