@@ -46,4 +46,3 @@ public class ShiftListPanel extends UiPart<Region> {
         }
     }
 }
-
