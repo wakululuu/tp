@@ -118,7 +118,9 @@ public class ReassignCommandParserTest {
 
         // invalid role
         assertParseFailure(parser, VALID_OLD_WORKER_INDEX_1 + VALID_NEW_WORKER_INDEX_1 + VALID_OLD_SHIFT_INDEX_1
-                + VALID_NEW_SHIFT_INDEX_1 + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS);
+                + VALID_NEW_SHIFT_INDEX_1 + INVALID_ROLE_DESC,
+            String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                "Role", INVALID_ROLE_DESC.substring(3), Role.MESSAGE_CONSTRAINTS));
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_OLD_WORKER_INDEX + VALID_NEW_WORKER_INDEX_1 + VALID_OLD_SHIFT_INDEX_1

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -158,7 +159,7 @@ public class TakeLeaveCommandTest {
 
     /**
      * Similarly, this stub replaces all methods regarding assignment, but always returns true for
-     * {@code hasAssignment()}.
+     * {@code hasAssignment()} and returns a mock assignment for {@code getAssignment}
      */
     private class ModelStubAlreadyHasAssignment extends ModelStubAcceptingLeaveAdded {
 
@@ -169,6 +170,11 @@ public class TakeLeaveCommandTest {
         @Override
         public boolean hasAssignment(Assignment assignment) {
             return true;
+        }
+
+        @Override
+        public Optional<Assignment> getAssignment(Assignment toGet) {
+            return Optional.of(toGet);
         }
     }
 

@@ -81,23 +81,29 @@ public class AssignCommandParserTest {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, "%1$s" + AssignCommand.MESSAGE_USAGE);
         String invalidIndexExpectedMessage = String.format(expectedMessage,
                 String.format(Messages.MESSAGE_INVALID_DISPLAYED_INDEX, "a"));
+        String invalidParseExpectedMessage = String.format(expectedMessage, Messages.MESSAGE_INVALID_PARSE_VALUE);
 
         // invalid shift index
         assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1 + " " + VALID_ROLE_CHEF,
                 invalidIndexExpectedMessage);
 
         // invalid worker index
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + INVALID_WORKER_INDEX + " " + VALID_ROLE_CHEF,
-            String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
+        String workerRoleInput = INVALID_WORKER_INDEX + " " + VALID_ROLE_CHEF;
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + workerRoleInput,
+            String.format(invalidParseExpectedMessage,
+                    "Worker-Role pair", workerRoleInput.substring(3), WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // multiple indexes in worker-role prefix
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " "
-            + TypicalIndexes.INDEX_SECOND_WORKER + VALID_ROLE_CASHIER,
-                String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
+        workerRoleInput = VALID_WORKER_INDEX_1 + " " + TypicalIndexes.INDEX_SECOND_WORKER + VALID_ROLE_CASHIER;
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + workerRoleInput,
+            String.format(invalidParseExpectedMessage,
+                    "Worker-Role pair", workerRoleInput.substring(3), WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // invalid worker-role regex
-        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + VALID_WORKER_INDEX_1 + " " + INVALID_ROLE,
-            String.format(expectedMessage, WorkerRolePair.MESSAGE_CONSTRAINTS));
+        workerRoleInput = VALID_WORKER_INDEX_1 + " " + INVALID_ROLE;
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + workerRoleInput,
+            String.format(invalidParseExpectedMessage,
+                    "Worker-Role pair", workerRoleInput.substring(3), WorkerRolePair.MESSAGE_CONSTRAINTS));
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_SHIFT_INDEX + VALID_WORKER_INDEX_1 + " " + INVALID_ROLE,

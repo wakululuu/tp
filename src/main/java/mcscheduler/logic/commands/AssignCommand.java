@@ -97,7 +97,8 @@ public class AssignCommand extends Command {
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
             if (model.hasAssignment(assignmentToAdd)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
+                throw new CommandException(
+                    String.format(MESSAGE_DUPLICATE_ASSIGNMENT, model.getAssignment(assignmentToAdd).get()));
             }
             assignmentsToAdd.add(assignmentToAdd);
         }
