@@ -29,6 +29,7 @@ import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
 
+//@@author WangZijun97
 public class MassTakeLeaveCommandTest {
 
     private Model model = new ModelManager(new McScheduler(), new UserPrefs());

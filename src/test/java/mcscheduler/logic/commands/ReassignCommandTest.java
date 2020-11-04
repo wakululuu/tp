@@ -33,6 +33,7 @@ import mcscheduler.testutil.AssignmentBuilder;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 
+//@@author tnsyn
 public class ReassignCommandTest {
     @Test
     public void constructor_nullOldWorkerIndex_throwsNullPointerException() {

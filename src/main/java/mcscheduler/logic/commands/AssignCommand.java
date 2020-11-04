@@ -131,7 +131,6 @@ public class AssignCommand extends Command {
 
             assignStringBuilder.append(assignment);
             assignStringBuilder.append("\n");
-            Shift.updateRoleRequirements(model, assignment.getShift(), assignment.getRole());
         }
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
         model.updateFilteredWorkerList(PREDICATE_SHOW_ALL_WORKERS);

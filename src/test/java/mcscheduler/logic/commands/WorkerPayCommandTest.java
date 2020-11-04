@@ -20,6 +20,7 @@ import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 
+//@@author plosslaw
 /**
  * Contains integration tests (interaction with the Model) and unit tests for
  * {@code WorkerDeleteCommand}.

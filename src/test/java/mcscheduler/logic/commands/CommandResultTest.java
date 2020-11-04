@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
+//@@author
 public class CommandResultTest {
     @Test
     public void equals() {

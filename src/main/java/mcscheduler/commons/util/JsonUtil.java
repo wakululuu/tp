@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import mcscheduler.commons.core.LogsCenter;
 import mcscheduler.commons.exceptions.DataConversionException;
 
+//@@author
 /**
  * Converts a Java object instance to JSON and vice versa
  */
