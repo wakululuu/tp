@@ -62,7 +62,7 @@ public class WorkerAvailableCommandParserTest {
     public void parse_invalidRole_failure() {
         assertParseFailure(parser, "1" + INVALID_ROLE_DESC,
             String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
-                "Role", INVALID_ROLE_DESC.substring(3), Role.MESSAGE_CONSTRAINTS)); // invalid tag
+                "Role", INVALID_ROLE_DESC.substring(3), Role.MESSAGE_CONSTRAINTS)); // invalid role
     }
 
     @Test

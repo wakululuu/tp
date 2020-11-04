@@ -117,8 +117,8 @@ public class WorkerEditCommandParserTest {
                 String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
                         "Phone number", INVALID_PHONE_DESC.substring(4), Phone.MESSAGE_CONSTRAINTS));
 
-        // while parsing {@code PREFIX_ROLE} alone will reset the tags of the {@code Worker} being edited,
-        // parsing it together with a valid tag results in error
+        // while parsing {@code PREFIX_ROLE} alone will reset the roles of the {@code Worker} being edited,
+        // parsing it together with a valid role results in error
         assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY,
                 String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
                         "Role", ROLE_EMPTY.substring(3), Role.MESSAGE_CONSTRAINTS));
