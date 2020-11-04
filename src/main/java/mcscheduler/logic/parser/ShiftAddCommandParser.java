@@ -3,9 +3,9 @@ package mcscheduler.logic.parser;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
+import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.ShiftAddCommand;
@@ -43,13 +43,5 @@ public class ShiftAddCommandParser implements Parser<ShiftAddCommand> {
         Shift shift = new Shift(shiftDay, shiftTime, roleReqList);
 
         return new ShiftAddCommand(shift);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }

@@ -19,6 +19,7 @@ import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
+//@@author
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
  * {@code WorkerDeleteCommand}.

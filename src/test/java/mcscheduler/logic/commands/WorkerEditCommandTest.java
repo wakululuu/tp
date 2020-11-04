@@ -29,6 +29,7 @@ import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.WorkerBuilder;
 
+//@@author
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand)
  * and unit tests for WorkerEditCommand.
@@ -150,6 +151,7 @@ public class WorkerEditCommandTest {
                 String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
+    //@@author wakululuu
     @Test
     public void execute_roleNotFound_throwsCommandException() {
         WorkerEditCommand editCommand = new WorkerEditCommand(INDEX_FIRST_WORKER,
@@ -158,6 +160,7 @@ public class WorkerEditCommandTest {
         assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "Random role"));
     }
 
+    //@@author
     @Test
     public void equals() {
         final WorkerEditCommand standardCommand = new WorkerEditCommand(INDEX_FIRST_WORKER, DESC_AMY);

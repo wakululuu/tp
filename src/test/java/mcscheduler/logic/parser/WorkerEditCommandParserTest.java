@@ -44,6 +44,7 @@ import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.testutil.EditWorkerDescriptorBuilder;
 
+//@@author
 public class WorkerEditCommandParserTest {
 
     private static final String ROLE_EMPTY = " " + PREFIX_ROLE;

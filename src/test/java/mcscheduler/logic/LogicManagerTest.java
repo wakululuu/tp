@@ -35,6 +35,7 @@ import mcscheduler.storage.JsonUserPrefsStorage;
 import mcscheduler.storage.StorageManager;
 import mcscheduler.testutil.WorkerBuilder;
 
+//@@author
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy exception");
 

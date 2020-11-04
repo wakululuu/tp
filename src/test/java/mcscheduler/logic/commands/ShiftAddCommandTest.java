@@ -37,7 +37,7 @@ public class ShiftAddCommandTest {
     @Test
     public void execute_shiftAcceptedByModel_addSuccessful() throws Exception {
         ShiftAddCommandTest.ModelStubAcceptingShiftAdded modelStub =
-            new ShiftAddCommandTest.ModelStubAcceptingShiftAdded();
+                new ShiftAddCommandTest.ModelStubAcceptingShiftAdded();
         Shift validShift = new ShiftBuilder().build();
 
         CommandResult commandResult = new ShiftAddCommand(validShift).execute(modelStub);
@@ -52,8 +52,8 @@ public class ShiftAddCommandTest {
         ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
         ShiftAddCommandTest.ModelStub modelStub = new ShiftAddCommandTest.ModelStubWithShift(validShift);
 
-        Assert.assertThrows(CommandException.class,
-            ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () -> shiftAddCommand.execute(modelStub));
+        Assert.assertThrows(CommandException.class, ShiftAddCommand.MESSAGE_DUPLICATE_SHIFT, () ->
+                shiftAddCommand.execute(modelStub));
     }
 
     @Test
@@ -62,12 +62,12 @@ public class ShiftAddCommandTest {
         ShiftAddCommand shiftAddCommand = new ShiftAddCommand(validShift);
         ModelStub modelStub = new ModelStubAcceptingShiftAdded();
 
-        Assert
-            .assertThrows(CommandException.class,
+        Assert.assertThrows(CommandException.class,
                 String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
-                    shiftAddCommand.execute(modelStub));
+                        shiftAddCommand.execute(modelStub));
     }
 
+    //@@author
     @Test
     public void equals() {
         Shift shift1 = new ShiftBuilder().withShiftDay("FRI").withShiftTime("AM").build();
@@ -202,6 +202,7 @@ public class ShiftAddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        //@@author wakululuu
         @Override
         public ObservableList<Shift> getFullShiftList() {
             throw new AssertionError("This method should not be called.");
@@ -258,11 +259,6 @@ public class ShiftAddCommandTest {
         }
 
         @Override
-        public void setRole(Role target, Role editedRole) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public ObservableList<Role> getFilteredRoleList() {
             throw new AssertionError("This method should not be called.");
         }
@@ -273,6 +269,7 @@ public class ShiftAddCommandTest {
         }
     }
 
+    //@@author
     /**
      * A Model stub that contains a single shift.
      */

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import mcscheduler.testutil.ShiftBuilder;
 import mcscheduler.testutil.TypicalShifts;
 
+//@@author WangZijun97
 public class ShiftDayOrTimeContainsKeywordsPredicateTest {
 
     @Test
