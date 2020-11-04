@@ -22,19 +22,16 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import Email;
-
-//import Tag;
 
 /**
- * Edits the details of an existing worker in the address book.
+ * Edits the details of an existing worker in the McScheduler.
  */
 public class WorkerEditCommand extends Command {
 
@@ -47,19 +44,16 @@ public class WorkerEditCommand extends Command {
             + "[" + PREFIX_NAME + "NAME] "
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_PAY + "HOURLY PAY] "
-            //+ "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
-            //+ "[" + PREFIX_TAG + "TAG]...\n"
             + "[" + PREFIX_ROLE + "ROLE]...\n"
             + "[" + PREFIX_UNAVAILABILITY + "UNAVAILABLE TIMINGS]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            //+ PREFIX_EMAIL + "johndoe@example.com";
             + PREFIX_PAY + "10.20";
 
     public static final String MESSAGE_EDIT_WORKER_SUCCESS = "Edited worker: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the address book.";
+    public static final String MESSAGE_DUPLICATE_WORKER = "This worker already exists in the McScheduler.";
 
     private final Index index;
     private final EditWorkerDescriptor editWorkerDescriptor;
@@ -82,7 +76,8 @@ public class WorkerEditCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, index.getOneBased()));
         }
 
         Worker workerToEdit = lastShownList.get(index.getZeroBased());
@@ -182,7 +177,6 @@ public class WorkerEditCommand extends Command {
         private Name name;
         private Phone phone;
         private Pay pay;
-        //private Email email;
         private Address address;
         private Set<Role> roles;
         private Set<Unavailability> unavailableTimings;
@@ -197,7 +191,6 @@ public class WorkerEditCommand extends Command {
             setName(toCopy.name);
             setPhone(toCopy.phone);
             setPay(toCopy.pay);
-            //setEmail(toCopy.email);
             setAddress(toCopy.address);
             setRoles(toCopy.roles);
             setUnavailableTimings(toCopy.unavailableTimings);
@@ -234,16 +227,6 @@ public class WorkerEditCommand extends Command {
         public Optional<Pay> getPay() {
             return Optional.ofNullable(pay);
         }
-
-        /*
-        public void setEmail(Email email) {
-            this.email = email;
-        }
-
-        public Optional<Email> getEmail() {
-            return Optional.ofNullable(email);
-        }
-         */
 
         public void setAddress(Address address) {
             this.address = address;
@@ -297,7 +280,6 @@ public class WorkerEditCommand extends Command {
             return getName().equals(e.getName())
                     && getPhone().equals(e.getPhone())
                     && getPay().equals(e.getPay())
-                    //&& getEmail().equals(e.getEmail())
                     && getAddress().equals(e.getAddress())
                     && getRoles().equals(e.getRoles())
                     && getUnavailableTimings().equals(e.getUnavailableTimings());

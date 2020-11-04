@@ -37,8 +37,8 @@ public class ShiftEditCommandParser implements Parser<ShiftEditCommand> {
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ShiftEditCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    pe.getMessage() + ShiftEditCommand.MESSAGE_USAGE), pe);
         }
 
         ShiftEditCommand.EditShiftDescriptor editShiftDescriptor = new ShiftEditCommand.EditShiftDescriptor();

@@ -21,8 +21,8 @@ import mcscheduler.model.Model;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.ReadOnlyUserPrefs;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.WorkerBuilder;
@@ -37,7 +37,7 @@ public class WorkerAddCommandTest {
     @Test
     public void execute_workerAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingWorkerAdded modelStub = new ModelStubAcceptingWorkerAdded(
-            Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
+                Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
         Worker validWorker = new WorkerBuilder().build();
 
         CommandResult commandResult = new WorkerAddCommand(validWorker).execute(modelStub);
@@ -52,8 +52,8 @@ public class WorkerAddCommandTest {
         WorkerAddCommand addCommand = new WorkerAddCommand(validWorker);
         ModelStub modelStub = new ModelStubWithWorker(validWorker);
 
-        Assert.assertThrows(CommandException.class, WorkerAddCommand.MESSAGE_DUPLICATE_WORKER, ()
-            -> addCommand.execute(modelStub));
+        Assert.assertThrows(CommandException.class, WorkerAddCommand.MESSAGE_DUPLICATE_WORKER, () ->
+                addCommand.execute(modelStub));
     }
 
     @Test
@@ -62,12 +62,12 @@ public class WorkerAddCommandTest {
         WorkerAddCommand addCommand = new WorkerAddCommand(validWorker);
         ModelStub modelStub = new ModelStubAcceptingWorkerAdded();
 
-        Assert
-            .assertThrows(CommandException.class,
+        Assert.assertThrows(CommandException.class,
                 String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.VALID_ROLE_CASHIER), () ->
-                    addCommand.execute(modelStub));
+                        addCommand.execute(modelStub));
     }
 
+    //@@author
     @Test
     public void equals() {
         Worker alice = new WorkerBuilder().withName("Alice").build();
@@ -211,6 +211,7 @@ public class WorkerAddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        //@@author wakululuu
         @Override
         public boolean hasAssignment(Assignment assignment) {
             throw new AssertionError("This method should not be called.");
@@ -257,11 +258,6 @@ public class WorkerAddCommandTest {
         }
 
         @Override
-        public void setRole(Role target, Role editedRole) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public ObservableList<Role> getFilteredRoleList() {
             throw new AssertionError("This method should not be called.");
         }
@@ -272,6 +268,7 @@ public class WorkerAddCommandTest {
         }
     }
 
+    //@@author
     /**
      * A Model stub that contains a single worker.
      */

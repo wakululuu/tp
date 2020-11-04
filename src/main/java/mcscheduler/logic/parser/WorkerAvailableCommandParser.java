@@ -7,7 +7,7 @@ import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Parses input arguments and creates a new AvailableWorkersCommand object
@@ -22,14 +22,15 @@ public class WorkerAvailableCommandParser implements Parser<WorkerAvailableComma
     public WorkerAvailableCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ROLE);
+
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
-
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    pe.getMessage() + WorkerAvailableCommand.MESSAGE_USAGE), pe);
         }
+
         if (!argMultimap.getValue(PREFIX_ROLE).isPresent() || argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(
                     String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, WorkerAvailableCommand.MESSAGE_USAGE));

@@ -9,16 +9,16 @@ import mcscheduler.commons.util.AppUtil;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.parser.ParserUtil;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
- * Represents a Worker being assigned to a Role for a shift in the App.
+ * Represents a Worker being assigned to a Role for a shift in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class WorkerRolePair {
 
-    public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form [ WORKER_INDEX ] [ ROLE ]"
-            + "(e.g. \'2 Cashier\').";
+    public static final String MESSAGE_CONSTRAINTS = "Worker-Role Pair must be of the form 'WORKER_INDEX ROLE'"
+            + "(e.g. '2 Cashier').\n";
 
     public static final String VALIDATION_REGEX = "[1-9][0-9]* " + Role.VALIDATION_REGEX;
 

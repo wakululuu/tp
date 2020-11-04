@@ -72,7 +72,8 @@ public class MassCancelLeaveCommand extends Command {
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
 
         if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 
@@ -88,7 +89,6 @@ public class MassCancelLeaveCommand extends Command {
 
         Shift startShift = new Shift(startDay, startTime, Collections.emptySet());
         Shift endShift = new Shift(endDay, endTime, Collections.emptySet());
-
 
         if (assignmentsToRemove.size() == 0) {
             throw new CommandException(String.format(MESSAGE_NO_LEAVE_FOUND, startShift, endShift));

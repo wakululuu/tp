@@ -9,7 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import mcscheduler.model.assignment.Assignment;
-import mcscheduler.model.tag.Leave;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.worker.Worker;
 
 /**
@@ -61,10 +61,9 @@ public class WorkerCard extends UiPart<Region> {
         phone.setText(worker.getPhone().value);
         address.setText(worker.getAddress().value);
         pay.setText(worker.getPay().toString());
-        //email.setText(worker.getEmail().value);
         worker.getRoles().stream()
-                .sorted(Comparator.comparing(role -> role.tagName))
-                .forEach(role -> roles.getChildren().add(new Label(role.tagName)));
+                .sorted(Comparator.comparing(role -> role.roleName))
+                .forEach(role -> roles.getChildren().add(new Label(role.roleName)));
 
         WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(
                 assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), worker);

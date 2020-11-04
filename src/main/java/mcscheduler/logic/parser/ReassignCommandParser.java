@@ -6,16 +6,14 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
-
-import java.util.stream.Stream;
+import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
 
 import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.ReassignCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
-
+import mcscheduler.model.role.Role;
 
 public class ReassignCommandParser implements Parser<ReassignCommand> {
     /**
@@ -47,19 +45,11 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
             newWorkerIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_WORKER_NEW).get());
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                    ReassignCommand.MESSAGE_USAGE), ive);
+                    ive.getMessage() + ReassignCommand.MESSAGE_USAGE), ive);
         }
 
         Role newRole = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
 
         return new ReassignCommand(oldWorkerIndex, newWorkerIndex, oldShiftIndex, newShiftIndex, newRole);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }

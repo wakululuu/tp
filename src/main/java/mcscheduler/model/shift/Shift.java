@@ -9,11 +9,11 @@ import java.util.Set;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 
 /**
- * Represents a Shift in the App.
+ * Represents a Shift in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Shift {
@@ -86,8 +86,8 @@ public class Shift {
      */
     public static void updateRoleRequirements(Model model, Shift shiftToUpdate, Role role) {
         CollectionUtil.requireAllNonNull(model, shiftToUpdate, role);
-        int quantityFilled = countRoleQuantityFilled(model, shiftToUpdate, role);
-        Set<RoleRequirement> updatedRoleRequirements = getUpdatedRoleRequirements(shiftToUpdate, role, quantityFilled);
+        int quantityFilled = shiftToUpdate.countRoleQuantityFilled(model, role);
+        Set<RoleRequirement> updatedRoleRequirements = shiftToUpdate.getUpdatedRoleRequirements(role, quantityFilled);
 
         Shift updatedShift = new Shift(shiftToUpdate.getShiftDay(), shiftToUpdate.getShiftTime(),
                 updatedRoleRequirements);
@@ -98,15 +98,14 @@ public class Shift {
      * Counts the quantity filled of the specified {@code role} in the specified {@code shift}.
      *
      * @param model storing the shift to be updated.
-     * @param shiftToUpdate in the model.
      * @param role whose quantity filled needs to be calculated.
      */
-    public static int countRoleQuantityFilled(Model model, Shift shiftToUpdate, Role role) {
+    public int countRoleQuantityFilled(Model model, Role role) {
         List<Assignment> assignmentList = model.getFullAssignmentList();
         int quantityFilled = 0;
 
         for (Assignment assignment : assignmentList) {
-            if (assignment.getShift().isSameShift(shiftToUpdate) && assignment.getRole().equals(role)) {
+            if (isSameShift(assignment.getShift()) && assignment.getRole().equals(role)) {
                 quantityFilled++;
             }
         }
@@ -114,8 +113,8 @@ public class Shift {
         return quantityFilled;
     }
 
-    private static Set<RoleRequirement> getUpdatedRoleRequirements(Shift shiftToUpdate, Role role, int quantityFilled) {
-        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(shiftToUpdate.getRoleRequirements());
+    private Set<RoleRequirement> getUpdatedRoleRequirements(Role role, int quantityFilled) {
+        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(getRoleRequirements());
 
         for (RoleRequirement requirement : updatedRoleRequirements) {
             if (requirement.getRole().equals(role)) {
@@ -162,14 +161,13 @@ public class Shift {
 
         Shift otherShift = (Shift) other;
         return otherShift.getShiftDay().equals(getShiftDay())
-                && otherShift.getShiftTime().equals(getShiftTime())
-                && otherShift.getRoleRequirements().equals(getRoleRequirements());
+                && otherShift.getShiftTime().equals(getShiftTime());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(shiftDay, shiftTime, roleRequirements);
+        return Objects.hash(shiftDay, shiftTime);
     }
 
     /**

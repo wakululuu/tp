@@ -3,12 +3,12 @@ package mcscheduler.model.assignment;
 import java.util.Objects;
 
 import mcscheduler.commons.util.CollectionUtil;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Represents a {@code Worker}, {@code Shift} and {@code Role} Assignment in the App.
+ * Represents a {@code Worker}, {@code Shift} and {@code Role} Assignment in the McScheduler.
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Assignment {
@@ -32,7 +32,7 @@ public class Assignment {
     }
 
     /**
-     * Constructor to create a dummy assignment used by an {@code UnassignCommand}.
+     * Constructor to create a dummy assignment with a null {@code Role}.
      * Every field must be present and not null.
      */
     public Assignment(Shift shift, Worker worker) {
@@ -56,21 +56,6 @@ public class Assignment {
 
     /**
      * Returns true if both assignments have the same identity fields.
-     * This defines a weaker notion of equality between two assignments.
-     */
-    public boolean isSameAssignment(Assignment otherAssignment) {
-        if (otherAssignment == this) {
-            return true;
-        }
-
-        return otherAssignment != null
-                && otherAssignment.getShift().isSameShift(getShift())
-                && otherAssignment.getWorker().isSameWorker(getWorker());
-    }
-
-    /**
-     * Returns true if both assignments have the same identity fields.
-     * This defines a stronger notion of equality between two assignments.
      */
     @Override
     public boolean equals(Object other) {

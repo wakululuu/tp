@@ -8,15 +8,15 @@ import java.util.Optional;
 import javafx.collections.ObservableList;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.UniqueAssignmentList;
+import mcscheduler.model.role.Role;
+import mcscheduler.model.role.UniqueRoleList;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.UniqueShiftList;
-import mcscheduler.model.tag.Role;
-import mcscheduler.model.tag.UniqueRoleList;
 import mcscheduler.model.worker.UniqueWorkerList;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the McScheduler level
  * Duplicates are not allowed (by .isSameWorker, .isSameShift and .isSameAssignment comparison)
  */
 public class McScheduler implements ReadOnlyMcScheduler {
@@ -43,7 +43,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     public McScheduler() {}
 
     /**
-     * Creates an McScheduler using the Workers in the {@code toBeCopied}
+     * Creates a McScheduler using the Workers in the {@code toBeCopied}
      */
     public McScheduler(ReadOnlyMcScheduler toBeCopied) {
         this();
@@ -99,7 +99,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     // worker-level operations
 
     /**
-     * Returns true if a worker with the same identity as {@code worker} exists in the address book.
+     * Returns true if a worker with the same identity as {@code worker} exists in the McScheduler.
      */
     public boolean hasWorker(Worker worker) {
         requireNonNull(worker);
@@ -107,8 +107,8 @@ public class McScheduler implements ReadOnlyMcScheduler {
     }
 
     /**
-     * Adds a worker to the address book.
-     * The worker must not already exist in the address book.
+     * Adds a worker to the McScheduler.
+     * The worker must not already exist in the McScheduler.
      */
     public void addWorker(Worker p) {
         workers.add(p);
@@ -116,8 +116,8 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Replaces the given worker {@code target} in the list with {@code editedWorker}.
-     * {@code target} must exist in the address book.
-     * The worker identity of {@code editedWorker} must not be the same as another existing worker in the address book.
+     * {@code target} must exist in the McScheduler.
+     * The worker identity of {@code editedWorker} must not be the same as another existing worker in the McScheduler.
      */
     public void setWorker(Worker target, Worker editedWorker) {
         requireNonNull(editedWorker);
@@ -127,7 +127,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Removes {@code key} from this {@code McScheduler}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the McScheduler.
      */
     public void removeWorker(Worker key) {
         workers.remove(key);
@@ -172,7 +172,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     // assignment-level operations
 
     /**
-     * Returns true if an assignment with the same identity as {@code assignment} exists in the address book.
+     * Returns true if an assignment with the same identity as {@code assignment} exists in the McScheduler.
      */
     public boolean hasAssignment(Assignment assignment) {
         requireNonNull(assignment);
@@ -180,8 +180,8 @@ public class McScheduler implements ReadOnlyMcScheduler {
     }
 
     /**
-     * Adds an assignment to the address book.
-     * The assignment must not already exist in the address book.
+     * Adds an assignment to the McScheduler.
+     * The assignment must not already exist in the McScheduler.
      */
     public void addAssignment(Assignment p) {
         assignments.add(p);
@@ -189,9 +189,9 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Replaces the given assignment {@code target} in the list with {@code editedAssignment}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the McScheduler.
      * The assignment identity of {@code editedAssignment} must not be the same as another existing assignment in the
-     * address book.
+     * McScheduler.
      */
     public void setAssignment(Assignment target, Assignment editedAssignment) {
         requireNonNull(editedAssignment);
@@ -201,7 +201,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Removes {@code key} from this {@code McScheduler}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the McScheduler.
      */
     public void removeAssignment(Assignment key) {
         assignments.remove(key);
@@ -219,7 +219,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
     // role-level operations
 
     /**
-     * Returns true if an role with the same identity as {@code role} exists in the address book.
+     * Returns true if a role with the same identity as {@code role} exists in the McScheduler.
      */
     public boolean hasRole(Role role) {
         requireNonNull(role);
@@ -227,8 +227,8 @@ public class McScheduler implements ReadOnlyMcScheduler {
     }
 
     /**
-     * Adds an role to the address book.
-     * The role must not already exist in the address book.
+     * Adds a role to the McScheduler.
+     * The role must not already exist in the McScheduler.
      */
     public void addRole(Role p) {
         validRoles.add(p);
@@ -236,9 +236,9 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Replaces the given role {@code target} in the list with {@code editedRole}.
-     * {@code target} must exist in the address book.
+     * {@code target} must exist in the McScheduler.
      * The role identity of {@code editedRole} must not be the same as another existing role in the
-     * address book.
+     * McScheduler.
      */
     public void setRole(Role target, Role editedRole) {
         requireNonNull(editedRole);
@@ -248,7 +248,7 @@ public class McScheduler implements ReadOnlyMcScheduler {
 
     /**
      * Removes {@code key} from this {@code McScheduler}.
-     * {@code key} must exist in the address book.
+     * {@code key} must exist in the McScheduler.
      */
     public void removeRole(Role key) {
         validRoles.remove(key);

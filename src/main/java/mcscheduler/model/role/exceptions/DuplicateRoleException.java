@@ -1,4 +1,4 @@
-package mcscheduler.model.tag.exceptions;
+package mcscheduler.model.role.exceptions;
 
 /**
  * Signals that the operation will result in duplicate roles.

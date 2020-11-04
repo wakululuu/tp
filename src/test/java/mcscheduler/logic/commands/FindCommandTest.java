@@ -17,19 +17,20 @@ import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TypicalWorkers;
 
+//@@author
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
-    private Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
-    private Model expectedModel = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
+    private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
+    private final Model expectedModel = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
     @Test
     public void equals() {
-        NameContainsKeywordsPredicate firstPredicate =
-            new NameContainsKeywordsPredicate(Collections.singletonList("first"));
-        NameContainsKeywordsPredicate secondPredicate =
-            new NameContainsKeywordsPredicate(Collections.singletonList("second"));
+        NameContainsKeywordsPredicate firstPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("first"));
+        NameContainsKeywordsPredicate secondPredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("second"));
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
@@ -69,7 +70,7 @@ public class FindCommandTest {
         expectedModel.updateFilteredWorkerList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(TypicalWorkers.CARL, TypicalWorkers.ELLE, TypicalWorkers.FIONA),
-            model.getFilteredWorkerList());
+                model.getFilteredWorkerList());
     }
 
     /**

@@ -7,22 +7,19 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_PAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_PHONE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_UNAVAILABILITY;
+import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
 import mcscheduler.model.worker.Name;
 import mcscheduler.model.worker.Pay;
 import mcscheduler.model.worker.Phone;
 import mcscheduler.model.worker.Unavailability;
 import mcscheduler.model.worker.Worker;
-//import mcscheduler.model.worker.Email;
-
-//import mcscheduler.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new WorkerAddCommand object
@@ -55,14 +52,6 @@ public class WorkerAddCommandParser implements Parser<WorkerAddCommand> {
         Worker worker = new Worker(name, phone, pay, address, roleList, unavailableTimings);
 
         return new WorkerAddCommand(worker);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

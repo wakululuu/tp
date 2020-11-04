@@ -2,7 +2,7 @@ package mcscheduler.logic.parser;
 
 import mcscheduler.logic.commands.RoleAddCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 
 /**
  * Parses input arguments and creates a new RoleAddCommand object

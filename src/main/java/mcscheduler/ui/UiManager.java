@@ -23,7 +23,7 @@ public class UiManager implements Ui {
     private static final String ICON_APPLICATION = "/images/mclogo.png";
     private static final String JINGLE = "/sounds/mcjingle.mp3";
 
-    private Logic logic;
+    private final Logic logic;
     private MainWindow mainWindow;
 
     /**
@@ -71,7 +71,7 @@ public class UiManager implements Ui {
     private static void showAlertDialogAndWait(Stage owner, AlertType type, String title, String headerText,
                                                String contentText) {
         final Alert alert = new Alert(type);
-        alert.getDialogPane().getStylesheets().add("view/DarkTheme.css");
+        alert.getDialogPane().getStylesheets().add("view/McTheme.css");
         alert.initOwner(owner);
         alert.setTitle(title);
         alert.setHeaderText(headerText);

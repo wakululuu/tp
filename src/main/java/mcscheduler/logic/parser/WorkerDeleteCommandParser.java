@@ -20,8 +20,8 @@ public class WorkerDeleteCommandParser implements Parser<WorkerDeleteCommand> {
             Index index = ParserUtil.parseIndex(args);
             return new WorkerDeleteCommand(index);
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, WorkerDeleteCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    pe.getMessage() + WorkerDeleteCommand.MESSAGE_USAGE), pe);
         }
     }
 

@@ -13,13 +13,13 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Deletes a role identified using its displayed index from the address book.
+ * Deletes a role identified using its displayed index from the McScheduler.
  */
 public class RoleDeleteCommand extends Command {
 
@@ -44,7 +44,8 @@ public class RoleDeleteCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());

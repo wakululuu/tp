@@ -5,7 +5,7 @@ import static java.util.Objects.requireNonNull;
 import mcscheduler.model.Model;
 
 /**
- * Lists all shifts in the App to the user.
+ * Lists all shifts in the McScheduler to the user.
  */
 public class ShiftListCommand extends Command {
 

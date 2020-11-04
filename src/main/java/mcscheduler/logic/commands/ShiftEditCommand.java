@@ -19,11 +19,11 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
-import mcscheduler.model.tag.Role;
 
 /**
  * Edits the details of an existing shift in the App.
@@ -70,7 +70,8 @@ public class ShiftEditCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, index.getOneBased()));
         }
 
         Shift shiftToEdit = lastShownList.get(index.getZeroBased());
@@ -118,7 +119,7 @@ public class ShiftEditCommand extends Command {
                 if (!newRoles.contains(assignmentRole) || assignment.getWorker().isUnavailable(editedShift)) {
                     // This accounts for the case where the shift no longer has the role specified in the assignment
                     assignmentsToDelete.add(assignment);
-                } else if (Shift.countRoleQuantityFilled(model, shiftToEdit, assignmentRole)
+                } else if (shiftToEdit.countRoleQuantityFilled(model, assignmentRole)
                         > getQuantityRequiredForRole(editedShift, assignmentRole)) {
                     // This accounts for the case where the quantity needed for a particular role is less than the
                     // current quantity filled

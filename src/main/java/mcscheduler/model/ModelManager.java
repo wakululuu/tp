@@ -13,13 +13,13 @@ import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.LogsCenter;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the McScheduler data.
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -38,7 +38,7 @@ public class ModelManager implements Model {
         super();
         CollectionUtil.requireAllNonNull(mcScheduler, userPrefs);
 
-        logger.fine("Initializing with address book: " + mcScheduler + " and user prefs " + userPrefs);
+        logger.fine("Initializing with McScheduler: " + mcScheduler + " and user prefs " + userPrefs);
 
         this.mcScheduler = new McScheduler(mcScheduler);
         this.userPrefs = new UserPrefs(userPrefs);
@@ -134,7 +134,7 @@ public class ModelManager implements Model {
         }
         assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
 
-        return worker.getPay().value * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+        return worker.getPay().getValue() * numberOfShiftsAssigned * HOURS_PER_SHIFT;
     }
 
     @Override
@@ -181,11 +181,13 @@ public class ModelManager implements Model {
     @Override
     public void deleteAssignment(Assignment target) {
         mcScheduler.removeAssignment(target);
+        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
     }
 
     @Override
     public void addAssignment(Assignment assignment) {
         mcScheduler.addAssignment(assignment);
+        Shift.updateRoleRequirements(this, assignment.getShift(), assignment.getRole());
     }
 
     @Override
@@ -193,6 +195,7 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedAssignment);
 
         mcScheduler.setAssignment(target, editedAssignment);
+        Shift.updateRoleRequirements(this, editedAssignment.getShift(), editedAssignment.getRole());
     }
 
     @Override
@@ -224,13 +227,6 @@ public class ModelManager implements Model {
     @Override
     public void addRole(Role role) {
         mcScheduler.addRole(role);
-    }
-
-    @Override
-    public void setRole(Role target, Role editedRole) {
-        CollectionUtil.requireAllNonNull(target, editedRole);
-
-        mcScheduler.setRole(target, editedRole);
     }
 
     /**

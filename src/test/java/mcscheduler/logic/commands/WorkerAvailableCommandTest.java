@@ -1,5 +1,10 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.NOT_FOUND_ROLE;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+import static mcscheduler.logic.commands.CommandTestUtil.assertCommandFailure;
+import static mcscheduler.logic.commands.CommandTestUtil.showShiftAtIndex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,63 +16,65 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
-import mcscheduler.model.tag.Role;
+import mcscheduler.model.role.Role;
 import mcscheduler.testutil.McSchedulerBuilder;
+import mcscheduler.testutil.TestUtil;
 import mcscheduler.testutil.TypicalIndexes;
 
+//@@author plosslaw
 /**
  * Contains integration tests (interaction with the Model)
  * and unit tests for WorkerAvailableCommand.
  */
 public class WorkerAvailableCommandTest {
-    private Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
+    private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
     @Test
     public void execute_invalidShiftIndexUnfilteredList_failure() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredShiftList().size() + 1);
-        Role role = Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER);
+        Index outOfBoundIndex = TestUtil.getOutOfBoundShiftIndex(model);
+        Role role = Role.createRole(VALID_ROLE_CASHIER);
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(outOfBoundIndex, role);
 
-        CommandTestUtil
-            .assertCommandFailure(workerAvailableCommand, model, Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        assertCommandFailure(workerAvailableCommand, model,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     /**
      * Edit filtered list where index is larger than size of filtered list,
-     * but smaller than size of address book
+     * but smaller than size of the McScheduler
      */
     @Test
     public void execute_invalidShiftIndexFilteredList_failure() {
-        CommandTestUtil.showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
+        showShiftAtIndex(model, TypicalIndexes.INDEX_FIRST_SHIFT);
         Index outOfBoundIndex = TypicalIndexes.INDEX_SECOND_SHIFT;
         // ensures that outOfBoundIndex is still in bounds of McScheduler shift list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getMcScheduler().getShiftList().size());
 
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(outOfBoundIndex,
-            Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER));
+            Role.createRole(VALID_ROLE_CASHIER));
 
-        CommandTestUtil
-            .assertCommandFailure(workerAvailableCommand, model, Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+        assertCommandFailure(workerAvailableCommand, model,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
     }
 
     @Test
     public void execute_roleNotFound_throwsCommandException() {
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(TypicalIndexes.INDEX_FIRST_SHIFT,
-            Role.createRole(CommandTestUtil.NOT_FOUND_ROLE));
+            Role.createRole(NOT_FOUND_ROLE));
 
-        CommandTestUtil.assertCommandFailure(workerAvailableCommand, model,
-            String.format(Messages.MESSAGE_ROLE_NOT_FOUND, CommandTestUtil.NOT_FOUND_ROLE));
+        assertCommandFailure(workerAvailableCommand, model,
+                String.format(Messages.MESSAGE_ROLE_NOT_FOUND, NOT_FOUND_ROLE));
     }
 
     @Test
     public void equals() {
-        Role role = Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER);
-        Role differentRole = Role.createRole(CommandTestUtil.VALID_ROLE_CHEF);
+        Role role = Role.createRole(VALID_ROLE_CASHIER);
+        Role differentRole = Role.createRole(VALID_ROLE_CHEF);
         final WorkerAvailableCommand standardCommand =
             new WorkerAvailableCommand(TypicalIndexes.INDEX_FIRST_SHIFT, role);
 
         // same values -> returns true
-        Role roleCopy = Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER);
+        Role roleCopy = Role.createRole(VALID_ROLE_CASHIER);
         WorkerAvailableCommand commandWithSameValues =
             new WorkerAvailableCommand(TypicalIndexes.INDEX_FIRST_SHIFT, roleCopy);
         assertEquals(commandWithSameValues, standardCommand);

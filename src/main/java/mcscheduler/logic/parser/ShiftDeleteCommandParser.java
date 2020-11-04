@@ -21,8 +21,8 @@ public class ShiftDeleteCommandParser implements Parser<ShiftDeleteCommand> {
             Index index = ParserUtil.parseIndex(args);
             return new ShiftDeleteCommand(index);
         } catch (ParseException pe) {
-            throw new ParseException(
-                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ShiftDeleteCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                    pe.getMessage() + ShiftDeleteCommand.MESSAGE_USAGE), pe);
         }
     }
 }

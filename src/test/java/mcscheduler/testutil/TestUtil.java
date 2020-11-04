@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
+import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
@@ -33,17 +34,31 @@ public class TestUtil {
     }
 
     /**
-     * Returns the middle index of the worker in the {@code model}'s worker list.
+     * Returns the last index of the worker in the {@code model}'s worker list.
      */
-    public static Index getMidIndex(Model model) {
-        return Index.fromOneBased(model.getFilteredWorkerList().size() / 2);
+    public static Index getLastWorkerIndex(Model model) {
+        return Index.fromOneBased(model.getFilteredWorkerList().size());
     }
 
     /**
-     * Returns the last index of the worker in the {@code model}'s worker list.
+     * Returns the last index of the shift in the {@code model}'s shift list.
      */
-    public static Index getLastIndex(Model model) {
-        return Index.fromOneBased(model.getFilteredWorkerList().size());
+    public static Index getLastShiftIndex(Model model) {
+        return Index.fromOneBased(model.getFilteredShiftList().size());
+    }
+
+    /**
+     * Returns an out of bound index of the worker in the {@code model}'s worker list.
+     */
+    public static Index getOutOfBoundWorkerIndex(Model model) {
+        return Index.fromOneBased(model.getFilteredWorkerList().size() + 1);
+    }
+
+    /**
+     * Returns an out of bound index of the shift in the {@code model}'s shift list.
+     */
+    public static Index getOutOfBoundShiftIndex(Model model) {
+        return Index.fromOneBased(model.getFilteredShiftList().size() + 1);
     }
 
     /**
@@ -51,5 +66,12 @@ public class TestUtil {
      */
     public static Worker getWorker(Model model, Index index) {
         return model.getFilteredWorkerList().get(index.getZeroBased());
+    }
+
+    /**
+     * Returns the shift in the {@code model}'s shift list at {@code index}.
+     */
+    public static Shift getShift(Model model, Index index) {
+        return model.getFilteredShiftList().get(index.getZeroBased());
     }
 }

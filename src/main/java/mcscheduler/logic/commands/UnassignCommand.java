@@ -14,8 +14,8 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Role;
 import mcscheduler.model.worker.Worker;
 
 /**
@@ -63,14 +63,15 @@ public class UnassignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX);
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased()));
         }
-
 
         // Check if any is not found
         for (Index workerIndex : workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX);
+                throw new CommandException(
+                        String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
             }
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
@@ -89,19 +90,18 @@ public class UnassignCommand extends Command {
 
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
-            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign);
             Role roleToUnassign = getRoleToUnassign(model, shiftToUnassign, workerToUnassign);
 
-            Assignment assignmentWithRole = new Assignment(shiftToUnassign, workerToUnassign, roleToUnassign);
-            unassignStringBuilder.append(assignmentWithRole);
-            unassignStringBuilder.append("\n");
+            Assignment assignmentToDelete = new Assignment(shiftToUnassign, workerToUnassign, roleToUnassign);
+            unassignStringBuilder
+                    .append(assignmentToDelete)
+                    .append("\n");
 
             try {
                 model.deleteAssignment(assignmentToDelete);
             } catch (AssignmentNotFoundException e) {
                 throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
             }
-            Shift.updateRoleRequirements(model, shiftToUnassign, roleToUnassign);
         }
 
         return new CommandResult(

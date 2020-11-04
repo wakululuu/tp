@@ -7,7 +7,7 @@ import javafx.scene.media.MediaPlayer;
  * Stores media and plays them when called.
  */
 public class JinglePlayer {
-    private MediaPlayer mediaPlayer;
+    private final MediaPlayer mediaPlayer;
 
     /**
      * Creates a JinglePlayer from a media file.

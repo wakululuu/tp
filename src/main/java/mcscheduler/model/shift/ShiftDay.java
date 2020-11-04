@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import mcscheduler.commons.util.AppUtil;
 
 /**
- * Represents a Shift's day in the App.
+ * Represents a Shift's day in the McScheduler.
  * Guarantees: immutable; is valid as declared in {@link #isValidDay(String)}
  */
 public class ShiftDay {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Shift day should only contain one of the following values: MON, TUE, WED, THUR, FRI, SAT, SUN";
+            "Shift day should only contain one of the following values: MON, TUE, WED, THU, FRI, SAT, SUN\n";
     public final ShiftDayValue day;
 
     /**

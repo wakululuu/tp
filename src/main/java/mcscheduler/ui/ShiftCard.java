@@ -9,8 +9,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.Shift;
-import mcscheduler.model.tag.Leave;
 
 /**
  * An UI component that displays information of a {@code Shift}.

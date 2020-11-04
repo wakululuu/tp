@@ -1,5 +1,17 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_DAY_MON;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_DAY_TUE;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_TIME_AM;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_TIME_PM;
+import static mcscheduler.testutil.Assert.assertThrows;
+import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
+import static mcscheduler.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
+import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
+import static mcscheduler.testutil.TypicalShifts.SHIFT_C;
+import static mcscheduler.testutil.TypicalShifts.SHIFT_D;
+import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -15,23 +27,20 @@ import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
-import mcscheduler.model.tag.Leave;
-import mcscheduler.model.tag.Role;
-import mcscheduler.testutil.Assert;
-import mcscheduler.testutil.TypicalIndexes;
-import mcscheduler.testutil.TypicalShifts;
-import mcscheduler.testutil.TypicalWorkers;
 
+//@@author WangZijun97
 public class MassCancelLeaveCommandTest {
 
     private Model model = new ModelManager(new McScheduler(), new UserPrefs());
-    private ShiftDay mon = new ShiftDay(CommandTestUtil.VALID_DAY_MON);
-    private ShiftTime am = new ShiftTime(CommandTestUtil.VALID_TIME_AM);
-    private ShiftDay tue = new ShiftDay(CommandTestUtil.VALID_DAY_TUE);
-    private ShiftTime pm = new ShiftTime(CommandTestUtil.VALID_TIME_PM);
+    private final ShiftDay mon = new ShiftDay(VALID_DAY_MON);
+    private final ShiftTime am = new ShiftTime(VALID_TIME_AM);
+    private final ShiftDay tue = new ShiftDay(VALID_DAY_TUE);
+    private final ShiftTime pm = new ShiftTime(VALID_TIME_PM);
 
     @BeforeEach
     public void initModel() {
@@ -40,75 +49,72 @@ public class MassCancelLeaveCommandTest {
 
     @Test
     public void constructor_nullInputs_throwsNullPointerException() {
-        Assert.assertThrows(NullPointerException.class, () ->
-            new MassCancelLeaveCommand(null, mon, am, mon, am));
-        Assert.assertThrows(NullPointerException.class, () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, null, am, mon, am));
-        Assert.assertThrows(NullPointerException.class, () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, null, mon, am));
-        Assert.assertThrows(NullPointerException.class, () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, null, am));
-        Assert.assertThrows(NullPointerException.class, () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, mon, null));
+        assertThrows(NullPointerException.class, () -> new MassCancelLeaveCommand(null, mon, am, mon, am));
+        assertThrows(NullPointerException.class, () ->
+                new MassCancelLeaveCommand(INDEX_FIRST_WORKER, null, am, mon, am));
+        assertThrows(NullPointerException.class, () ->
+                new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, null, mon, am));
+        assertThrows(NullPointerException.class, () ->
+                new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, null, am));
+        assertThrows(NullPointerException.class, () ->
+                new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, null));
     }
 
     @Test
     public void execute_correctInputs_successfullyRemoveLeavesOnly() throws Exception {
-        model.addWorker(TypicalWorkers.ALICE);
-        model.addShift(TypicalShifts.SHIFT_A);
-        model.addShift(TypicalShifts.SHIFT_C);
-        model.addShift(TypicalShifts.SHIFT_D);
-        model.addAssignment(new Assignment(
-            TypicalShifts.SHIFT_A, TypicalWorkers.ALICE, Role.createRole(CommandTestUtil.VALID_ROLE_CASHIER)));
+        model.addWorker(ALICE);
+        model.addShift(SHIFT_A);
+        model.addShift(SHIFT_C);
+        model.addShift(SHIFT_D);
+        model.addAssignment(new Assignment(SHIFT_A, ALICE, Role.createRole(VALID_ROLE_CASHIER)));
         Model expectedModel = new ModelManager(model.getMcScheduler(), model.getUserPrefs());
 
         // 1 leave to remove
-        Assignment leave1 = new Assignment(TypicalShifts.SHIFT_C, TypicalWorkers.ALICE, new Leave());
+        Assignment leave1 = new Assignment(SHIFT_C, ALICE, new Leave());
         model.addAssignment(leave1);
 
         String expectedMessage1 = String.format(MassCancelLeaveCommand.MESSAGE_MASS_CANCEL_LEAVE_SUCCESS,
-            new Shift(mon, am, Collections.emptySet()), new Shift(tue, pm, Collections.emptySet()));
-        CommandResult commandResult1 =
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model);
+                new Shift(mon, am, Collections.emptySet()), new Shift(tue, pm, Collections.emptySet()));
+        CommandResult commandResult1 = new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model);
 
         assertEquals(expectedMessage1, commandResult1.getFeedbackToUser());
         assertEquals(model, expectedModel);
 
         // 2 leaves to remove, flipped dates order
-        Assignment leave2 = new Assignment(TypicalShifts.SHIFT_D, TypicalWorkers.ALICE, new Leave());
+        Assignment leave2 = new Assignment(SHIFT_D, ALICE, new Leave());
         model.addAssignment(leave1);
         model.addAssignment(leave2);
 
         String expectedMessage2 = String.format(MassCancelLeaveCommand.MESSAGE_MASS_CANCEL_LEAVE_SUCCESS,
-            new Shift(tue, am, Collections.emptySet()), new Shift(mon, pm, Collections.emptySet()));
-        CommandResult commandResult2 =
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, tue, am, mon, pm).execute(model);
+                new Shift(tue, am, Collections.emptySet()), new Shift(mon, pm, Collections.emptySet()));
+        CommandResult commandResult2 = new MassCancelLeaveCommand(INDEX_FIRST_WORKER, tue, am, mon, pm).execute(model);
         assertEquals(expectedMessage2, commandResult2.getFeedbackToUser());
         assertEquals(model, expectedModel);
     }
 
     @Test
     public void execute_invalidIndex_throwsCommandException() {
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, INDEX_FIRST_WORKER.getOneBased()), () ->
+                new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
     }
 
     @Test
     public void execute_noLeavesInRange_throwsCommandException() {
-        model.addWorker(TypicalWorkers.ALICE);
-        model.addShift(TypicalShifts.SHIFT_A);
+        model.addWorker(ALICE);
+        model.addShift(SHIFT_A);
         Shift shiftMonAm = new Shift(mon, am, Collections.emptySet());
-        Assert.assertThrows(CommandException.class, String.format(
-            MassCancelLeaveCommand.MESSAGE_NO_LEAVE_FOUND, shiftMonAm, shiftMonAm), () ->
-            new MassCancelLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
+        assertThrows(CommandException.class,
+                String.format(MassCancelLeaveCommand.MESSAGE_NO_LEAVE_FOUND, shiftMonAm, shiftMonAm), () ->
+                        new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
     }
 
     @Test
     public void equals() {
         MassCancelLeaveCommand massCancelLeaveCommand1 = new MassCancelLeaveCommand(
-            TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, pm);
+                INDEX_FIRST_WORKER, mon, am, tue, pm);
         MassCancelLeaveCommand massCancelLeaveCommand1copy = new MassCancelLeaveCommand(
-            TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, pm);
+                INDEX_FIRST_WORKER, mon, am, tue, pm);
 
         // same object
         assertEquals(massCancelLeaveCommand1, massCancelLeaveCommand1);
@@ -119,16 +125,11 @@ public class MassCancelLeaveCommandTest {
 
         // same/different values
         assertEquals(massCancelLeaveCommand1, massCancelLeaveCommand1copy);
-        assertNotEquals(massCancelLeaveCommand1,
-            new MassTakeLeaveCommand(TypicalIndexes.INDEX_SECOND_WORKER, mon, am, tue, pm));
-        assertNotEquals(massCancelLeaveCommand1,
-            new MassTakeLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, tue, am, tue, pm));
-        assertNotEquals(massCancelLeaveCommand1,
-            new MassTakeLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, pm, tue, pm));
-        assertNotEquals(massCancelLeaveCommand1,
-            new MassTakeLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, mon, pm));
-        assertNotEquals(massCancelLeaveCommand1,
-            new MassTakeLeaveCommand(TypicalIndexes.INDEX_FIRST_WORKER, mon, am, tue, am));
+        assertNotEquals(massCancelLeaveCommand1, new MassTakeLeaveCommand(INDEX_SECOND_WORKER, mon, am, tue, pm));
+        assertNotEquals(massCancelLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, tue, am, tue, pm));
+        assertNotEquals(massCancelLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, pm, tue, pm));
+        assertNotEquals(massCancelLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, pm));
+        assertNotEquals(massCancelLeaveCommand1, new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, am));
     }
 
 }
