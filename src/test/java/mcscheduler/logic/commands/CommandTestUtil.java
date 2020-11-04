@@ -72,7 +72,8 @@ public class CommandTestUtil {
     public static final String INVALID_PAY_DESC = " " + PREFIX_PAY + "12.101"; // limit of 2 digits behind decimal
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_ROLE_DESC = " " + PREFIX_ROLE + "cashier*"; // '*' not allowed in roles
-    public static final String INVALID_UNAVAILABILITY_DESC = " " + PREFIX_UNAVAILABILITY + "MON AM pm"; // only 2 keywords allowed
+    public static final String INVALID_UNAVAILABILITY_DESC = " " + PREFIX_UNAVAILABILITY
+            + "MON AM pm"; // only 2 keywords allowed
     public static final String NOT_FOUND_ROLE = "Random role"; // role not in model
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

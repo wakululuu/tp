@@ -27,8 +27,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_UNAVAILABILITY;
-
-        import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static mcscheduler.testutil.TypicalWorkers.AMY;
 import static mcscheduler.testutil.TypicalWorkers.BOB;
