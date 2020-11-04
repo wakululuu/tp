@@ -16,6 +16,7 @@ import mcscheduler.logic.commands.MassTakeLeaveCommand;
 import mcscheduler.logic.commands.ReassignCommand;
 import mcscheduler.logic.commands.RoleAddCommand;
 import mcscheduler.logic.commands.RoleDeleteCommand;
+import mcscheduler.logic.commands.RoleEditCommand;
 import mcscheduler.logic.commands.RoleListCommand;
 import mcscheduler.logic.commands.ShiftAddCommand;
 import mcscheduler.logic.commands.ShiftDeleteCommand;
@@ -123,6 +124,9 @@ public class McSchedulerParser {
 
         case RoleDeleteCommand.COMMAND_WORD:
             return new RoleDeleteCommandParser().parse(arguments);
+
+        case RoleEditCommand.COMMAND_WORD:
+            return new RoleEditCommandParser().parse(arguments);
 
         case RoleListCommand.COMMAND_WORD:
             return new RoleListCommand();
