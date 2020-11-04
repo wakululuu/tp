@@ -8,7 +8,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_PAY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
-import static mcscheduler.logic.commands.CommandTestUtil.INVALID_UNAVAILABILITY;
+import static mcscheduler.logic.commands.CommandTestUtil.INVALID_UNAVAILABILITY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static mcscheduler.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.PAY_DESC_AMY;
@@ -19,6 +19,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static mcscheduler.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CHEF;
+import static mcscheduler.logic.commands.CommandTestUtil.UNAVAILABILITY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_PAY_BOB;
@@ -26,6 +27,7 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_UNAVAILABILITY;
+
         import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static mcscheduler.testutil.TypicalWorkers.AMY;
@@ -104,30 +106,30 @@ public class WorkerAddCommandParserTest {
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
-                + VALID_ROLE_CASHIER, expectedMessage);
+                + VALID_ROLE_CASHIER + VALID_UNAVAILABILITY, expectedMessage);
     }
 
     @Test
     public void parse_invalidValue_failure() {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + VALID_UNAVAILABILITY, Name.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Name.MESSAGE_CONSTRAINTS);
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + VALID_UNAVAILABILITY, Phone.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Phone.MESSAGE_CONSTRAINTS);
 
         // invalid pay
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_PAY_DESC + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + VALID_UNAVAILABILITY, Pay.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Pay.MESSAGE_CONSTRAINTS);
 
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + VALID_UNAVAILABILITY, Address.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Address.MESSAGE_CONSTRAINTS);
 
         // invalid role
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_ROLE_DESC + VALID_UNAVAILABILITY, Role.MESSAGE_CONSTRAINTS);
+                + INVALID_ROLE_DESC + UNAVAILABILITY_DESC, Role.MESSAGE_CONSTRAINTS);
 
         // invalid unavailability
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
@@ -135,11 +137,11 @@ public class WorkerAddCommandParserTest {
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
-                + ROLE_DESC_CASHIER + INVALID_UNAVAILABILITY, Name.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + INVALID_UNAVAILABILITY_DESC, Name.MESSAGE_CONSTRAINTS);
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + VALID_UNAVAILABILITY,
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
     }
 }
