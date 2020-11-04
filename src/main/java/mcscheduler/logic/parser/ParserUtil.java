@@ -222,7 +222,7 @@ public class ParserUtil {
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
 
         for (String unavailability : unavailabilities) {
-            boolean hasOneKeyword = unavailability.split("\\s+").length == 1;
+            boolean hasOneKeyword = unavailability.split(UnavailabilitySyntax.REGEX).length == 1;
             if (hasOneKeyword) {
                 String day = unavailability;
 

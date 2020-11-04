@@ -1,6 +1,7 @@
 package mcscheduler.model.worker;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.logic.parser.UnavailabilitySyntax.REGEX;
 
 import java.util.Objects;
 
@@ -20,39 +21,37 @@ public class Unavailability {
                     + "one of the times: AM, PM\n";
     private final ShiftDay day;
     private final ShiftTime time;
-    private final String unavailability;
+    private final String unavailabilityString;
 
     /**
      * Constructs an {@code Unavailability}.
      *
-     * @param unavailability A valid unavailability.
+     * @param unavailability A valid unavailability String.
      */
     public Unavailability(String unavailability) {
         requireNonNull(unavailability);
         AppUtil.checkArgument(isValidUnavailability(unavailability), MESSAGE_CONSTRAINTS);
-        this.day = new ShiftDay(unavailability.split(" ")[0]);
 
-        // To account for white spaces between day and time
-        int timeIndex = unavailability.split(" ").length - 1;
-        this.time = new ShiftTime(unavailability.split(" ")[timeIndex]);
-        this.unavailability = unavailability;
+        String[] splitString = unavailability.split(REGEX);
+        String dayString = splitString[0];
+        String timeString = splitString[1];
+        this.day = new ShiftDay(dayString);
+        this.time = new ShiftTime(timeString);
+        this.unavailabilityString = String.format("%s %s", dayString.toUpperCase(), timeString.toUpperCase());
     }
 
     /**
      * Returns true if a given string is a valid unavailability.
      */
     public static boolean isValidUnavailability(String test) {
-        String[] splitString = test.split(" ");
-        boolean hasTwoKeywords = test.split("\\s+").length == 2;
+        String[] splitString = test.split(REGEX);
+        boolean hasTwoKeywords = splitString.length == 2;
         try {
             if (!hasTwoKeywords) {
                 return false;
             }
             ShiftDayValue.valueOf(splitString[0].toUpperCase());
-
-            // To account for white spaces between day and time
-            int shiftTimeIndex = splitString.length - 1;
-            ShiftTimeValue.valueOf(splitString[shiftTimeIndex].toUpperCase());
+            ShiftTimeValue.valueOf(splitString[1].toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -70,7 +69,7 @@ public class Unavailability {
     }
 
     public String getString() {
-        return unavailability;
+        return unavailabilityString;
     }
 
     @Override
