@@ -1,17 +1,20 @@
 package mcscheduler.logic.commands;
 
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
+import static mcscheduler.logic.commands.MassTakeLeaveCommand.MESSAGE_MASS_TAKE_LEAVE_SUCCESS;
+import static mcscheduler.logic.commands.MassTakeLeaveCommand.MESSAGE_REASSIGNED;
 import static mcscheduler.testutil.Assert.assertThrows;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_SECOND_WORKER;
 import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
-import static mcscheduler.testutil.TypicalShifts.SHIFT_C;
 import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static mcscheduler.testutil.TypicalWorkers.BENSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,8 +80,8 @@ public class MassTakeLeaveCommandTest {
         expectedModel.addAssignment(new Assignment(shiftTueAm, BENSON, new Leave()));
 
         assertEquals(model, expectedModel);
-        assertEquals(result.getFeedbackToUser(), String.format(MassTakeLeaveCommand.MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
-            new Shift(mon, am, Collections.emptySet()), shiftTueAm));
+        assertEquals(result.getFeedbackToUser(), String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
+            mon, am, tue, am, BENSON.getName()));
     }
 
     @Test
@@ -89,27 +92,23 @@ public class MassTakeLeaveCommandTest {
     }
 
     @Test
-    public void execute_someShiftHasNonLeaveAssignment_throwsCommandException() {
-        Assignment assignment1 = new Assignment(
-            SHIFT_A, ALICE, Role.createRole(VALID_ROLE_CASHIER));
+    public void execute_someShiftHasNonLeaveAssignment_success() throws Exception {
+        Assignment assignment1 = new Assignment(SHIFT_A, ALICE, Role.createRole(VALID_ROLE_CASHIER));
         model.addWorker(ALICE);
         model.addShift(SHIFT_A);
         model.addAssignment(assignment1);
-        String expectedError1 = String.format(MassTakeLeaveCommand.MESSAGE_DUPLICATE_ASSIGNMENT, assignment1);
 
         // 1 assignment present
-        assertThrows(CommandException.class, expectedError1, () ->
-            new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model));
+        CommandResult commandResult1 =
+                new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model);
 
-        Assignment assignment2 = new Assignment(
-                SHIFT_C, ALICE, Role.createRole(VALID_ROLE_CASHIER));
-        model.addShift(SHIFT_C);
-        model.addAssignment(assignment2);
-        String expectedError2 = String.format(MassTakeLeaveCommand.MESSAGE_DUPLICATE_ASSIGNMENT, assignment2);
-
-        // 2 assignments present
-        assertThrows(CommandException.class, expectedError1 + expectedError2, () ->
-            new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model));
+        Optional<Assignment> assignmentInModel = model.getAssignment(assignment1);
+        assertTrue(assignmentInModel.isPresent());
+        assertEquals(assignmentInModel.get().getRole(), new Leave());
+        assertEquals(String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
+                mon, am, tue, pm, ALICE.getName())
+                + "\n" + String.format(MESSAGE_REASSIGNED, "\n" + assignment1.toString()),
+                commandResult1.getFeedbackToUser());
 
     }
 

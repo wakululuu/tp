@@ -1,17 +1,24 @@
 package mcscheduler.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
+import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.WorkerRolePair;
 import mcscheduler.model.role.Leave;
+import mcscheduler.model.shift.Shift;
+import mcscheduler.model.worker.Worker;
 
 /**
  * Assigns a worker to take leave for a particular shift.
@@ -49,13 +56,57 @@ public class TakeLeaveCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        Set<WorkerRolePair> workerLeaves = new HashSet<>();
-        for (Index i : workerIndexes) {
-            workerLeaves.add(new WorkerRolePair(i, new Leave()));
-        }
-        CommandResult commandResult = new AssignCommand(shiftIndex, workerLeaves).execute(model);
+        requireNonNull(model);
 
-        return new CommandResult(MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX + commandResult.getFeedbackToUser());
+        List<WorkerRolePair> workerToTakeLeavePairs = new ArrayList<>();
+        List<Index> workerToReplaceAssignmentIndexes = new ArrayList<>();
+        separateWorkerIndexes(workerToTakeLeavePairs, workerToReplaceAssignmentIndexes, model);
+
+        CommandResult assignCommandResult = new CommandResult("");
+        if (!workerToTakeLeavePairs.isEmpty()) {
+            assignCommandResult = new AssignCommand(shiftIndex, new HashSet<>(workerToTakeLeavePairs))
+                    .execute(model);
+        }
+        List<String> reassignCommandResultMessages = new ArrayList<>();
+        for (Index workerIndex : workerToReplaceAssignmentIndexes) {
+            reassignCommandResultMessages.add(new ReassignCommand(
+                    workerIndex, workerIndex, shiftIndex, shiftIndex, new Leave()).execute(model).getFeedbackToUser());
+        }
+        String compiledReassignMessages = reassignCommandResultMessages
+                .stream()
+                .reduce("", (str1, str2) -> str1 + "\n" + str2);
+
+        return new CommandResult(MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
+                + assignCommandResult.getFeedbackToUser()
+                + compiledReassignMessages);
+    }
+
+    private void separateWorkerIndexes(List<WorkerRolePair> workerToTakeLeavePairs,
+                                       List<Index> workerToReplaceAssignmentIndexes,
+                                       Model model) throws CommandException {
+
+        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+        List<Shift> lastShownShiftList = model.getFilteredShiftList();
+
+        if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased()));
+        }
+        Shift shiftToTakeLeaveFrom = lastShownShiftList.get(shiftIndex.getZeroBased());
+
+        for (Index workerIndex : workerIndexes) {
+            if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
+                throw new CommandException(
+                        String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
+            }
+            Worker workerToTakeLeave = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Assignment assignment = new Assignment(shiftToTakeLeaveFrom, workerToTakeLeave);
+            if (model.hasAssignment(assignment)) {
+                workerToReplaceAssignmentIndexes.add(workerIndex);
+            } else {
+                workerToTakeLeavePairs.add(new WorkerRolePair(workerIndex, new Leave()));
+            }
+        }
     }
 
     @Override

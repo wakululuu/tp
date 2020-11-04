@@ -369,8 +369,8 @@ Assignment makes use of the `Assignment` class features using `Leave` as the rol
 Since `Leave` is essentially an extension of the assignment system, commands related to leave are very similar
 to commands related to assignments.
 
-- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift. The following
-diagram demonstrates how this works.
+- `TakeLeaveCommand` sets workers to take leave for specific shift. It is a wrapper for `AssignCommand` 
+and `ReassignCommand`, depending on if the worker already is assigned for that shift. The following diagram demonstrates how this works.
 
 ![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
 
@@ -393,8 +393,8 @@ To increase the convenience of use for our expected typist user, we introduced a
   `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
   (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
   - The two commands handle other `Assignment`s differently:
-    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
-  (i.e. a non-leave `Assignment`).
+    - `MassTakeLeaveCommand` informs the user after the command is complete if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`). The `Assignment` is replaced to indicate the leave taken.
     - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
     
 The following activity diagram describes the process behind `MassTakeLeaveCommand`.
