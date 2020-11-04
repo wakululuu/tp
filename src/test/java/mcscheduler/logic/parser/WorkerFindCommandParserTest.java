@@ -13,7 +13,7 @@ import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 
 public class WorkerFindCommandParserTest {
 
-    private final FindCommandParser parser = new FindCommandParser();
+    private final WorkerFindCommandParser parser = new WorkerFindCommandParser();
 
     @Test
     public void parse_emptyArg_throwsParseException() {

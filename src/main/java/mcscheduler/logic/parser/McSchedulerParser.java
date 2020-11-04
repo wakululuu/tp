@@ -77,7 +77,7 @@ public class McSchedulerParser {
             return new ClearCommand();
 
         case WorkerFindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+            return new WorkerFindCommandParser().parse(arguments);
 
         case WorkerListCommand.COMMAND_WORD:
             return new WorkerListCommand();

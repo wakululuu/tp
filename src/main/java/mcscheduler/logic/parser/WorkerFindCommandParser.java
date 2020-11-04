@@ -10,7 +10,7 @@ import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 /**
  * Parses input arguments and creates a new WorkerFindCommand object
  */
-public class FindCommandParser implements Parser<WorkerFindCommand> {
+public class WorkerFindCommandParser implements Parser<WorkerFindCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the WorkerFindCommand
