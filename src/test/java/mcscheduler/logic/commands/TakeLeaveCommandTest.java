@@ -202,11 +202,6 @@ public class TakeLeaveCommandTest {
         public boolean hasAssignment(Assignment assignment) {
             return true;
         }
-
-        @Override
-        public Optional<Assignment> getAssignment(Assignment toGet) {
-            return Optional.of(toGet);
-        }
     }
 
 }
