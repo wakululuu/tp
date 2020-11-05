@@ -84,6 +84,10 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+* Additional parameters after the command `help` will throw an `Unexpected argument` error.
+    * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
+
+
 ### Adding a worker: `worker-add`
 
 Adds a new worker to the McScheduler.
@@ -124,6 +128,10 @@ Shows a list of all workers in the McScheduler, including their contacts, hourly
 timings.
 
 Format: `worker-list`
+
+* Additional parameters after the command `worker-list` will throw an `Unexpected argument` error.
+    * e.g. `worker-list asdf` will return the following error: `Unexpected argument for command "worker-list": asdf`.
+
 
 ### Editing a worker: `worker-edit`
 
@@ -231,6 +239,9 @@ Examples:
 Shows a list of all shifts in the McScheduler, including the roles needed and workers assigned to each shift.
 
 Format: `shift-list`
+
+* Additional parameters after the command `shift-list` will throw an `Unexpected argument` error.
+    * e.g. `shift-list asdf` will return the following error: `Unexpected argument for command "shift-list": asdf`.
 
 ### Locating shifts by day or time: `shift-find`
 
@@ -474,6 +485,10 @@ Examples:
 Exits the program.
 
 Format: `exit`
+
+* Additional parameters after the command `exit` will throw an `Unexpected argument` error.
+    * e.g. `exit asdf` will return the following error: `Unexpected argument for command "exit": asdf`.
+
 
 ### Saving the data
 
