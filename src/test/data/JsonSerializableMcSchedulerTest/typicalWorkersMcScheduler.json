@@ -114,7 +114,7 @@
       "time": "AM",
       "roleRequirements": [
         {
-          "role": "cleaner",
+          "role": "janitor",
           "quantityRequired": 4,
           "quantityFilled": 0
         },
@@ -135,7 +135,7 @@
           "quantityFilled": 0
         },
         {
-          "role": "cleaner",
+          "role": "janitor",
           "quantityRequired": 2,
           "quantityFilled": 0
         },
@@ -151,6 +151,6 @@
   "validRoles": [
     "cashier",
     "chef",
-    "cleaner"
+    "janitor"
   ]
 }

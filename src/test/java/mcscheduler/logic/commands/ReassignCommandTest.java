@@ -2,7 +2,7 @@ package mcscheduler.logic.commands;
 
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CLEANER;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_JANITOR;
 import static mcscheduler.logic.commands.CommandTestUtil.assertCommandFailure;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_WORKER;
@@ -132,7 +132,7 @@ public class ReassignCommandTest {
     public void execute_workerNotFitForRole_throwsCommandException() {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcSchedulerWithAssignments(), new UserPrefs());
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, INDEX_SECOND_WORKER,
-                INDEX_THIRD_SHIFT, INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_CLEANER));
+                INDEX_THIRD_SHIFT, INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_JANITOR));
         Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, () ->
                 reassignCommand.execute(model));
     }

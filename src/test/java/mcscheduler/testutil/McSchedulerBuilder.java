@@ -2,7 +2,7 @@ package mcscheduler.testutil;
 
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
-import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CLEANER;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_JANITOR;
 
 import mcscheduler.model.McScheduler;
 import mcscheduler.model.assignment.Assignment;
@@ -40,7 +40,7 @@ public class McSchedulerBuilder {
         }
         ab.addRole(Role.createRole(VALID_ROLE_CASHIER));
         ab.addRole(Role.createRole(VALID_ROLE_CHEF));
-        ab.addRole(Role.createRole(VALID_ROLE_CLEANER));
+        ab.addRole(Role.createRole(VALID_ROLE_JANITOR));
         return ab;
     }
 
@@ -60,7 +60,7 @@ public class McSchedulerBuilder {
         }
         ab.addRole(Role.createRole(VALID_ROLE_CASHIER));
         ab.addRole(Role.createRole(VALID_ROLE_CHEF));
-        ab.addRole(Role.createRole(VALID_ROLE_CLEANER));
+        ab.addRole(Role.createRole(VALID_ROLE_JANITOR));
         return ab;
     }
 

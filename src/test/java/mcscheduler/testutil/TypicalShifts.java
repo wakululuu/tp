@@ -22,7 +22,7 @@ public class TypicalShifts {
             .withRoleRequirements("cleaner 4 0", "cashier 3 1").build();
     public static final Shift SHIFT_D = new ShiftBuilder().withShiftDay("TUE")
             .withShiftTime("PM")
-            .withRoleRequirements("cashier 2 0", "cleaner 2 0", "chef 2 0").build();
+            .withRoleRequirements("cashier 2 0", "janitor 2 0", "chef 2 0").build();
 
     public static List<Shift> getTypicalShifts() {
         return new ArrayList<>(Arrays.asList(SHIFT_A, SHIFT_B, SHIFT_C, SHIFT_D));

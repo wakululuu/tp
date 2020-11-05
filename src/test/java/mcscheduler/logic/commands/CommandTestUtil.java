@@ -50,8 +50,6 @@ public class CommandTestUtil {
     public static final String VALID_ROLE_CASHIER = "Cashier";
     public static final String VALID_ROLE_CHEF = "Chef";
     public static final String VALID_ROLE_JANITOR = "Janitor";
-    public static final String VALID_ROLE_CLEANER = "Cleaner";
-    public static final String VALID_UNAVAILABILITY = "MON AM";
 
     public static final String INVALID_ROLE = "cashier*"; // '*' not allowed in roles
 
