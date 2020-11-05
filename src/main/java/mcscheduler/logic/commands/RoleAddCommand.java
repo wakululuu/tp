@@ -33,7 +33,7 @@ public class RoleAddCommand extends Command {
         requireNonNull(model);
 
         if (model.hasRole(toAdd)) {
-            if (toAdd.equals(new Leave())) {
+            if (Leave.isLeave(toAdd)) {
                 throw new CommandException(MESSAGE_DO_NOT_MODIFY_LEAVE);
             }
             throw new CommandException(MESSAGE_DUPLICATE_ROLE);

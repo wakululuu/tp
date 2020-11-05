@@ -50,7 +50,7 @@ public class RoleDeleteCommand extends Command {
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
-        assert !roleToDelete.equals(new Leave());
+        assert !Leave.isLeave(roleToDelete);
 
         deleteRoleFromShifts(model, roleToDelete);
         deleteRoleFromWorkers(model, roleToDelete);
