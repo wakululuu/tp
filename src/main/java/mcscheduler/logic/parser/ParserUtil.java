@@ -220,14 +220,17 @@ public class ParserUtil {
     public static Set<Unavailability> parseUnavailabilities(Collection<String> unavailabilities) throws ParseException {
         requireNonNull(unavailabilities);
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
+
         for (String unavailability : unavailabilities) {
-            if (unavailability.toUpperCase().contains(UnavailabilitySyntax.WHOLE_DAY)) {
-                String[] tempString = unavailability.split(" ");
-                String day = tempString[0];
-                String morningUnavailability = createMorningUnavailabilityString(day);
-                String afternoonUnavailability = createAfternoonUnavailabilityString(day);
-                unavailabilitySet.add(parseUnavailability(morningUnavailability));
-                unavailabilitySet.add(parseUnavailability(afternoonUnavailability));
+            boolean hasOneKeyword = unavailability.split(UnavailabilitySyntax.REGEX).length == 1;
+            if (hasOneKeyword) {
+                String day = unavailability;
+
+                String morningUnavailabilityString = createMorningUnavailabilityString(day);
+                String afternoonUnavailabilityString = createAfternoonUnavailabilityString(day);
+
+                unavailabilitySet.add(parseUnavailability(morningUnavailabilityString));
+                unavailabilitySet.add(parseUnavailability(afternoonUnavailabilityString));
             } else {
                 unavailabilitySet.add(parseUnavailability(unavailability));
             }
