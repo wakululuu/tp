@@ -133,7 +133,9 @@ public class ReassignCommandTest {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcSchedulerWithAssignments(), new UserPrefs());
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, INDEX_SECOND_WORKER,
                 INDEX_THIRD_SHIFT, INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_JANITOR));
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE, () ->
+        Worker workerToReassignTo = TestUtil.getWorker(model, INDEX_SECOND_WORKER);
+        Assert.assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE,
+                workerToReassignTo.getName(), Role.createRole(VALID_ROLE_JANITOR)), () ->
                 reassignCommand.execute(model));
     }
 
@@ -142,8 +144,10 @@ public class ReassignCommandTest {
         Model model = new ModelManager(McSchedulerBuilder.getTypicalMcSchedulerWithAssignments(), new UserPrefs());
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, INDEX_FIRST_WORKER, INDEX_THIRD_SHIFT,
                 INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_CASHIER));
-
-        Assert.assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, () ->
+        Worker workerToReassignTo = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
+        Shift shiftToReassignTo = TestUtil.getShift(model, INDEX_THIRD_SHIFT);
+        Assert.assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
+                workerToReassignTo.getName(), shiftToReassignTo), () ->
                 reassignCommand.execute(model));
     }
 

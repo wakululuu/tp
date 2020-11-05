@@ -17,6 +17,8 @@ import static mcscheduler.logic.commands.CommandTestUtil.VALID_OLD_SHIFT_INDEX_1
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_OLD_WORKER_INDEX_1;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_SHIFT_INDEX_1;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_WORKER_INDEX_1;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static mcscheduler.testutil.TypicalIndexes.INDEX_FIRST_SHIFT;
@@ -65,6 +67,12 @@ public class ReassignCommandParserTest {
                 + VALID_NEW_SHIFT_INDEX_2 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
                 new ReassignCommand(INDEX_FIRST_WORKER, INDEX_SECOND_WORKER, INDEX_FIRST_SHIFT, INDEX_SECOND_SHIFT,
                         Role.createRole(VALID_ROLE_CHEF)));
+
+        // worker index and shift index provided for reassign within 1 shift
+        assertParseSuccess(parser, VALID_OLD_WORKER_INDEX_1 + VALID_NEW_WORKER_INDEX_2 + VALID_OLD_SHIFT_INDEX_1
+                        + VALID_NEW_SHIFT_INDEX_2 + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                new ReassignCommand(INDEX_FIRST_WORKER, INDEX_SECOND_WORKER, INDEX_FIRST_SHIFT, INDEX_SECOND_SHIFT,
+                        Role.createRole(VALID_ROLE_CHEF)));
     }
 
     @Test
@@ -90,6 +98,12 @@ public class ReassignCommandParserTest {
         // missing role prefix
         assertParseFailure(parser, VALID_OLD_WORKER_INDEX_1 + VALID_NEW_WORKER_INDEX_2 + VALID_OLD_SHIFT_INDEX_1
                 + VALID_NEW_SHIFT_INDEX_2, expectedMessage);
+
+        // missing shift index for 3-parameter format
+        assertParseFailure(parser, VALID_WORKER_INDEX_1 + ROLE_DESC_CASHIER, expectedMessage);
+
+        // missing shift index for 3-parameter format
+        assertParseFailure(parser, VALID_SHIFT_INDEX_1 + ROLE_DESC_CASHIER, expectedMessage);
 
         // all prefixes missing
         assertParseFailure(parser, INDEX_FIRST_SHIFT + " " + INDEX_FIRST_WORKER + VALID_ROLE_CASHIER, expectedMessage);
