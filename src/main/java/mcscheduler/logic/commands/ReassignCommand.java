@@ -2,8 +2,10 @@ package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
+import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
+import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
 
@@ -24,21 +26,26 @@ public class ReassignCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an assignment in the "
             + "McScheduler by the index numbers used in the last worker and shift listings. "
-            + "\nParameters: "
-            + PREFIX_WORKER_OLD + "OLD_WORKER_INDEX (must be a positive integer) "
+            + "\nParameters: \n"
+            + "1. " + PREFIX_WORKER_OLD + "OLD_WORKER_INDEX (must be a positive integer) "
             + PREFIX_WORKER_NEW + "NEW_WORKER_INDEX (must be a positive integer "
             + PREFIX_SHIFT_OLD + "OLD_SHIFT_INDEX (must be a positive integer) "
             + PREFIX_SHIFT_NEW + "NEW_SHIFT_INDEX (must be a positive integer) "
             + PREFIX_ROLE + "ROLE\n"
-            + "Example: " + COMMAND_WORD
+            + "2. " + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer) "
+            + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
+            + PREFIX_ROLE + "ROLE\n"
+            + "Examples:\n" + COMMAND_WORD
             + " wo/1 "
             + "wn/2 "
             + "so/1 "
             + "sn/2 "
-            + "r/Cashier";
+            + "r/Cashier\n"
+            + COMMAND_WORD + " w/1 s/1 r/Chef";
 
     public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made: %1$s | Previous Role: %2$s ";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
+    public static final String MESSAGE_EXISTING_ASSIGNMENT = "%1$s is already assigned to a role in the shift.";
     public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
     private final Index oldShiftIndex;
@@ -108,16 +115,26 @@ public class ReassignCommand extends Command {
         Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
         Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
 
-        if (model.hasAssignment(assignmentToAdd)
+        // For cases where reassign is done on same worker in same shift, role needs to be checked
+        // Duplicate assignment if role is the same
+        if (oldWorker.equals(newWorker) && oldShift.equals(newShift) && model.hasAssignment(assignmentToAdd)
                 && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
             throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
         }
 
+        // For cases where reassign is called on different shifts and workers
+        // Only check whether a worker is already assigned to a role in a shift
+        if ((!(oldWorker.equals(newWorker)) || !(oldShift.equals(newShift))) && model.hasAssignment(assignmentToAdd)) {
+            throw new CommandException(String.format(MESSAGE_EXISTING_ASSIGNMENT, newWorker.getName()));
+        }
+
         if (!newWorker.isFitForRole(newRole)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE,
+                    newWorker.getName(), newRole));
         }
         if (newWorker.isUnavailable(newShift)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
+                    newWorker.getName(), newShift));
         }
 
         if (!newShift.isRoleRequired(newRole)) {
