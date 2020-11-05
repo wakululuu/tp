@@ -168,7 +168,7 @@ Format: `worker-find KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `worker-find John` returns `john` and `John Doe`
 
-* `worker-find alex david` returns `Alex Yeoh`, `David Li`
+* `worker-find alex david` returns `Alex Yeoh` and `David Li`
 
 ### Deleting a worker: `worker-delete`
 
@@ -223,20 +223,23 @@ Shows a list of all shifts in the McScheduler, including the roles needed and wo
 
 Format: `shift-list`
 
-### Locating shift by day or time: `shift-find`
+### Locating shifts by day or time: `shift-find`
 
 Finds shifts whose day or time contain any of the given keywords.
 
 Format: `shift-find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `mon` will match `MON`
-* Only the day and time is searched.
+* Only the day and time are searched.
 * Only full words will be matched e.g. `m` will not match `MON`
 * Workers matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `MON AM` will return a `TUE AM` shift and a `MON PM` shift
 
 Examples:
+* `shift-find Fri PM` returns all shifts on Friday and all PM shifts. i.e. `FRI PM`, `THU PM` and `FRI AM` shift will all be returned
+
 * `shift-find Mon` returns a `MON AM` shift and a `MON PM` shift
+
 * `shift-find AM PM` returns all shifts
 
 ### Editing a shift: `shift-edit`
@@ -480,7 +483,7 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon am`
 Worker | **List** | `worker-list`
-Worker | **Find** | `worker-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `worker-find jerry tom`
+Worker | **Find** | `worker-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `worker-find alex david`
 Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`
