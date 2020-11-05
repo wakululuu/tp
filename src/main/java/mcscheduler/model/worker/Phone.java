@@ -11,8 +11,9 @@ import mcscheduler.commons.util.AppUtil;
 public class Phone {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should only contain numbers and should be at least 3 digits long\n";
-    public static final String VALIDATION_REGEX = "\\d{3,}";
+            "Phone numbers should only contain numbers and should be a valid Singapore phone number"
+            + " (8 digits long, starting with either 6, 8 or 9)\n";
+    public static final String VALIDATION_REGEX = "[689]\\d{7}$";
     public final String value;
 
     /**
@@ -31,6 +32,10 @@ public class Phone {
      */
     public static boolean isValidPhone(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    public String toReadableString() {
+        return value.substring(0, 4) + " " + value.substring(4);
     }
 
     @Override

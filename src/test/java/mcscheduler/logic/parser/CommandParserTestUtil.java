@@ -35,4 +35,17 @@ public class CommandParserTestUtil {
             assertEquals(expectedMessage, pe.getMessage());
         }
     }
+
+    /**
+     * Asserts that the command parsing of {@code userInput} by {@code parser} is unsuccessful and the error message
+     * equals to {@code expectedMessage}.
+     */
+    public static void assertParseCommandFailure(McSchedulerParser parser, String userInput, String expectedMessage) {
+        try {
+            parser.parseCommand(userInput);
+            throw new AssertionError("The expected ParseException was not thrown.");
+        } catch (ParseException pe) {
+            assertEquals(expectedMessage, pe.getMessage());
+        }
+    }
 }

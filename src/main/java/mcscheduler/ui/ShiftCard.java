@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.Shift;
@@ -28,7 +29,7 @@ public class ShiftCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private FlowPane roleRequirements;
+    private VBox roleRequirements;
     @FXML
     private FlowPane shiftAssignments;
     @FXML
@@ -40,11 +41,14 @@ public class ShiftCard extends UiPart<Region> {
     public ShiftCard(Shift shift, int displayedIndex, ObservableList<Assignment> assignmentList) {
         super(FXML);
         this.shift = shift;
+
         id.setText(displayedIndex + ". ");
         dayTime.setText(shift.getShiftDay().toString() + " " + shift.getShiftTime().toString());
         shift.getRoleRequirements().stream()
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
-                .forEach(roleRequirement -> roleRequirements.getChildren().add(new Label(roleRequirement.toString())));
+                .forEach(roleRequirement -> {
+                    roleRequirements.getChildren().add(new Label(roleRequirement.toString()));
+                });
 
         ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(
                 assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), shift);

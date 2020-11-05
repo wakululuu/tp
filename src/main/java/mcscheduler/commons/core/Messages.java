@@ -7,6 +7,7 @@ public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format\n%1$s";
+    public static final String MESSAGE_UNEXPECTED_ARGUMENT = "Unexpected argument for command \"%1$s\":\n%2$s";
 
     public static final String MESSAGE_INVALID_PARSE_VALUE = "The %1$s provided is invalid: '%2$s'.\n%3$s";
 

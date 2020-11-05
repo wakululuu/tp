@@ -84,6 +84,10 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+* Additional parameters after the command `help` will throw an `Unexpected argument` error.
+    * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
+
+
 ### Adding a worker: `worker-add`
 
 Adds a new worker to the McScheduler.
@@ -92,6 +96,8 @@ Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u
 
 * Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s).
 * `HOURLY_PAY` must be a **positive number not exceeding 1000**, with a maximum of 2 decimal places.
+* We allow the workers to share `PHONE_NUMBER` and `ADDRESS`.
+* The `PHONE_NUMBER` has to be a **valid Singapore phone number** (8 digits, starting with 6, 8 or 9 only). 
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
@@ -123,6 +129,10 @@ timings.
 
 Format: `worker-list`
 
+* Additional parameters after the command `worker-list` will throw an `Unexpected argument` error.
+    * e.g. `worker-list asdf` will return the following error: `Unexpected argument for command "worker-list": asdf`.
+
+
 ### Editing a worker: `worker-edit`
 
 Edits an existing worker in the McScheduler.
@@ -134,6 +144,8 @@ Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOUR
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * `HOURLY_PAY` must be a **positive number not exceeding 1000**, with a maximum of 2 decimal places.
+* We allow the workers to share `PHONE_NUMBER` and `ADDRESS`.
+* The `PHONE_NUMBER` has to be a **valid Singapore phone number** (8 digits, starting with 6, 8 or 9 only). 
 * When editing roles, the existing roles of the worker will be removed i.e adding of roles is not cumulative.
 * The specified `ROLE`(s) must be an existing role in the McScheduler. A role can be added to the McScheduler using the
   [role-add](#adding-a-role-role-add) command.
@@ -213,19 +225,23 @@ Format: `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`
 * The shift will require worker(s) to fill the specified `ROLE`(s). The specified `ROLE`(s) must be an existing role in
   the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * Each role should be accompanied by the `NUMBER_NEEDED` to fill that role. This number **must be a positive integer**
-  i.e. 1, 2, 3, …​
+  with no leading zeroes i.e. 1, 2, 3, …​
+* `NUMBER_NEEDED` **must not exceed 50** i.e. there can only be at most 50 workers for each role.
 
 Examples:
 * `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3` Adds a Wednesday AM shift, which requires 2 workers to fill the cashier
   role and 3 workers to fill the janitor role.
 
-* `shift-add d/MON t/pM` Adds a Monday PM shift with no required role yet.
+* `shift-add d/MON t/pM` Adds a Monday PM shift with no required roles yet.
 
 ### Listing all shifts: `shift-list`
 
 Shows a list of all shifts in the McScheduler, including the roles needed and workers assigned to each shift.
 
 Format: `shift-list`
+
+* Additional parameters after the command `shift-list` will throw an `Unexpected argument` error.
+    * e.g. `shift-list asdf` will return the following error: `Unexpected argument for command "shift-list": asdf`.
 
 ### Locating shifts by day or time: `shift-find`
 
@@ -256,6 +272,7 @@ Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`
   shift list. The shift index **must be a positive integer** i.e. 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* Existing role requirements will be **overwritten** by the new role requirements.
 * The day specified should take one of these values: **Mon, Tue, Wed, Thu, Fri, Sat, Sun**. These values are case-
   insensitive i.e. `Mon`, `MON`, `mon`, `mOn` etc. are all accepted.
 * The time specified should take one of these values: **AM, PM**. These values are case-insensitive i.e. `am`, `AM`,
@@ -263,7 +280,8 @@ Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`
 * The specified `ROLE`(s) must be an existing role in the McScheduler. A role can be added to the McScheduler using the
   [role-add](#adding-a-role-role-add) command.
 * Each role should be accompanied by the `NUMBER_NEEDED` to fill that role. This number **must be a positive integer**
-  i.e. 1, 2, 3, …​
+  with no leading zeroes i.e. 1, 2, 3, …​
+* `NUMBER_NEEDED` **must not exceed 50** i.e. there can only be at most 50 workers for each role.
 
 Examples:
 * `shift-edit 3 r/Cashier 3 r/Janitor 2` Edits the 3rd shift on the list such that it now requires 3 cashiers and 2
@@ -467,6 +485,10 @@ Examples:
 Exits the program.
 
 Format: `exit`
+
+* Additional parameters after the command `exit` will throw an `Unexpected argument` error.
+    * e.g. `exit asdf` will return the following error: `Unexpected argument for command "exit": asdf`.
+
 
 ### Saving the data
 
