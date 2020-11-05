@@ -2,6 +2,11 @@
 
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <StackPane fx:id="workerTitlePlaceholder" styleClass="cell_header">
+    <Label fx:id="workerTitle" styleClass="cell_big_title" text="Workers" />
+  </StackPane>
   <ListView fx:id="workerListView" VBox.vgrow="ALWAYS" />
 </VBox>

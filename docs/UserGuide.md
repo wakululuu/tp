@@ -59,7 +59,8 @@ easily available to streamline the work of McDonald's Shift Managers.
   worker list) you wish to delete from the application. The command can be used as `worker-delete 4`.
 
 * Parameters in `[square brackets]` are optional.<br>
-  e.g. `n/NAME [r/ROLE]` can be used as `n/John Doe r/Cashier` or as `n/John Doe`.
+  e.g. `n/NAME [r/ROLE]` can be used as `n/John Doe r/Cashier` or as `n/John Doe`. `[u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]`
+  can be used as ` ` (i.e. the entire parameter is not provided), as `u/Mon` (i.e. `UNAVAILABILITY_TIME` is not provided) or as `u/Mon am`.
 
 * Parameters with `…`​ after them can be used multiple times.<br>
   e.g. `w/WORKER_INDEX` can be used as `w/1`, `w/1 w/2`, `w/1 w/2 w/3` etc.
@@ -87,17 +88,18 @@ Format: `help`
 
 Adds a new worker to the McScheduler.
 
-Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`
+Format: `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`
 
-* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s). The worker will be unavailable
-on the specified `UNAVAILABLE_DAY`(s) at the corresponding `UNAVAILABLE_TIME`.
+* Adds a worker with the specified `NAME`, `PHONE_NUMBER`, `ADDRESS`, `HOURLY_PAY` and `ROLE`(s).
 * `HOURLY_PAY` must be a **positive number not exceeding 1000**, with a maximum of 2 decimal places.
 * The worker will be fit to take on the specified `ROLE`(s) in a shift. The specified `ROLE`(s) must be an existing role
   in the McScheduler. A role can be added to the McScheduler using the [role-add](#adding-a-role-role-add) command.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
 Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
-* `UNAVAILABLE_TIME` should take one of these values: **AM, PM, FULL**. These values are case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+* `UNAVAILABLE_TIME` is optional but should take one of these values if specified: **AM, PM**. These values are case-insensitive (i.e. `aM`, `Pm`, `PM`, etc. are all
 accepted).
+* The worker will be unavailable for the entire day if no `UNAVAILABLE_TIME` is specified. Else, they will be unavailable on the specified `UNAVAILABLE_DAY` at the specified
+`UNAVAILABLE_TIME`.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
@@ -125,7 +127,7 @@ Format: `worker-list`
 
 Edits an existing worker in the McScheduler.
 
-Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`
+Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`
 
 * Edits the worker at the specified `WORKER_INDEX`. The worker index refers to the index number shown in the displayed
   worker list. The worker index **must be a positive integer** i.e. 1, 2, 3, …​
@@ -137,9 +139,11 @@ Format: `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOUR
   [role-add](#adding-a-role-role-add) command.
 * When editing unavailabilities, the existing unavailabilities of the worker will be removed i.e. adding of unavailabilities is not cumulative.
 * `UNAVAILABLE_DAY` should take one of these values: **Mon, Tue, Wed, Thu,
-  Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
-* `UNAVAILABLE_TIME` should take one of these values: **AM, PM, FULL**. These values are case-insensitive (i.e. `aM`, `fUll`, `pm`, etc. are all
+Fri, Sat, Sun**. These values are case-insensitive (i.e. `Mon`, `MON`, `mon` etc. are all accepted).
+* `UNAVAILABLE_TIME` is optional but should take one of these values if specified: **AM, PM**. These values are case-insensitive (i.e. `aM`, `Pm`, `PM`, etc. are all
 accepted).
+* The edited worker will be unavailable for the entire day if no `UNAVAILABLE_TIME` is specified. Else, they will be unavailable on the specified `UNAVAILABLE_DAY` at the specified
+`UNAVAILABLE_TIME`.
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 
@@ -150,7 +154,7 @@ You can remove all of a worker’s roles by typing `r/` without specifying any r
 Examples:
 * `worker-edit 1 n/John r/Janitor` Edits the name and role of the 1st worker to be John and janitor respectively.
 
-* `worker-edit 2 n/Betsy Crower p/7 u/Mon full` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
+* `worker-edit 2 n/Betsy Crower p/7 u/Mon` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
 <!-- ### Locating workers by name: `worker find`
 
@@ -276,20 +280,14 @@ Examples:
 
 * `role-add Storey 2 server` Adds a storey 2 server role.
 
-### Listing all roles: `role-list`
-
-Shows a list of all roles in the McScheduler.
-
-Format: `role-list`
-
 ### Deleting a role: `role-delete`
 
 Deletes a role from the McScheduler.
 
 Format: `role-delete ROLE_INDEX`
 
-* Deletes the role at the specified `ROLE_INDEX`. The index refers to the index number shown in the role list displayed
-  using the [role-list](#listing-all-roles-role-list) command. The role index **must be a positive integer** i.e. 1, 2,
+* Deletes the role at the specified `ROLE_INDEX`. The index refers to the index number shown in the role list displayed.
+  The role index **must be a positive integer** i.e. 1, 2,
   3, …​
 
 Example:
@@ -364,9 +362,7 @@ Format: `take-leave s/SHIFT_INDEX w/WORKER_INDEX...`
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
-* An error message will be shown in the following situations:
-  * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
-  * Any of the worker is already assigned to a role for that shift.
+* An error message will be shown if any of the workers are unavailable for that shift, since there is no reason to take leave then.
 
 Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
@@ -388,8 +384,7 @@ the same as `mass-take-leave t/AM t/PM d/MON d/FRI w/2`, though the latter synta
 work as intended - leave taken on Sunday morning to Monday morning.
 * Shifts will be created for all day and time combinations within the specified range that does not have a shift already
 present within the McScheduler. These shifts will have no role requirements.
-* An error message will be shown in the following situations:
-  * The worker has an assigned role in any one of the shifts within the day/time range.
+* While the command will still go through, a warning message will be shown when the worker has an assigned role in any one of the shifts within the day/time range.
   
 Examples:
 * `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
@@ -461,9 +456,9 @@ the data of your previous McScheduler home folder.
 
 Data | Action | Format, Example
 -----|--------|------------------
-Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`<br>e.g. `worker-add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7 u/Mon Full`
+Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`<br>e.g. `worker-add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7 u/Mon am`
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
-Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY UNAVAILABLE_TIME]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon am`
+Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon`
 Worker | **List** | `worker-list`
 Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
@@ -472,7 +467,6 @@ Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDE
 Shift | **List** | `shift-list`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
-Role | **List** | `role-list`
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g. `unassign s/4 w/1 w/5`

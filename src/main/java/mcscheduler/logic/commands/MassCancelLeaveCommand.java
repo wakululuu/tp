@@ -5,7 +5,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,8 +34,9 @@ public class MassCancelLeaveCommand extends Command {
             + "Example: " + COMMAND_WORD
             + " w/2 d/Mon t/PM d/Wed t/AM ";
 
-    public static final String MESSAGE_MASS_CANCEL_LEAVE_SUCCESS = "Leave cancelled from shift {%1$s} to shift {%2$s}.";
-    public static final String MESSAGE_NO_LEAVE_FOUND = "No leave found between shift {%1$s} to {%2$s}.";
+    public static final String MESSAGE_MASS_CANCEL_LEAVE_SUCCESS =
+            "Leave cancelled for %5$s from %1$s %2$s to %3$s %4$s. ";
+    public static final String MESSAGE_NO_LEAVE_FOUND = "No leave found between %1$s %2$s and %3$s %4$s.";
 
     private final Index workerIndex;
     private final ShiftDay startDay;
@@ -87,16 +87,14 @@ public class MassCancelLeaveCommand extends Command {
                 .map(assignment -> model.getAssignment(assignment).get())
                 .collect(Collectors.toList());
 
-        Shift startShift = new Shift(startDay, startTime, Collections.emptySet());
-        Shift endShift = new Shift(endDay, endTime, Collections.emptySet());
-
         if (assignmentsToRemove.size() == 0) {
-            throw new CommandException(String.format(MESSAGE_NO_LEAVE_FOUND, startShift, endShift));
+            throw new CommandException(String.format(MESSAGE_NO_LEAVE_FOUND, startDay, startTime, endDay, endTime));
         }
 
         assignmentsToRemove.forEach(model::deleteAssignment);
 
-        return new CommandResult(String.format(MESSAGE_MASS_CANCEL_LEAVE_SUCCESS, startShift, endShift));
+        return new CommandResult(String.format(MESSAGE_MASS_CANCEL_LEAVE_SUCCESS,
+                startDay, startTime, endDay, endTime, worker.getName()));
 
     }
 

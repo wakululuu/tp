@@ -15,6 +15,7 @@ import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.Model;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.storage.Storage;
@@ -69,6 +70,11 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Shift> getFilteredShiftList() {
         return model.getFilteredShiftList();
+    }
+
+    @Override
+    public ObservableList<Role> getFilteredRoleList() {
+        return model.getFilteredRoleList();
     }
 
     @Override

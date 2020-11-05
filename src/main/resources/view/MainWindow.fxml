@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -9,10 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.Scene?>
 <?import javafx.stage.Stage?>
-<fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-         title="McScheduler" minWidth="1280" minHeight="720" onCloseRequest="#handleExit">
+<fx:root minHeight="720" minWidth="1280" onCloseRequest="#handleExit" title="McScheduler" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <icons>
     <Image url="@/images/mclogo.png" />
   </icons>
@@ -33,31 +32,36 @@
           </Menu>
         </MenuBar>
 
-        <StackPane VBox.vgrow="NEVER" fx:id="commandBoxPlaceholder" styleClass="pane-with-border">
+        <StackPane fx:id="commandBoxPlaceholder" styleClass="pane-with-border" VBox.vgrow="NEVER">
           <padding>
-            <Insets top="5" right="10" bottom="5" left="10" />
+            <Insets bottom="5" left="10" right="10" top="15" />
           </padding>
         </StackPane>
 
-        <StackPane VBox.vgrow="NEVER" fx:id="resultDisplayPlaceholder" styleClass="pane-with-border"
-                   minHeight="200" prefHeight="200" maxHeight="200">
+        <StackPane fx:id="resultDisplayPlaceholder" maxHeight="200" minHeight="200" prefHeight="200" styleClass="pane-with-border" VBox.vgrow="NEVER">
           <padding>
-            <Insets top="5" right="10" bottom="5" left="10" />
+            <Insets bottom="5" left="10" right="10" top="5" />
           </padding>
         </StackPane>
 
-        <HBox VBox.vgrow="ALWAYS" maxHeight="Infinity">
-          <VBox fx:id="workerList" styleClass="pane-with-border" minWidth="340" prefWidth="340" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+        <HBox maxHeight="Infinity" VBox.vgrow="ALWAYS">
+          <VBox fx:id="workerList" maxWidth="Infinity" minWidth="400" prefWidth="400" styleClass="pane-with-border" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
+              <Insets bottom="10" left="10" right="5" top="5" />
             </padding>
-            <StackPane fx:id="workerListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+            <StackPane fx:id="workerListPanelPlaceholder" VBox.vgrow="ALWAYS" />
           </VBox>
-          <VBox fx:id="shiftList" styleClass="pane-with-border" minWidth="340" prefWidth="340" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" maxWidth="Infinity">
+          <VBox fx:id="shiftList" maxWidth="Infinity" minWidth="280" prefWidth="280" styleClass="pane-with-border" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
             <padding>
-              <Insets top="10" right="10" bottom="10" left="10" />
+              <Insets bottom="10" left="5" right="5" top="5" />
             </padding>
-            <StackPane fx:id="shiftListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
+            <StackPane fx:id="shiftListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+          </VBox>
+          <VBox fx:id="roleList" maxWidth="Infinity" minWidth="40" prefWidth="40" styleClass="pane-with-border" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <padding>
+              <Insets bottom="10" left="5" right="10" top="5" />
+            </padding>
+            <StackPane fx:id="roleListPanelPlaceholder" VBox.vgrow="ALWAYS" />
           </VBox>
         </HBox>
 

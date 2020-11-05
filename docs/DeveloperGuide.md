@@ -215,7 +215,7 @@ as requested by the user, there will be other objects created besides `ShiftDay`
 
 ### Unavailability feature
 
-The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and a time.
+The unavailability feature allows users to add unavailable timings to a `Worker`, which comprise a day and/or a time.
 The setting prevents workers from being assigned to shift slots that they are unavailable for.
 
 #### Implementation
@@ -234,14 +234,13 @@ Instances of `Unavailability` can be created on 2 occasions:
 1. During a `worker-add` command, prefixed with `u/`
 2. During a `worker-edit` command, prefixed with `u/`
 
-To increase the efficiency of adding a worker's unavailable timings, users may type `u/[DAY] FULL` instead of
-`u/[DAY] AM` and `u/[DAY] PM` separately. However, since a `ShiftTime` only accepts the values `AM` and `PM`,
-functionality has been added to support the creation of an AM `Unavailability` and a PM `Unavailability` when
-`u/[DAY] FULL` is entered. The `ParserUtil` class supports this during parsing through:
+To increase the efficiency of adding a worker's unavailable timings, users may type `u/UNAVAILABILITY_DAY` to indicate a full-day unavailability 
+instead of typing `u/UNAVAILABILITY_DAY AM` and `u/UNAVAILABILITY_DAY PM` separately. Functionality has been added to support the creation
+of an AM `Unavailability` and a PM `Unavailability` when `u/UNAVAILABILITY_DAY` is entered. The `ParserUtil` class supports this during parsing through:
 
-- `ParserUtil#parseUnavailability()` — Parses a String and creates an `Unavailability` object
-- `ParserUtil#createMorningUnavailability()` — Generates a String of the format `[DAY] AM`
-- `ParserUtil#createAfternoonUnavailability()` — Generates a String of the format `[DAY] PM`
+- `ParserUtil#parseUnavailability()` — Parses a String and creates a valid `Unavailability` object
+- `ParserUtil#createMorningUnavailabilityString()` — Generates a String of the format `UNAVAILABILITY_DAY AM`
+- `ParserUtil#createAfternoonUnavailabilityString()` — Generates a String of the format `UNAVAILABILITY_DAY PM`
 - `ParserUtil#parseUnavailabilities()` — Iterates through a collection of Strings and creates an `Unavailability`
 object for each
 
@@ -250,18 +249,18 @@ object for each
 Given below is an example usage scenario and how the unavailability feature behaves at each step after the user has
 launched the application.
 
-Step 1. The user executes a `worker-add` command `worker-add ... u/MON FULL`. `McSchedulerParser` creates a
+Step 1. The user executes a `worker-add` command `worker-add ... u/Mon`. `McSchedulerParser` creates a
 `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
 Step 2. Within `WorkerAddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
-`Unavailability` set from the given `u/MON FULL` field. `ParserUtil#parseUnavailabilities()` checks whether
-the keyword `FULL` (case-insensitive) is present in the input. In this case, since it is present, `ParserUtil#createMorningUnavailabilityString()`
-is called to generate a `MON AM` String and `ParserUtil#createAfternoonUnavailabilityString()` is called to generate a `MON PM`
+`Unavailability` set from the given `u/Mon` field. `ParserUtil#parseUnavailabilities()` checks whether
+the input contains only 1 keyword. In this case, since only 1 keyword (i.e. `Mon`) is present, `ParserUtil#createMorningUnavailabilityString()`
+is called to generate a `Mon AM` String and `ParserUtil#createAfternoonUnavailabilityString()` is called to generate a `Mon PM`
 String. Inside `ParserUtil#parseUnavailabilities()`, `ParserUtil#parseUnavailability()` is called on both Strings
 and 2 valid `Unavailability` objects are created, before being added to the returnable `Unavailability` set.
 
 Step 3. The `Unavailability` set is passed into the constructor of the `Worker` class to instantiate a `Worker` object
-with the unavailable timings `MON AM` and `MON PM`.
+with the unavailable timings `Mon AM` and `Mon PM`.
 
 The following sequence diagram shows how unavailable timings are added to a `Worker`.
 
@@ -369,8 +368,8 @@ Assignment makes use of the `Assignment` class features using `Leave` as the rol
 Since `Leave` is essentially an extension of the assignment system, commands related to leave are very similar
 to commands related to assignments.
 
-- `TakeLeaveCommand` is a wrapper for `AssignCommand` and sets a worker to leave for specific shift. The following
-diagram demonstrates how this works.
+- `TakeLeaveCommand` sets workers to take leave for specific shift. It is a wrapper for `AssignCommand` 
+and `ReassignCommand`, depending on if the worker already is assigned for that shift. The following diagram demonstrates how this works.
 
 ![TakeLeaveCommand Sequence Diagram](images/LeaveCommandsSequenceDiagram.png)
 
@@ -393,8 +392,8 @@ To increase the convenience of use for our expected typist user, we introduced a
   `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
   (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
   - The two commands handle other `Assignment`s differently:
-    - `MassTakeLeaveCommand` raises an error if the worker is already scheduled for a shift 
-  (i.e. a non-leave `Assignment`).
+    - `MassTakeLeaveCommand` informs the user after the command is complete if the worker is already scheduled for a shift 
+  (i.e. a non-leave `Assignment`). The `Assignment` is replaced to indicate the leave taken.
     - `MassCancelLeaveCommand` searches for leaves in the datetime range and ignores non-leaves.
     
 The following activity diagram describes the process behind `MassTakeLeaveCommand`.
