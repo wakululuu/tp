@@ -37,9 +37,10 @@ public class WorkerTest {
         assertFalse(TypicalWorkers.ALICE.isSameWorker(editedAlice));
 
         // same name, same phone, different attributes -> returns true
-        editedAlice = new WorkerBuilder(TypicalWorkers.ALICE).withPay(CommandTestUtil.VALID_PAY_BOB).withAddress(
-            CommandTestUtil.VALID_ADDRESS_BOB)
-            .withRoles(CommandTestUtil.VALID_ROLE_CASHIER)
+        editedAlice = new WorkerBuilder(TypicalWorkers.ALICE)
+                .withPay(CommandTestUtil.VALID_PAY_BOB)
+                .withAddress(CommandTestUtil.VALID_ADDRESS_BOB)
+                .withRoles(CommandTestUtil.VALID_ROLE_CASHIER)
                 .withUnavailableTimings(CommandTestUtil.VALID_UNAVAILABILITY).build();
         assertTrue(TypicalWorkers.ALICE.isSameWorker(editedAlice));
     }
