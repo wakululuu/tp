@@ -9,7 +9,6 @@ import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.Command;
 import mcscheduler.logic.commands.ExitCommand;
-import mcscheduler.logic.commands.FindCommand;
 import mcscheduler.logic.commands.HelpCommand;
 import mcscheduler.logic.commands.MassCancelLeaveCommand;
 import mcscheduler.logic.commands.MassTakeLeaveCommand;
@@ -20,6 +19,7 @@ import mcscheduler.logic.commands.RoleEditCommand;
 import mcscheduler.logic.commands.ShiftAddCommand;
 import mcscheduler.logic.commands.ShiftDeleteCommand;
 import mcscheduler.logic.commands.ShiftEditCommand;
+import mcscheduler.logic.commands.ShiftFindCommand;
 import mcscheduler.logic.commands.ShiftListCommand;
 import mcscheduler.logic.commands.TakeLeaveCommand;
 import mcscheduler.logic.commands.UnassignCommand;
@@ -27,9 +27,11 @@ import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerEditCommand;
+import mcscheduler.logic.commands.WorkerFindCommand;
 import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.commands.WorkerPayCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
+import mcscheduler.model.shift.ShiftFindCommandParser;
 
 /**
  * Parses user input.
@@ -76,8 +78,8 @@ public class McSchedulerParser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+        case WorkerFindCommand.COMMAND_WORD:
+            return new WorkerFindCommandParser().parse(arguments);
 
         case WorkerListCommand.COMMAND_WORD:
             return new WorkerListCommand();
@@ -117,6 +119,9 @@ public class McSchedulerParser {
 
         case ShiftListCommand.COMMAND_WORD:
             return new ShiftListCommand();
+
+        case ShiftFindCommand.COMMAND_WORD:
+            return new ShiftFindCommandParser().parse(arguments);
 
         case RoleAddCommand.COMMAND_WORD:
             return new RoleAddCommandParser().parse(arguments);

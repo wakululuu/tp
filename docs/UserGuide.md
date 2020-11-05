@@ -156,11 +156,11 @@ Examples:
 
 * `worker-edit 2 n/Betsy Crower p/7 u/Mon` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
-<!-- ### Locating workers by name: `worker find`
+### Locating workers by name: `worker-find`
 
 Finds workers whose names contain any of the given keywords.
 
-Format: `worker find KEYWORD [MORE_KEYWORDS]`
+Format: `worker-find KEYWORD [MORE_KEYWORDS]`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
@@ -170,10 +170,9 @@ Format: `worker find KEYWORD [MORE_KEYWORDS]`
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 
 Examples:
-* `worker find John` returns `john` and `John Doe`
+* `worker-find John` returns `john` and `John Doe`
 
-* `worker find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'worker find alex david'](images/findAlexDavidResult.png) -->
+* `worker-find alex david` returns `Alex Yeoh` and `David Li`
 
 ### Deleting a worker: `worker-delete`
 
@@ -227,6 +226,25 @@ Examples:
 Shows a list of all shifts in the McScheduler, including the roles needed and workers assigned to each shift.
 
 Format: `shift-list`
+
+### Locating shifts by day or time: `shift-find`
+
+Finds shifts whose day or time contain any of the given keywords.
+
+Format: `shift-find KEYWORD [MORE_KEYWORDS]`
+
+* The search is case-insensitive. e.g. `mon` will match `MON`
+* Only the day and time are searched.
+* Only full words will be matched e.g. `m` will not match `MON`
+* Workers matching at least one keyword will be returned (i.e. `OR` search).
+  e.g. `MON AM` will return a `TUE AM` shift and a `MON PM` shift
+
+Examples:
+* `shift-find Fri PM` returns all shifts on Friday and all PM shifts. i.e. `FRI PM`, `THU PM` and `FRI AM` shift will all be returned
+
+* `shift-find Mon` returns a `MON AM` shift and a `MON PM` shift
+
+* `shift-find AM PM` returns all shifts
 
 ### Editing a shift: `shift-edit`
 
@@ -473,11 +491,13 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon`
 Worker | **List** | `worker-list`
+Worker | **Find** | `worker-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `worker-find alex david`
 Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`
 Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-edit 1 d/Mon t/PM r/Janitor 1`
 Shift | **List** | `shift-list`
+Shift | **Find** | `shift-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `shift-find Fri PM`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
