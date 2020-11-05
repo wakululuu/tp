@@ -145,7 +145,7 @@ public class Worker {
         final StringBuilder builder = new StringBuilder();
         builder.append(getName())
                 .append(" Phone: ")
-                .append(getPhone())
+                .append(getPhone().toReadableString())
                 .append(" Hourly pay: ")
                 .append(getPay())
                 .append(" Address: ")

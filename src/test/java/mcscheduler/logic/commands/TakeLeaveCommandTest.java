@@ -185,7 +185,7 @@ public class TakeLeaveCommandTest {
 
     /**
      * Similarly, this stub replaces all methods regarding assignment, but always returns true for
-     * {@code hasAssignment()}.
+     * {@code hasAssignment()} and returns a mock assignment for {@code getAssignment}
      */
     private class ModelStubAlreadyHasAssignment extends ModelStubAcceptingLeaveAdded {
 

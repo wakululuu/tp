@@ -77,6 +77,7 @@ public class MassTakeLeaveCommandParserTest {
     public void parser_invalidValue_fail() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 "%1$s" + MassTakeLeaveCommand.MESSAGE_USAGE);
+        String invalidParseExpectedMessage = String.format(expectedMessage, Messages.MESSAGE_INVALID_PARSE_VALUE);
 
         // invalid worker
         assertParseFailure(parser, INVALID_WORKER_INDEX + DAY_DESC_MON + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_PM,
@@ -84,10 +85,12 @@ public class MassTakeLeaveCommandParserTest {
 
         // invalid day
         assertParseFailure(parser, VALID_WORKER_INDEX_1 + INVALID_DAY + TIME_DESC_AM + DAY_DESC_TUE + TIME_DESC_AM,
-                String.format(expectedMessage, ShiftDay.MESSAGE_CONSTRAINTS));
+            String.format(invalidParseExpectedMessage,
+                "Shift day", INVALID_DAY.substring(3), ShiftDay.MESSAGE_CONSTRAINTS));
 
         //invalid time
         assertParseFailure(parser, VALID_WORKER_INDEX_1 + DAY_DESC_MON + INVALID_TIME + DAY_DESC_TUE + TIME_DESC_PM,
-                String.format(expectedMessage, ShiftTime.MESSAGE_CONSTRAINTS));
+            String.format(invalidParseExpectedMessage,
+                "Shift time", INVALID_TIME.substring(3), ShiftTime.MESSAGE_CONSTRAINTS));
     }
 }

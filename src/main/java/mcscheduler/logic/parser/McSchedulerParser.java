@@ -9,16 +9,17 @@ import mcscheduler.logic.commands.CancelLeaveCommand;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.Command;
 import mcscheduler.logic.commands.ExitCommand;
-import mcscheduler.logic.commands.FindCommand;
 import mcscheduler.logic.commands.HelpCommand;
 import mcscheduler.logic.commands.MassCancelLeaveCommand;
 import mcscheduler.logic.commands.MassTakeLeaveCommand;
 import mcscheduler.logic.commands.ReassignCommand;
 import mcscheduler.logic.commands.RoleAddCommand;
 import mcscheduler.logic.commands.RoleDeleteCommand;
+import mcscheduler.logic.commands.RoleEditCommand;
 import mcscheduler.logic.commands.ShiftAddCommand;
 import mcscheduler.logic.commands.ShiftDeleteCommand;
 import mcscheduler.logic.commands.ShiftEditCommand;
+import mcscheduler.logic.commands.ShiftFindCommand;
 import mcscheduler.logic.commands.ShiftListCommand;
 import mcscheduler.logic.commands.TakeLeaveCommand;
 import mcscheduler.logic.commands.UnassignCommand;
@@ -26,9 +27,11 @@ import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerAvailableCommand;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerEditCommand;
+import mcscheduler.logic.commands.WorkerFindCommand;
 import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.commands.WorkerPayCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
+import mcscheduler.model.shift.ShiftFindCommandParser;
 
 /**
  * Parses user input.
@@ -39,7 +42,6 @@ public class McSchedulerParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-
     /**
      * Parses user input into command for execution.
      *
@@ -73,18 +75,34 @@ public class McSchedulerParser {
             return new WorkerAvailableCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ClearCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
+        case WorkerFindCommand.COMMAND_WORD:
+            return new WorkerFindCommandParser().parse(arguments);
 
         case WorkerListCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        WorkerListCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new WorkerListCommand();
 
         case ExitCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ExitCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        HelpCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new HelpCommand();
 
         case UnassignCommand.COMMAND_WORD:
@@ -115,13 +133,23 @@ public class McSchedulerParser {
             return new ShiftDeleteCommandParser().parse(arguments);
 
         case ShiftListCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ShiftListCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ShiftListCommand();
+
+        case ShiftFindCommand.COMMAND_WORD:
+            return new ShiftFindCommandParser().parse(arguments);
 
         case RoleAddCommand.COMMAND_WORD:
             return new RoleAddCommandParser().parse(arguments);
 
         case RoleDeleteCommand.COMMAND_WORD:
             return new RoleDeleteCommandParser().parse(arguments);
+
+        case RoleEditCommand.COMMAND_WORD:
+            return new RoleEditCommandParser().parse(arguments);
 
         case WorkerPayCommand.COMMAND_WORD:
             return new WorkerPayCommandParser().parse(arguments);

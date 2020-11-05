@@ -91,28 +91,49 @@ public class WorkerEditCommandParserTest {
 
     @Test
     public void parse_invalidValue_failure() {
-        assertParseFailure(parser, "1" + INVALID_NAME_DESC, Name.MESSAGE_CONSTRAINTS); // invalid name
-        assertParseFailure(parser, "1" + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS); // invalid phone
-        assertParseFailure(parser, "1" + INVALID_PAY_DESC, Pay.MESSAGE_CONSTRAINTS); // invalid email
-        assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC, Address.MESSAGE_CONSTRAINTS); // invalid address
-        assertParseFailure(parser, "1" + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS); // invalid tag
+        assertParseFailure(parser, "1" + INVALID_NAME_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Name", INVALID_NAME_DESC.substring(3), Name.MESSAGE_CONSTRAINTS)); // invalid name
+        assertParseFailure(parser, "1" + INVALID_PHONE_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                       "Phone number", INVALID_PHONE_DESC.substring(4), Phone.MESSAGE_CONSTRAINTS)); // invalid phone
+        assertParseFailure(parser, "1" + INVALID_PAY_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Pay", INVALID_PAY_DESC.substring(3), Pay.MESSAGE_CONSTRAINTS)); // invalid email
+        assertParseFailure(parser, "1" + INVALID_ADDRESS_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Address", INVALID_ADDRESS_DESC.substring(3), Address.MESSAGE_CONSTRAINTS)); // invalid address
+        assertParseFailure(parser, "1" + INVALID_ROLE_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role", INVALID_ROLE_DESC.substring(3), Role.MESSAGE_CONSTRAINTS)); // invalid role
 
         // invalid phone followed by valid email
-        assertParseFailure(parser, "1" + INVALID_PHONE_DESC + PAY_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1" + INVALID_PHONE_DESC + PAY_DESC_AMY,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Phone number", INVALID_PHONE_DESC.substring(4), Phone.MESSAGE_CONSTRAINTS));
 
         // valid phone followed by invalid phone. The test case for invalid phone followed by valid phone
         // is tested at {@code parse_invalidValueFollowedByValidValue_success()}
-        assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC, Phone.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, "1" + PHONE_DESC_BOB + INVALID_PHONE_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Phone number", INVALID_PHONE_DESC.substring(4), Phone.MESSAGE_CONSTRAINTS));
 
-        // while parsing {@code PREFIX_ROLE} alone will reset the tags of the {@code Worker} being edited,
-        // parsing it together with a valid tag results in error
-        assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY, Role.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_EMPTY + ROLE_DESC_CHEF, Role.MESSAGE_CONSTRAINTS);
-        assertParseFailure(parser, "1" + ROLE_EMPTY + ROLE_DESC_CASHIER + ROLE_DESC_CHEF, Role.MESSAGE_CONSTRAINTS);
+        // while parsing {@code PREFIX_ROLE} alone will reset the roles of the {@code Worker} being edited,
+        // parsing it together with a valid role results in error
+        assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + ROLE_EMPTY,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role", ROLE_EMPTY.substring(3), Role.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, "1" + ROLE_DESC_CASHIER + ROLE_EMPTY + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role", ROLE_EMPTY.substring(3), Role.MESSAGE_CONSTRAINTS));
+        assertParseFailure(parser, "1" + ROLE_EMPTY + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role", ROLE_EMPTY.substring(3), Role.MESSAGE_CONSTRAINTS));
 
         // multiple invalid values, but only the first invalid value is captured
         assertParseFailure(parser, "1" + INVALID_NAME_DESC + INVALID_PAY_DESC + VALID_ADDRESS_AMY + VALID_PHONE_AMY,
-                Name.MESSAGE_CONSTRAINTS);
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Name", INVALID_NAME_DESC.substring(3), Name.MESSAGE_CONSTRAINTS));
     }
 
     @Test
