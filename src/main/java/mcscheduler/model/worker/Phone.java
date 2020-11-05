@@ -12,7 +12,7 @@ public class Phone {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Phone numbers should only contain numbers and should be a valid Singapore phone number"
-            + "(8 digits long, starting with either 6, 8 or 9)\n";
+            + " (8 digits long, starting with either 6, 8 or 9)\n";
     public static final String VALIDATION_REGEX = "[689]\\d{7}$";
     public final String value;
 
@@ -34,9 +34,13 @@ public class Phone {
         return test.matches(VALIDATION_REGEX);
     }
 
+    public String toReadableString() {
+        return value.substring(0, 4) + " " + value.substring(4);
+    }
+
     @Override
     public String toString() {
-        return value.substring(0, 4) + " " + value.substring(4);
+        return value;
     }
 
     @Override

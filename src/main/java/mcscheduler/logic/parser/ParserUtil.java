@@ -304,8 +304,14 @@ public class ParserUtil {
             Collection<String> workerRoles) throws ParseException {
         requireNonNull(workerRoles);
         final Set<WorkerRolePair> workerRolePairSet = new HashSet<>();
+        Set<Index> workerSet = new HashSet<>();
         for (String workerRoleString : workerRoles) {
-            workerRolePairSet.add(parseWorkerRole(workerRoleString));
+            WorkerRolePair workerRolePair = parseWorkerRole(workerRoleString);
+            if (workerSet.contains(workerRolePair.getWorkerIndex())) {
+                throw new ParseException(WorkerRolePair.MESSAGE_DUPLICATE_WORKER);
+            }
+            workerSet.add(workerRolePair.getWorkerIndex());
+            workerRolePairSet.add(workerRolePair);
         }
         return workerRolePairSet;
     }

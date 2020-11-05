@@ -37,17 +37,17 @@ public class TypicalWorkers {
             .withPay("15.01").withAddress("wall street").withRoles("cashier").build();
     public static final Worker DANIEL = new WorkerBuilder().withName("Daniel Meier").withPhone("87652533")
             .withPay("16").withAddress("10th street").withRoles("chef").build();
-    public static final Worker ELLE = new WorkerBuilder().withName("Elle Meyer").withPhone("9482224")
+    public static final Worker ELLE = new WorkerBuilder().withName("Elle Meyer").withPhone("94812224")
             .withPay("5.99").withAddress("michegan ave").withRoles("chef").build();
-    public static final Worker FIONA = new WorkerBuilder().withName("Fiona Kunz").withPhone("9482427")
+    public static final Worker FIONA = new WorkerBuilder().withName("Fiona Kunz").withPhone("94824247")
             .withPay("21.86").withAddress("little tokyo").withRoles("chef").build();
-    public static final Worker GEORGE = new WorkerBuilder().withName("George Best").withPhone("9482442")
+    public static final Worker GEORGE = new WorkerBuilder().withName("George Best").withPhone("94812442")
             .withPay("24").withAddress("4th street").withRoles("chef").build();
 
     // Manually added
-    public static final Worker HOON = new WorkerBuilder().withName("Hoon Meier").withPhone("8482424")
+    public static final Worker HOON = new WorkerBuilder().withName("Hoon Meier").withPhone("84824324")
             .withPay("11.11").withAddress("little india").withRoles("chef").build();
-    public static final Worker IDA = new WorkerBuilder().withName("Ida Mueller").withPhone("8482131")
+    public static final Worker IDA = new WorkerBuilder().withName("Ida Mueller").withPhone("84823131")
             .withPay("10.10").withAddress("chicago ave").withRoles("chef").build();
 
     // Manually added - Worker's details found in {@code CommandTestUtil}

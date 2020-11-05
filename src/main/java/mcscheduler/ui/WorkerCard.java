@@ -58,7 +58,7 @@ public class WorkerCard extends UiPart<Region> {
         this.worker = worker;
         id.setText(displayedIndex + ". ");
         name.setText(worker.getName().fullName);
-        phone.setText(worker.getPhone().toString());
+        phone.setText(worker.getPhone().toReadableString());
         address.setText(worker.getAddress().value);
         pay.setText(worker.getPay().toString());
         worker.getRoles().stream()
