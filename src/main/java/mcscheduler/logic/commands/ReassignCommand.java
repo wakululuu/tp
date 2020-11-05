@@ -118,10 +118,12 @@ public class ReassignCommand extends Command {
         }
 
         if (!newWorker.isFitForRole(newRole)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE,
+                    newWorker.getName(), newRole));
         }
         if (newWorker.isUnavailable(newShift)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE);
+            throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
+                    newWorker.getName(), newShift));
         }
 
         if (!newShift.isRoleRequired(newRole)) {
