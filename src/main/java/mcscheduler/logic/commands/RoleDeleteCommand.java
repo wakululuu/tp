@@ -13,6 +13,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
@@ -49,6 +50,8 @@ public class RoleDeleteCommand extends Command {
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
+        assert !roleToDelete.equals(new Leave());
+
         deleteRoleFromShifts(model, roleToDelete);
         deleteRoleFromWorkers(model, roleToDelete);
         deleteRoleFromAssignments(model, roleToDelete);
