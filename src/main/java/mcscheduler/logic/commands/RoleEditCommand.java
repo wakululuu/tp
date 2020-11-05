@@ -12,6 +12,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
@@ -30,7 +31,7 @@ public class RoleEditCommand extends Command {
             + "ROLE (must be alphanumeric and can contain spaces)\n"
             + "Example: " + COMMAND_WORD + " 1 burger flipper";
 
-    public static final String MESSAGE_EDIT_ROLE_SUCCESS = "Edited role: %1$s";
+    public static final String MESSAGE_EDIT_ROLE_SUCCESS = "Edited role: %1$s | Previous role: %2$s";
 
     private final Index targetIndex;
     private final Role editedRole;
@@ -57,12 +58,14 @@ public class RoleEditCommand extends Command {
         }
 
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
+        assert !Leave.isLeave(roleToEdit) : "Leave should not be edited";
+
         editRoleInShifts(model, roleToEdit);
         editRoleInWorkers(model, roleToEdit);
         editRoleInAssignments(model, roleToEdit);
         model.setRole(roleToEdit, editedRole);
 
-        return new CommandResult(String.format(MESSAGE_EDIT_ROLE_SUCCESS, roleToEdit));
+        return new CommandResult(String.format(MESSAGE_EDIT_ROLE_SUCCESS, editedRole, roleToEdit));
     }
 
     private void editRoleInShifts(Model model, Role roleToEdit) {
