@@ -8,6 +8,7 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_OLD;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_NEW;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER_OLD;
+import static mcscheduler.logic.parser.ParserUtil.arePrefixesAbsent;
 import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
 
 import mcscheduler.commons.core.Messages;
@@ -31,8 +32,16 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
                 PREFIX_ROLE, PREFIX_WORKER, PREFIX_SHIFT);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_WORKER_OLD, PREFIX_WORKER_NEW, PREFIX_SHIFT_OLD,
-                PREFIX_SHIFT_NEW, PREFIX_ROLE)) {
-            if (!arePrefixesPresent(argMultimap, PREFIX_SHIFT, PREFIX_WORKER)) {
+                PREFIX_SHIFT_NEW)) {
+            if (!arePrefixesAbsent(argMultimap, PREFIX_SHIFT, PREFIX_WORKER, PREFIX_ROLE)) {
+                throw new ParseException(
+                        String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ReassignCommand.MESSAGE_USAGE));
+            }
+        }
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_SHIFT, PREFIX_WORKER, PREFIX_ROLE)) {
+            if (!arePrefixesAbsent(argMultimap, PREFIX_WORKER_OLD, PREFIX_WORKER_NEW, PREFIX_SHIFT_OLD,
+                    PREFIX_SHIFT_NEW)) {
                 throw new ParseException(
                         String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, ReassignCommand.MESSAGE_USAGE));
             }
