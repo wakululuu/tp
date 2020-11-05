@@ -39,7 +39,6 @@ public class McSchedulerParser {
      * Used for initial separation of command word and args.
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-
     /**
      * Parses user input into command for execution.
      *
@@ -73,18 +72,34 @@ public class McSchedulerParser {
             return new WorkerAvailableCommandParser().parse(arguments);
 
         case ClearCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ClearCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ClearCommand();
 
         case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
         case WorkerListCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        WorkerListCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new WorkerListCommand();
 
         case ExitCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ExitCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ExitCommand();
 
         case HelpCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        HelpCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new HelpCommand();
 
         case UnassignCommand.COMMAND_WORD:
@@ -115,6 +130,10 @@ public class McSchedulerParser {
             return new ShiftDeleteCommandParser().parse(arguments);
 
         case ShiftListCommand.COMMAND_WORD:
+            if (!arguments.trim().equals("")) {
+                throw new ParseException(String.format(Messages.MESSAGE_UNEXPECTED_ARGUMENT,
+                        ShiftListCommand.COMMAND_WORD, arguments.trim()));
+            }
             return new ShiftListCommand();
 
         case RoleAddCommand.COMMAND_WORD:

@@ -125,7 +125,7 @@ public class WorkerAvailableCommand extends Command {
     private String printListOfAvailableWorkers(List<Pair<Worker, Index>> availableWorkers) {
         String output = "";
         for (Pair<Worker, Index> pair : availableWorkers) {
-            output += String.format("%1$s    %2$s\n", pair.getValue().getOneBased(), pair.getKey().getName());
+            output += String.format("%1$s\t%2$s\n", pair.getValue().getOneBased(), pair.getKey().getName());
         }
 
         return output;
