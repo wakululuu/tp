@@ -10,7 +10,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import mcscheduler.commons.core.Messages;
@@ -43,8 +42,8 @@ public class MassTakeLeaveCommand extends Command {
             + "Example: " + COMMAND_WORD
             + " w/2 d/Mon t/PM d/Wed t/AM ";
 
-    public static final String MESSAGE_MASS_TAKE_LEAVE_SUCCESS = "Leave added from shift {%1$s} to shift {%2$s}.";
-    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = AssignCommand.MESSAGE_DUPLICATE_ASSIGNMENT + " {%1$s}\n";
+    public static final String MESSAGE_MASS_TAKE_LEAVE_SUCCESS = "Leave added for %5$s from %1$s %2$s to %3$s %4$s. ";
+    public static final String MESSAGE_REASSIGNED = "Reassignments made: %1$s";
 
     private final Index workerIndex;
     private final ShiftDay startDay;
@@ -86,34 +85,36 @@ public class MassTakeLeaveCommand extends Command {
 
         List<Shift> shiftsToTakeLeaveFrom = generateShiftsInDayTimeRange(startDay, startTime, endDay, endTime);
 
-        StringBuilder errorMessageForShiftsWithOtherAssignments = new StringBuilder();
+        List<Assignment> reassignedAssignments = new ArrayList<>();
         ArrayList<Shift> shiftsAlreadyWithLeave = new ArrayList<>();
         for (Shift shift: shiftsToTakeLeaveFrom) {
-            Assignment toCheck = new Assignment(shift, worker);
-            if (hasNonLeaveAssignment(model, toCheck)) {
-                Assignment nonLeaveAssignmentInModel = model.getAssignment(toCheck).get();
-                errorMessageForShiftsWithOtherAssignments
-                        .append(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, nonLeaveAssignmentInModel));
-            } else if (hasLeaveAssignment(model, toCheck) || isWorkerUnavailable(worker, shift)) {
+            Assignment toAdd = new Assignment(shift, worker, new Leave());
+            if (hasNonLeaveAssignment(model, toAdd)) {
+                Assignment nonLeaveAssignmentInModel = model.getAssignment(toAdd).get();
+                model.setAssignment(nonLeaveAssignmentInModel, toAdd);
+                reassignedAssignments.add(nonLeaveAssignmentInModel);
+            } else if (hasLeaveAssignment(model, toAdd) || isWorkerUnavailable(worker, shift)) {
                 shiftsAlreadyWithLeave.add(shift);
+            } else {
+                if (!model.hasShift(shift)) {
+                    model.addShift(shift);
+                }
+                model.addAssignment(toAdd);
             }
         }
 
-        if (errorMessageForShiftsWithOtherAssignments.length() > 0) {
-            throw new CommandException(errorMessageForShiftsWithOtherAssignments.toString());
-        }
-        shiftsToTakeLeaveFrom.removeAll(shiftsAlreadyWithLeave);
-
-        for (Shift shift: shiftsToTakeLeaveFrom) {
-            if (!model.hasShift(shift)) {
-                model.addShift(shift);
-            }
-            model.addAssignment(new Assignment(shift, worker, new Leave()));
+        String resultMessage = String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
+                startDay, startTime, endDay, endTime, worker.getName());
+        if (reassignedAssignments.size() > 0) {
+            String reassignedMessage = reassignedAssignments
+                    .stream()
+                    .map(Assignment::toString)
+                    .reduce("", (str1, str2) -> str1 + "\n" + str2);
+            resultMessage += "\n" + String.format(MESSAGE_REASSIGNED, reassignedMessage);
         }
 
-        return new CommandResult(String.format(MESSAGE_MASS_TAKE_LEAVE_SUCCESS,
-                new Shift(startDay, startTime, Collections.emptySet()),
-                new Shift(endDay, endTime, Collections.emptySet())));
+        return new CommandResult(resultMessage);
+
 
     }
 

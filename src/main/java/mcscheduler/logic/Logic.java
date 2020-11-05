@@ -10,6 +10,7 @@ import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.Model;
 import mcscheduler.model.ReadOnlyMcScheduler;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
@@ -38,6 +39,9 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the filtered list of shifts */
     ObservableList<Shift> getFilteredShiftList();
+
+    /** Returns an unmodifiable view of the filtered list of roles */
+    ObservableList<Role> getFilteredRoleList();
 
     /** Returns an unmodifiable view of the full list of assigments */
     ObservableList<Assignment> getFullAssignmentList();

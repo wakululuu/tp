@@ -1,33 +1,12 @@
 .background {
-    -fx-background-color: derive(#e2e2e2, 20%);
-    background-color: #ffd203; /* Used in the default.html file */
+    -fx-background-color: white;
+    background-color: white; /* Used in the default.html file */
 }
 
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: #aaaaaa;
-    -fx-opacity: 0.9;
-}
-
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: black;
-    -fx-opacity: 1;
-}
-
-.label-white {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: black;
     -fx-opacity: 1;
 }
 
@@ -47,9 +26,9 @@
 }
 
 .table-view {
-    -fx-base: #e2e2e2;
-    -fx-control-inner-background: #e2e2e2;
-    -fx-background-color: #e2e2e2;
+    -fx-base: white;
+    -fx-control-inner-background: white;
+    -fx-background-color: white;
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
     -fx-padding: 5;
@@ -64,10 +43,10 @@
     -fx-border-width: 0 0 1 0;
     -fx-background-color: transparent;
     -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
+       transparent
+       transparent
+       derive(-fx-base, 80%)
+       transparent;
     -fx-border-insets: 0 10 1 0;
 }
 
@@ -84,20 +63,20 @@
 }
 
 .split-pane:horizontal .split-pane-divider {
-    -fx-background-color: derive(#e2e2e2, 20%);
+    -fx-background-color: derive(white, 20%);
     -fx-border-color: transparent transparent transparent #4d4d4d;
 }
 
 .split-pane {
     -fx-border-radius: 1;
     -fx-border-width: 1;
-    -fx-background-color: derive(#e2e2e2, 20%);
+    -fx-background-color: derive(white, 20%);
 }
 
 .list-view {
+    -fx-background-color: white;
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-background-color: derive(#e2e2e2, 20%);
 }
 
 .list-cell {
@@ -107,24 +86,26 @@
 }
 
 .list-cell:filled:even {
-    -fx-background-color: #ffd203;
+    -fx-background-color: #d1d1d1;
 }
 
 .list-cell:filled:odd {
-    -fx-background-color: #ffbe19;
-}
-
-.list-cell:filled:selected {
-    -fx-background-color: #FDD979;
-}
-
-.list-cell:filled:selected #cardPane {
-    -fx-border-color: #da291c;
-    -fx-border-width: 1;
+    -fx-background-color: #f2f2f2;
 }
 
 .list-cell .label {
-        -fx-text-fill: black;
+    -fx-text-fill: black;
+}
+
+.cell_header {
+    -fx-background-color: #bd0018;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.cell_big_title {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 24px;
+    -fx-text-fill: white;
 }
 
 .cell_big_label {
@@ -140,24 +121,24 @@
 }
 
 .stack-pane {
-     -fx-background-color: derive(#e2e2e2, 20%);
+    -fx-background-color: derive(white, 20%);
 }
 
 .pane-with-border {
-     -fx-background-color: derive(#e2e2e2, 20%);
-     -fx-border-color: derive(#e2e2e2, 10%);
-     -fx-border-top-width: 1px;
+    -fx-background-color: white;
+    -fx-border-color: derive(white, 10%);
+    -fx-border-top-width: 1px;
 }
 
 .status-bar {
-    -fx-background-color: derive(#e2e2e2, 30%);
+    -fx-background-color: #ffc72c;
 }
 
 .result-display {
-    -fx-background-color: transparent;
+    -fx-background-color: #3c3e3f;
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
 }
 
 .result-display .label {
@@ -172,9 +153,7 @@
 }
 
 .status-bar-with-border {
-    -fx-background-color: derive(#e2e2e2, 30%);
-    -fx-border-color: derive(#e2e2e2, 25%);
-    -fx-border-width: 1px;
+    -fx-background-color: #ffc72c;
 }
 
 .status-bar-with-border .label {
@@ -182,17 +161,17 @@
 }
 
 .grid-pane {
-    -fx-background-color: derive(#e2e2e2, 30%);
-    -fx-border-color: derive(#e2e2e2, 30%);
+    -fx-background-color: white;
+    -fx-border-color: derive(white, 30%);
     -fx-border-width: 1px;
 }
 
 .grid-pane .stack-pane {
-    -fx-background-color: derive(#e2e2e2, 30%);
+    -fx-background-color: white;
 }
 
 .context-menu {
-    -fx-background-color: derive(#e2e2e2, 50%);
+    -fx-background-color: derive(white, 50%);
 }
 
 .context-menu .label {
@@ -200,75 +179,25 @@
 }
 
 .menu-bar {
-    -fx-background-color: derive(#e2e2e2, 20%);
+    -fx-background-color: #ffc72c;
 }
 
 .menu-bar .label {
-    -fx-font-size: 14pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: black;
-    -fx-opacity: 0.9;
+    -fx-font-weight: bold;
 }
 
 .menu .left-container {
     -fx-background-color: white;
 }
 
-/*
- * Metro style Push Button
- * Author: Pedro Duque Vieira
- * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
- */
-.button {
-    -fx-padding: 5 22 5 22;
-    -fx-border-color: #e2e2e2;
-    -fx-border-width: 2;
-    -fx-background-radius: 0;
-    -fx-background-color: #e2e2e2;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 11pt;
-    -fx-text-fill: #d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.button:hover {
-    -fx-background-color: #c5c5c5;
-}
-
-.button:pressed, .button:default:hover:pressed {
-  -fx-background-color: black;
-  -fx-text-fill: #e2e2e2;
-}
-
-.button:focused {
-    -fx-border-color: black, black;
-    -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
-    -fx-border-radius: 0, 0;
-    -fx-border-insets: 1 1 1 1, 0;
-}
-
-.button:disabled, .button:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #e2e2e2;
-    -fx-text-fill: black;
-}
-
-.button:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #000000;
-}
-
-.button:default:hover {
-    -fx-background-color: derive(-fx-focus-color, 30%);
-}
-
 .dialog-pane {
-    -fx-background-color: #e2e2e2;
+    -fx-background-color: white;
 }
 
 .dialog-pane > *.button-bar > *.container {
-    -fx-background-color: #e2e2e2;
+    -fx-background-color: white;
 }
 
 .dialog-pane > *.label.content {
@@ -278,7 +207,7 @@
 }
 
 .dialog-pane:header *.header-panel {
-    -fx-background-color: derive(#e2e2e2, 25%);
+    -fx-background-color: white;
 }
 
 .dialog-pane:header *.header-panel *.label {
@@ -289,11 +218,11 @@
 }
 
 .scroll-bar {
-    -fx-background-color: derive(#e2e2e2, 20%);
+    -fx-background-color: #f2f2f2;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: derive(#e2e2e2, 50%);
+    -fx-background-color: #3c3e3f;
     -fx-background-insets: 3;
 }
 
@@ -325,14 +254,14 @@
 }
 
 #commandTextField {
-    -fx-background-color: transparent #ffd203 transparent #ffd203;
+    -fx-background-color: #3c3e3f;
     -fx-background-insets: 0;
-    -fx-border-color: #ffffff #ffffff #383838 #ffffff;
     -fx-border-insets: 0;
     -fx-border-width: 1;
     -fx-font-family: "Segoe UI Light";
-    -fx-font-size: 13pt;
-    -fx-text-fill: black;
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
 }
 
 #filterField, #workerListPanel, #workerWebpage {
@@ -340,55 +269,42 @@
 }
 
 #resultDisplay .content {
-    -fx-background-color: transparent, #dddddd, transparent, #dddddd;
+    -fx-background-color: #3c3e3f;
+    -fx-font-size: 12pt;
     -fx-background-radius: 0;
 }
 
-#roles {
-    -fx-hgap: 7;
-    -fx-vgap: 3;
-}
-
-#roles .label {
-    -fx-text-fill: white;
-    -fx-background-color: #da291c;
-    -fx-padding: 1 3 1 3;
-    -fx-border-radius: 2;
-    -fx-background-radius: 2;
-    -fx-font-size: 11;
-}
-
+#roles,
 #shiftAssignments,
 #workerAssignments,
 #unavailableTimings,
-#leaveShiftAssignments{
+#leaveShiftAssignments {
     -fx-hgap: 7;
     -fx-vgap: 3;
 }
 
+#roles .label,
 #shiftAssignments .label,
 #workerAssignments .label,
-#unavailableTiming .label,
+#unavailableTimings .label,
 #leaveShiftAssignments .label,
 #leaveWorkerAssignments .label {
-    -fx-text-fill: white;
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
 
-#unavailableTimings .label {
-    -fx-text-fill: white;
-    -fx-background-color: #383838;
-}
-
+#roles .label,
 #shiftAssignments .label,
 #workerAssignments .label {
-    -fx-background-color: #da291c;
+    -fx-background-color: #ffbe19;
+    -fx-text-fill: #3c3e3f;
 }
 
+#unavailableTimings .label,
 #leaveShiftAssignments .label,
 #leaveWorkerAssignments .label {
-    -fx-background-color: #383838;
+    -fx-background-color: #bd0018;
+    -fx-text-fill: white;
 }
