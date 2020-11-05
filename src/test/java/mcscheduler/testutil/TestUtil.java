@@ -55,7 +55,7 @@ public class TestUtil {
     }
 
     /**
-     * Returns an out of bound index of the worker in the {@code model}'s worker list.
+     * Returns an out of bound index of the shift in the {@code model}'s shift list.
      */
     public static Index getOutOfBoundShiftIndex(Model model) {
         return Index.fromOneBased(model.getFilteredShiftList().size() + 1);

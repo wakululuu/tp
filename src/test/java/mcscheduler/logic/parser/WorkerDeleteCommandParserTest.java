@@ -10,6 +10,7 @@ import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.testutil.TypicalIndexes;
 
+//@@author
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
  * outside of the WorkerDeleteCommand code. For example, inputs "1" and "1 abc" take the

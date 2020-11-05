@@ -119,7 +119,7 @@ public class ShiftEditCommand extends Command {
                 if (!newRoles.contains(assignmentRole) || assignment.getWorker().isUnavailable(editedShift)) {
                     // This accounts for the case where the shift no longer has the role specified in the assignment
                     assignmentsToDelete.add(assignment);
-                } else if (Shift.countRoleQuantityFilled(model, shiftToEdit, assignmentRole)
+                } else if (shiftToEdit.countRoleQuantityFilled(model, assignmentRole)
                         > getQuantityRequiredForRole(editedShift, assignmentRole)) {
                     // This accounts for the case where the quantity needed for a particular role is less than the
                     // current quantity filled

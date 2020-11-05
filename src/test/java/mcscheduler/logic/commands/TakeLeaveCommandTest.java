@@ -1,5 +1,8 @@
 package mcscheduler.logic.commands;
 
+import static mcscheduler.testutil.TypicalShifts.SHIFT_A;
+import static mcscheduler.testutil.TypicalWorkers.ALICE;
+import static mcscheduler.testutil.TypicalWorkers.DANIEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,11 +21,11 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Leave;
+import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.Assert;
 import mcscheduler.testutil.TypicalIndexes;
-import mcscheduler.testutil.TypicalShifts;
 import mcscheduler.testutil.TypicalWorkers;
 
 public class TakeLeaveCommandTest {
@@ -39,9 +42,9 @@ public class TakeLeaveCommandTest {
     }
 
     @Test
-    public void execute_correctIndexes_success() throws Exception {
-        List<Worker> workers = Arrays.asList(TypicalWorkers.ALICE);
-        List<Shift> shifts = Arrays.asList(TypicalShifts.SHIFT_A);
+    public void execute_workerDoesNotHaveAssignment_success() throws Exception {
+        List<Worker> workers = Arrays.asList(ALICE);
+        List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
         Set<Index> validIndex = new HashSet<>();
@@ -50,31 +53,38 @@ public class TakeLeaveCommandTest {
         CommandResult result;
         result = takeLeaveCommand.execute(model);
 
-        Assignment assignment = new Assignment(TypicalShifts.SHIFT_A, TypicalWorkers.ALICE, new Leave());
+        Assignment assignment = new Assignment(SHIFT_A, ALICE, new Leave());
 
         assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
-            + AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, assignment) + "\n", result.getFeedbackToUser());
+                + AssignCommand.MESSAGE_ASSIGN_SUCCESS, 1, assignment) + "\n", result.getFeedbackToUser());
         assertEquals(Arrays.asList(assignment), model.assignments);
 
     }
 
     @Test
-    public void execute_workerNotAvailable_throwsCommandException() {
-        List<Worker> workers = Arrays.asList(TypicalWorkers.BENSON);
-        List<Shift> shifts = Arrays.asList(TypicalShifts.SHIFT_A);
-        ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
+    public void execute_workerAlreadyHasAssignment_success() throws Exception {
+        List<Worker> workers = Arrays.asList(DANIEL);
+        List<Shift> shifts = Arrays.asList(SHIFT_A);
+        ModelStubAlreadyHasAssignment model = new ModelStubAlreadyHasAssignment(workers, shifts);
 
         Set<Index> validIndex = new HashSet<>();
         validIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
         TakeLeaveCommand takeLeaveCommand = new TakeLeaveCommand(TypicalIndexes.INDEX_FIRST_SHIFT, validIndex);
-        Assert.assertThrows(CommandException.class, () -> takeLeaveCommand.execute(model));
+        CommandResult result = takeLeaveCommand.execute(model);
+
+        Assignment assignment = new Assignment(SHIFT_A, DANIEL, new Leave());
+
+        assertEquals(String.format(TakeLeaveCommand.MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX
+                + "\n" + ReassignCommand.MESSAGE_REASSIGN_SUCCESS, assignment, Role.createRole("test")),
+                result.getFeedbackToUser());
+        assertEquals(Arrays.asList(assignment), model.assignments);
     }
 
     @Test
-    public void execute_workerAlreadyHasAssignment_throwsCommandException() {
-        List<Worker> workers = Arrays.asList(TypicalWorkers.DANIEL);
-        List<Shift> shifts = Arrays.asList(TypicalShifts.SHIFT_A);
-        ModelStubAlreadyHasAssignment model = new ModelStubAlreadyHasAssignment(workers, shifts);
+    public void execute_workerNotAvailable_throwsCommandException() {
+        List<Worker> workers = Arrays.asList(TypicalWorkers.BENSON);
+        List<Shift> shifts = Arrays.asList(SHIFT_A);
+        ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
         Set<Index> validIndex = new HashSet<>();
         validIndex.add(TypicalIndexes.INDEX_FIRST_WORKER);
@@ -85,7 +95,7 @@ public class TakeLeaveCommandTest {
     @Test
     public void execute_invalidWorkerIndex_throwsCommandException() {
         List<Worker> workers = Arrays.asList();
-        List<Shift> shifts = Arrays.asList(TypicalShifts.SHIFT_A);
+        List<Shift> shifts = Arrays.asList(SHIFT_A);
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
         Set<Index> validIndex = new HashSet<>();
@@ -96,7 +106,7 @@ public class TakeLeaveCommandTest {
 
     @Test
     public void execute_invalidShiftIndex_throwsCommandException() {
-        List<Worker> workers = Arrays.asList(TypicalWorkers.ALICE);
+        List<Worker> workers = Arrays.asList(ALICE);
         List<Shift> shifts = Arrays.asList();
         ModelStubAcceptingLeaveAdded model = new ModelStubAcceptingLeaveAdded(workers, shifts);
 
@@ -132,7 +142,7 @@ public class TakeLeaveCommandTest {
      */
     private class ModelStubAcceptingLeaveAdded extends ModelManager {
 
-        private final ArrayList<Assignment> assignments;
+        final ArrayList<Assignment> assignments;
 
         public ModelStubAcceptingLeaveAdded(List<Worker> workers, List<Shift> shifts) {
             super();
@@ -152,7 +162,23 @@ public class TakeLeaveCommandTest {
 
         @Override
         public void addAssignment(Assignment assignment) {
-            this.assignments.add(assignment);
+            assignments.add(assignment);
+        }
+
+        @Override
+        public Optional<Assignment> getAssignment(Assignment toGet) {
+            return assignments.stream().filter(assignment -> assignment.equals(toGet)).findAny();
+        }
+
+        @Override
+        public void deleteAssignment(Assignment toDelete) {
+            assignments.remove(toDelete);
+        }
+
+        @Override
+        public void setAssignment(Assignment target, Assignment editedAssignment) {
+            deleteAssignment(target);
+            addAssignment(editedAssignment);
         }
 
     }
@@ -165,6 +191,11 @@ public class TakeLeaveCommandTest {
 
         public ModelStubAlreadyHasAssignment(List<Worker> workers, List<Shift> shifts) {
             super(workers, shifts);
+            for (Worker worker : workers) {
+                for (Shift shift : shifts) {
+                    addAssignment(new Assignment(shift, worker, Role.createRole("test")));
+                }
+            }
         }
 
         @Override

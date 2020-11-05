@@ -16,6 +16,7 @@ import mcscheduler.model.worker.Worker;
  * The API of the Model component.
  */
 public interface Model {
+    //@@author
     /** {@code Predicate} that always evaluate to true */
     Predicate<Worker> PREDICATE_SHOW_ALL_WORKERS = unused -> true;
     Predicate<Shift> PREDICATE_SHOW_ALL_SHIFTS = unused -> true;
@@ -142,6 +143,7 @@ public interface Model {
      */
     ObservableList<Shift> getFilteredShiftList();
 
+    //@@author wakululuu
     // assignment-level operations
 
     /**
@@ -196,14 +198,6 @@ public interface Model {
      * {@code role} must not already exist in the McScheduler.
      */
     void addRole(Role role);
-
-    /**
-     * Replaces the given role {@code target} with {@code editedRole}.
-     * {@code target} must exist in the McScheduler.
-     * The role identity of {@code editedRole} must not be the same as another existing role in the
-     * McScheduler.
-     */
-    void setRole(Role target, Role editedRole);
 
     /** Returns an unmodifiable view of the filtered role list */
     ObservableList<Role> getFilteredRoleList();

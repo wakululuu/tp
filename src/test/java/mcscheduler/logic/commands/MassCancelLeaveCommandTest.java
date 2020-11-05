@@ -15,8 +15,6 @@ import static mcscheduler.testutil.TypicalWorkers.ALICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.util.Collections;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,10 +27,10 @@ import mcscheduler.model.UserPrefs;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
-import mcscheduler.model.shift.Shift;
 import mcscheduler.model.shift.ShiftDay;
 import mcscheduler.model.shift.ShiftTime;
 
+//@@author WangZijun97
 public class MassCancelLeaveCommandTest {
 
     private Model model = new ModelManager(new McScheduler(), new UserPrefs());
@@ -73,7 +71,7 @@ public class MassCancelLeaveCommandTest {
         model.addAssignment(leave1);
 
         String expectedMessage1 = String.format(MassCancelLeaveCommand.MESSAGE_MASS_CANCEL_LEAVE_SUCCESS,
-                new Shift(mon, am, Collections.emptySet()), new Shift(tue, pm, Collections.emptySet()));
+                mon, am, tue, pm, ALICE.getName());
         CommandResult commandResult1 = new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, pm).execute(model);
 
         assertEquals(expectedMessage1, commandResult1.getFeedbackToUser());
@@ -85,7 +83,7 @@ public class MassCancelLeaveCommandTest {
         model.addAssignment(leave2);
 
         String expectedMessage2 = String.format(MassCancelLeaveCommand.MESSAGE_MASS_CANCEL_LEAVE_SUCCESS,
-                new Shift(tue, am, Collections.emptySet()), new Shift(mon, pm, Collections.emptySet()));
+                tue, am, mon, pm, ALICE.getName());
         CommandResult commandResult2 = new MassCancelLeaveCommand(INDEX_FIRST_WORKER, tue, am, mon, pm).execute(model);
         assertEquals(expectedMessage2, commandResult2.getFeedbackToUser());
         assertEquals(model, expectedModel);
@@ -102,9 +100,8 @@ public class MassCancelLeaveCommandTest {
     public void execute_noLeavesInRange_throwsCommandException() {
         model.addWorker(ALICE);
         model.addShift(SHIFT_A);
-        Shift shiftMonAm = new Shift(mon, am, Collections.emptySet());
         assertThrows(CommandException.class,
-                String.format(MassCancelLeaveCommand.MESSAGE_NO_LEAVE_FOUND, shiftMonAm, shiftMonAm), () ->
+                String.format(MassCancelLeaveCommand.MESSAGE_NO_LEAVE_FOUND, mon, am, mon, am), () ->
                         new MassCancelLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
     }
 

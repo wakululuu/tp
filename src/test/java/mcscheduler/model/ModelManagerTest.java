@@ -24,6 +24,7 @@ import mcscheduler.model.shift.ShiftDayOrTimeContainsKeywordsPredicate;
 import mcscheduler.model.worker.NameContainsKeywordsPredicate;
 import mcscheduler.testutil.McSchedulerBuilder;
 
+//@@author
 public class ModelManagerTest {
 
     private ModelManager modelManager = new ModelManager();
@@ -123,9 +124,9 @@ public class ModelManagerTest {
     @Test
     public void equals() {
         McScheduler mcScheduler = new McSchedulerBuilder()
-            .withWorker(ALICE).withWorker(BENSON)
-            .withShift(SHIFT_A).withShift(SHIFT_B)
-            .build();
+                .withWorker(ALICE).withWorker(BENSON)
+                .withShift(SHIFT_A).withShift(SHIFT_B)
+                .build();
         McScheduler differentMcScheduler = new McScheduler();
         UserPrefs userPrefs = new UserPrefs();
 

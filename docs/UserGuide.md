@@ -276,20 +276,14 @@ Examples:
 
 * `role-add Storey 2 server` Adds a storey 2 server role.
 
-### Listing all roles: `role-list`
-
-Shows a list of all roles in the McScheduler.
-
-Format: `role-list`
-
 ### Deleting a role: `role-delete`
 
 Deletes a role from the McScheduler.
 
 Format: `role-delete ROLE_INDEX`
 
-* Deletes the role at the specified `ROLE_INDEX`. The index refers to the index number shown in the role list displayed
-  using the [role-list](#listing-all-roles-role-list) command. The role index **must be a positive integer** i.e. 1, 2,
+* Deletes the role at the specified `ROLE_INDEX`. The index refers to the index number shown in the role list displayed.
+  The role index **must be a positive integer** i.e. 1, 2,
   3, …​
 
 Example:
@@ -364,9 +358,7 @@ Format: `take-leave s/SHIFT_INDEX w/WORKER_INDEX...`
 will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * The order of specifying does not matter, as long as 's/' is attached to the `SHIFT_INDEX` and 'w/' is attached to the
 `WORKER_INDEX`. <br> e.g. `take-leave s/4 w/1` is equivalent to `take-leave w/1 s/4`.
-* An error message will be shown in the following situations:
-  * Any of the worker is unavailable for that shift, since there is no reason to take leave then.
-  * Any of the worker is already assigned to a role for that shift.
+* An error message will be shown if any of the workers are unavailable for that shift, since there is no reason to take leave then.
 
 Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
@@ -388,8 +380,7 @@ the same as `mass-take-leave t/AM t/PM d/MON d/FRI w/2`, though the latter synta
 work as intended - leave taken on Sunday morning to Monday morning.
 * Shifts will be created for all day and time combinations within the specified range that does not have a shift already
 present within the McScheduler. These shifts will have no role requirements.
-* An error message will be shown in the following situations:
-  * The worker has an assigned role in any one of the shifts within the day/time range.
+* While the command will still go through, a warning message will be shown when the worker has an assigned role in any one of the shifts within the day/time range.
   
 Examples:
 * `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
@@ -472,7 +463,6 @@ Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDE
 Shift | **List** | `shift-list`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
-Role | **List** | `role-list`
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g. `unassign s/4 w/1 w/5`

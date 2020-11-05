@@ -5,6 +5,7 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":TakeLeaveCommand" as TakeLeaveCommand LOGIC_COLOR
 participant ":AssignCommand" as AssignCommand LOGIC_COLOR
+participant ":ReassignCommand" as ReassignCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
@@ -19,7 +20,6 @@ ref over LogicManager
     Refer to Assignment
     implementation.
 end ref
-
 
 LogicManager -> TakeLeaveCommand : execute()
 activate TakeLeaveCommand
@@ -41,6 +41,26 @@ deactivate Model
 
 AssignCommand --> TakeLeaveCommand
 deactivate AssignCommand
+
+loop for each reassignment
+create ReassignCommand
+TakeLeaveCommand -> ReassignCommand
+activate ReassignCommand
+ReassignCommand --> TakeLeaveCommand
+deactivate ReassignCommand
+
+TakeLeaveCommand -> ReassignCommand : execute()
+activate ReassignCommand
+
+ReassignCommand -> Model: reassign as leave
+activate Model
+
+Model --> ReassignCommand
+deactivate Model
+
+ReassignCommand --> TakeLeaveCommand
+deactivate ReassignCommand
+end
 
 TakeLeaveCommand --> LogicManager : commandResult
 deactivate TakeLeaveCommand

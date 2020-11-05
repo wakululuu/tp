@@ -30,6 +30,7 @@ import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.ReassignCommand;
 import mcscheduler.model.role.Role;
 
+//@@author tnsyn
 public class ReassignCommandParserTest {
     private final ReassignCommandParser parser = new ReassignCommandParser();
 

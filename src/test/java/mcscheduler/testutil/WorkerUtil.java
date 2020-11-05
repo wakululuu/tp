@@ -40,7 +40,7 @@ public class WorkerUtil {
             s -> sb.append(PREFIX_ROLE + s.roleName + " ")
         );
         worker.getUnavailableTimings().stream().forEach(
-            s -> sb.append(PREFIX_ROLE + s.getString() + " ")
+            s -> sb.append(PREFIX_UNAVAILABILITY + s.getString() + " ")
         );
         return sb.toString();
     }

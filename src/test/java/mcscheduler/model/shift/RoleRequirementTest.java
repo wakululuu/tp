@@ -10,14 +10,15 @@ import org.junit.jupiter.api.Test;
 import mcscheduler.model.role.Role;
 import mcscheduler.testutil.Assert;
 
+//@@author WangZijun97
 public class RoleRequirementTest {
 
     private static final RoleRequirement ROLE_REQUIREMENT = new RoleRequirement("cleaner 3 0");
     private static final RoleRequirement DIFFERENT_ROLE_ROLE_REQUIREMENT = new RoleRequirement("cashier 3 0");
     private static final RoleRequirement DIFFERENT_QUANTITY_REQUIRED_ROLE_REQUIREMENT =
-        new RoleRequirement("cleaner 7 0");
+            new RoleRequirement("cleaner 7 0");
     private static final RoleRequirement DIFFERENT_QUANTITY_FILLED_ROLE_REQUIREMENT =
-        new RoleRequirement("cleaner 3 1");
+            new RoleRequirement("cleaner 3 1");
     private static final RoleRequirement DIFFERENT_ROLE_REQUIREMENT = new RoleRequirement("cashier 7 2");
 
     @Test

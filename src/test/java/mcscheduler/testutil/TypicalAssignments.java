@@ -18,15 +18,18 @@ import mcscheduler.model.assignment.Assignment;
  */
 public class TypicalAssignments {
 
-    public static final Assignment ASSIGNMENT_A = new AssignmentBuilder().withWorker(ALICE)
-        .withShift(SHIFT_A)
-        .withRole("cashier").build();
-    public static final Assignment ASSIGNMENT_B = new AssignmentBuilder().withWorker(BOB)
-        .withShift(SHIFT_B)
-        .withRole("chef").build();
-    public static final Assignment ASSIGNMENT_C = new AssignmentBuilder().withWorker(CARL)
-        .withShift(SHIFT_C)
-        .withRole("cashier").build();
+    public static final Assignment ASSIGNMENT_A = new AssignmentBuilder()
+            .withWorker(ALICE)
+            .withShift(SHIFT_A)
+            .withRole("cashier").build();
+    public static final Assignment ASSIGNMENT_B = new AssignmentBuilder()
+            .withWorker(BOB)
+            .withShift(SHIFT_B)
+            .withRole("chef").build();
+    public static final Assignment ASSIGNMENT_C = new AssignmentBuilder()
+            .withWorker(CARL)
+            .withShift(SHIFT_C)
+            .withRole("cashier").build();
 
     public static List<Assignment> getTypicalAssignments() {
         return new ArrayList<>(Arrays.asList(ASSIGNMENT_A, ASSIGNMENT_B, ASSIGNMENT_C));

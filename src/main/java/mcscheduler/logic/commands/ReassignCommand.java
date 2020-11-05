@@ -37,7 +37,7 @@ public class ReassignCommand extends Command {
             + "sn/2 "
             + "r/Cashier";
 
-    public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made:\n%1$s";
+    public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made: %1$s | Previous Role: %2$s ";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
     public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
@@ -71,7 +71,6 @@ public class ReassignCommand extends Command {
         requireNonNull(model);
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
-        List<Assignment> assignmentList = model.getFullAssignmentList();
 
         if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
             throw new CommandException(
@@ -101,11 +100,8 @@ public class ReassignCommand extends Command {
             throw new CommandException(MESSAGE_ASSIGNMENT_NOT_FOUND);
         }
 
-        for (Assignment a : assignmentList) {
-            if (a.equals(assignmentToRemove)) {
-                assignmentToRemove = a;
-            }
-        }
+        assignmentToRemove = model.getAssignment(assignmentToRemove).get();
+
         assert assignmentToRemove.getRole() != null; // dummy assignment has been replaced with actual assignment
 
         Worker newWorker = lastShownWorkerList.get(newWorkerIndex.getZeroBased());
@@ -130,10 +126,9 @@ public class ReassignCommand extends Command {
         }
 
         model.setAssignment(assignmentToRemove, assignmentToAdd);
-        Shift.updateRoleRequirements(model, oldShift, assignmentToRemove.getRole());
-        Shift.updateRoleRequirements(model, newShift, newRole);
 
-        return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd));
+        return new CommandResult(
+                String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd, assignmentToRemove.getRole()));
     }
 
 
