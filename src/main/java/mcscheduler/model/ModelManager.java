@@ -229,6 +229,13 @@ public class ModelManager implements Model {
         mcScheduler.addRole(role);
     }
 
+    @Override
+    public void setRole(Role target, Role editedRole) {
+        CollectionUtil.requireAllNonNull(target, editedRole);
+
+        mcScheduler.setRole(target, editedRole);
+    }
+
     /**
      * Returns an unmodifiable view of the list of {@code Role} backed by the internal list of
      * {@code versionedMcScheduler}

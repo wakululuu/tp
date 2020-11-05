@@ -55,7 +55,7 @@ public class ShiftEditCommand extends Command {
     /**
      * Creates a ShiftEditCommand from the given required information.
      * @param index of the shift in the filtered shift list to edit.
-     * @param editShiftDescriptor detaiils to edit the shift with.
+     * @param editShiftDescriptor details to edit the shift with.
      */
     public ShiftEditCommand(Index index, EditShiftDescriptor editShiftDescriptor) {
         CollectionUtil.requireAllNonNull(index, editShiftDescriptor);
