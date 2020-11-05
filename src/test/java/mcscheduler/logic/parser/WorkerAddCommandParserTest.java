@@ -8,7 +8,6 @@ import static mcscheduler.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_PAY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.INVALID_ROLE_DESC;
-import static mcscheduler.logic.commands.CommandTestUtil.INVALID_UNAVAILABILITY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static mcscheduler.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.PAY_DESC_AMY;
@@ -34,6 +33,7 @@ import static mcscheduler.testutil.TypicalWorkers.BOB;
 
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.worker.Address;
@@ -112,31 +112,40 @@ public class WorkerAddCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Name.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Name", INVALID_NAME_DESC.substring(3), Name.MESSAGE_CONSTRAINTS));
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Phone.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Phone number", INVALID_PHONE_DESC.substring(4), Phone.MESSAGE_CONSTRAINTS));
+        //phone desc has 2 length prefix, so substring 4 for its value
 
         // invalid pay
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_PAY_DESC + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Pay.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Pay", INVALID_PAY_DESC.substring(3), Pay.MESSAGE_CONSTRAINTS));
 
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC, Address.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Address", INVALID_ADDRESS_DESC.substring(3), Address.MESSAGE_CONSTRAINTS));
 
         // invalid role
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_ROLE_DESC + UNAVAILABILITY_DESC, Role.MESSAGE_CONSTRAINTS);
-
-        // invalid unavailability
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_ROLE_DESC, Role.MESSAGE_CONSTRAINTS);
+                + INVALID_ROLE_DESC,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role", INVALID_ROLE_DESC.substring(3), Role.MESSAGE_CONSTRAINTS));
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + PAY_DESC_BOB + INVALID_ADDRESS_DESC
-                + ROLE_DESC_CASHIER + INVALID_UNAVAILABILITY_DESC, Name.MESSAGE_CONSTRAINTS);
+                + ROLE_DESC_CASHIER,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                    "Name", INVALID_NAME_DESC.substring(3), Name.MESSAGE_CONSTRAINTS));
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB

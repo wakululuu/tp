@@ -118,7 +118,8 @@ public class AssignCommand extends Command {
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
             // Prevent duplicates in model & Prevent duplicates in a single call
             if (model.hasAssignment(assignmentToAdd) || assignmentsToAdd.contains(assignmentToAdd)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentToAdd));
+                throw new CommandException(
+                    String.format(MESSAGE_DUPLICATE_ASSIGNMENT, model.getAssignment(assignmentToAdd).get()));
             }
             assignmentsToAdd.add(assignmentToAdd);
         }

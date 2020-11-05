@@ -72,7 +72,8 @@ public class ParserUtil {
         requireNonNull(name);
         String trimmedName = name.trim();
         if (!Name.isValidName(trimmedName)) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Name", name, Name.MESSAGE_CONSTRAINTS));
         }
         return new Name(trimmedName);
     }
@@ -87,7 +88,8 @@ public class ParserUtil {
         requireNonNull(phone);
         String trimmedPhone = phone.trim();
         if (!Phone.isValidPhone(trimmedPhone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Phone number", phone, Phone.MESSAGE_CONSTRAINTS));
         }
         return new Phone(trimmedPhone);
     }
@@ -102,7 +104,8 @@ public class ParserUtil {
         requireNonNull(address);
         String trimmedAddress = address.trim();
         if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Address", address, Address.MESSAGE_CONSTRAINTS));
         }
         return new Address(trimmedAddress);
     }
@@ -117,7 +120,8 @@ public class ParserUtil {
         requireNonNull(pay);
         String trimmedPay = pay.trim();
         if (!Pay.isValidPay(pay)) {
-            throw new ParseException(Pay.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Pay", pay, Pay.MESSAGE_CONSTRAINTS));
         }
         return new Pay(trimmedPay);
     }
@@ -132,7 +136,8 @@ public class ParserUtil {
         requireNonNull(day);
         String trimmedShiftDay = day.trim();
         if (!ShiftDay.isValidDay(trimmedShiftDay)) {
-            throw new ParseException(ShiftDay.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Shift day", day, ShiftDay.MESSAGE_CONSTRAINTS));
         }
         return new ShiftDay(day);
     }
@@ -147,7 +152,8 @@ public class ParserUtil {
         requireNonNull(time);
         String trimmedShiftTime = time.trim();
         if (!ShiftTime.isValidTime(trimmedShiftTime)) {
-            throw new ParseException(ShiftTime.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Shift time", time, ShiftTime.MESSAGE_CONSTRAINTS));
         }
         return new ShiftTime((time));
     }
@@ -162,7 +168,8 @@ public class ParserUtil {
         requireNonNull(role);
         String trimmedRole = role.trim();
         if (!Role.isValidRoleName(trimmedRole)) {
-            throw new ParseException(Role.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", role, Role.MESSAGE_CONSTRAINTS));
         }
         return Role.createRole(trimmedRole);
     }
@@ -189,7 +196,9 @@ public class ParserUtil {
         requireNonNull(unavailability);
         String trimmedUnavailability = unavailability.trim();
         if (!Unavailability.isValidUnavailability(trimmedUnavailability)) {
-            throw new ParseException(Unavailability.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Unavailability", unavailability, Unavailability.MESSAGE_CONSTRAINTS));
         }
         return new Unavailability(trimmedUnavailability);
     }
@@ -248,7 +257,9 @@ public class ParserUtil {
         requireNonNull(roleRequirement);
         String trimmedRoleRequirement = roleRequirement.trim();
         if (!RoleRequirement.isValidRoleRequirement(trimmedRoleRequirement)) {
-            throw new ParseException(RoleRequirement.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Role requirement", roleRequirement, RoleRequirement.MESSAGE_CONSTRAINTS));
         }
 
         int index = trimmedRoleRequirement.lastIndexOf(" ");
@@ -281,7 +292,9 @@ public class ParserUtil {
         requireNonNull(workerRole);
         String trimmedWorkerRole = workerRole.trim();
         if (!WorkerRolePair.isValidWorkerRolePair(trimmedWorkerRole)) {
-            throw new ParseException(WorkerRolePair.MESSAGE_CONSTRAINTS);
+            throw new ParseException(
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE,
+                        "Worker-Role pair", workerRole, WorkerRolePair.MESSAGE_CONSTRAINTS));
         }
         return new WorkerRolePair(trimmedWorkerRole);
     }
