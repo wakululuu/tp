@@ -250,7 +250,15 @@ public class ParserUtil {
 
         int index = trimmedRoleRequirement.lastIndexOf(" ");
         Role role = parseRole(trimmedRoleRequirement.substring(0, index));
-        int quantity = Integer.parseInt(trimmedRoleRequirement.substring(index + 1));
+        int quantity;
+        try {
+            quantity = Integer.parseInt(trimmedRoleRequirement.substring(index + 1));
+        } catch (NumberFormatException ex) {
+            throw new ParseException(RoleRequirement.MESSAGE_MAXIMUM_ROLE_QUANTITY);
+        }
+        if (quantity > 50) {
+            throw new ParseException(RoleRequirement.MESSAGE_MAXIMUM_ROLE_QUANTITY);
+        }
 
         return new RoleRequirement(role, quantity);
     }
@@ -262,8 +270,14 @@ public class ParserUtil {
             throws ParseException {
         requireNonNull(roleRequirements);
         final Set<RoleRequirement> roleRequirementSet = new HashSet<>();
+        Set<Role> roleSet = new HashSet<>();
         for (String roleRequirementString : roleRequirements) {
-            roleRequirementSet.add(parseRoleRequirement(roleRequirementString));
+            RoleRequirement newRoleReq = parseRoleRequirement(roleRequirementString);
+            if (roleSet.contains(newRoleReq.getRole())) {
+                throw new ParseException(RoleRequirement.MESSAGE_DUPLICATE_ROLES);
+            }
+            roleSet.add(newRoleReq.getRole());
+            roleRequirementSet.add(newRoleReq);
         }
         return roleRequirementSet;
     }

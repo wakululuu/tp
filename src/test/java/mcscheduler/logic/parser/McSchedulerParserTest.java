@@ -10,14 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import mcscheduler.commons.core.Messages;
-import mcscheduler.logic.commands.ShiftListCommand;
 import org.junit.jupiter.api.Test;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.ExitCommand;
 import mcscheduler.logic.commands.FindCommand;
 import mcscheduler.logic.commands.HelpCommand;
+import mcscheduler.logic.commands.ShiftListCommand;
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerEditCommand;

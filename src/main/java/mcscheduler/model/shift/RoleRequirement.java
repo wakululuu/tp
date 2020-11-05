@@ -15,10 +15,14 @@ import mcscheduler.model.role.Role;
 public class RoleRequirement {
 
     public static final String MESSAGE_CONSTRAINTS = "Role requirements must be of the form 'ROLE QUANTITY_REQUIRED'"
-            + " (e.g. 'Cashier 1')\nThe quantity required must be a positive integer.\n";
+            + " (e.g. 'Cashier 1')\nThe quantity required must be a positive integer "
+            + "(max 50) with no leading zeroes)\n";
     public static final String MESSAGE_CONSTRAINTS_STRING_CONSTRUCTOR = "Role requirements must be of the form 'ROLE "
             + "QUANTITY_REQUIRED QUANTITY_FILLED' (e.g. 'Cashier 1 0')\nThe quantity required must be a positive "
-            + "integer\nThe quantity filled must be a non-negative integer and at most the quantity required\n";
+            + "integer (no leading zeroes)\nThe quantity filled must be a non-negative integer and at most "
+            + "the quantity required\n";
+    public static final String MESSAGE_MAXIMUM_ROLE_QUANTITY = "The maximum number of workers for each role is 50.";
+    public static final String MESSAGE_DUPLICATE_ROLES = "Duplicate roles detected. Please remove any duplicate roles.";
 
     public static final String VALIDATION_REGEX = Role.VALIDATION_REGEX + " [1-9]\\d*$";
     public static final String VALIDATION_REGEX_STRING_CONSTRUCTOR = Role.VALIDATION_REGEX + " [1-9]\\d* \\d+$";
