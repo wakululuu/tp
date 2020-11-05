@@ -195,6 +195,7 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedAssignment);
 
         mcScheduler.setAssignment(target, editedAssignment);
+        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
         Shift.updateRoleRequirements(this, editedAssignment.getShift(), editedAssignment.getRole());
     }
 

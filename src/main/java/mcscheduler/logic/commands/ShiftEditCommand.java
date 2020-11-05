@@ -19,6 +19,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
@@ -88,8 +89,8 @@ public class ShiftEditCommand extends Command {
             }
         }
 
-        editShiftInAssignments(model, shiftToEdit, editedShift);
         model.setShift(shiftToEdit, editedShift);
+        editShiftInAssignments(model, shiftToEdit, editedShift);
         model.updateFilteredShiftList(PREDICATE_SHOW_ALL_SHIFTS);
 
         return new CommandResult(String.format(MESSAGE_EDIT_SHIFT_SUCCESS, editedShift));
@@ -116,7 +117,8 @@ public class ShiftEditCommand extends Command {
         for (Assignment assignment : fullAssignmentList) {
             if (shiftToEdit.isSameShift(assignment.getShift())) {
                 Role assignmentRole = assignment.getRole();
-                if (!newRoles.contains(assignmentRole) || assignment.getWorker().isUnavailable(editedShift)) {
+                if ((!newRoles.contains(assignmentRole) && !Leave.isLeave(assignmentRole))
+                        || assignment.getWorker().isUnavailable(editedShift)) {
                     // This accounts for the case where the shift no longer has the role specified in the assignment
                     assignmentsToDelete.add(assignment);
                 } else if (shiftToEdit.countRoleQuantityFilled(model, assignmentRole)
@@ -141,6 +143,10 @@ public class ShiftEditCommand extends Command {
     }
 
     private static int getQuantityRequiredForRole(Shift shift, Role role) {
+        if (role.equals(new Leave())) {
+            return Integer.MAX_VALUE;
+        }
+
         Set<RoleRequirement> roleRequirements = shift.getRoleRequirements();
         int quantityRequiredForRole = 0;
         for (RoleRequirement roleRequirement : roleRequirements) {
