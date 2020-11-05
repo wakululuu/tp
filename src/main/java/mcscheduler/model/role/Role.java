@@ -25,7 +25,7 @@ public class Role {
      * Factory method for creating a {@code Role}. Returns a {@code Leave} if {@code roleName} is {@code "Leave"}.
      */
     public static Role createRole(String roleName) {
-        if (roleName.equals(Leave.ROLE_NAME)) {
+        if (roleName.equalsIgnoreCase(Leave.ROLE_NAME)) {
             return new Leave();
         }
         return new Role(roleName);
