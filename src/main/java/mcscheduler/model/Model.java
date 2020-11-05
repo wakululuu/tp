@@ -199,6 +199,14 @@ public interface Model {
      */
     void addRole(Role role);
 
+    /**
+     * Replaces the given role {@code target} with {@code editedRole}.
+     * {@code target} must exist in the McScheduler.
+     * The role identity of {@code editedRole} must not be the same as another existing role in the
+     * McScheduler.
+     */
+    void setRole(Role target, Role editedRole);
+
     /** Returns an unmodifiable view of the filtered role list */
     ObservableList<Role> getFilteredRoleList();
 

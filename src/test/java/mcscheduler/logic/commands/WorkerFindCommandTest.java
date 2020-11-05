@@ -19,9 +19,9 @@ import mcscheduler.testutil.TypicalWorkers;
 
 //@@author
 /**
- * Contains integration tests (interaction with the Model) for {@code FindCommand}.
+ * Contains integration tests (interaction with the Model) for {@code WorkerFindCommand}.
  */
-public class FindCommandTest {
+public class WorkerFindCommandTest {
     private final Model model = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
     private final Model expectedModel = new ModelManager(McSchedulerBuilder.getTypicalMcScheduler(), new UserPrefs());
 
@@ -32,14 +32,14 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate secondPredicate = new NameContainsKeywordsPredicate(
                 Collections.singletonList("second"));
 
-        FindCommand findFirstCommand = new FindCommand(firstPredicate);
-        FindCommand findSecondCommand = new FindCommand(secondPredicate);
+        WorkerFindCommand findFirstCommand = new WorkerFindCommand(firstPredicate);
+        WorkerFindCommand findSecondCommand = new WorkerFindCommand(secondPredicate);
 
         // same object -> returns true
         assertEquals(findFirstCommand, findFirstCommand);
 
         // same values -> returns true
-        FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
+        WorkerFindCommand findFirstCommandCopy = new WorkerFindCommand(firstPredicate);
         assertEquals(findFirstCommandCopy, findFirstCommand);
 
         // different types -> returns false
@@ -56,7 +56,7 @@ public class FindCommandTest {
     public void execute_zeroKeywords_noWorkerFound() {
         String expectedMessage = String.format(MESSAGE_WORKERS_LISTED_OVERVIEW, 0);
         NameContainsKeywordsPredicate predicate = preparePredicate(" ");
-        FindCommand command = new FindCommand(predicate);
+        WorkerFindCommand command = new WorkerFindCommand(predicate);
         expectedModel.updateFilteredWorkerList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredWorkerList());
@@ -66,7 +66,7 @@ public class FindCommandTest {
     public void execute_multipleKeywords_multipleWorkersFound() {
         String expectedMessage = String.format(MESSAGE_WORKERS_LISTED_OVERVIEW, 3);
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
-        FindCommand command = new FindCommand(predicate);
+        WorkerFindCommand command = new WorkerFindCommand(predicate);
         expectedModel.updateFilteredWorkerList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(TypicalWorkers.CARL, TypicalWorkers.ELLE, TypicalWorkers.FIONA),

@@ -15,13 +15,13 @@ import org.junit.jupiter.api.Test;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.ClearCommand;
 import mcscheduler.logic.commands.ExitCommand;
-import mcscheduler.logic.commands.FindCommand;
 import mcscheduler.logic.commands.HelpCommand;
 import mcscheduler.logic.commands.ShiftListCommand;
 import mcscheduler.logic.commands.WorkerAddCommand;
 import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerEditCommand;
 import mcscheduler.logic.commands.WorkerEditCommand.EditWorkerDescriptor;
+import mcscheduler.logic.commands.WorkerFindCommand;
 import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.worker.NameContainsKeywordsPredicate;
@@ -77,9 +77,9 @@ public class McSchedulerParserTest {
     @Test
     public void parseCommand_find() throws Exception {
         List<String> keywords = Arrays.asList("foo", "bar", "baz");
-        FindCommand command = (FindCommand) parser.parseCommand(
-            FindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        WorkerFindCommand command = (WorkerFindCommand) parser.parseCommand(
+            WorkerFindCommand.COMMAND_WORD + " " + keywords.stream().collect(Collectors.joining(" ")));
+        assertEquals(new WorkerFindCommand(new NameContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test
