@@ -13,7 +13,7 @@ public class Phone {
     public static final String MESSAGE_CONSTRAINTS =
             "Phone numbers should only contain numbers and should be a valid Singapore phone number"
             + "(8 digits long, starting with either 6, 8 or 9)\n";
-    public static final String VALIDATION_REGEX = "[6,8,9]\\d{7}$";
+    public static final String VALIDATION_REGEX = "[689]\\d{7}$";
     public final String value;
 
     /**
