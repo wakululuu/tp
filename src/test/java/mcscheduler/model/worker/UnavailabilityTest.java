@@ -34,6 +34,7 @@ public class UnavailabilityTest {
         // valid unavailability
         assertTrue(Unavailability.isValidUnavailability("MON AM")); // regular day and AM
         assertTrue(Unavailability.isValidUnavailability("MON PM")); // regular day and PM
+        assertTrue(Unavailability.isValidUnavailability("MON     PM")); // empty spaces between valid day and time
     }
 }
 

@@ -18,12 +18,14 @@ import static mcscheduler.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static mcscheduler.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.ROLE_DESC_CHEF;
+import static mcscheduler.logic.commands.CommandTestUtil.UNAVAILABILITY_DESC;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_PAY_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CASHIER;
 import static mcscheduler.logic.commands.CommandTestUtil.VALID_ROLE_CHEF;
+import static mcscheduler.logic.commands.CommandTestUtil.VALID_UNAVAILABILITY;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static mcscheduler.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static mcscheduler.testutil.TypicalWorkers.AMY;
@@ -103,7 +105,7 @@ public class WorkerAddCommandParserTest {
 
         // all prefixes missing
         assertParseFailure(parser, VALID_NAME_BOB + VALID_PHONE_BOB + VALID_PAY_BOB + VALID_ADDRESS_BOB
-                + VALID_ROLE_CASHIER, expectedMessage);
+                + VALID_ROLE_CASHIER + VALID_UNAVAILABILITY, expectedMessage);
     }
 
     @Test
@@ -147,7 +149,7 @@ public class WorkerAddCommandParserTest {
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + PAY_DESC_BOB + ADDRESS_DESC_BOB
-                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF,
+                + ROLE_DESC_CASHIER + ROLE_DESC_CHEF + UNAVAILABILITY_DESC,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, WorkerAddCommand.MESSAGE_USAGE));
     }
 }
