@@ -60,7 +60,7 @@ easily available to streamline the work of McDonald's Shift Managers.
 
 * Parameters in `[square brackets]` are optional.<br>
   e.g. `n/NAME [r/ROLE]` can be used as `n/John Doe r/Cashier` or as `n/John Doe`. `[u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]`
-  can be used as ` ` (i.e. not provided), as `u/Mon` or as `u/Mon am`.
+  can be used as ` ` (i.e. the entire parameter is not provided), as `u/Mon` (i.e. `UNAVAILABILITY_TIME` is not provided) or as `u/Mon am`.
 
 * Parameters with `…`​ after them can be used multiple times.<br>
   e.g. `w/WORKER_INDEX` can be used as `w/1`, `w/1 w/2`, `w/1 w/2 w/3` etc.
