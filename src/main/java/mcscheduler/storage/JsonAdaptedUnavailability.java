@@ -20,6 +20,9 @@ public class JsonAdaptedUnavailability {
     }
 
     public Unavailability toModelType() throws IllegalValueException {
+        if (!Unavailability.isValidUnavailability(unavailability)) {
+            throw new IllegalValueException((Unavailability.MESSAGE_CONSTRAINTS));
+        }
         return new Unavailability(unavailability);
     }
 }
