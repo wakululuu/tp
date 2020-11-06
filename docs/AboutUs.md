@@ -34,7 +34,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/sigmund-c)] [[portfolio](team/sigmund-c.md)]
 
-Email: sigmund@u.nus.edu
+Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
 
 * Role: Developer, Coordinator
 * Responsibilities: Refactoring, Issue tracking
