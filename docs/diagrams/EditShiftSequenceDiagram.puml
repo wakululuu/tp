@@ -3,7 +3,7 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
 participant ":ShiftEditCommandParser" as ShiftEditCommandParser LOGIC_COLOR
 participant "sd:ShiftDay" as ShiftDay LOGIC_COLOR
 participant "d:EditShiftDescriptor" as EditShiftDescriptor LOGIC_COLOR
@@ -17,16 +17,16 @@ end box
 [-> LogicManager : execute(userInput)
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(userInput)
-activate AddressBookParser
+LogicManager -> McSchedulerParser : parseCommand(userInput)
+activate McSchedulerParser
 
 create ShiftEditCommandParser
-AddressBookParser -> ShiftEditCommandParser
+McSchedulerParser -> ShiftEditCommandParser
 activate ShiftEditCommandParser
-ShiftEditCommandParser --> AddressBookParser
+ShiftEditCommandParser --> McSchedulerParser
 deactivate ShiftEditCommandParser
 
-AddressBookParser -> ShiftEditCommandParser: parse(userInput)
+McSchedulerParser -> ShiftEditCommandParser: parse(userInput)
 activate ShiftEditCommandParser
 
 create EditShiftDescriptor
@@ -52,10 +52,10 @@ activate ShiftEditCommand
 ShiftEditCommand --> ShiftEditCommandParser
 deactivate ShiftEditCommand
 
-ShiftEditCommandParser --> AddressBookParser
+ShiftEditCommandParser --> McSchedulerParser
 deactivate ShiftEditCommandParser
-AddressBookParser --> LogicManager
-deactivate AddressBookParser
+McSchedulerParser --> LogicManager
+deactivate McSchedulerParser
 
 LogicManager -> ShiftEditCommand : execute()
 activate ShiftEditCommand
