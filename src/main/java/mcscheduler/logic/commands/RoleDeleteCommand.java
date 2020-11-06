@@ -52,12 +52,26 @@ public class RoleDeleteCommand extends Command {
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
         assert !Leave.isLeave(roleToDelete);
 
+        deleteRoleFromAssignments(model, roleToDelete);
         deleteRoleFromShifts(model, roleToDelete);
         deleteRoleFromWorkers(model, roleToDelete);
-        deleteRoleFromAssignments(model, roleToDelete);
         model.deleteRole(roleToDelete);
 
         return new CommandResult(String.format(MESSAGE_DELETE_ROLE_SUCCESS, roleToDelete));
+    }
+
+    private void deleteRoleFromAssignments(Model model, Role roleToDelete) {
+        CollectionUtil.requireAllNonNull(model, roleToDelete);
+        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
+
+        for (Assignment assignment : fullAssignmentList) {
+            if (roleToDelete.equals(assignment.getRole())) {
+                assignmentsToDelete.add(assignment);
+            }
+        }
+
+        assignmentsToDelete.forEach(model::deleteAssignment);
     }
 
     private void deleteRoleFromShifts(Model model, Role roleToDelete) {
@@ -85,20 +99,6 @@ public class RoleDeleteCommand extends Command {
                     worker.getAddress(), updatedRoles, worker.getUnavailableTimings());
             model.setWorker(worker, updatedWorker);
         }
-    }
-
-    private void deleteRoleFromAssignments(Model model, Role roleToDelete) {
-        CollectionUtil.requireAllNonNull(model, roleToDelete);
-        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
-        List<Assignment> assignmentsToDelete = new ArrayList<>();
-
-        for (Assignment assignment : fullAssignmentList) {
-            if (roleToDelete.equals(assignment.getRole())) {
-                assignmentsToDelete.add(assignment);
-            }
-        }
-
-        assignmentsToDelete.forEach(model::deleteAssignment);
     }
 
     @Override

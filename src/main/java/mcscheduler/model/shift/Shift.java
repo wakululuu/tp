@@ -166,13 +166,14 @@ public class Shift {
 
         Shift otherShift = (Shift) other;
         return otherShift.getShiftDay().equals(getShiftDay())
-                && otherShift.getShiftTime().equals(getShiftTime());
+                && otherShift.getShiftTime().equals(getShiftTime())
+                && otherShift.getRoleRequirements().equals(getRoleRequirements());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(shiftDay, shiftTime);
+        return Objects.hash(shiftDay, shiftTime, roleRequirements);
     }
 
     /**

@@ -32,6 +32,14 @@ public class UniqueShiftList implements Iterable<Shift> {
     }
 
     /**
+     * Returns true if the list contains a strictly equivalent shift as {@code toCheck}.
+     */
+    public boolean containsExact(Shift toCheck) {
+        requireNonNull(toCheck);
+        return internalList.stream().anyMatch(toCheck::equals);
+    }
+
+    /**
      * Adds a shift to the list.
      * The shift must not already exist in the list.
      */

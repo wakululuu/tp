@@ -181,7 +181,9 @@ public class ModelManager implements Model {
     @Override
     public void deleteAssignment(Assignment target) {
         mcScheduler.removeAssignment(target);
-        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
+        if (mcScheduler.hasExactShift(target.getShift())) {
+            Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
+        }
     }
 
     @Override
