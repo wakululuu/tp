@@ -46,12 +46,32 @@ public class Unavailability {
     public static boolean isValidUnavailability(String test) {
         String[] splitString = test.split(REGEX);
         boolean hasTwoKeywords = splitString.length == 2;
+        if (!hasTwoKeywords) {
+            return false;
+        }
+        return hasValidUnavailabilityDay(splitString) && hasValidUnavailabilityTime(splitString);
+    }
+
+    /**
+     * Returns true if a given string has a valid day.
+     */
+    public static boolean hasValidUnavailabilityDay(String[] test) {
         try {
-            if (!hasTwoKeywords) {
-                return false;
-            }
-            ShiftDayValue.valueOf(splitString[0].toUpperCase());
-            ShiftTimeValue.valueOf(splitString[1].toUpperCase());
+            ShiftDayValue.valueOf(test[0].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if a given string has a valid time.
+     */
+    public static boolean hasValidUnavailabilityTime(String[] test) {
+        try {
+            ShiftTimeValue.valueOf(test[1].toUpperCase());
         } catch (IllegalArgumentException e) {
             return false;
         } catch (ArrayIndexOutOfBoundsException e) {
