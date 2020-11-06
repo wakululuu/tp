@@ -4,7 +4,7 @@ skinparam backgroundColor transparent
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
 participant ":AssignCommandParser" as AssignCommandParser LOGIC_COLOR
 participant "a:AssignCommand" as AssignCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
@@ -18,17 +18,17 @@ end box
 [-> LogicManager : execute("assign s/1 w/1 r/Cashier")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("assign s/1 w/1 r/Cashier")
-activate AddressBookParser
+LogicManager -> McSchedulerParser : parseCommand("assign s/1 w/1 r/Cashier")
+activate McSchedulerParser
 
 create AssignCommandParser
-AddressBookParser -> AssignCommandParser
+McSchedulerParser -> AssignCommandParser
 activate AssignCommandParser
 
-AssignCommandParser --> AddressBookParser
+AssignCommandParser --> McSchedulerParser
 deactivate AssignCommandParser
 
-AddressBookParser -> AssignCommandParser : parse("s/1 w/1 r/Cashier")
+McSchedulerParser -> AssignCommandParser : parse("s/1 w/1 r/Cashier")
 activate AssignCommandParser
 
 create AssignCommand
@@ -38,14 +38,14 @@ activate AssignCommand
 AssignCommand --> AssignCommandParser : a
 deactivate AssignCommand
 
-AssignCommandParser --> AddressBookParser : a
+AssignCommandParser --> McSchedulerParser : a
 deactivate AssignCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-AssignCommandParser -[hidden]-> AddressBookParser
+AssignCommandParser -[hidden]-> McSchedulerParser
 destroy AssignCommandParser
 
-AddressBookParser --> LogicManager : a
-deactivate AddressBookParser
+McSchedulerParser --> LogicManager : a
+deactivate McSchedulerParser
 
 LogicManager -> AssignCommand : execute()
 activate AssignCommand

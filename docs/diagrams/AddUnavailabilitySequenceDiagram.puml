@@ -3,7 +3,7 @@
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
 participant ":WorkerAddCommandParser" as WorkerAddCommandParser LOGIC_COLOR
 participant "d:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
 participant ":ParserUtil" as ParserUtil LOGIC_COLOR
@@ -17,17 +17,17 @@ end box
 [-> LogicManager : execute(command)
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand(command)
-activate AddressBookParser
+LogicManager -> McSchedulerParser : parseCommand(command)
+activate McSchedulerParser
 
 create WorkerAddCommandParser
-AddressBookParser -> WorkerAddCommandParser
+McSchedulerParser -> WorkerAddCommandParser
 activate WorkerAddCommandParser
 
-WorkerAddCommandParser --> AddressBookParser
+WorkerAddCommandParser --> McSchedulerParser
 deactivate WorkerAddCommandParser
 
-AddressBookParser -> WorkerAddCommandParser : parse(command)
+McSchedulerParser -> WorkerAddCommandParser : parse(command)
 activate WorkerAddCommandParser
 
 WorkerAddCommandParser -> ParserUtil : parseUnavailabilities(string)
@@ -45,14 +45,14 @@ activate WorkerAddCommand
 WorkerAddCommand --> WorkerAddCommandParser
 deactivate WorkerAddCommand
 
-WorkerAddCommandParser --> AddressBookParser : d
+WorkerAddCommandParser --> McSchedulerParser : d
 deactivate WorkerAddCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-WorkerAddCommandParser -[hidden]-> AddressBookParser
+WorkerAddCommandParser -[hidden]-> McSchedulerParser
 destroy WorkerAddCommandParser
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
+McSchedulerParser --> LogicManager : d
+deactivate McSchedulerParser
 
 LogicManager -> WorkerAddCommand : execute()
 activate WorkerAddCommand
