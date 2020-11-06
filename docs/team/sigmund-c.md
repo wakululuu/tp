@@ -1,46 +1,55 @@
 ---
 layout: page
-title: John Doe's Project Portfolio Page
+title: Sigmund Chianasta's Project Portfolio Page
 ---
 
 ## Project: AddressBook Level 3
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker
+contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
+Graphical User Interface (GUI).
 
 Given below are my contributions to the project.
 
-* **New Feature**: Added the ability to undo/redo previous commands.
-  * What it does: allows the user to undo all previous commands one at a time. Preceding undo commands can be reversed by using the redo command.
-  * Justification: This feature improves the product significantly because a user can make mistakes in commands and the app should provide a convenient way to rectify them.
-  * Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
-  * Credits: *{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}*
-
-* **New Feature**: Added a history command that allows the user to navigate to previous commands using up/down keys.
-
-* **Code contributed**: [RepoSense link]()
+* **New Feature**: Added mass operations for Assign and Unassign
+  * What it does: allows the user to assign multiple workers to a shift in a single call.
+  * Justification: allow managers to assign workers quickly, especially to fill in newly added shifts.
+  * Highlights: mass-ops uses already existing features so that it doesn't add further complexity for users who are not using mass-ops. They can still add assignments one by one.
+  As extension of Assign and Unassign, Take-leave and Cancel-leave is also able to make use of the mass-ops function.
+    * The WorkerRolePair class was created to help make mass-ops more manageable.
+  * Credits: My amazing teammates for laying the groundwork with assigment and other commands to make implementation of mass-ops easier.
+  
+  **New Feature**: Added McDonald's jingle when opening the app
+  * What it does: plays the McDonald's jingle when opening the app.
+  * Justification: its a neat little feature that we think users would appreciate by reminding them that they are a part of the McFamily.
+  * Highlights: added JavaFX's media dependency to play the jingle.
+  * Credits: McDonald's for creating the jingle, [this youtube video](https://www.youtube.com/watch?v=SE1B3N_a7fE) for uploading it.
+  
+* **Code contributed**: [RepoSense link](https://nus-cs2103-ay2021s1.github.io/tp-dashboard/#breakdown=true&search=sigmund-c)
+  * NOTE: I refactored ab3 -> mcsheduler in PR [#121](), which then authored a lot of changes to me. Though, my teammates have added the @author tags to assign their important works as theirs. Please take note when reviewing my contributions!
 
 * **Project management**:
-  * Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub
+  * Managed releases `v1.2` - `v1.3` (3 releases) on GitHub
 
 * **Enhancements to existing features**:
-  * Updated the GUI color scheme (Pull requests [\#33](), [\#34]())
-  * Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests [\#36](), [\#38]())
+  * Updated the initial GUI color scheme (Pull request [\#98]())
+  * Edited the Person model to Worker, with some minor parameter changes (Pull requests [\#40](), [\#48](), [\#57]())
+  * Added more specific error messages, indicating the user's wrong input (Pull request [\#194]())
+  * Changed app icon, app name, jar name, window name, and in general removing the existance of ab3 [\#98]()
 
 * **Documentation**:
   * User Guide:
-    * Added documentation for the features `delete` and `find` [\#72]()
-    * Did cosmetic tweaks to existing documentation of features `clear`, `exit`: [\#74]()
+    * Edited documentation for the mass-ops feature on assign/unassign [\#101]()
+    * Refactored person -> worker [\#57]()
   * Developer Guide:
-    * Added implementation details of the `delete` feature.
+    * Added implementation details of the `MassOps` feature [#101]()
+      * Diagram contributed: 
+![Object Diagram of MassAssign](images/MassAssignObjectDiagram.png)
+    * Fixed diagram inconsistencies [\#234]()
+  * Miscellaneous:
+    * Created a mock-up UI to base work around (updated by a teammate) [\#26]()
 
 * **Community**:
-  * PRs reviewed (with non-trivial review comments): [\#12](), [\#32](), [\#19](), [\#42]()
-  * Contributed to forum discussions (examples: [1](), [2](), [3](), [4]())
-  * Reported bugs and suggestions for other teams in the class (examples: [1](), [2](), [3]())
-  * Some parts of the history feature I added was adopted by several other class mates ([1](), [2]())
+  * PRs reviewed (with non-trivial review comments): [\#30](), [\#117]()
+  * Helped schedule team meetings before we have a strict schedule, directed the initial work with project notes and other internal documents
 
-* **Tools**:
-  * Integrated a third party library (Natty) to the project ([\#42]())
-  * Integrated a new Github plugin (CircleCI) to the team repo
-
-* _{you can add/remove categories in the list above}_
