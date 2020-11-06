@@ -24,6 +24,7 @@ public class ParserUtilTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_ROLE = "#friend";
+    private static final String INVALID_ROLE_TOO_LONG = "friendaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
     private static final String VALID_NAME = "Rachel Walker";
     private static final String VALID_PHONE = "91234567";
@@ -131,7 +132,15 @@ public class ParserUtilTest {
 
     @Test
     public void parseRole_invalidValue_throwsParseException() {
-        Assert.assertThrows(ParseException.class, () -> ParserUtil.parseRole(INVALID_ROLE));
+        Assert.assertThrows(ParseException.class,
+                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", INVALID_ROLE, Role.MESSAGE_CONSTRAINTS),
+                () -> ParserUtil.parseRole(INVALID_ROLE));
+    }
+
+    @Test
+    public void parseRole_nameTooLong_throwsParseException() {
+        Assert.assertThrows(ParseException.class, Role.MESSAGE_MAX_CHAR_LIMIT,
+                () -> ParserUtil.parseRole(INVALID_ROLE_TOO_LONG));
     }
 
     @Test
