@@ -1,46 +1,41 @@
 ---
 layout: page
-title: John Doe's Project Portfolio Page
+title: Foo Kai En's Project Portfolio Page
 ---
 
-## Project: AddressBook Level 3
+## Project: McScheduler
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+Developed during a Software Engineering introductory module, the McScheduler is a desktop application, targeted at
+McDonald's managers for easy shift and worker management. The McScheduler is optimized for use via a CLI, while still
+having benefits of a GUI, created with JavaFX. This project is written in Java in OOP style, and has about 10 kLoC.
 
 Given below are my contributions to the project.
 
-* **New Feature**: Added the ability to undo/redo previous commands.
-  * What it does: allows the user to undo all previous commands one at a time. Preceding undo commands can be reversed by using the redo command.
-  * Justification: This feature improves the product significantly because a user can make mistakes in commands and the app should provide a convenient way to rectify them.
-  * Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
-  * Credits: *{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}*
+* **New Feature**: Added the ability to maintain a master list of valid roles in the system
+  * _What it does:_
+    * Allows the user to add, edit and delete roles which can be taken on by workers in a McDonald's outlet
+    * Ensures that any role added to the list of roles that a worker is able to take on is a valid role in the system
+    * Ensures that any role added to the list of roles that need to be filled on a shift is a valid role in the system 
+  * _Justification:_
+    * Automates the process of renaming or deleting all instances of a role from the system with a single command
+    * Ensures the consistent naming of a role throughout the system
+    * Alerts the user when there is a typo 
+  * _Highlights:_ _(to be edited)_
 
-* **New Feature**: Added a history command that allows the user to navigate to previous commands using up/down keys.
-
-* **Code contributed**: [RepoSense link]()
-
-* **Project management**:
-  * Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub
+* **New Feature**: Added the ability to assign a worker to a shift _(to be edited)_
 
 * **Enhancements to existing features**:
-  * Updated the GUI color scheme (Pull requests [\#33](), [\#34]())
-  * Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests [\#36](), [\#38]())
+  * Revamped the GUI (PR [\#193]())
+
+* **Code contributed**: [RepoSense](https://nus-cs2103-ay2021s1.github.io/tp-dashboard/#breakdown=true&search=f10-4&sort=groupTitle&sortWithin=title&since=2020-08-14&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&tabOpen=true&tabType=authorship&tabAuthor=wakululuu&tabRepo=AY2021S1-CS2103-F10-4%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code~other)
 
 * **Documentation**:
   * User Guide:
-    * Added documentation for the features `delete` and `find` [\#72]()
-    * Did cosmetic tweaks to existing documentation of features `clear`, `exit`: [\#74]()
+    * Added documentation for the [`assign`/`unassign` feature](../UserGuide.md#assigning-a-worker-to-a-role-in-a-shift-assign),
+      as well as the [`role-add`/`role-edit`/`role-delete` feature](../UserGuide.md#adding-a-role-role-add)
   * Developer Guide:
-    * Added implementation details of the `delete` feature.
+    * Added implementation details of the [`assign`/`unassign` feature](../DeveloperGuide.md#assignunassign-feature)
 
 * **Community**:
-  * PRs reviewed (with non-trivial review comments): [\#12](), [\#32](), [\#19](), [\#42]()
-  * Contributed to forum discussions (examples: [1](), [2](), [3](), [4]())
-  * Reported bugs and suggestions for other teams in the class (examples: [1](), [2](), [3]())
-  * Some parts of the history feature I added was adopted by several other class mates ([1](), [2]())
-
-* **Tools**:
-  * Integrated a third party library (Natty) to the project ([\#42]())
-  * Integrated a new Github plugin (CircleCI) to the team repo
-
-* _{you can add/remove categories in the list above}_
+  * [PRs reviewed](https://github.com/AY2021S1-CS2103-F10-4/tp/pulls?q=is%3Apr+reviewed-by%3Awakululuu)
+  * Reported [bugs and suggestions](https://github.com/wakululuu/ped/issues) for other teams in the class
