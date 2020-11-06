@@ -132,15 +132,18 @@ public class ParserUtilTest {
 
     @Test
     public void parseRole_invalidValue_throwsParseException() {
-        Assert.assertThrows(ParseException.class,
-                String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", INVALID_ROLE, Role.MESSAGE_CONSTRAINTS),
-                () -> ParserUtil.parseRole(INVALID_ROLE));
+        Assert.assertThrows(
+            ParseException.class,
+            String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", INVALID_ROLE, Role.MESSAGE_CONSTRAINTS), () -> {
+                ParserUtil.parseRole(INVALID_ROLE);
+            });
     }
 
     @Test
     public void parseRole_nameTooLong_throwsParseException() {
-        Assert.assertThrows(ParseException.class, Role.MESSAGE_MAX_CHAR_LIMIT,
-                () -> ParserUtil.parseRole(INVALID_ROLE_TOO_LONG));
+        Assert.assertThrows(ParseException.class, Role.MESSAGE_MAX_CHAR_LIMIT, () ->
+                ParserUtil.parseRole(INVALID_ROLE_TOO_LONG)
+        );
     }
 
     @Test
