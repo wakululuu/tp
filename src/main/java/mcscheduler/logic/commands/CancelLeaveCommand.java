@@ -31,7 +31,7 @@ public class CancelLeaveCommand extends Command {
             + "specified shift by the index numbers used in the last worker and shift listings. "
             + "\nParameters: "
             + PREFIX_SHIFT + "SHIFT_INDEX (must be a positive integer) "
-            + "[" + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)]...\n"
+            + PREFIX_WORKER + "WORKER_INDEX (must be a positive integer)...\n"
             + "Example: " + COMMAND_WORD
             + " s/1 "
             + "w/4 "
