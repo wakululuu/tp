@@ -35,8 +35,11 @@ Email: [kaien.foo@u.nus.edu](mailto:kaien.foo@u.nus.edu)
 
 [[github](http://github.com/sigmund-c)] [[portfolio](team/sigmund-c.md)]
 
+Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
+
 * Role: Developer, Coordinator
-* Responsibilities: Data
+* Responsibilities: Refactoring, Issue tracking
+ 
 
 ### Tan Su Yin
 
