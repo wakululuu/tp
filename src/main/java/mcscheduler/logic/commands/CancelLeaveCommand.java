@@ -88,7 +88,7 @@ public class CancelLeaveCommand extends Command {
             }
 
             Assignment assignmentInModel = assignmentInModelOptional.get();
-            if (!(assignmentInModel.getRole().equals(new Leave()))) {
+            if (!Leave.isLeave(assignmentInModel.getRole())) {
                 throw new CommandException(String.format(Messages.MESSAGE_NO_LEAVE_FOUND,
                         workerToCancelLeave, shiftToCancelLeaveFrom));
             }

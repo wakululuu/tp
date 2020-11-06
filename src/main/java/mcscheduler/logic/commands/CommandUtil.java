@@ -39,7 +39,7 @@ public class CommandUtil {
      */
     public static boolean hasNonLeaveAssignment(Model model, Assignment toCheck) {
         return model.hasAssignment(toCheck)
-                && !(model.getAssignment(toCheck).get().getRole().equals(new Leave()));
+                && !Leave.isLeave(model.getAssignment(toCheck).get().getRole());
     }
 
     /**
@@ -47,7 +47,7 @@ public class CommandUtil {
      */
     public static boolean hasLeaveAssignment(Model model, Assignment toCheck) {
         return model.hasAssignment(toCheck)
-                && model.getAssignment(toCheck).get().getRole().equals(new Leave());
+                && Leave.isLeave(model.getAssignment(toCheck).get().getRole());
     }
 
     /**

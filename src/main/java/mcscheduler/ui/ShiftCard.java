@@ -51,11 +51,11 @@ public class ShiftCard extends UiPart<Region> {
                 });
 
         ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(
-                assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), shift);
+                assignmentList.filtered(assignment -> !Leave.isLeave(assignment.getRole())), shift);
         shiftAssignments.getChildren().add(assignmentListPanel.getRoot());
 
         ShiftAssignmentListPanel leaveAssignmentListPanel = new ShiftAssignmentListPanel(
-                assignmentList.filtered(assignment -> new Leave().equals(assignment.getRole())), shift);
+                assignmentList.filtered(assignment -> Leave.isLeave(assignment.getRole())), shift);
         leaveShiftAssignments.getChildren().add(leaveAssignmentListPanel.getRoot());
     }
 

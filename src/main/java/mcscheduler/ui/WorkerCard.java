@@ -66,11 +66,11 @@ public class WorkerCard extends UiPart<Region> {
                 .forEach(role -> roles.getChildren().add(new Label(role.roleName)));
 
         WorkerAssignmentListPanel assignmentListPanel = new WorkerAssignmentListPanel(
-                assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), worker);
+                assignmentList.filtered(assignment -> !Leave.isLeave(assignment.getRole())), worker);
         workerAssignments.getChildren().add(assignmentListPanel.getRoot());
 
         WorkerAssignmentListPanel leaveAssignmentListPanel = new WorkerAssignmentListPanel(
-                assignmentList.filtered(assignment -> new Leave().equals(assignment.getRole())), worker);
+                assignmentList.filtered(assignment -> Leave.isLeave(assignment.getRole())), worker);
         leaveWorkerAssignments.getChildren().add(leaveAssignmentListPanel.getRoot());
 
         worker.getUnavailableTimings()
