@@ -47,7 +47,9 @@ public class ShiftCard extends UiPart<Region> {
         shift.getRoleRequirements().stream()
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> {
-                    roleRequirements.getChildren().add(new Label(roleRequirement.toString()));
+                    Label childNode = new Label(roleRequirement.toString());
+                    childNode.setWrapText(true);
+                    roleRequirements.getChildren().add(childNode);
                 });
 
         ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(

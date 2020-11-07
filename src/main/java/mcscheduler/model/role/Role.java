@@ -11,6 +11,8 @@ import mcscheduler.commons.util.AppUtil;
 public class Role {
 
     public static final String MESSAGE_CONSTRAINTS = "Role names should be alphanumeric and can contain spaces\n";
+    public static final String MESSAGE_MAX_CHAR_LIMIT =
+            "The role name is too long, please keep to within 50 characters";
     public static final String VALIDATION_REGEX = "[\\p{Alnum} ]+";
 
     public final String roleName;
