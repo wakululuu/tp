@@ -310,6 +310,7 @@ Adds a new role to the McScheduler.
 Format: `role-add ROLE`
 
 * Adds the specified `ROLE` to the McScheduler. The specified `ROLE` should be alphanumeric and can contain spaces.
+* The specified `ROLE` cannot be too long (max 50 char).
 
 Examples:
 * `role-add cashier` Adds a cashier role.
@@ -324,7 +325,7 @@ Format: `role-edit ROLE_INDEX ROLE`
 
 * Edits the role at the specified `ROLE_INDEX`. The role index refers to the index number shown in the displayed role
   list. The role index **must be a positive integer** i.e. 1, 2, 3, …​
-* The specified `ROLE` should be alphanumeric and can contain spaces.
+* The specified `ROLE` should be alphanumeric and can contain spaces (max 50 char).
 
 Example:
 * `role-edit 1 burger flipper` Edits the 1st role to be burger flipper.
