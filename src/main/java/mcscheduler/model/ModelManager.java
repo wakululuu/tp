@@ -181,13 +181,13 @@ public class ModelManager implements Model {
     @Override
     public void deleteAssignment(Assignment target) {
         mcScheduler.removeAssignment(target);
-        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
+        target.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override
     public void addAssignment(Assignment assignment) {
         mcScheduler.addAssignment(assignment);
-        Shift.updateRoleRequirements(this, assignment.getShift(), assignment.getRole());
+        assignment.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override
@@ -195,8 +195,8 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedAssignment);
 
         mcScheduler.setAssignment(target, editedAssignment);
-        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
-        Shift.updateRoleRequirements(this, editedAssignment.getShift(), editedAssignment.getRole());
+        target.getShift().updateRoleRequirements(getFullAssignmentList());
+        editedAssignment.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override
