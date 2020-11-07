@@ -187,6 +187,9 @@ public class ParserUtil {
             throw new ParseException(
                 String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", role, Role.MESSAGE_CONSTRAINTS));
         }
+        if (trimmedRole.length() > 50) {
+            throw new ParseException(Role.MESSAGE_MAX_CHAR_LIMIT);
+        }
         return Role.createRole(trimmedRole);
     }
 
