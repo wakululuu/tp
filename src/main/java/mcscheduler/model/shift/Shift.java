@@ -111,24 +111,6 @@ public class Shift {
         return quantityFilled;
     }
 
-    private Set<RoleRequirement> getUpdatedRoleRequirements(Role role, int quantityFilled) {
-        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(getRoleRequirements());
-
-        for (RoleRequirement requirement : updatedRoleRequirements) {
-            if (requirement.getRole().equals(role)) {
-                RoleRequirement updatedRoleRequirement = new RoleRequirement(role, requirement.getQuantityRequired(),
-                        quantityFilled);
-                assert updatedRoleRequirement.getQuantityFilled() <= updatedRoleRequirement.getQuantityRequired();
-
-                updatedRoleRequirements.remove(requirement);
-                updatedRoleRequirements.add(updatedRoleRequirement);
-                break;
-            }
-        }
-
-        return updatedRoleRequirements;
-    }
-
     /**
      * Returns true if both shifts have the same identity fields.
      * This defines a weaker notion of equality between two shifts.
