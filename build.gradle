@@ -78,7 +78,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = 'addressbook.jar'
+    archiveName = 'mcscheduler.jar'
 }
 
 defaultTasks 'clean', 'test'
