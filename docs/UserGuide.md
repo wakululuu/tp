@@ -522,6 +522,7 @@ Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDE
 Shift | **List** | `shift-list`
 Shift | **Find** | `shift-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `shift-find Fri PM`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
+Role | **Edit** | `role-edit ROLE_INDEX NEW_ROLE`<br>e.g. `role-edit 1 burger flipper`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
