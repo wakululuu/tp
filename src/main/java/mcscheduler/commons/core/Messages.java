@@ -27,6 +27,7 @@ public class Messages {
             "No leave found between worker: %1$s and shift: %2$s";
     public static final String MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED =
             "The %1$s role is not required or is filled for %2$s";
+    public static final String MESSAGE_DO_NOT_MODIFY_LEAVE = "Leave role is a system default and should not be added.";
 
     public static final String MESSAGE_UNABLE_TO_LOAD_SAVE =
             "Unable to load save file - it is not of the correct format."

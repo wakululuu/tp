@@ -60,6 +60,10 @@ public class RoleEditCommand extends Command {
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
         assert !Leave.isLeave(roleToEdit) : "Leave should not be edited";
 
+        if (Leave.isLeave(editedRole)) {
+            throw new CommandException(Messages.MESSAGE_DO_NOT_MODIFY_LEAVE);
+        }
+
         editRoleInShifts(model, roleToEdit);
         editRoleInWorkers(model, roleToEdit);
         editRoleInAssignments(model, roleToEdit);
