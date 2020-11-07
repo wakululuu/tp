@@ -3,6 +3,7 @@ package mcscheduler.model;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -45,10 +46,31 @@ public class ModelManager implements Model {
         filteredWorkers = new FilteredList<>(this.mcScheduler.getWorkerList());
         filteredShifts = new FilteredList<>(this.mcScheduler.getShiftList());
         filteredRoles = new FilteredList<>(this.mcScheduler.getRoleList());
+        getFullWorkerList().forEach(this::synchronizeWorkerInAssignment);
+        getFullShiftList().forEach(this::synchronizeShiftInAssignment);
+
     }
 
     public ModelManager() {
         this(new McScheduler(), new UserPrefs());
+    }
+
+    //=========== initialization synchronization ==================================
+
+    private void synchronizeWorkerInAssignment(Worker worker) {
+        new ArrayList<>(getFullAssignmentList())
+                .stream()
+                .filter(assignment -> assignment.getWorker().isSameWorker(worker))
+                .forEach(assignment -> setAssignment(assignment,
+                        new Assignment(assignment.getShift(), worker, assignment.getRole())));
+    }
+
+    private void synchronizeShiftInAssignment(Shift shift) {
+        new ArrayList<>(getFullAssignmentList())
+                .stream()
+                .filter(assignment -> assignment.getShift().isSameShift(shift))
+                .forEach(assignment -> setAssignment(assignment,
+                        new Assignment(shift, assignment.getWorker(), assignment.getRole())));
     }
 
     //=========== UserPrefs ==================================================================================

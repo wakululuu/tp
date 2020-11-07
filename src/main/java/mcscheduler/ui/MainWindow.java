@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import mcscheduler.commons.core.GuiSettings;
 import mcscheduler.commons.core.LogsCenter;
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.Logic;
 import mcscheduler.logic.commands.CommandResult;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -117,7 +118,7 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Fills up all the placeholders of this window.
      */
-    void fillInnerParts() {
+    void fillInnerParts(boolean couldLoad) {
         workerListPanel = new WorkerListPanel(logic.getFilteredWorkerList(), logic.getFullAssignmentList());
         workerListPanelPlaceholder.getChildren().add(workerListPanel.getRoot());
 
@@ -129,6 +130,9 @@ public class MainWindow extends UiPart<Stage> {
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
+        if (!couldLoad) {
+            resultDisplay.setFeedbackToUser(Messages.MESSAGE_UNABLE_TO_LOAD_SAVE);
+        }
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getMcSchedulerFilePath());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());

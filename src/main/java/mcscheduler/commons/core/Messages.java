@@ -28,5 +28,10 @@ public class Messages {
     public static final String MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED =
             "The %1$s role is not required or is filled for %2$s";
 
+    public static final String MESSAGE_UNABLE_TO_LOAD_SAVE =
+            "Unable to load save file - it is not of the correct format."
+            + "\nExit if you wish to fix or delete the save file."
+            + "\nDeleting the save file allows the system to generate sample data for your reference.";
+
 
 }
