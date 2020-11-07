@@ -47,6 +47,8 @@ Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
 [[github](http://github.com/tnsyn)]
 [[portfolio](team/tnsyn.md)]
 
+Email: [tansuyin@u.nus.edu](mailto:tansuyin@u.nus.edu)
+
 * Role: Developer
 * Responsibilities: Integration
 
