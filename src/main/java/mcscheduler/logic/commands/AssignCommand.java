@@ -94,7 +94,8 @@ public class AssignCommand extends Command {
             }
             if (workerToAssign.isUnavailable(shiftToAssign)) {
                 throw new CommandException(String.format(
-                        Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerToAssign.getName(), shiftToAssign));
+                        Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerToAssign.getName(),
+                        shiftToAssign.getShiftDay(), shiftToAssign.getShiftTime()));
             }
 
             /*

@@ -130,10 +130,11 @@ public class AssignCommandTest {
         AssignCommand assignCommand = new AssignCommand(INDEX_THIRD_SHIFT, validWorkerRole);
 
         String workerName = TestUtil.getWorker(model, INDEX_FIRST_WORKER).getName().toString();
-        String shiftName = TestUtil.getShift(model, INDEX_THIRD_SHIFT).toString();
+        Shift shift = TestUtil.getShift(model, INDEX_THIRD_SHIFT);
 
         Assert.assertThrows(CommandException.class,
-                String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerName, shiftName), () ->
+                String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE, workerName,
+                        shift.getShiftDay(), shift.getShiftTime()), () ->
                         assignCommand.execute(model));
     }
 
