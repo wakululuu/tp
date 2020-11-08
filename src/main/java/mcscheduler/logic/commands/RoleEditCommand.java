@@ -1,6 +1,8 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DUPLICATE_ROLE;
+import static mcscheduler.commons.core.Messages.MESSAGE_ROLE_NOT_EDITED;
 
 import java.util.HashSet;
 import java.util.List;
@@ -58,6 +60,12 @@ public class RoleEditCommand extends Command {
 
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
         assert !Leave.isLeave(roleToEdit) : "Leave should not be edited";
+
+        if (roleToEdit.equals(editedRole)) {
+            throw new CommandException(String.format(MESSAGE_ROLE_NOT_EDITED, roleToEdit));
+        } else if (model.hasRole(editedRole)) {
+            throw new CommandException(MESSAGE_DUPLICATE_ROLE);
+        }
 
         editRoleInShifts(model, roleToEdit);
         editRoleInWorkers(model, roleToEdit);
