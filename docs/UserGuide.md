@@ -504,6 +504,15 @@ Examples:
 
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
 
+### Deleting all existing data in McScheduler: `clear`
+
+Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
+
+Format: `clear`
+
+* Additional parameters after the command `clear` will throw an `Unexpected argument` error.
+    * e.g. `clear asdf` will return the following error: `Unexpected argument for command "clear": asdf`.
+
 ### Exiting the program : `exit`
 
 Exits the program.
@@ -556,4 +565,5 @@ Leave | **Take over range of dates** | `mass-take-leave w/WORKER_INDEX d/START_D
 Leave | **Cancel** | `cancel-leave s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g.`cancel-leave s/3 w/2 w/3`
 Leave | **Cancel over a range of dates** | `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`<br> e.g. `mass-cancel-leave w/3 d/Mon t/AM d/Mon t/PM`
 General | **Help** | `help`
+General | **Clear** | `clear`
 General | **Exit** | `exit`
