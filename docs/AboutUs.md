@@ -57,5 +57,7 @@ Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
 [[github](http://github.com/WangZijun97)]
 [[portfolio](team/WangZijun97.md)]
 
+Email: [w.zijun@u.nus.edu](mailto:w.zijun@u.nus.edu)
+
 * Role: Developer
 * Responsibilities: Documentation
