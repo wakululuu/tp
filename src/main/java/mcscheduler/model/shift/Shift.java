@@ -1,5 +1,7 @@
 package mcscheduler.model.shift;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +14,6 @@ import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Represents a Shift in the McScheduler.
@@ -65,6 +65,10 @@ public class Shift {
         return Collections.unmodifiableSet(roles);
     }
 
+    /**
+     * Returns {@code Optional} containing RoleRequirement with same Role as role after searching in
+     * roleRequirements.
+     */
     public Optional<RoleRequirement> findRoleRequirement(Role role) {
         requireNonNull(role);
         return roleRequirements

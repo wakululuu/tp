@@ -214,5 +214,4 @@ public class CommandTestUtil {
         model.updateFilteredShiftList(new ShiftDayOrTimeContainsKeywordsPredicate(Arrays.asList(shiftDayKeywords)));
         assertEquals(1, model.getFilteredShiftList().size());
     }
-
 }

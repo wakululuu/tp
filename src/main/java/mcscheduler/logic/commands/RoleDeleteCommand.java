@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -46,7 +45,7 @@ public class RoleDeleteCommand extends Command {
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
             throw new CommandException(
-                    printOutOfBoundsRoleIndexError(targetIndex));
+                    CommandUtil.printOutOfBoundsRoleIndexError(targetIndex, MESSAGE_USAGE));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
@@ -100,14 +99,6 @@ public class RoleDeleteCommand extends Command {
             model.setWorker(worker, updatedWorker);
         }
     }
-
-    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
-
 
     @Override
     public boolean equals(Object other) {

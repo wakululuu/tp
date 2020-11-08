@@ -53,7 +53,7 @@ public class WorkerPayCommandTest {
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(outOfBoundIndex);
 
         assertCommandFailure(workerPayCommand, model,
-                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsWorkerIndexError(outOfBoundIndex, WorkerPayCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class WorkerPayCommandTest {
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(outOfBoundIndex);
 
         assertCommandFailure(workerPayCommand, model,
-                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsWorkerIndexError(outOfBoundIndex, WorkerPayCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -109,11 +109,5 @@ public class WorkerPayCommandTest {
 
         // different worker -> returns false
         assertNotEquals(workerPaySecondCommand, workerPayFirstCommand);
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + WorkerPayCommand.MESSAGE_USAGE);
     }
 }

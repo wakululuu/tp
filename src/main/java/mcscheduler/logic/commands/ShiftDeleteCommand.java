@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -39,7 +38,8 @@ public class ShiftDeleteCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(targetIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(targetIndex, MESSAGE_USAGE));
         }
 
         Shift shiftToDelete = lastShownList.get(targetIndex.getZeroBased());
@@ -62,13 +62,6 @@ public class ShiftDeleteCommand extends Command {
 
         assignmentsToDelete.forEach(model::deleteAssignment);
     }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {

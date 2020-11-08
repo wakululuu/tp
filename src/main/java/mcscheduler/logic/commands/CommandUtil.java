@@ -76,18 +76,36 @@ public class CommandUtil {
         return shiftsToTakeLeaveFrom;
     }
 
+    /**
+     * Prints the corresponding OutOfBoundsRoleIndexError for a given command
+     * @param roleIndex Out of bounds role index
+     * @param messageUsage Usage message for a given command
+     * @return OutOfBoundsRoleIndexError String
+     */
     public static String printOutOfBoundsRoleIndexError(Index roleIndex, String messageUsage) {
         return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                 String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
                         + messageUsage);
     }
 
+    /**
+     * Prints the corresponding OutOfBoundsWorkerIndexError for a given command
+     * @param workerIndex Out of bounds worker index
+     * @param messageUsage Usage message for a given command
+     * @return OutOfBoundsWorkerIndexError String
+     */
     public static String printOutOfBoundsWorkerIndexError(Index workerIndex, String messageUsage) {
         return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                 String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
                         + messageUsage);
     }
 
+    /**
+     * Prints the corresponding OutOfBoundsShiftIndexError for a given command
+     * @param shiftIndex Out of bounds shift index
+     * @param messageUsage Usage message for a given command
+     * @return OutOfBoundsShiftIndexError String
+     */
     public static String printOutOfBoundsShiftIndexError(Index shiftIndex, String messageUsage) {
         return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                 String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())

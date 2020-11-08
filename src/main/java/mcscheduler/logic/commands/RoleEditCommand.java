@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -53,7 +52,8 @@ public class RoleEditCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(printOutOfBoundsRoleIndexError(targetIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsRoleIndexError(targetIndex, MESSAGE_USAGE));
         }
 
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
@@ -131,13 +131,6 @@ public class RoleEditCommand extends Command {
             }
         }
     }
-
-    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {
