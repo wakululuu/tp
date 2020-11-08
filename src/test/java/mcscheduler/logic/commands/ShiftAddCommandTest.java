@@ -158,7 +158,7 @@ public class ShiftAddCommandTest {
         }
 
         @Override
-        public float calculateWorkerPay(Worker worker) {
+        public int calculateWorkerShiftsAssigned(Worker worker) {
             throw new AssertionError("This method should not be called.");
         }
 

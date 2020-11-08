@@ -26,6 +26,8 @@ Email: [kaien.foo@u.nus.edu](mailto:kaien.foo@u.nus.edu)
 [[github](http://github.com/plosslaw)]
 [[portfolio](team/plosslaw.md)]
 
+Email: [bohao.guo@u.nus.edu](mailto:bohao.guo@u.nus.edu)
+
 * Role: Developer
 * Responsibilities: Testing
 
