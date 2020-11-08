@@ -55,7 +55,7 @@ Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
 <img src="images/wangzijun97.png" width="200px">
 
 [[github](http://github.com/WangZijun97)]
-[[portfolio](team/WangZijun97.md)]
+[[portfolio](team/wangzijun97.md)]
 
 Email: [w.zijun@u.nus.edu](mailto:w.zijun@u.nus.edu)
 
