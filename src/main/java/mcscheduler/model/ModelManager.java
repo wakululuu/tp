@@ -126,7 +126,7 @@ public class ModelManager implements Model {
         Integer numberOfShiftsAssigned = 0;
         ObservableList<Assignment> assignments = getFullAssignmentList();
         for (Assignment assignment : assignments) {
-            if (assignment.getRole() instanceof Leave) {
+            if (Leave.isLeave(assignment.getRole())) {
                 continue;
             }
             Worker assignedWorker = assignment.getWorker();
