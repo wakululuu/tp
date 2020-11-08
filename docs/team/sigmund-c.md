@@ -3,7 +3,7 @@ layout: page
 title: Sigmund Chianasta's Project Portfolio Page
 ---
 
-## Project: AddressBook Level 3
+## Project: McScheduler
 
 McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker
 contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
