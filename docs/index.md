@@ -3,8 +3,8 @@ layout: page
 title: McScheduler
 ---
 
-[![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/se-edu/addressbook-level3/actions)
-[![codecov](https://codecov.io/gh/se-edu/addressbook-level3/branch/master/graph/badge.svg)](https://codecov.io/gh/se-edu/addressbook-level3)
+[![CI Status](https://github.com/AY2021S1-CS2103-F10-4/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2021S1-CS2103-F10-4/tp/workflows/Java%20CI/badge.svg)
+[![codecov](https://codecov.io/gh/AY2021S1-CS2103-F10-4/tp/branch/master/graph/badge.svg)](https://codecov.io/gh/AY2021S1-CS2103-F10-4/tp/branch/master/graph/badge.svg)
 
 ![Ui](images/Ui.png)
 
@@ -12,8 +12,8 @@ McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shi
 contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
 Graphical User Interface (GUI).
 
-* If you are interested in using McScheduler, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
-* If you are interested about developing McScheduler, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
+* If you are interested in using the McScheduler, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
+* If you are interested in developing the McScheduler, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
 
 
 **Acknowledgements**
