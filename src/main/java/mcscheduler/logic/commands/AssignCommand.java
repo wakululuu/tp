@@ -43,6 +43,12 @@ public class AssignCommand extends Command {
 
     public static final String MESSAGE_ASSIGN_SUCCESS = "%1$d new assignment(s) added:\n%2$s";
     public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler: %1$s";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT_IN_INPUT =
+            "Duplicate assignments being added. Please remove any duplicate assignments in the input";
+    public static final String MESSAGE_WORKER_ON_LEAVE =
+            "Failed to assign %1$s to Shift (%2$s):\n%1$s is on leave for Shift (%2$s)";
+    public static final String MESSAGE_EXCEEDS_ROLE_REQUIREMENT_QUANTITY =
+            "The assignments being added exceeds the role requirement quantity (%1$s ) for Shift: %2$s";
 
     private final Index shiftIndex;
     private final Set<WorkerRolePair> workerRolePairs;
@@ -68,7 +74,7 @@ public class AssignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
+            throw new CommandException(CommandUtil.printOutOfBoundsShiftIndexError(shiftIndex, MESSAGE_USAGE));
         }
 
         List<Assignment> assignmentsToAdd = new ArrayList<>();
@@ -77,7 +83,8 @@ public class AssignCommand extends Command {
         // Check for: worker existence, model hasRole, worker is fit, worker is available, role required in shift
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(printOutOfBoundsWorkerIndexError(workerRolePair.getWorkerIndex()));
+                throw new CommandException(
+                        CommandUtil.printOutOfBoundsWorkerIndexError(workerRolePair.getWorkerIndex(), MESSAGE_USAGE));
             }
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
@@ -101,23 +108,42 @@ public class AssignCommand extends Command {
             }
              */
             // Count for RoleRequirements
-            if (!(role instanceof Leave)) {
+            if (!(Leave.isLeave(role))) {
+                int roleQuantityRequired = getQuantityRequiredForRole(shiftToAssign, role);
+                if (roleQuantityRequired == 0) {
+                    // role not required or filled
+                    throw new CommandException(
+                            String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED, role, shiftToAssign));
+
+                }
                 if (!requiredRoles.containsKey(role)) {
-                    requiredRoles.put(role, getQuantityRequiredForRole(shiftToAssign, role));
+                    requiredRoles.put(role, roleQuantityRequired);
                 }
                 requiredRoles.put(role, requiredRoles.get(role) - 1);
                 if (requiredRoles.get(role) < 0) {
                     // This assignCommand will exceed the role's requirement
+                    RoleRequirement exceededRoleRequirement = shiftToAssign.findRoleRequirement(role).get();
                     throw new CommandException(
-                        String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED, role, shiftToAssign));
+                            String.format(MESSAGE_EXCEEDS_ROLE_REQUIREMENT_QUANTITY, exceededRoleRequirement,
+                                    shiftToAssign.toCondensedString()));
+
                 }
             }
 
             Assignment assignmentToAdd = new Assignment(shiftToAssign, workerToAssign, role);
             // Prevent duplicates in model & Prevent duplicates in a single call
-            if (model.hasAssignment(assignmentToAdd) || assignmentsToAdd.contains(assignmentToAdd)) {
+            if (assignmentsToAdd.contains(assignmentToAdd)) {
+                throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT_IN_INPUT);
+            }
+            if (model.hasAssignment(assignmentToAdd)) {
+                Assignment assignmentInModel = model.getAssignment(assignmentToAdd).get();
+                if (Leave.isLeave(assignmentInModel.getRole())) {
+                    throw new CommandException(
+                            String.format(MESSAGE_WORKER_ON_LEAVE, assignmentInModel.getWorker().getName(),
+                                    assignmentInModel.getShift().toCondensedString()));
+                }
                 throw new CommandException(
-                    String.format(MESSAGE_DUPLICATE_ASSIGNMENT, model.getAssignment(assignmentToAdd).get()));
+                    String.format(MESSAGE_DUPLICATE_ASSIGNMENT, assignmentInModel));
             }
             assignmentsToAdd.add(assignmentToAdd);
         }
@@ -147,18 +173,6 @@ public class AssignCommand extends Command {
             }
         }
         return quantityRequiredForRole;
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
     }
 
     @Override

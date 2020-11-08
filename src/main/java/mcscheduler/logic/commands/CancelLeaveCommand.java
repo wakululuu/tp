@@ -94,7 +94,8 @@ public class CancelLeaveCommand extends Command {
             try {
                 model.deleteAssignment(assignmentInModel);
             } catch (AssignmentNotFoundException ex) {
-                throw new CommandException(Messages.MESSAGE_NO_ASSIGNMENT_FOUND);
+                throw new CommandException(String.format(Messages.MESSAGE_NO_ASSIGNMENT_FOUND,
+                        workerToCancelLeave, shiftToCancelLeaveFrom));
             }
             assignStringBuilder.append(assignmentInModel + "\n");
         }

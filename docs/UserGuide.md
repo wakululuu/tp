@@ -371,6 +371,9 @@ Format: `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`
   3, …​
 * The assigned worker(s) will fill up the specified `ROLE` in the shift. The worker(s) must be fit for the specified `ROLE`
   and the shift must require the `ROLE`.
+* Each worker can **only be assigned to one `ROLE`** for a given shift. 
+  e.g. A worker cannot work as both chef and cashier for the same shift.
+* Each worker index should **appear only once** (i.e. no duplicates) since each worker can only be assigned to one role for a given shift.
 
 Example:
 * `assign s/3 w/2 Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
@@ -401,6 +404,9 @@ The old assignment will be edited during a successful `reassign` call.
 This allows workers to be reassigned to the same shift but under a different `ROLE`. Alternatively, the 2nd `reassign` command format listed below can be used
 to achieve this in a more efficient manner.
 * No reassignment will be made if there already exists a duplicate assignment in the McScheduler.
+* Each worker can **only be assigned to one `ROLE`** for a given shift. 
+  e.g. A worker cannot work as both chef and cashier for the same shift.
+
 
 Examples:
 * `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.

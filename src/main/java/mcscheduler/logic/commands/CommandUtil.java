@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import mcscheduler.commons.core.Messages;
+import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Leave;
@@ -72,6 +74,24 @@ public class CommandUtil {
         }
 
         return shiftsToTakeLeaveFrom;
+    }
+
+    public static String printOutOfBoundsRoleIndexError(Index roleIndex, String messageUsage) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
+                        + messageUsage);
+    }
+
+    public static String printOutOfBoundsWorkerIndexError(Index workerIndex, String messageUsage) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + messageUsage);
+    }
+
+    public static String printOutOfBoundsShiftIndexError(Index shiftIndex, String messageUsage) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + messageUsage);
     }
 
 }
