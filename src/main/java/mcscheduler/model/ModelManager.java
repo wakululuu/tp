@@ -23,7 +23,6 @@ import mcscheduler.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-    private static final Integer HOURS_PER_SHIFT = 8;
 
     private final McScheduler mcScheduler;
     private final UserPrefs userPrefs;
@@ -123,10 +122,13 @@ public class ModelManager implements Model {
         mcScheduler.setWorker(target, editedWorker);
     }
     @Override
-    public float calculateWorkerPay(Worker worker) {
+    public int calculateWorkerShiftsAssigned(Worker worker) {
         Integer numberOfShiftsAssigned = 0;
         ObservableList<Assignment> assignments = getFullAssignmentList();
         for (Assignment assignment : assignments) {
+            if (Leave.isLeave(assignment.getRole())) {
+                continue;
+            }
             Worker assignedWorker = assignment.getWorker();
             if (assignedWorker.equals(worker)) {
                 numberOfShiftsAssigned++;
@@ -134,7 +136,7 @@ public class ModelManager implements Model {
         }
         assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
 
-        return worker.getPay().getValue() * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+        return numberOfShiftsAssigned;
     }
 
     @Override

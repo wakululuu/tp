@@ -46,7 +46,7 @@ public class RoleDeleteCommand extends Command {
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
             throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
+                    printOutOfBoundsRoleIndexError(targetIndex));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
@@ -100,6 +100,14 @@ public class RoleDeleteCommand extends Command {
             model.setWorker(worker, updatedWorker);
         }
     }
+
+    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
+
 
     @Override
     public boolean equals(Object other) {

@@ -17,6 +17,7 @@ import mcscheduler.model.role.Role;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Shift {
+    public static final Integer HOURS_PER_SHIFT = 8;
 
     // Identity fields
     private final ShiftDay shiftDay;

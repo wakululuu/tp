@@ -53,8 +53,7 @@ public class RoleEditCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsRoleIndexError(targetIndex));
         }
 
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
@@ -132,6 +131,13 @@ public class RoleEditCommand extends Command {
             }
         }
     }
+
+    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

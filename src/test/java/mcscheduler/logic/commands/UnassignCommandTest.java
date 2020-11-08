@@ -88,7 +88,7 @@ public class UnassignCommandTest {
         UnassignCommand unassignCommand = new UnassignCommand(outOfBoundIndex, workerIndex);
 
         assertCommandFailure(unassignCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class UnassignCommandTest {
         UnassignCommand unassignCommand = new UnassignCommand(INDEX_FIRST_SHIFT, outOfBoundWorkerIndex);
 
         assertCommandFailure(unassignCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -117,6 +117,18 @@ public class UnassignCommandTest {
 
         assertCommandFailure(unassignCommand, model,
                 String.format(UnassignCommand.MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentName));
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + UnassignCommand.MESSAGE_USAGE);
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + UnassignCommand.MESSAGE_USAGE);
     }
 
     @Test
