@@ -90,7 +90,7 @@ public class LogicManagerTest {
         ModelManager expectedModel = new ModelManager();
         expectedModel.addRole(Role.createRole(VALID_ROLE_CASHIER));
         expectedModel.addWorker(expectedWorker);
-        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;
+        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION.getMessage();
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
     }
 
