@@ -1,6 +1,7 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_UNASSIGN_LEAVE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
@@ -14,6 +15,7 @@ import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
@@ -79,6 +81,8 @@ public class UnassignCommand extends Command {
 
             if (!model.hasAssignment(assignmentToDelete)) {
                 throw new CommandException(String.format(MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentToDelete));
+            } else if (Leave.isLeave(model.getAssignment(assignmentToDelete).get().getRole())) {
+                throw new CommandException(MESSAGE_DO_NOT_UNASSIGN_LEAVE);
             }
         }
 

@@ -1,6 +1,7 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_MODIFY_LEAVE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
@@ -80,6 +81,11 @@ public class ShiftEditCommand extends Command {
 
         if (!shiftToEdit.isSameShift(editedShift) && model.hasShift(editedShift)) {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
+        }
+        if (editedShift.getRoleRequirements()
+                .stream()
+                .anyMatch(roleRequirement -> Leave.isLeave(roleRequirement.getRole()))) {
+            throw new CommandException(MESSAGE_DO_NOT_MODIFY_LEAVE);
         }
 
         Set<RoleRequirement> roleRequirementSet = editedShift.getRoleRequirements();
