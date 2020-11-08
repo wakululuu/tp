@@ -25,6 +25,8 @@ We are a team based in the [School of Computing, National University of Singapor
 [[github](http://github.com/plosslaw)]
 [[portfolio](team/plosslaw.md)]
 
+Email: [bohao.guo@u.nus.edu](mailto:bohao.guo@u.nus.edu)
+
 * Role: Developer
 * Responsibilities: Testing
 
