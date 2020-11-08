@@ -72,7 +72,7 @@ easily available to streamline the work of McDonald's Shift Managers.
   e.g. `{w/WORKER_INDEX ROLE}…​` should be used as `w/1 Cashier`, `w/1 Cashier w/2 Janitor w/3 Chef` etc.
 
 * Parameters can be provided in any order, unless otherwise specified.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+  e.g. if the command specifies `n/NAME hp/PHONE_NUMBER`, `hp/PHONE_NUMBER n/NAME` is also acceptable.
 
 </div>
 
