@@ -25,7 +25,7 @@ public class WorkerPayCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SHOW_PAY_SUCCESS = "%1$s's pay for the week:\n"
-            +"$%2$.2f/hr x %3$dhr/shift x %4$,d shift(s) = $%5$,.2f";
+            + "$%2$.2f/hr x %3$dhr/shift x %4$,d shift(s) = $%5$,.2f";
 
     private final Index targetIndex;
 
