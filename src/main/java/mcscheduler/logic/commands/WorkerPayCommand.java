@@ -39,8 +39,7 @@ public class WorkerPayCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(targetIndex));
         }
 
         Worker selectedWorker = lastShownList.get(targetIndex.getZeroBased());
@@ -50,6 +49,13 @@ public class WorkerPayCommand extends Command {
         return new CommandResult(String.format(MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(),
                 selectedWorker.getPay().getValue(), Shift.HOURS_PER_SHIFT, numShiftsAssigned, calculatedPay));
     }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

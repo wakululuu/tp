@@ -72,8 +72,7 @@ public class MassCancelLeaveCommand extends Command {
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
 
         if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 
@@ -97,6 +96,13 @@ public class MassCancelLeaveCommand extends Command {
                 startDay, startTime, endDay, endTime, worker.getName()));
 
     }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

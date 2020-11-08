@@ -45,8 +45,7 @@ public class RoleDeleteCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsRoleIndexError(targetIndex));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
@@ -100,6 +99,13 @@ public class RoleDeleteCommand extends Command {
 
         assignmentsToDelete.forEach(model::deleteAssignment);
     }
+
+    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {
