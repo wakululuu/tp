@@ -90,7 +90,8 @@ public class MassTakeLeaveCommand extends Command {
             Assignment toAdd = new Assignment(shift, worker, new Leave());
             if (hasNonLeaveAssignment(model, toAdd)) {
                 Assignment nonLeaveAssignmentInModel = model.getAssignment(toAdd).get();
-                model.setAssignment(nonLeaveAssignmentInModel, toAdd);
+                model.deleteAssignment(nonLeaveAssignmentInModel);
+                model.addAssignment(toAdd);
                 reassignedAssignments.add(nonLeaveAssignmentInModel);
             } else if (hasLeaveAssignment(model, toAdd) || isWorkerUnavailable(worker, shift)) {
                 shiftsAlreadyWithLeave.add(shift);

@@ -45,18 +45,33 @@ public class RoleDeleteCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(printOutOfBoundsRoleIndexError(targetIndex));
+            throw new CommandException(
+                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
         }
 
         Role roleToDelete = roleList.get(targetIndex.getZeroBased());
         assert !Leave.isLeave(roleToDelete);
 
+        deleteRoleFromAssignments(model, roleToDelete);
         deleteRoleFromShifts(model, roleToDelete);
         deleteRoleFromWorkers(model, roleToDelete);
-        deleteRoleFromAssignments(model, roleToDelete);
         model.deleteRole(roleToDelete);
 
         return new CommandResult(String.format(MESSAGE_DELETE_ROLE_SUCCESS, roleToDelete));
+    }
+
+    private void deleteRoleFromAssignments(Model model, Role roleToDelete) {
+        CollectionUtil.requireAllNonNull(model, roleToDelete);
+        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
+        List<Assignment> assignmentsToDelete = new ArrayList<>();
+
+        for (Assignment assignment : fullAssignmentList) {
+            if (roleToDelete.equals(assignment.getRole())) {
+                assignmentsToDelete.add(assignment);
+            }
+        }
+
+        assignmentsToDelete.forEach(model::deleteAssignment);
     }
 
     private void deleteRoleFromShifts(Model model, Role roleToDelete) {
@@ -85,27 +100,6 @@ public class RoleDeleteCommand extends Command {
             model.setWorker(worker, updatedWorker);
         }
     }
-
-    private void deleteRoleFromAssignments(Model model, Role roleToDelete) {
-        CollectionUtil.requireAllNonNull(model, roleToDelete);
-        List<Assignment> fullAssignmentList = model.getFullAssignmentList();
-        List<Assignment> assignmentsToDelete = new ArrayList<>();
-
-        for (Assignment assignment : fullAssignmentList) {
-            if (roleToDelete.equals(assignment.getRole())) {
-                assignmentsToDelete.add(assignment);
-            }
-        }
-
-        assignmentsToDelete.forEach(model::deleteAssignment);
-    }
-
-    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {

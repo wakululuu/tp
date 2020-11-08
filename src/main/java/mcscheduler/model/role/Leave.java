@@ -8,8 +8,12 @@ public class Leave extends Role {
         super("Leave");
     }
 
+    /**
+     * Returns true if role is non-null and is a leave.
+     */
     public static boolean isLeave(Role role) {
-        return role.roleName.equalsIgnoreCase(ROLE_NAME);
+        return role != null
+                && role.roleName.equalsIgnoreCase(ROLE_NAME);
     }
 
     /**
