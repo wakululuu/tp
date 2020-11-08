@@ -48,7 +48,8 @@ public class AssignCommand extends Command {
     public static final String MESSAGE_WORKER_ON_LEAVE =
             "Failed to assign %1$s to Shift (%2$s):\n%1$s is on leave for Shift (%2$s)";
     public static final String MESSAGE_EXCEEDS_ROLE_REQUIREMENT_QUANTITY =
-            "The assignments being added exceeds the role requirement quantity (%1$s, Already Filled: %3$s ) for Shift: %2$s";
+            "The assignments being added exceeds the role requirement quantity (%1$s, Already Filled: %3$s ) for "
+            + "Shift: %2$s";
 
     private final Index shiftIndex;
     private final Set<WorkerRolePair> workerRolePairs;
