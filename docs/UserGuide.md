@@ -65,6 +65,9 @@ easily available to streamline the work of McDonald's Shift Managers.
 * Parameters with `…`​ after them can be used multiple times.<br>
   e.g. `w/WORKER_INDEX` can be used as `w/1`, `w/1 w/2`, `w/1 w/2 w/3` etc.
 
+* For parameters _without_ `…​` after them, if provided more than once, only the last value provided will be taken.
+  eg. if `n/Alex n/Betty n/Charlie` is provided for `n/NAME`, the name taken will be Charlie.   
+
 * When `[square brackets]` are used with `…`​, parameters can be used multiple times including zero times.<br>
   e.g. `[r/ROLE NUMBER_NEEDED]…​` can be used as ` ` (i.e. 0 times), `r/Cashier 3`, `r/Cashier 1 r/Janitor 2` etc.
 

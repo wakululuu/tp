@@ -55,6 +55,19 @@ public class Assignment {
     }
 
     /**
+     * Returns true if both assignments involve the same shift and worker.
+     */
+    public boolean isSameAssignment(Assignment otherAssignment) {
+        if (otherAssignment == this) {
+            return true;
+        }
+
+        return otherAssignment != null
+                && otherAssignment.getShift().isSameShift(getShift())
+                && otherAssignment.getWorker().isSameWorker(getWorker());
+    }
+
+    /**
      * Returns true if both assignments have the same identity fields.
      */
     @Override

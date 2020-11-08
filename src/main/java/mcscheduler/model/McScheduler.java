@@ -144,6 +144,14 @@ public class McScheduler implements ReadOnlyMcScheduler {
     }
 
     /**
+     * Returns true if a shift which equals to {@code shift} exists in the App.
+     */
+    public boolean hasExactShift(Shift shift) {
+        requireNonNull(shift);
+        return shifts.containsExact(shift);
+    }
+
+    /**
      * Adds a shift to the App.
      * The worker must not already exist in the App.
      */

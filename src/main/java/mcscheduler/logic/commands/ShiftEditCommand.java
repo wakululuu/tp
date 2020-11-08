@@ -143,7 +143,7 @@ public class ShiftEditCommand extends Command {
     }
 
     private static int getQuantityRequiredForRole(Shift shift, Role role) {
-        if (role.equals(new Leave())) {
+        if (Leave.isLeave(role)) {
             return Integer.MAX_VALUE;
         }
 
