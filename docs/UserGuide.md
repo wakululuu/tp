@@ -308,6 +308,7 @@ Examples:
 	* Output: `2 shifts listed!`
 * `shift-find AM PM` returns all shifts.
 	* Output: `4 shifts listed!`
+
 ### Deleting a shift: `shift-delete`
 
 Deletes a shift from the McScheduler.
@@ -350,6 +351,7 @@ Format: `role-edit ROLE_INDEX ROLE`
 Example:
 * `role-edit 1 burger flipper` Edits the 1st role to be burger flipper.
     * Output: `Edited role: Burger flipper | Previous role: Chef`
+    
 ### Deleting a role: `role-delete`
 
 Deletes a role from the McScheduler.
@@ -363,6 +365,7 @@ Format: `role-delete ROLE_INDEX`
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
     * Output: `Deleted role: Storey 2 server`
+    
 ### Listing all available workers for a shift and role: `worker-avail`
 
 Shows a list of all workers who are available for a particular shift under a particular role.
@@ -463,6 +466,7 @@ is already assigned to the role specified by `NEW_ROLE` under the shift specifie
 Example:
 * `reassign s/4 w/4 r/Chef` Reassigns the 4th worker on the worker list as a Chef in the 4th shift on the shift list.
     * Output: `Reassignment made: Shift: SUN PM - Worker: David Li (Role: Chef) | Previous Role: Cashier `
+
 ### Assigning a worker to take leave during a shift: `take-leave`
 
 Assigns a worker to take leave at a particular day and time, as indicated by a shift.
@@ -507,6 +511,7 @@ Examples:
     * Output: `Leave added for Betsy Crower from MON PM to THU PM. `
 * `mass-take-leave w/1 d/THU t/PM d/MON t/PM` Assigns the 1st worker to take leave from THU PM shift to MON PM shift (inclusive).
     * Output: `Leave added for Alex Yeoh from THU PM to MON PM. `
+
 ### Cancelling a worker's leave for a shift: `cancel-leave`
 
 Cancels a worker's leave at a particular day and time, as indicated by a shift.
@@ -552,6 +557,7 @@ Examples:
     * Output: `Leave cancelled for Betsy Crower from MON PM to THU PM. `
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
     * Output: `Leave cancelled for Alex Yeoh from THU PM to MON PM. `
+
 ### Deleting all existing data in McScheduler: `clear`
 
 Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
