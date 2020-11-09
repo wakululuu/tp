@@ -47,15 +47,17 @@ public class ShiftCard extends UiPart<Region> {
         shift.getRoleRequirements().stream()
                 .sorted(Comparator.comparing(roleRequirement -> roleRequirement.getRole().getRole()))
                 .forEach(roleRequirement -> {
-                    roleRequirements.getChildren().add(new Label(roleRequirement.toString()));
+                    Label childNode = new Label(roleRequirement.toString());
+                    childNode.setWrapText(true);
+                    roleRequirements.getChildren().add(childNode);
                 });
 
         ShiftAssignmentListPanel assignmentListPanel = new ShiftAssignmentListPanel(
-                assignmentList.filtered(assignment -> !(new Leave().equals(assignment.getRole()))), shift);
+                assignmentList.filtered(assignment -> !Leave.isLeave(assignment.getRole())), shift);
         shiftAssignments.getChildren().add(assignmentListPanel.getRoot());
 
         ShiftAssignmentListPanel leaveAssignmentListPanel = new ShiftAssignmentListPanel(
-                assignmentList.filtered(assignment -> new Leave().equals(assignment.getRole())), shift);
+                assignmentList.filtered(assignment -> Leave.isLeave(assignment.getRole())), shift);
         leaveShiftAssignments.getChildren().add(leaveAssignmentListPanel.getRoot());
     }
 

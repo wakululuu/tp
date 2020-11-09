@@ -103,7 +103,7 @@ public class ReassignCommandTest {
                 INDEX_SECOND_SHIFT, Role.createRole(VALID_ROLE_CASHIER));
 
         assertCommandFailure(reassignCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ReassignCommandTest {
                 outOfBoundIndex, Role.createRole(VALID_ROLE_CASHIER));
 
         assertCommandFailure(reassignCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -183,6 +183,18 @@ public class ReassignCommandTest {
 
         // different assignment -> returns false
         assertNotEquals(firstCommand, secondCommand);
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + ReassignCommand.MESSAGE_USAGE);
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + ReassignCommand.MESSAGE_USAGE);
     }
 
 }

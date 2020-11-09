@@ -8,6 +8,7 @@ import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
+import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 
 /**
@@ -23,7 +24,8 @@ public class WorkerPayCommand extends Command {
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1";
 
-    public static final String MESSAGE_SHOW_PAY_SUCCESS = "%1$s's pay for the week: $%2$,.2f";
+    public static final String MESSAGE_SHOW_PAY_SUCCESS = "%1$s's pay for the week:\n"
+            + "$%2$.2f/hr x %3$dhr/shift x %4$,d shift(s) = $%5$,.2f";
 
     private final Index targetIndex;
 
@@ -37,15 +39,23 @@ public class WorkerPayCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(targetIndex));
         }
 
         Worker selectedWorker = lastShownList.get(targetIndex.getZeroBased());
-        float calculatedPay = model.calculateWorkerPay(selectedWorker);
+        int numShiftsAssigned = model.calculateWorkerShiftsAssigned(selectedWorker);
+        float calculatedPay = numShiftsAssigned * selectedWorker.getPay().getValue() * Shift.HOURS_PER_SHIFT;
 
-        return new CommandResult(String.format(MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay));
+        return new CommandResult(String.format(MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(),
+                selectedWorker.getPay().getValue(), Shift.HOURS_PER_SHIFT, numShiftsAssigned, calculatedPay));
     }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

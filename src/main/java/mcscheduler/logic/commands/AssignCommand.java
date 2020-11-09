@@ -68,8 +68,7 @@ public class AssignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
         }
 
         List<Assignment> assignmentsToAdd = new ArrayList<>();
@@ -78,8 +77,7 @@ public class AssignCommand extends Command {
         // Check for: worker existence, model hasRole, worker is fit, worker is available, role required in shift
         for (WorkerRolePair workerRolePair : workerRolePairs) {
             if (workerRolePair.getWorkerIndex().getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX,
-                            workerRolePair.getWorkerIndex().getOneBased()));
+                throw new CommandException(printOutOfBoundsWorkerIndexError(workerRolePair.getWorkerIndex()));
             }
             Worker workerToAssign = lastShownWorkerList.get(workerRolePair.getWorkerIndex().getZeroBased());
             Shift shiftToAssign = lastShownShiftList.get(shiftIndex.getZeroBased());
@@ -150,6 +148,18 @@ public class AssignCommand extends Command {
             }
         }
         return quantityRequiredForRole;
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + MESSAGE_USAGE);
     }
 
     @Override

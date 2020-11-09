@@ -130,7 +130,7 @@ public class WorkerEditCommandTest {
         WorkerEditCommand workerEditCommand = new WorkerEditCommand(outOfBoundIndex, descriptor);
 
         assertCommandFailure(workerEditCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     /**
@@ -148,7 +148,7 @@ public class WorkerEditCommandTest {
                 new EditWorkerDescriptorBuilder().withName(VALID_NAME_BOB).build());
 
         assertCommandFailure(workerEditCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     //@@author wakululuu
@@ -158,6 +158,12 @@ public class WorkerEditCommandTest {
                 new EditWorkerDescriptorBuilder().withRoles("random role").build());
 
         assertCommandFailure(editCommand, model, String.format(Messages.MESSAGE_ROLE_NOT_FOUND, "Random role"));
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + WorkerEditCommand.MESSAGE_USAGE);
     }
 
     //@@author

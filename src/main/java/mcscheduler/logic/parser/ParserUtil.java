@@ -187,6 +187,9 @@ public class ParserUtil {
             throw new ParseException(
                 String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Role", role, Role.MESSAGE_CONSTRAINTS));
         }
+        if (trimmedRole.length() > 50) {
+            throw new ParseException(Role.MESSAGE_MAX_CHAR_LIMIT);
+        }
         return Role.createRole(trimmedRole);
     }
 
@@ -247,10 +250,14 @@ public class ParserUtil {
         final Set<Unavailability> unavailabilitySet = new HashSet<>();
 
         for (String unavailability : unavailabilities) {
-            boolean hasOneKeyword = unavailability.split(UnavailabilitySyntax.REGEX).length == 1;
+            String[] splitString = unavailability.split(UnavailabilitySyntax.REGEX);
+            boolean hasOneKeyword = splitString.length == 1;
             if (hasOneKeyword) {
-                String day = unavailability;
-
+                if (!Unavailability.hasValidUnavailabilityDay(splitString)) {
+                    throw new ParseException(String.format(Messages.MESSAGE_INVALID_PARSE_VALUE, "Unavailability",
+                            splitString[0], Unavailability.MESSAGE_CONSTRAINTS));
+                }
+                String day = splitString[0];
                 String morningUnavailabilityString = createMorningUnavailabilityString(day);
                 String afternoonUnavailabilityString = createAfternoonUnavailabilityString(day);
 

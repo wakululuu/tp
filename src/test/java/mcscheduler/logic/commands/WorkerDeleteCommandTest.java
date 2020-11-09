@@ -47,7 +47,7 @@ public class WorkerDeleteCommandTest {
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(workerDeleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class WorkerDeleteCommandTest {
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(workerDeleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -100,6 +100,12 @@ public class WorkerDeleteCommandTest {
 
         // different worker -> returns false
         assertNotEquals(deleteSecondCommand, deleteFirstCommand);
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + WorkerDeleteCommand.MESSAGE_USAGE);
     }
 
     /**

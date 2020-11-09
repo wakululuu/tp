@@ -71,8 +71,7 @@ public class ShiftEditCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, index.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(index));
         }
 
         Shift shiftToEdit = lastShownList.get(index.getZeroBased());
@@ -143,7 +142,7 @@ public class ShiftEditCommand extends Command {
     }
 
     private static int getQuantityRequiredForRole(Shift shift, Role role) {
-        if (role.equals(new Leave())) {
+        if (Leave.isLeave(role)) {
             return Integer.MAX_VALUE;
         }
 
@@ -162,6 +161,13 @@ public class ShiftEditCommand extends Command {
         CollectionUtil.requireAllNonNull(assignmentToEdit, editedShift);
         return new Assignment(editedShift, assignmentToEdit.getWorker(), assignmentToEdit.getRole());
     }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

@@ -44,7 +44,7 @@ public class WorkerRolePair {
         AppUtil.checkArgument(isValidWorkerRolePair(workerRoleInfo), MESSAGE_CONSTRAINTS);
         int index = workerRoleInfo.indexOf(" ");
         this.workerIndex = ParserUtil.parseIndex(workerRoleInfo.substring(0, index));
-        this.role = Role.createRole(workerRoleInfo.substring(index + 1));
+        this.role = ParserUtil.parseRole(workerRoleInfo.substring(index + 1));
     }
 
     /**

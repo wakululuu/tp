@@ -87,7 +87,7 @@ public interface Model {
     void setWorker(Worker target, Worker editedWorker);
 
     /** Returns the pay earned by a worker as float value */
-    float calculateWorkerPay(Worker worker);
+    int calculateWorkerShiftsAssigned(Worker worker);
 
     /** Returns an unmodifiable view of the full worker list */
     ObservableList<Worker> getFullWorkerList();

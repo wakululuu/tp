@@ -12,15 +12,21 @@ public class Messages {
     public static final String MESSAGE_INVALID_PARSE_VALUE = "The %1$s provided is invalid: '%2$s'.\n%3$s";
 
     public static final String MESSAGE_INVALID_DISPLAYED_INDEX = "The index provided is invalid: %1$s\n";
-    public static final String MESSAGE_INVALID_WORKER_DISPLAYED_INDEX = "The worker index provided is invalid: %1$d";
-    public static final String MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX = "The shift index provided is invalid: %1$d";
-    public static final String MESSAGE_INVALID_ROLE_DISPLAYED_INDEX = "The role index provided is invalid: %1$d";
+    public static final String MESSAGE_INVALID_WORKER_DISPLAYED_INDEX =
+            "The worker index provided is invalid: %1$d (out of bounds)\n";
+    public static final String MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX =
+            "The shift index provided is invalid: %1$d (out of bounds)\n";
+    public static final String MESSAGE_INVALID_ROLE_DISPLAYED_INDEX =
+            "The role index provided is invalid: %1$d (out of bounds)\n";
 
     public static final String MESSAGE_WORKERS_LISTED_OVERVIEW = "%1$d workers listed!";
     public static final String MESSAGE_SHIFTS_LISTED_OVERVIEW = "%1$d shifts listed!";
     public static final String MESSAGE_ROLE_NOT_FOUND = "This role does not exist in the McScheduler: %1$s";
     public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "%1$s is not available on %2$s %3$s and "
             + "cannot be assigned a role or leave";
+    public static final String MESSAGE_ROLE_NOT_EDITED = "The role has not been edited: %1$s";
+    public static final String MESSAGE_DUPLICATE_ROLE = "This role already exists in the McScheduler";
+    public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "%1$s is not available for %2$s";
     public static final String MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE = "%1$s is not fit for the %2$s role";
     public static final String MESSAGE_NO_ASSIGNMENT_FOUND =
             "No assignment found between worker: %1$s and shift: %2$s";

@@ -1,6 +1,5 @@
 package mcscheduler.logic;
 
-import static mcscheduler.commons.core.Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX;
 import static mcscheduler.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static mcscheduler.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
 import static mcscheduler.logic.commands.CommandTestUtil.NAME_DESC_AMY;
@@ -19,8 +18,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import mcscheduler.commons.core.Messages;
+import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.CommandResult;
 import mcscheduler.logic.commands.WorkerAddCommand;
+import mcscheduler.logic.commands.WorkerDeleteCommand;
 import mcscheduler.logic.commands.WorkerListCommand;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.logic.parser.exceptions.ParseException;
@@ -63,7 +65,8 @@ public class LogicManagerTest {
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "worker-delete 9";
-        assertCommandException(deleteCommand, String.format(MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, 9));
+        Index outOfBoundIndex = Index.fromOneBased(9);
+        assertCommandException(deleteCommand, printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -90,7 +93,7 @@ public class LogicManagerTest {
         ModelManager expectedModel = new ModelManager();
         expectedModel.addRole(Role.createRole(VALID_ROLE_CASHIER));
         expectedModel.addWorker(expectedWorker);
-        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;
+        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION.getMessage();
         assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
     }
 
@@ -169,5 +172,11 @@ public class LogicManagerTest {
         public void saveMcScheduler(ReadOnlyMcScheduler mcScheduler, Path filePath) throws IOException {
             throw DUMMY_IO_EXCEPTION;
         }
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + WorkerDeleteCommand.MESSAGE_USAGE);
     }
 }
