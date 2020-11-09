@@ -5,11 +5,16 @@ title: John Doe's Project Portfolio Page
 
 ## Project: AddressBook Level 3
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+McScheduler is a **one-stop solution for McDonald's Shift Managers** to manage shift scheduling, as well as worker
+contacts and compensation, optimized for use via a **Command Line Interface** (CLI) while still having the benefits of a
+**Graphical User Interface** (GUI). With the McScheduler, all information needed for shift-work assignment is made
+easily available to streamline the work of McDonald's Shift Managers.
 
-Given below are my contributions to the project.
+The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
 
-* **New Feature**: Added the ability to undo/redo previous commands.
+My contributions to the project are detailed below.
+
+* **New Feature**: Added the ability check pay earned by a worker for the week.
   * What it does: allows the user to undo all previous commands one at a time. Preceding undo commands can be reversed by using the redo command.
   * Justification: This feature improves the product significantly because a user can make mistakes in commands and the app should provide a convenient way to rectify them.
   * Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
@@ -17,10 +22,7 @@ Given below are my contributions to the project.
 
 * **New Feature**: Added a history command that allows the user to navigate to previous commands using up/down keys.
 
-* **Code contributed**: [RepoSense link]()
-
-* **Project management**:
-  * Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub
+* **Code contributed**: [RepoSense link](https://nus-cs2103-ay2021s1.github.io/tp-dashboard/#breakdown=true&search=plosslaw)
 
 * **Enhancements to existing features**:
   * Updated the GUI color scheme (Pull requests [\#33](), [\#34]())
