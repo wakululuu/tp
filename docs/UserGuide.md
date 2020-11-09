@@ -554,15 +554,6 @@ Examples:
     * Output: `Leave cancelled for Betsy Crower from MON PM to THU PM. `
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
     * Output: `Leave cancelled for Alex Yeoh from THU PM to MON PM. `
-### Deleting all existing data in McScheduler: `clear`
-
-Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
-
-Format: `clear`
-
-* Output: `The McScheduler has been cleared!`
-* Additional parameters after the command `clear` will throw an `Unexpected argument` error.
-    * e.g. `clear asdf` will return the following error: `Unexpected argument for command "clear": asdf`.
 
 ### General features
 
@@ -577,6 +568,16 @@ Format: `help`
 * Additional parameters after the command `help` will throw an `Unexpected argument` error.
     * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
 
+### Deleting all existing data in McScheduler: `clear`
+
+Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
+
+Format: `clear`
+
+* Output: `The McScheduler has been cleared!`
+* Additional parameters after the command `clear` will throw an `Unexpected argument` error.
+    * e.g. `clear asdf` will return the following error: `Unexpected argument for command "clear": asdf`.
+
 #### Exiting the program : `exit`
 
 Exits the program.
@@ -585,7 +586,6 @@ Format: `exit`
 
 * Additional parameters after the command `exit` will throw an `Unexpected argument` error.
     * e.g. `exit asdf` will return the following error: `Unexpected argument for command "exit": asdf`.
-
 
 #### Saving the data
 
