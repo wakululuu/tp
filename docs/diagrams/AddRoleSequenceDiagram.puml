@@ -19,10 +19,10 @@ participant ":McScheduler" as McScheduler MODEL_COLOR
 participant ":UniqueRoleList" as UniqueRoleList MODEL_COLOR
 end box
 
-[-> LogicManager : execute(command)
+[-> LogicManager : execute("role-add Cashier")
 activate LogicManager
 
-LogicManager -> McSchedulerParser : parseCommand(command)
+LogicManager -> McSchedulerParser : parseCommand("role-add Cashier")
 activate McSchedulerParser
 
 create RoleAddCommandParser
@@ -32,30 +32,30 @@ activate RoleAddCommandParser
 RoleAddCommandParser --> McSchedulerParser
 deactivate RoleAddCommandParser
 
-McSchedulerParser -> RoleAddCommandParser : parse(args)
+McSchedulerParser -> RoleAddCommandParser : parse()
 activate RoleAddCommandParser
 
-RoleAddCommandParser -> ParserUtil : parseRole(args)
+RoleAddCommandParser -> ParserUtil : parseRole("Cashier")
 activate ParserUtil
 
-ParserUtil -> Role_CLASS : createRole(role)
+ParserUtil -> Role_CLASS : createRole("Cashier")
 activate Role_CLASS
 
 create Role
 Role_CLASS -> Role
 activate Role
 
-return role
+return Cashier:Role
 deactivate Role
 
-Role_CLASS -> ParserUtil : role:Role
+Role_CLASS -> ParserUtil : Cashier:Role
 deactivate Role_CLASS
 
-ParserUtil -> RoleAddCommandParser : role:Role
+ParserUtil -> RoleAddCommandParser : cashier:Role
 deactivate ParserUtil
 
 create RoleAddCommand
-RoleAddCommandParser -> RoleAddCommand : RoleAddCommand(role:Role)
+RoleAddCommandParser -> RoleAddCommand : RoleAddCommand(Cashier:Role)
 activate RoleAddCommand
 
 
@@ -74,13 +74,13 @@ deactivate McSchedulerParser
 LogicManager -> RoleAddCommand : execute(model)
 activate RoleAddCommand
 
-RoleAddCommand -> ModelManager : addRole(role)
+RoleAddCommand -> ModelManager : addRole(Cashier:Role)
 activate ModelManager
 
-ModelManager -> McScheduler : addRole(role)
+ModelManager -> McScheduler : addRole(Cashier:Role)
 activate McScheduler
 
-McScheduler -> UniqueRoleList : add(role)
+McScheduler -> UniqueRoleList : add(Cashier:Role)
 activate UniqueRoleList
 
 UniqueRoleList -> McScheduler
