@@ -30,6 +30,9 @@ Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/gui
 
 **`Main`** has two classes called [`Main`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/Main.java)
 and [`MainApp`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/MainApp.java). It is responsible for,
+
+<div style="page-break-after: always;"></div>
+
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup methods where necessary.
 
@@ -51,6 +54,8 @@ For example, the `Logic` component (see the class diagram given below) defines i
 
 ![Class Diagram of the Logic Component](images/LogicClassDiagram.png)
 
+<div style="page-break-after: always;"></div>
+
 **How the architecture components interact with each other**
 
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `worker-delete 1`.
@@ -62,6 +67,8 @@ The sections below give more details of each component.
 ### UI component
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
+
+<div style="page-break-after: always;"></div>
 
 **API** :
 [`Ui.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/ui/Ui.java)
@@ -79,6 +86,8 @@ The `UI` component,
 
 ![Structure of the Logic Component](images/LogicClassDiagram.png)
 
+<div style="page-break-after: always;"></div>
+
 **API** :
 [`Logic.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/logic/Logic.java)
 
@@ -95,6 +104,8 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerDeleteCommandParser`should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
+<div style="page-break-after: always;"></div>
+
 ### Model component
 
 ![Structure of the Model Component](images/ModelClassDiagram.png)
@@ -108,6 +119,8 @@ The `Model`,
 * exposes an unmodifiable `ObservableList<Worker>` and `ObservableList<Role>` that can be 'observed' e.g. the UI can be
 bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
+
+<div style="page-break-after: always;"></div>
 
 
 ### Storage component
@@ -135,6 +148,8 @@ This section describes some noteworthy details on how certain features are imple
 The adding of workers is core to the functionality of the system. Users are able to add important information to each
 worker, which will help them assign workers to shifts they are most suited for.
 
+<div style="page-break-after: always;"></div>
+
 #### Implementation
 
 The mechanism for adding a worker is facilitated by a `Worker` class. A `Worker` has a `Name`, a
@@ -161,6 +176,8 @@ executed. The `Worker` object is added to and stored inside the `Model`.
 
 The following sequence diagram shows how `Worker` is added.
 
+<div style="page-break-after: always;"></div>
+
 ![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
@@ -178,6 +195,8 @@ the time (through `ShiftTime`) and role requirements (through `RoleRequirement`)
 details how many workers are needed to fill which roles in a given shift.
 
 The following diagram details `Shift` and how it is represented in the App model.
+
+<div style="page-break-after: always;"></div>
 
 ![Shift Class Diagram](images/ShiftClassDiagram.png)
 
@@ -207,6 +226,8 @@ setting the edited shift within the model. This results in the replacement of th
 created `Shift` object based on the new attributes.
 
 The following sequence diagram demonstrates this editing process (as per the example).
+
+<div style="page-break-after: always;"></div>
 
 ![Edit Shift Sequence Diagram](images/EditShiftSequenceDiagram.png)
 
@@ -254,6 +275,8 @@ launched the application.
 Step 1. The user executes a `worker-add` command `worker-add ... u/Mon`. `McSchedulerParser` creates a
 `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
+<div style="page-break-after: always;"></div>
+
 Step 2. Within `WorkerAddCommandParser#parse()`, `ParserUtil#parseUnavailabilities()` is called to generate an
 `Unavailability` set from the given `u/Mon` field. `ParserUtil#parseUnavailabilities()` checks whether
 the input contains only 1 keyword. In this case, since only 1 keyword (i.e. `Mon`) is present, `ParserUtil#createMorningUnavailabilityString()`
@@ -270,6 +293,8 @@ The following sequence diagram shows how unavailable timings are added to a `Wor
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
+
+<div style="page-break-after: always;"></div>
 
 ### Assign/unassign feature
 
@@ -297,6 +322,8 @@ is executed in the `LogicManager` by calling the `AssignCommand#execute()` metho
 
 Step 3. During the execution of the `AssignCommand`, an `Assignment` object, storing the 1st `Shift`, 1st `Worker` and cashier
 `Role` objects, is created. The `Assignment` object is then added to the `UniqueAssignmentList` in the `Model`.
+
+<div style="page-break-after: always;"></div>
 
 ![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
 
