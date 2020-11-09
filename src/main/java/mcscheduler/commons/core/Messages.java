@@ -42,8 +42,11 @@ public class Messages {
 
     public static final String MESSAGE_UNABLE_TO_LOAD_SAVE =
             "Unable to load save file - it is not of the correct format."
-            + "\nExit if you wish to fix or delete the save file."
-            + "\nDeleting the save file allows the system to generate sample data for your reference.";
+            + "\nIf you wish to fix the file, do that before exiting the McScheduler."
+            + "\nYou can also exit the app and delete the save file to allow the "
+            + "system to generate sample data for your use."
+            + "\nShould you wish to continue from a blank save file, "
+            + "you can continue to input commands from the current state and the corrupted file will be saved over.";
 
 
 }
