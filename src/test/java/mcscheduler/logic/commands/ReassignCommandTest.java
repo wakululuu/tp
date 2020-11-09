@@ -124,7 +124,7 @@ public class ReassignCommandTest {
         ReassignCommand reassignCommand = new ReassignCommand(INDEX_THIRD_WORKER, INDEX_THIRD_WORKER, INDEX_THIRD_SHIFT,
                 INDEX_THIRD_SHIFT, Role.createRole(VALID_ROLE_CASHIER));
 
-        Assert.assertThrows(CommandException.class, ReassignCommand.MESSAGE_DUPLICATE_ASSIGNMENT, () ->
+        Assert.assertThrows(CommandException.class, ReassignCommand.MESSAGE_DUPLICATE_ASSIGNMENT_WITH_SAME_ROLE, () ->
                 reassignCommand.execute(model));
     }
 
