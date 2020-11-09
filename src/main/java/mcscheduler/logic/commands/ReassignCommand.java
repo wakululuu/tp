@@ -134,7 +134,7 @@ public class ReassignCommand extends Command {
         }
         if (newWorker.isUnavailable(newShift)) {
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
-                    newWorker.getName(), newShift));
+                    newWorker.getName(), newShift.getShiftDay(), newShift.getShiftTime()));
         }
 
         if (!newShift.isRoleRequired(newRole)) {

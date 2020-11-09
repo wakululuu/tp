@@ -1,6 +1,7 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_MODIFY_LEAVE;
 import static mcscheduler.commons.core.Messages.MESSAGE_DUPLICATE_ROLE;
 
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -16,7 +17,6 @@ public class RoleAddCommand extends Command {
     public static final String COMMAND_WORD = "role-add";
 
     public static final String MESSAGE_SUCCESS = "New role added: %1$s";
-    public static final String MESSAGE_DO_NOT_MODIFY_LEAVE = "Leave role is a system default and should not be added.";
 
     private final Role toAdd;
 

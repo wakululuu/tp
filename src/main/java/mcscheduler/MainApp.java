@@ -46,6 +46,8 @@ public class MainApp extends Application {
     protected Model model;
     protected Config config;
 
+    private boolean couldLoad;
+
     @Override
     public void init() throws Exception {
         logger.info("=============================[ Initializing McScheduler ]===========================");
@@ -82,11 +84,14 @@ public class MainApp extends Application {
                 logger.info("Data file not found. Will be starting with a sample McScheduler");
             }
             initialData = mcSchedulerOptional.orElseGet(SampleDataUtil::getSampleMcScheduler);
+            couldLoad = true;
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty McScheduler");
+            couldLoad = false;
             initialData = new McScheduler();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty McScheduler");
+            couldLoad = false;
             initialData = new McScheduler();
         }
 
@@ -168,7 +173,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         logger.info("Starting McScheduler " + MainApp.VERSION);
-        ui.start(primaryStage);
+        ui.start(primaryStage, couldLoad);
     }
 
     @Override
