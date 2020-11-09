@@ -3,9 +3,11 @@ package mcscheduler.model.shift;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import mcscheduler.commons.util.AppUtil;
 import mcscheduler.commons.util.CollectionUtil;
+import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.role.Role;
 
 /**
@@ -29,7 +31,7 @@ public class RoleRequirement {
 
     private final Role role;
     private final int quantityRequired;
-    private final int quantityFilled;
+    private int quantityFilled;
 
     /**
      * Creates a role requirement with no workers filling the {@code role} yet.
@@ -97,6 +99,18 @@ public class RoleRequirement {
 
     public int getQuantityFilled() {
         return quantityFilled;
+    }
+
+    /**
+     * Updates {@code quantityFilled} based on pre-filtered assignments passed to the role (i.e. no knowledge of the
+     * shift is required by {@code RoleRequirement}).
+     * Ensure that assignments passed through are already filtered by shift or the count will be wrong.
+     *
+     * @param assignmentStream of filtered assignments from model that are relevant to this role requirement.
+     */
+    public void updateQuantityFilled(Stream<Assignment> assignmentStream) {
+        this.quantityFilled = (int) assignmentStream
+                .filter(assignment -> assignment.getRole().equals(getRole())).count();
     }
 
     /**
