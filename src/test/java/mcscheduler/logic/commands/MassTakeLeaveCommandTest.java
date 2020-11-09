@@ -19,8 +19,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.commons.core.Messages;
-import mcscheduler.commons.core.index.Index;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.McScheduler;
 import mcscheduler.model.Model;
@@ -88,7 +86,8 @@ public class MassTakeLeaveCommandTest {
     @Test
     public void execute_invalidIndex_throwsCommandException() {
         assertThrows(CommandException.class,
-                printOutOfBoundsWorkerIndexError(INDEX_FIRST_WORKER), () ->
+                CommandUtil.printOutOfBoundsWorkerIndexError(
+                        INDEX_FIRST_WORKER, MassTakeLeaveCommand.MESSAGE_USAGE), () ->
                         new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, mon, am).execute(model));
     }
 
@@ -144,12 +143,4 @@ public class MassTakeLeaveCommandTest {
         assertNotEquals(massTakeLeaveCommand1,
             new MassTakeLeaveCommand(INDEX_FIRST_WORKER, mon, am, tue, am));
     }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MassTakeLeaveCommand.MESSAGE_USAGE);
-    }
-
-
 }

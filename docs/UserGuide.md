@@ -120,10 +120,12 @@ A worker can have any number of unavailable timings (including zero) that can be
 Examples:
 * `worker-add n/John hp/98765432 a/21 Lower Kent Ridge Rd, Singapore 119077 r/Cashier p/7` Adds a cashier named John
   whose pay is $7/hr. His phone number is 98765432 and he lives at 21 Lower Kent Ridge Rd, Singapore 119077.
+    * Output: `New worker added: John Phone: 9876 5432 Hourly pay: $7.00/hr Address: 21 Lower Kent Ridge Rd, Singapore 119077 Roles: Cashier Unavailable Timings: `
 
 * `worker-add n/Tom hp/87654321 a/22 Bong Keng Road, #01–01 r/Burger Flipper r/Janitor p/7.50 u/Mon AM` Adds a worker named Tom
   who is fit to be a burger flipper or a janitor, and whose pay is $7.50/hr. His phone number is 87654321 and he lives
   at Bong Keng Road, #01–01. He is unavailable for work on Monday mornings.
+    * Output: `New worker added: Tom Phone: 8765 4321 Hourly pay: $7.50/hr Address: 22 Bong Keng Road, #01–01 Roles: [Janitor, Burger flipper] Unavailable Timings: [MON AM]`
 
 ### Listing all workers: `worker-list`
 
@@ -132,6 +134,7 @@ timings.
 
 Format: `worker-list`
 
+* Output: `Listed all workers`
 * Additional parameters after the command `worker-list` will throw an `Unexpected argument` error.
     * e.g. `worker-list asdf` will return the following error: `Unexpected argument for command "worker-list": asdf`.
 
@@ -168,9 +171,10 @@ You can remove all of a worker’s roles by typing `r/` without specifying any r
 
 Examples:
 * `worker-edit 1 n/John r/Janitor` Edits the name and role of the 1st worker to be John and janitor respectively.
-
+    * Output: `Edited worker: John Phone: 8743 8807 Hourly pay: $10.00/hr Address: Blk 30 Geylang Street 29, #06-40 Roles: [Janitor] Unavailable Timings: [MON PM]`
 * `worker-edit 2 n/Betsy Crower p/7 u/Mon` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
-
+    * Output: `Edited worker: Betsy Crower Phone: 9927 2758 Hourly pay: $7.00/hr Address: Blk 30 Lorong 3 Serangoon Gardens, #07-18 Roles: [Janitor, Cashier] Unavailable Timings: [MON AM][MON PM]`
+    
 ### Locating workers by name: `worker-find`
 
 Finds workers whose names contain any of the given keywords.
@@ -186,8 +190,10 @@ Format: `worker-find KEYWORD...`
 
 Examples:
 * `worker-find John` returns `john` and `John Doe`
+    * Output: `2 workers listed!`
 
 * `worker-find alex david` returns `Alex Yeoh` and `David Li`
+    * Output: `2 workers listed!`
 
 ### Deleting a worker: `worker-delete`
 
@@ -200,6 +206,7 @@ Format: `worker-delete WORKER_INDEX`
 
 Example:
 * `worker-delete 4` Deletes the 4th worker shown in the worker list.
+    * Output: `Deleted worker: Tom Phone: 8765 4321 Hourly pay: $7.50/hr Address: 22 Bong Keng Road, #01–01 Roles: [Janitor, Burger flipper] Unavailable Timings: [MON AM]`
 
 ### Calculating a worker's pay for the week: `worker-pay`
 
@@ -213,7 +220,9 @@ Format: `worker-pay WORKER_INDEX`
 
 Example:
 * `worker-pay 4` Calculate the total pay for the week for the 4th worker shown in the worker list.
-
+    * Output: `David Li's pay for the week:`<br>
+               `$0.99/hr x 8hr/shift x 1 shift(s) = $7.92`
+               
 ### Adding a shift: `shift-add`
 
 Adds a new shift to the McScheduler.
@@ -234,8 +243,10 @@ Format: `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`
 Examples:
 * `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3` Adds a Wednesday AM shift, which requires 2 workers to fill the cashier
   role and 3 workers to fill the janitor role.
+  * Output: `New shift added:  Day: WED Time: AM Role requirements:  Role Required: Cashier x 2 Role Required: Janitor x 3`
 
 * `shift-add d/MON t/pM` Adds a Monday PM shift with no required roles yet.
+    * Output: `New shift added:  Day: MON Time: PM Role requirements: `
 
 ### Listing all shifts: `shift-list`
 
@@ -243,6 +254,7 @@ Shows a list of all shifts in the McScheduler, including the roles needed and wo
 
 Format: `shift-list`
 
+* Output: `Listed all shifts`
 * Additional parameters after the command `shift-list` will throw an `Unexpected argument` error.
     * e.g. `shift-list asdf` will return the following error: `Unexpected argument for command "shift-list": asdf`.
 
@@ -270,10 +282,12 @@ Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`
 Examples:
 * `shift-edit 3 r/Cashier 3 r/Janitor 2` Edits the 3rd shift on the list such that it now requires 3 cashiers and 2
   janitors.
+    * Output: `Edited Shift:  Day: WED Time: AM Role requirements:  Role Required: Cashier x 3 Role Required: Janitor x 2`
 
 * `shift-edit 1 d/Mon t/PM r/Janitor 1` Edits the 1st shift such that it is now a Monday PM shift, requiring 1 janitor only.
-
+    * Output: `Edited Shift:  Day: MON Time: PM Role requirements:  Role Required: Janitor x 1`
 * `shift-edit 2 r/` Edits the 2nd shift such that it now has no required roles.
+    * Output: `Edited Shift:  Day: TUE Time: PM Role requirements: `
 
 ### Locating shifts by day or time: `shift-find`
 
@@ -289,11 +303,11 @@ Format: `shift-find KEYWORD...`
 
 Examples:
 * `shift-find Fri PM` returns all shifts on Friday and all PM shifts. i.e. `FRI PM`, `THU PM` and `FRI AM` shift will all be returned.
-
+	* Output: `2 shifts listed!`
 * `shift-find Mon` returns a `MON AM` shift and a `MON PM` shift.
-
+	* Output: `2 shifts listed!`
 * `shift-find AM PM` returns all shifts.
-
+	* Output: `4 shifts listed!`
 ### Deleting a shift: `shift-delete`
 
 Deletes a shift from the McScheduler.
@@ -305,6 +319,7 @@ Format: `shift-delete SHIFT_INDEX`
 
 Example:
 * `shift-delete 2` Deletes the 2nd shift on the list.
+    * Output: `Deleted Shift:  Day: WED Time: AM Role requirements:  Role Required: Cashier x 3 Role Required: Janitor x 2`
 
 ### Adding a role: `role-add`
 
@@ -317,8 +332,10 @@ Format: `role-add ROLE`
 
 Examples:
 * `role-add cashier` Adds a cashier role.
+    * Output: `New role added: Cashier`
 
 * `role-add Storey 2 server` Adds a storey 2 server role.
+    * Output: `New role added: Storey 2 server`
 
 ### Editing a role: `role-edit`
 
@@ -332,7 +349,7 @@ Format: `role-edit ROLE_INDEX ROLE`
 
 Example:
 * `role-edit 1 burger flipper` Edits the 1st role to be burger flipper.
-
+    * Output: `Edited role: Burger flipper | Previous role: Chef`
 ### Deleting a role: `role-delete`
 
 Deletes a role from the McScheduler.
@@ -345,7 +362,7 @@ Format: `role-delete ROLE_INDEX`
 
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
-
+    * Output: `Deleted role: Storey 2 server`
 ### Listing all available workers for a shift and role: `worker-avail`
 
 Shows a list of all workers who are available for a particular shift under a particular role.
@@ -359,6 +376,11 @@ Format: `worker-avail SHIFT_INDEX r/ROLE`
 
 Example:
 * `worker-avail 4 r/Chef` Show a list of available workers who can work as chefs for the 4th shift shown in the shift list.
+    * Output: `List of available workers for shift 4 (Role: Janitor)`<br>
+               `1	Alex Yeoh`<br>
+               `2	Betsy Crower`<br>
+               `6	Roy Balakrishnan`<br>
+               `8	Tom`
 
 ### Assigning a worker to a role in a shift: `assign`
 
@@ -372,11 +394,19 @@ Format: `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`
 * The assigned worker(s) will fill up the specified `ROLE` in the shift. The worker(s) must be fit for the specified `ROLE`
   and the shift must require the `ROLE`.
   * `Leave` is also accepted: workers can be assigned the leave status for any shift with no limit.
+* Each worker can **only be assigned to one `ROLE`** for a given shift. 
+  e.g. A worker cannot work as both chef and cashier for the same shift.
+* Each worker index should **appear only once** (i.e. no duplicates) since each worker can only be assigned to one role for a given shift.
 
 Example:
 * `assign s/3 w/2 Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
-* `assign s/3 w/2 Cashier w/3 Chef` Assigns the 2nd worker as a cashier and the 3rd worker as a chef to the 3rd shift.
-
+    * Output: `1 new assignment(s) added:`<br>
+               `Shift: FRI PM - Worker: Betsy Crower (Role: Cashier)`
+* `assign s/3 w/1 Cashier w/3 Chef` Assigns the 1st worker as a cashier and the 3rd worker as a chef to the 3rd shift.
+    * Output: `2 new assignment(s) added:`<br>
+              `Shift: FRI PM - Worker: Charlotte Oliveiro (Role: Chef)`<br>
+              `Shift: FRI PM - Worker: Alex Yeoh (Role: Cashier)`
+    
 ### Removing a worker from a shift: `unassign`
 
 Removes a worker from a particular shift.
@@ -387,6 +417,15 @@ Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX...`
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
  
+Example:
+* `unassign s/3 w/2` Unassigns the 2nd worker on the worker list from the 3rd shift on the shift list.
+    * Output: `1 shift assignment(s) removed:`<br>
+              `Shift: FRI PM - Worker: Betsy Crower (Role: Cashier)`
+* `unassign s/3 w/1 w/3` Unassigns the 1st worker and the 3rd worker from the 3rd shift.
+    * Output: `2 shift assignment(s) removed:`<br>
+              `Shift: FRI PM - Worker: Charlotte Oliveiro (Role: Chef)`<br>
+              `Shift: FRI PM - Worker: Alex Yeoh (Role: Cashier)`
+
 ### Reassigning an existing assignment: `reassign`
 
 Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
@@ -402,11 +441,15 @@ The old assignment will be edited during a successful `reassign` call.
 This allows workers to be reassigned to the same shift but under a different `ROLE`. Alternatively, the 2nd `reassign` command format listed below can be used
 to achieve this in a more efficient manner.
 * No reassignment will be made if there already exists a duplicate assignment in the McScheduler.
+* Each worker can **only be assigned to one `ROLE`** for a given shift. 
+  e.g. A worker cannot work as both chef and cashier for the same shift.
+
 
 Examples:
-* `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.
-
-* `reassign so/1 wo/2 sn/3 wn/2 r/Cashier` Reassigns the 2nd worker on the worker list to the 3rd shift on the shift list as a Cashier.
+* `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns from the 1st worker to the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.
+    * Output: `Reassignment made: Shift: SUN PM - Worker: Betsy Crower (Role: Chef) | Previous Role: Chef `
+* `reassign so/1 wo/2 sn/3 wn/2 r/Cashier` Reassigns the 2nd worker on the worker list from the 1st shift to the 3rd shift on the shift list as a Cashier.
+    * Output: `Reassignment made: Shift: FRI PM - Worker: Betsy Crower (Role: Cashier) | Previous Role: Cashier `
 
 2.`reassign s/SHIFT_INDEX w/WORKER_INDEX r/NEW_ROLE`  
 
@@ -418,8 +461,8 @@ The old assignment will be edited during a successful `reassign` call.
 is already assigned to the role specified by `NEW_ROLE` under the shift specified by `SHIFT_INDEX`).
 
 Example:
-* `reassign s/4 w/1 r/Chef` Reassigns the 1st worker on the worker list as a Chef in the 4th shift on the shift list.
-
+* `reassign s/4 w/4 r/Chef` Reassigns the 4th worker on the worker list as a Chef in the 4th shift on the shift list.
+    * Output: `Reassignment made: Shift: SUN PM - Worker: David Li (Role: Chef) | Previous Role: Cashier `
 ### Assigning a worker to take leave during a shift: `take-leave`
 
 Assigns a worker to take leave at a particular day and time, as indicated by a shift.
@@ -433,8 +476,13 @@ will be the worker(s) at the specified `WORKER_INDEX` in the worker list.
 * An error message will be shown if any of the workers are unavailable for that shift, since there is no reason to take leave then.
 
 Example:
-* `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
-* `take-leave s/4 w/1 w/3` Assigns the 1st and 4rd worker to take leave during the 4th shift.
+* `take-leave s/4 w/4` Assigns the 4th worker to take leave during the 4th shift.
+    * Output: `[Leave taken] 
+               Reassignment made: Shift: SUN PM - Worker: David Li (Role: Leave) | Previous Role: Chef `
+* `take-leave s/4 w/1 w/3` Assigns the 1st and 3rd worker to take leave during the 4th shift.
+    * Output: `[Leave taken] 2 new assignment(s) added:`<br>
+              `Shift: SUN PM - Worker: Alex Yeoh (Role: Leave)`<br>
+              `Shift: SUN PM - Worker: Charlotte Oliveiro (Role: Leave)`
 
 ### Assigning a worker leave over a range of days and times: `mass-take-leave`
 
@@ -456,9 +504,9 @@ present within the McScheduler. These shifts will have no role requirements.
   
 Examples:
 * `mass-take-leave w/2 d/MON t/PM d/THU t/PM` Assigns the 2nd worker to take leave from MON PM shift to THU PM shift (inclusive).
-
+    * Output: `Leave added for Betsy Crower from MON PM to THU PM. `
 * `mass-take-leave w/1 d/THU t/PM d/MON t/PM` Assigns the 1st worker to take leave from THU PM shift to MON PM shift (inclusive).
-
+    * Output: `Leave added for Alex Yeoh from THU PM to MON PM. `
 ### Cancelling a worker's leave for a shift: `cancel-leave`
 
 Cancels a worker's leave at a particular day and time, as indicated by a shift.
@@ -474,8 +522,13 @@ cancelled will be the worker(s) at the specified `WORKER_INDEX` in the worker li
   * An assignment other than leave is found for the worker(s) at the specified shift.
  
 Examples:
-* `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
+* `cancel-leave s/4 w/4` Cancels the leave of the 4th worker for the 4th shift.
+    * Output: `[Leave Cancelled] 1 shift assignment(s) removed:`<br>
+              `Shift: SUN PM - Worker: David Li (Role: Leave)`
 * `cancel-leave s/4 w/1 w/3` Cancels the leave of the 1st and the 3rd worker for the 4th shift.
+    * Output: `[Leave Cancelled] 2 shift assignment(s) removed:`<br>
+              `Shift: SUN PM - Worker: Charlotte Oliveiro (Role: Leave)`<br>
+              `Shift: SUN PM - Worker: Alex Yeoh (Role: Leave)`
 
 ### Cancelling a worker's leave over a range of days and times: `mass-cancel-leave`
 
@@ -496,8 +549,18 @@ work as intended - leave cancelled from Sunday morning to Monday morning.
  
 Examples:
 * `mass-cancel-leave w/2 d/MON t/PM d/THU t/PM` Cancels the 2nd worker's leave between MON PM shift to THU PM shift (inclusive).
-
+    * Output: `Leave cancelled for Betsy Crower from MON PM to THU PM. `
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
+    * Output: `Leave cancelled for Alex Yeoh from THU PM to MON PM. `
+### Deleting all existing data in McScheduler: `clear`
+
+Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
+
+Format: `clear`
+
+* Output: `The McScheduler has been cleared!`
+* Additional parameters after the command `clear` will throw an `Unexpected argument` error.
+    * e.g. `clear asdf` will return the following error: `Unexpected argument for command "clear": asdf`.
 
 ### Exiting the program : `exit`
 
@@ -519,7 +582,7 @@ save manually.
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains
+**A**: Install the app in the other computer and overwrite the default data file it creates with the file that contains
 the data of your previous McScheduler home folder.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -551,4 +614,5 @@ Leave | **Take over range of dates** | `mass-take-leave w/WORKER_INDEX d/START_D
 Leave | **Cancel** | `cancel-leave s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g.`cancel-leave s/3 w/2 w/3`
 Leave | **Cancel over a range of dates** | `mass-cancel-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`<br> e.g. `mass-cancel-leave w/3 d/Mon t/AM d/Mon t/PM`
 General | **Help** | `help`
+General | **Clear** | `clear`
 General | **Exit** | `exit`

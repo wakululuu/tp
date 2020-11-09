@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
@@ -47,7 +46,7 @@ public class WorkerDeleteCommandTest {
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(workerDeleteCommand, model,
-                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsWorkerIndexError(outOfBoundIndex, WorkerDeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -77,7 +76,7 @@ public class WorkerDeleteCommandTest {
         WorkerDeleteCommand workerDeleteCommand = new WorkerDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(workerDeleteCommand, model,
-                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsWorkerIndexError(outOfBoundIndex, WorkerDeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -100,12 +99,6 @@ public class WorkerDeleteCommandTest {
 
         // different worker -> returns false
         assertNotEquals(deleteSecondCommand, deleteFirstCommand);
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + WorkerDeleteCommand.MESSAGE_USAGE);
     }
 
     /**

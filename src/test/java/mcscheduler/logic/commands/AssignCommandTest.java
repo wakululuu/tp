@@ -73,7 +73,7 @@ public class AssignCommandTest {
         AssignCommand assignCommand = new AssignCommand(outOfBoundIndex, validWorkerRole);
 
         assertCommandFailure(assignCommand, model,
-                printOutOfBoundsShiftIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsShiftIndexError(outOfBoundIndex, AssignCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class AssignCommandTest {
         AssignCommand assignCommand = new AssignCommand(INDEX_FIRST_SHIFT, invalidWorkerIndex);
 
         assertCommandFailure(assignCommand, model,
-                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsWorkerIndexError(outOfBoundIndex, AssignCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -162,18 +162,5 @@ public class AssignCommandTest {
         // different assignment -> returns false
         assertNotEquals(assignCommand1, assignCommand2);
     }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + AssignCommand.MESSAGE_USAGE);
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + AssignCommand.MESSAGE_USAGE);
-    }
-
 
 }

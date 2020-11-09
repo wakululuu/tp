@@ -150,8 +150,12 @@ public class Worker {
                 .append(getPay())
                 .append(" Address: ")
                 .append(getAddress())
-                .append(" Roles: ");
-        getRoles().forEach(builder::append);
+                .append(" Roles: [");
+        getRoles().forEach(role -> builder.append(role + ", "));
+        if (getRoles().size() > 0) {
+            builder.setLength(builder.length() - 2);
+        }
+        builder.append("]");
         builder.append(" Unavailable Timings: ");
         getUnavailableTimings().forEach(builder::append);
         return builder.toString();
