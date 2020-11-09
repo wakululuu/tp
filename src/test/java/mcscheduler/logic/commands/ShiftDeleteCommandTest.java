@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
@@ -44,7 +43,7 @@ public class ShiftDeleteCommandTest {
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(shiftDeleteCommand, model,
-                printOutOfBoundsShiftIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsShiftIndexError(outOfBoundIndex, ShiftDeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -74,7 +73,7 @@ public class ShiftDeleteCommandTest {
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(shiftDeleteCommand, model,
-                printOutOfBoundsShiftIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsShiftIndexError(outOfBoundIndex, ShiftDeleteCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -106,11 +105,5 @@ public class ShiftDeleteCommandTest {
         model.updateFilteredShiftList(p -> false);
 
         assertTrue(model.getFilteredShiftList().isEmpty());
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + ShiftDeleteCommand.MESSAGE_USAGE);
     }
 }

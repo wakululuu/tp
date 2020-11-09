@@ -36,7 +36,7 @@ public class WorkerAvailableCommandTest {
         WorkerAvailableCommand workerAvailableCommand = new WorkerAvailableCommand(outOfBoundIndex, role);
 
         assertCommandFailure(workerAvailableCommand, model,
-                printOutOfBoundsShiftIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsShiftIndexError(outOfBoundIndex, WorkerAvailableCommand.MESSAGE_USAGE));
     }
 
     /**
@@ -54,7 +54,7 @@ public class WorkerAvailableCommandTest {
             Role.createRole(VALID_ROLE_CASHIER));
 
         assertCommandFailure(workerAvailableCommand, model,
-                printOutOfBoundsShiftIndexError(outOfBoundIndex));
+                CommandUtil.printOutOfBoundsShiftIndexError(outOfBoundIndex, WorkerAvailableCommand.MESSAGE_USAGE));
     }
 
     @Test
@@ -64,12 +64,6 @@ public class WorkerAvailableCommandTest {
 
         assertCommandFailure(workerAvailableCommand, model,
                 String.format(Messages.MESSAGE_ROLE_NOT_FOUND, NOT_FOUND_ROLE));
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + WorkerAvailableCommand.MESSAGE_USAGE);
     }
 
     @Test
