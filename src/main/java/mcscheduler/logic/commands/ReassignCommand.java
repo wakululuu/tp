@@ -115,16 +115,20 @@ public class ReassignCommand extends Command {
         Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
         Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
 
+        boolean hasSameWorker = oldWorker.equals(newWorker);
+        boolean hasSameShift = oldShift.equals(newShift);
+        boolean isExistingAssignment = model.hasAssignment(assignmentToAdd);
+        boolean hasSameRole = assignmentToAdd.getRole().equals(assignmentToRemove.getRole());
+
         // For cases where reassign is done on same worker in same shift, role needs to be checked
         // Duplicate assignment if role is the same
-        if (oldWorker.equals(newWorker) && oldShift.equals(newShift) && model.hasAssignment(assignmentToAdd)
-                && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
+        if (hasSameWorker && hasSameShift && isExistingAssignment && hasSameRole) {
             throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
         }
 
         // For cases where reassign is called on different shifts and workers
-        // Only check whether a worker is already assigned to a role in a shift
-        if ((!(oldWorker.equals(newWorker)) || !(oldShift.equals(newShift))) && model.hasAssignment(assignmentToAdd)) {
+        // Only check whether the new worker is already assigned to a role in the new shift
+        if ((!hasSameWorker || !hasSameShift) && isExistingAssignment) {
             throw new CommandException(String.format(MESSAGE_EXISTING_ASSIGNMENT, newWorker.getName()));
         }
 
