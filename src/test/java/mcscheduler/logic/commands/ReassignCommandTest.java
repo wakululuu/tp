@@ -147,7 +147,7 @@ public class ReassignCommandTest {
         Worker workerToReassignTo = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
         Shift shiftToReassignTo = TestUtil.getShift(model, INDEX_THIRD_SHIFT);
         Assert.assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
-                workerToReassignTo.getName(), shiftToReassignTo), () ->
+                workerToReassignTo.getName(), shiftToReassignTo.getShiftDay(), shiftToReassignTo.getShiftTime()), () ->
                 reassignCommand.execute(model));
     }
 

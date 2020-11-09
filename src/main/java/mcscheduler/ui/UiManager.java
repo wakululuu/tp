@@ -35,7 +35,7 @@ public class UiManager implements Ui {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage, boolean couldLoad) {
         logger.info("Starting UI...");
 
         //Set the application icon.
@@ -48,7 +48,7 @@ public class UiManager implements Ui {
         try {
             mainWindow = new MainWindow(primaryStage, logic);
             mainWindow.show(); //This should be called before creating other UI parts
-            mainWindow.fillInnerParts();
+            mainWindow.fillInnerParts(couldLoad);
 
         } catch (Throwable e) {
             logger.severe(StringUtil.getDetails(e));

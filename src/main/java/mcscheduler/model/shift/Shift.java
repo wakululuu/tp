@@ -79,26 +79,19 @@ public class Shift {
     }
 
     /**
-     * Updates the quantity of the specified {@code role} that is filled in the specified {@code shift}.
+     * Updates the quantity filled field of each role requirement within the shift.
+     * Takes a list of assignments, such as from {@code Model#getFullAssignmentList}.
      *
-     * @param model storing the shift to be updated.
-     * @param shiftToUpdate in the model.
-     * @param role of the role requirement to be updated.
+     * @param assignments to be counted from for updating quantity filled of each role.
      */
-    public static void updateRoleRequirements(Model model, Shift shiftToUpdate, Role role) {
-        CollectionUtil.requireAllNonNull(model, shiftToUpdate, role);
-        assert model.hasShift(shiftToUpdate);
-        if (Leave.isLeave(role)) {
-            return; // no need to update role requirements for leave
+    public void updateRoleRequirements(List<Assignment> assignments) {
+        for (RoleRequirement rr : roleRequirements) {
+            rr.updateQuantityFilled(assignments.stream()
+                    .filter(assignment -> assignment.getShift().isSameShift(this)));
         }
-
-        int quantityFilled = shiftToUpdate.countRoleQuantityFilled(model, role);
-        Set<RoleRequirement> updatedRoleRequirements = shiftToUpdate.getUpdatedRoleRequirements(role, quantityFilled);
-
-        Shift updatedShift = new Shift(shiftToUpdate.getShiftDay(), shiftToUpdate.getShiftTime(),
-                updatedRoleRequirements);
-        model.setShift(shiftToUpdate, updatedShift);
     }
+
+
 
     /**
      * Counts the quantity filled of the specified {@code role} in the specified {@code shift}.
@@ -117,24 +110,6 @@ public class Shift {
         }
 
         return quantityFilled;
-    }
-
-    private Set<RoleRequirement> getUpdatedRoleRequirements(Role role, int quantityFilled) {
-        Set<RoleRequirement> updatedRoleRequirements = new HashSet<>(getRoleRequirements());
-
-        for (RoleRequirement requirement : updatedRoleRequirements) {
-            if (requirement.getRole().equals(role)) {
-                RoleRequirement updatedRoleRequirement = new RoleRequirement(role, requirement.getQuantityRequired(),
-                        quantityFilled);
-                assert updatedRoleRequirement.getQuantityFilled() <= updatedRoleRequirement.getQuantityRequired();
-
-                updatedRoleRequirements.remove(requirement);
-                updatedRoleRequirements.add(updatedRoleRequirement);
-                break;
-            }
-        }
-
-        return updatedRoleRequirements;
     }
 
     /**

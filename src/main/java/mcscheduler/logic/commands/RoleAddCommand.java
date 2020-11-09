@@ -3,6 +3,7 @@ package mcscheduler.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static mcscheduler.commons.core.Messages.MESSAGE_DUPLICATE_ROLE;
 
+import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.role.Leave;
@@ -16,7 +17,7 @@ public class RoleAddCommand extends Command {
     public static final String COMMAND_WORD = "role-add";
 
     public static final String MESSAGE_SUCCESS = "New role added: %1$s";
-    public static final String MESSAGE_DO_NOT_MODIFY_LEAVE = "Leave role is a system default and should not be added.";
+    public static final String MESSAGE_DUPLICATE_ROLE = "This role already exists in the McScheduler";
 
     private final Role toAdd;
 
@@ -34,7 +35,7 @@ public class RoleAddCommand extends Command {
 
         if (model.hasRole(toAdd)) {
             if (Leave.isLeave(toAdd)) {
-                throw new CommandException(MESSAGE_DO_NOT_MODIFY_LEAVE);
+                throw new CommandException(Messages.MESSAGE_DO_NOT_MODIFY_LEAVE);
             }
             throw new CommandException(MESSAGE_DUPLICATE_ROLE);
         }
