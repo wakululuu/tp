@@ -1,6 +1,8 @@
 @startuml
 !include style.puml
 
+skinparam defaultFontSize 50
+
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR

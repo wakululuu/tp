@@ -364,6 +364,8 @@ Due to their similarity, `Leave` objects are initiated using a common factory me
 through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
 This implementation prevents the creation of a role that has the same name as a leave.
 
+To handle commands which should treat `Leave` differently as compared to other roles, `Leave#isLeave()` is provided.
+
 ##### Leave Assignment
 
 Assignment makes use of the `Assignment` class features using `Leave` as the role.
@@ -389,12 +391,12 @@ For more information, see [Implementation for Assign/Unassign Feature](#assignun
 To increase the convenience of use for our expected typist user, we introduced a few mass operations related to leave:
 
 - `TakeLeaveCommand` and `CancelLeaveCommand` both allow for many worker to one shift leave assignment similar to 
-`AssignCommand` and `UnassignCommand`.
-- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift leave assignment.
-  - These two mass commands allow for taking leave over a range of dates - similar to how leave is often planned 
+`AssignCommand` and `UnassignCommand`. See [MassOps Implementation Details](#massops-feature).
+- `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift-leave assignment.
+  - These two mass commands allow for taking leave over a range of days - similar to how leave is often planned 
   by workers.
-  - These two commands do not require `Shift`s representing the datetime range to take leave to be present. A bare-bones 
-  `Shift` with only `ShiftDate` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
+  - These two commands do not require `Shift`s representing the range of days and times to take leave to be present. A bare-bones 
+  `Shift` with only `ShiftDay` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
   (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
   - The two commands handle other `Assignment`s differently:
     - `MassTakeLeaveCommand` informs the user after the command is complete if the worker is already scheduled for a shift 
@@ -719,6 +721,18 @@ _Some user stories are to be implemented beyond v1.4_
      * 5e2. User adds the given role to the McScheduler as a new role (UC-012).
  
        Use case resumes at step 4.
+       
+* 5f. The worker is already assigned to the shift under the same role.
+ 
+     * 5f1. McScheduler shows an error message.
+     
+       Use case resumes at step 4.
+       
+* 5g. The worker is already assigned to the shift under a different role.
+ 
+     * 5f1. McScheduler shows an error message.
+     
+     * 5f2. User reassigns worker to a different role for the same shift (UC-017)
 
 #### Use case: Unassign a worker from a shift (UC-008)
 
@@ -753,7 +767,13 @@ _Some user stories are to be implemented beyond v1.4_
 
     * 5b1. McScheduler shows an error message.
 
-      Use case resumes at step 4.
+      Use case ends.
+
+* 5b. The worker is on leave for the given shift.
+
+    * 5b1. McScheduler shows an error message.
+
+      Use case ends.
   
 #### Use Case: Hire a new worker for shifts (UC-009)
 
@@ -971,9 +991,47 @@ _Some user stories are to be implemented beyond v1.4_
     
         Use case ends.
 
+#### Use case: Reassign the worker to a different role for a given shift (UC-017)
 
-*{More to be added}*
+**MSS**
 
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to list shifts.
+4. McScheduler shows a list of shifts.
+5. User requests to reassign a worker at a specific position on the workers' list to a different role for a shift at a specific position on the shifts' list.
+6. McScheduler reassigns the specified worker to a different role for the specified shift.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 4a. The list of shifts is empty.
+
+  Use case ends.
+
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+        
+* 5b. The specified worker is on leave for the specified shift.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+* 5b. The specified worker is not assigned to the specified shift under any role.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+
+     
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
@@ -983,7 +1041,6 @@ _Some user stories are to be implemented beyond v1.4_
 5.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 6.  A fresh new user should be able to figure out how to use the app easily.
 
-*{More to be added}*
 
 ### Glossary
 
@@ -1020,7 +1077,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
 
 ### Deleting a worker
 
@@ -1037,12 +1093,22 @@ testers are expected to do more *exploratory* testing.
    1. Other incorrect delete commands to try: `worker-delete`, `worker-delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Dealing with missing data files
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. To simulate missing data files, delete `./data/mcscheduler.json`.
+   
+   1. Start up McScheduler. <br>
+   Expected: When no data file is detected, McScheduler will automatically populate the App with sample data. 
+   This consists of 6 workers, 3 roles and 2 shifts.
 
-1. _{ more test cases …​ }_
+1. Dealing with corrupted data files
+
+   1. To simulate corrupted data files, edit `./data/mcscheduler.json` by replacing `"workers"` in the property to something else
+   (e.g. `"employees"`).
+   
+   1. Start up McScheduler. <br>
+   Expected: No data will be displayed. An error message will be displayed advising users to fix the data file or delete it to 
+   get sample data.

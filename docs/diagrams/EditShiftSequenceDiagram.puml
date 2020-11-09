@@ -34,7 +34,7 @@ activate EditShiftDescriptor
 EditShiftDescriptor --> ShiftEditCommandParser : d
 deactivate EditShiftDescriptor
 
-ShiftEditCommandParser -> EditShiftDescriptor : setShiftDay(sd)
+ShiftEditCommandParser -> EditShiftDescriptor : setShiftDay(shiftDay)
 activate EditShiftDescriptor
 EditShiftDescriptor --> ShiftEditCommandParser
 deactivate EditShiftDescriptor

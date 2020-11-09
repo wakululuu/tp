@@ -26,8 +26,14 @@
                 </Label>
                 <Label fx:id="dayTime" text="\$first" styleClass="cell_big_label" />
             </HBox>
+            <Label fx:id="lineBreak1" styleClass="cell_tiny_label" text="" />
+            <Label fx:id="roleReqLabel" styleClass="cell_med_label" text="Roles required:" />
             <VBox fx:id="roleRequirements" />
+            <Label fx:id="lineBreak2" styleClass="cell_tiny_label" text="" />
+            <Label fx:id="shiftAssignLabel" styleClass="cell_med_label" text="Assigned workers:" />
             <FlowPane fx:id="shiftAssignments" />
+            <Label fx:id="lineBreak3" styleClass="cell_tiny_label" text="" />
+            <Label fx:id="leavesLabel" styleClass="cell_med_label" text="Workers on leave:" />
             <FlowPane fx:id="leaveShiftAssignments" />
         </VBox>
     </GridPane>

@@ -58,7 +58,7 @@ Given below are my contributions to the project.
     * Added documentation for the [`role-add`/`role-edit`/`role-delete` feature](../UserGuide.md#adding-a-role-role-add)
     * Updated notes about the command format and did cosmetic tweaks in general (PR [\#114](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/114))
   * Developer Guide:
-    * Added implementation details of the [`assign`/`unassign` feature](../DeveloperGuide.md#assignunassign-feature)
+    * Added implementation details and UML diagrams for the [`assign`/`unassign` feature](../DeveloperGuide.md#assignunassign-feature)
     * Updated user stories
 
 
@@ -67,6 +67,8 @@ Given below are my contributions to the project.
 
 
 * **Community**:
-  * [PRs reviewed](https://github.com/AY2021S1-CS2103-F10-4/tp/pulls?q=is%3Apr+reviewed-by%3Awakululuu)
+  * PRs reviewed (with non-trivial review comments): [\#107](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/107)
+    [\#112](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/112) [\#113](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/113)
+    [\#189](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/189)
   * Reported [bugs and suggestions](https://github.com/wakululuu/ped/issues) for other teams in the class
   * Contributed to the [class forum](https://github.com/nus-cs2103-AY2021S1/forum/issues/11) 
