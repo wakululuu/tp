@@ -40,6 +40,8 @@ public class CancelLeaveCommand extends Command {
     public static final String MESSAGE_CANCEL_LEAVE_SUCCESS_PREFIX = "[Leave Cancelled] ";
     public static final String MESSAGE_CANCEL_LEAVE_SUCCESS = MESSAGE_CANCEL_LEAVE_SUCCESS_PREFIX
             + UnassignCommand.MESSAGE_UNASSIGN_SUCCESS;
+    public static final String MESSAGE_WORKER_NOT_ON_LEAVE =
+            "%1$s ( w/%2$d ) is not on leave. Please remove %1$s from the \"cancel-leave\" command";;
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -66,13 +68,15 @@ public class CancelLeaveCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(shiftIndex, MESSAGE_USAGE));
         }
 
         StringBuilder assignStringBuilder = new StringBuilder();
         for (Index workerIndex: workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
+                throw new CommandException(
+                        CommandUtil.printOutOfBoundsWorkerIndexError(workerIndex, MESSAGE_USAGE));
             }
 
             Worker workerToCancelLeave = lastShownWorkerList.get(workerIndex.getZeroBased());
@@ -94,7 +98,8 @@ public class CancelLeaveCommand extends Command {
             try {
                 model.deleteAssignment(assignmentInModel);
             } catch (AssignmentNotFoundException ex) {
-                throw new CommandException(Messages.MESSAGE_NO_ASSIGNMENT_FOUND);
+                throw new CommandException(String.format(Messages.MESSAGE_NO_ASSIGNMENT_FOUND,
+                        workerToCancelLeave, shiftToCancelLeaveFrom));
             }
             assignStringBuilder.append(assignmentInModel + "\n");
         }
@@ -103,18 +108,29 @@ public class CancelLeaveCommand extends Command {
                 MESSAGE_CANCEL_LEAVE_SUCCESS, workerIndexes.size(), assignStringBuilder.toString()));
     }
 
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
+    private void checkWorkerNotOnLeave(Model model) throws CommandException {
+        List<Worker> lastShownList = model.getFilteredWorkerList();
+        List<Assignment> assignmentList = model.getFullAssignmentList();
 
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
+        for (Index workerIndex : workerIndexes) {
+            Worker worker = lastShownList.get(workerIndex.getZeroBased());
+            boolean isWorkerOnLeave = false;
+            for (Assignment assignment : assignmentList) {
+                if (!assignment.getWorker().isSameWorker(worker)) {
+                    continue;
+                }
+                if (Leave.isLeave(assignment.getRole())) {
+                    isWorkerOnLeave = true;
+                    break;
+                }
+            }
+            if (!isWorkerOnLeave) {
+                throw new CommandException(
+                        String.format(MESSAGE_WORKER_NOT_ON_LEAVE, worker.getName(),
+                                workerIndex.getOneBased()));
+            }
+        }
     }
-
 
     @Override
     public boolean equals(Object other) {

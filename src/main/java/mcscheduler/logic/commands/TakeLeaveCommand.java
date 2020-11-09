@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -38,6 +37,8 @@ public class TakeLeaveCommand extends Command {
             + "w/3";
 
     public static final String MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX = "[Leave taken] ";
+    public static final String MESSAGE_WORKER_ALREADY_ON_LEAVE =
+            "%1$s ( w/%2$d ) is already on leave. Please remove %1$s from the \"take-leave\" command";
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -61,6 +62,8 @@ public class TakeLeaveCommand extends Command {
         List<WorkerRolePair> workerToTakeLeavePairs = new ArrayList<>();
         List<Index> workerToReplaceAssignmentIndexes = new ArrayList<>();
         separateWorkerIndexes(workerToTakeLeavePairs, workerToReplaceAssignmentIndexes, model);
+
+        checkWorkerAlreadyOnLeave(model);
 
         CommandResult assignCommandResult = new CommandResult("");
         if (!workerToTakeLeavePairs.isEmpty()) {
@@ -89,13 +92,15 @@ public class TakeLeaveCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(shiftIndex, MESSAGE_USAGE));
         }
         Shift shiftToTakeLeaveFrom = lastShownShiftList.get(shiftIndex.getZeroBased());
 
         for (Index workerIndex : workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
+                throw new CommandException(
+                        CommandUtil.printOutOfBoundsWorkerIndexError(workerIndex, MESSAGE_USAGE));
             }
             Worker workerToTakeLeave = lastShownWorkerList.get(workerIndex.getZeroBased());
             Assignment assignment = new Assignment(shiftToTakeLeaveFrom, workerToTakeLeave);
@@ -107,18 +112,24 @@ public class TakeLeaveCommand extends Command {
         }
     }
 
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
+    private void checkWorkerAlreadyOnLeave(Model model) throws CommandException {
+        List<Worker> lastShownList = model.getFilteredWorkerList();
+        List<Assignment> assignmentList = model.getFullAssignmentList();
 
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
+        for (Index workerIndex : workerIndexes) {
+            Worker worker = lastShownList.get(workerIndex.getZeroBased());
+            for (Assignment assignment : assignmentList) {
+                if (!assignment.getWorker().isSameWorker(worker)) {
+                    continue;
+                }
+                if (Leave.isLeave(assignment.getRole())) {
+                    throw new CommandException(
+                            String.format(MESSAGE_WORKER_ALREADY_ON_LEAVE, worker.getName(),
+                                    workerIndex.getOneBased()));
+                }
+            }
+        }
     }
-
 
     @Override
     public boolean equals(Object other) {
