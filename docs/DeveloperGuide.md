@@ -518,6 +518,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * `* * *` As a user, I want to **add a new worker and their details**, so that I can track the worker's data and schedule their work
 * `* * *` As a user, I want to **view a list of all workers**, so that I can know who are the workers I can assign shifts to
+
+<div style="page-break-after: always;"></div>
+
 * [Epic] `* * *` As a user, I want to **view the details of a worker**
   * `* * *` As a user, I want to **view the contact details of workers**, so that I can contact them easily
   * `* * *` As a user, I want to **view the roles a worker can fill**, so that I can assign them a role they are fit for
@@ -541,6 +544,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * `* *` As a user, I want to **find a specific shift among all other shifts**, so that I can easily view its details without sieving through the whole list of shifts
 * `* *` As a user, I want to **edit the details of a shift**, so that I can reflect any changes in the timing, roles or number of workers needed for the shift
 * `* * *` As a user, I want to **delete a shift**, so that I can remove an unwanted shift
+
+<div style="page-break-after: always;"></div>
 
 #### Assignment-related stories
 
@@ -577,6 +582,8 @@ _Some user stories are to be implemented beyond v1.4_
     * 1a1. McScheduler shows an error message.
 
       Use case ends.
+
+<div style="page-break-after: always;"></div>
 
 #### Use case: Delete a worker (UC-002)
 
