@@ -13,6 +13,7 @@ easily available to streamline the work of McDonald's Shift Managers.
 {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-after: always;"></div>
 
 ## Quick start
 
@@ -24,7 +25,7 @@ easily available to streamline the work of McDonald's Shift Managers.
 
 1. Double-click the file to start the app. The GUI (similar to the image below) should appear in a few seconds. The app
    contains some sample data.<br>
-   ![Ui](images/Ui.png)
+   ![Ui](images/Ui.png) <div style="page-break-after: always;"></div>
 
 1. Type a command in the command box and press `Enter` to execute it.<br>
    e.g. Typing **`help`** and pressing `Enter` will open the help window.<br>
@@ -47,6 +48,7 @@ easily available to streamline the work of McDonald's Shift Managers.
 1. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-after: always;"></div>
 
 ## Features
 
@@ -78,6 +80,8 @@ easily available to streamline the work of McDonald's Shift Managers.
   e.g. if the command specifies `n/NAME hp/PHONE_NUMBER`, `hp/PHONE_NUMBER n/NAME` is also acceptable.
 
 </div>
+
+<div style="page-break-after: always;"></div>
 
 ### Worker-related features
 
@@ -212,6 +216,8 @@ Example:
     * Output: `David Li's pay for the week:`<br>
                `$0.99/hr x 8hr/shift x 1 shift(s) = $7.92`
 
+<div style="page-break-after: always;"></div>
+
 ### Shift-related features
 
 #### Adding a shift: `shift-add`
@@ -314,6 +320,8 @@ Example:
 * `shift-delete 2` Deletes the 2nd shift on the list.
     * Output: `Deleted Shift:  Day: WED Time: AM Role requirements:  Role Required: Cashier x 3 Role Required: Janitor x 2`
 
+<div style="page-break-after: always;"></div>
+
 ### Role-related features
 
 #### Adding a role: `role-add`
@@ -361,6 +369,8 @@ Format: `role-delete ROLE_INDEX`
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
     * Output: `Deleted role: Storey 2 server`
+
+<div style="page-break-after: always;"></div>
 
 ### Assignment-related features
 
@@ -466,6 +476,7 @@ Example:
 * `reassign s/4 w/4 r/Chef` Reassigns the 4th worker on the worker list as a Chef in the 4th shift on the shift list.
     * Output: `Reassignment made: Shift: SUN PM - Worker: David Li (Role: Chef) | Previous Role: Cashier `
 
+<div style="page-break-after: always;"></div>
 
 ### Leave-related features
 
@@ -562,6 +573,7 @@ Examples:
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
     * Output: `Leave cancelled for Alex Yeoh from THU PM to MON PM. `
 
+<div style="page-break-after: always;"></div>
 
 ### General features
 
@@ -611,6 +623,7 @@ save manually.
 the data of your previous McScheduler home folder.
 
 --------------------------------------------------------------------------------------------------------------------
+<div style="page-break-after: always;"></div>
 
 ## Command summary
 
