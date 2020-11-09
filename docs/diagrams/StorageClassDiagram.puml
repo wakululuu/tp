@@ -18,7 +18,6 @@ StorageManager o--> McSchedulerStorage
 
 JsonUserPrefsStorage .left.|> UserPrefsStorage
 JsonMcSchedulerStorage .left.|> McSchedulerStorage
-JsonMcSchedulerStorage .down.> JsonSerializableMcSchedulerStorage
-JsonSerializableMcSchedulerStorage .right.> JsonSerializableWorker
-JsonSerializableWorker .right.> JsonAdaptedTag
+JsonMcSchedulerStorage .down.> JsonAdaptedWorker
+JsonAdaptedWorker .right.> JsonAdaptedRole
 @enduml
