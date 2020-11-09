@@ -395,7 +395,7 @@ To increase the convenience of use for our expected typist user, we introduced a
 - `MassTakeLeaveCommand` and `MassCancelLeaveCommand` allow for one worker to many shift-leave assignment.
   - These two mass commands allow for taking leave over a range of days - similar to how leave is often planned 
   by workers.
-  - These two commands do not require `Shift`s representing the daytime range to take leave to be present. A bare-bones 
+  - These two commands do not require `Shift`s representing the range of days and times to take leave to be present. A bare-bones 
   `Shift` with only `ShiftDay` and `ShiftTime` will be initialised for each `Shift` that has no identity equivalent 
   (via `Shift#isSameShift()`) `Shift` present in the McScheduler.
   - The two commands handle other `Assignment`s differently:
