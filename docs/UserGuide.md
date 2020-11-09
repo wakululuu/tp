@@ -79,19 +79,9 @@ easily available to streamline the work of McDonald's Shift Managers.
 
 </div>
 
-### Viewing help: `help`
+### Worker-related features
 
-Shows a message explaining how to access the help page.
-
-![help message](images/helpMessage.png)
-
-Format: `help`
-
-* Additional parameters after the command `help` will throw an `Unexpected argument` error.
-    * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
-
-
-### Adding a worker: `worker-add`
+#### Adding a worker: `worker-add`
 
 Adds a new worker to the McScheduler.
 
@@ -125,7 +115,7 @@ Examples:
   who is fit to be a burger flipper or a janitor, and whose pay is $7.50/hr. His phone number is 87654321 and he lives
   at Bong Keng Road, #01–01. He is unavailable for work on Monday mornings.
 
-### Listing all workers: `worker-list`
+#### Listing all workers: `worker-list`
 
 Shows a list of all workers in the McScheduler, including their contacts, hourly pay, assigned shifts and unavailable
 timings.
@@ -135,8 +125,7 @@ Format: `worker-list`
 * Additional parameters after the command `worker-list` will throw an `Unexpected argument` error.
     * e.g. `worker-list asdf` will return the following error: `Unexpected argument for command "worker-list": asdf`.
 
-
-### Editing a worker: `worker-edit`
+#### Editing a worker: `worker-edit`
 
 Edits an existing worker in the McScheduler.
 
@@ -171,7 +160,7 @@ Examples:
 
 * `worker-edit 2 n/Betsy Crower p/7 u/Mon` Edits the name, pay and unavailable timings of the 2nd worker to be Betsy Crower, $7/hr and Mondays respectively.
 
-### Locating workers by name: `worker-find`
+#### Locating workers by name: `worker-find`
 
 Finds workers whose names contain any of the given keywords.
 
@@ -189,7 +178,7 @@ Examples:
 
 * `worker-find alex david` returns `Alex Yeoh` and `David Li`
 
-### Deleting a worker: `worker-delete`
+#### Deleting a worker: `worker-delete`
 
 Deletes a worker from the McScheduler.
 
@@ -201,7 +190,7 @@ Format: `worker-delete WORKER_INDEX`
 Example:
 * `worker-delete 4` Deletes the 4th worker shown in the worker list.
 
-### Calculating a worker's pay for the week: `worker-pay`
+#### Calculating a worker's pay for the week: `worker-pay`
 
 Calculates a worker's pay for the week.
 
@@ -214,7 +203,9 @@ Format: `worker-pay WORKER_INDEX`
 Example:
 * `worker-pay 4` Calculate the total pay for the week for the 4th worker shown in the worker list.
 
-### Adding a shift: `shift-add`
+### Shift-related features
+
+#### Adding a shift: `shift-add`
 
 Adds a new shift to the McScheduler.
 
@@ -237,7 +228,7 @@ Examples:
 
 * `shift-add d/MON t/pM` Adds a Monday PM shift with no required roles yet.
 
-### Listing all shifts: `shift-list`
+#### Listing all shifts: `shift-list`
 
 Shows a list of all shifts in the McScheduler, including the roles needed and workers assigned to each shift.
 
@@ -246,7 +237,7 @@ Format: `shift-list`
 * Additional parameters after the command `shift-list` will throw an `Unexpected argument` error.
     * e.g. `shift-list asdf` will return the following error: `Unexpected argument for command "shift-list": asdf`.
 
-### Editing a shift: `shift-edit`
+#### Editing a shift: `shift-edit`
 
 Edits the details of an existing shift in the McScheduler.
 
@@ -275,7 +266,7 @@ Examples:
 
 * `shift-edit 2 r/` Edits the 2nd shift such that it now has no required roles.
 
-### Locating shifts by day or time: `shift-find`
+#### Locating shifts by day or time: `shift-find`
 
 Finds shifts whose day or time contain any of the given keywords.
 
@@ -294,7 +285,7 @@ Examples:
 
 * `shift-find AM PM` returns all shifts.
 
-### Deleting a shift: `shift-delete`
+#### Deleting a shift: `shift-delete`
 
 Deletes a shift from the McScheduler.
 
@@ -306,7 +297,9 @@ Format: `shift-delete SHIFT_INDEX`
 Example:
 * `shift-delete 2` Deletes the 2nd shift on the list.
 
-### Adding a role: `role-add`
+### Role-related features
+
+#### Adding a role: `role-add`
 
 Adds a new role to the McScheduler.
 
@@ -320,7 +313,7 @@ Examples:
 
 * `role-add Storey 2 server` Adds a storey 2 server role.
 
-### Editing a role: `role-edit`
+#### Editing a role: `role-edit`
 
 Edits an existing role in the McScheduler.
 
@@ -333,7 +326,7 @@ Format: `role-edit ROLE_INDEX ROLE`
 Example:
 * `role-edit 1 burger flipper` Edits the 1st role to be burger flipper.
 
-### Deleting a role: `role-delete`
+#### Deleting a role: `role-delete`
 
 Deletes a role from the McScheduler.
 
@@ -346,7 +339,9 @@ Format: `role-delete ROLE_INDEX`
 Example:
 * `role-delete 3` Deletes the 3rd role shown in the role list.
 
-### Listing all available workers for a shift and role: `worker-avail`
+### Assignment-related features
+
+#### Listing all available workers for a shift and role: `worker-avail`
 
 Shows a list of all workers who are available for a particular shift under a particular role.
 
@@ -360,7 +355,7 @@ Format: `worker-avail SHIFT_INDEX r/ROLE`
 Example:
 * `worker-avail 4 r/Chef` Show a list of available workers who can work as chefs for the 4th shift shown in the shift list.
 
-### Assigning a worker to a role in a shift: `assign`
+#### Assigning a worker to a role in a shift: `assign`
 
 Assigns an existing worker to take on an existing role in an existing shift.
 
@@ -377,7 +372,7 @@ Example:
 * `assign s/3 w/2 Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
 * `assign s/3 w/2 Cashier w/3 Chef` Assigns the 2nd worker as a cashier and the 3rd worker as a chef to the 3rd shift.
 
-### Removing a worker from a shift: `unassign`
+#### Removing a worker from a shift: `unassign`
 
 Removes a worker from a particular shift.
 
@@ -387,7 +382,7 @@ Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX...`
   to the index numbers shown in the displayed worker and shift lists. The indexes **must be positive integers** i.e. 1,
   2, 3, …​
  
-### Reassigning an existing assignment: `reassign`
+#### Reassigning an existing assignment: `reassign`
 
 Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
 
@@ -420,7 +415,9 @@ is already assigned to the role specified by `NEW_ROLE` under the shift specifie
 Example:
 * `reassign s/4 w/1 r/Chef` Reassigns the 1st worker on the worker list as a Chef in the 4th shift on the shift list.
 
-### Assigning a worker to take leave during a shift: `take-leave`
+### Leave-related features
+
+#### Assigning a worker to take leave during a shift: `take-leave`
 
 Assigns a worker to take leave at a particular day and time, as indicated by a shift.
 
@@ -436,7 +433,7 @@ Example:
 * `take-leave s/4 w/1` Assigns the 1st worker to take leave during the 4th shift.
 * `take-leave s/4 w/1 w/3` Assigns the 1st and 4rd worker to take leave during the 4th shift.
 
-### Assigning a worker leave over a range of days and times: `mass-take-leave`
+#### Assigning a worker leave over a range of days and times: `mass-take-leave`
 
 Assigns a worker to take leave over a range of days and times given a start and end day/time.
 
@@ -459,7 +456,7 @@ Examples:
 
 * `mass-take-leave w/1 d/THU t/PM d/MON t/PM` Assigns the 1st worker to take leave from THU PM shift to MON PM shift (inclusive).
 
-### Cancelling a worker's leave for a shift: `cancel-leave`
+#### Cancelling a worker's leave for a shift: `cancel-leave`
 
 Cancels a worker's leave at a particular day and time, as indicated by a shift.
 
@@ -477,7 +474,7 @@ Examples:
 * `cancel-leave s/4 w/1` Cancels the leave of the 1st worker for the 4th shift.
 * `cancel-leave s/4 w/1 w/3` Cancels the leave of the 1st and the 3rd worker for the 4th shift.
 
-### Cancelling a worker's leave over a range of days and times: `mass-cancel-leave`
+#### Cancelling a worker's leave over a range of days and times: `mass-cancel-leave`
 
 Cancels a worker's leave over a range of days and times given a start and end day/time.
 
@@ -499,7 +496,20 @@ Examples:
 
 * `mass-cancel-leave w/1 d/THU t/PM d/MON t/PM` Cancels the 1st worker leave between THU PM shift to MON PM shift (inclusive).
 
-### Exiting the program : `exit`
+### General features
+
+#### Viewing help: `help`
+
+Shows a message explaining how to access the help page.
+
+![help message](images/helpMessage.png)
+
+Format: `help`
+
+* Additional parameters after the command `help` will throw an `Unexpected argument` error.
+    * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
+
+#### Exiting the program : `exit`
 
 Exits the program.
 
@@ -509,7 +519,7 @@ Format: `exit`
     * e.g. `exit asdf` will return the following error: `Unexpected argument for command "exit": asdf`.
 
 
-### Saving the data
+#### Saving the data
 
 McScheduler data are saved in the hard disk automatically after any command that changes the data. There is no need to
 save manually.
