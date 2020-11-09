@@ -17,6 +17,7 @@ import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
@@ -44,8 +45,12 @@ public class ReassignCommand extends Command {
             + COMMAND_WORD + " w/1 s/1 r/Chef";
 
     public static final String MESSAGE_REASSIGN_SUCCESS = "Reassignment made: %1$s | Previous Role: %2$s ";
-    public static final String MESSAGE_DUPLICATE_ASSIGNMENT = "This assignment already exists in the McScheduler";
-    public static final String MESSAGE_EXISTING_ASSIGNMENT = "%1$s is already assigned to a role in the shift.";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT_WITH_SAME_ROLE =
+            "This assignment already exists in the McScheduler";
+    public static final String MESSAGE_DUPLICATE_ASSIGNMENT_WITH_DIFFERENT_ROLE =
+            "%1$s is already assigned to a role in the shift.";
+    public static final String MESSAGE_INVALID_REASSIGNMENT_OF_LEAVE =
+            "%1$s is on leave on Shift (%2$s). This leave assignment cannot be reassigned.";
     public static final String MESSAGE_ASSIGNMENT_NOT_FOUND = "The assignment to be edited does not exist";
 
     private final Index oldShiftIndex;
@@ -111,21 +116,35 @@ public class ReassignCommand extends Command {
 
         assert assignmentToRemove.getRole() != null; // dummy assignment has been replaced with actual assignment
 
+        boolean isLeaveAssignment = Leave.isLeave(assignmentToRemove.getRole());
+
+        // Disallow reassigning of leave
+        if (isLeaveAssignment) {
+            throw new CommandException(String.format(MESSAGE_INVALID_REASSIGNMENT_OF_LEAVE, oldWorker.getName(),
+                    oldShift.toCondensedString()));
+        }
+
         Worker newWorker = lastShownWorkerList.get(newWorkerIndex.getZeroBased());
         Shift newShift = lastShownShiftList.get(newShiftIndex.getZeroBased());
         Assignment assignmentToAdd = new Assignment(newShift, newWorker, newRole);
 
+        boolean hasSameWorker = oldWorker.equals(newWorker);
+        boolean hasSameShift = oldShift.equals(newShift);
+        boolean isExistingAssignment = model.hasAssignment(assignmentToAdd);
+        boolean hasSameRole = assignmentToAdd.getRole().equals(assignmentToRemove.getRole());
+
+
         // For cases where reassign is done on same worker in same shift, role needs to be checked
         // Duplicate assignment if role is the same
-        if (oldWorker.equals(newWorker) && oldShift.equals(newShift) && model.hasAssignment(assignmentToAdd)
-                && assignmentToAdd.getRole().equals(assignmentToRemove.getRole())) {
-            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT);
+        if (hasSameWorker && hasSameShift && isExistingAssignment && hasSameRole) {
+            throw new CommandException(MESSAGE_DUPLICATE_ASSIGNMENT_WITH_SAME_ROLE);
         }
 
         // For cases where reassign is called on different shifts and workers
-        // Only check whether a worker is already assigned to a role in a shift
-        if ((!(oldWorker.equals(newWorker)) || !(oldShift.equals(newShift))) && model.hasAssignment(assignmentToAdd)) {
-            throw new CommandException(String.format(MESSAGE_EXISTING_ASSIGNMENT, newWorker.getName()));
+        // Only check whether the new worker is already assigned to a role in the new shift
+        if ((!hasSameWorker || !hasSameShift) && isExistingAssignment) {
+            throw new CommandException(String.format(
+                    MESSAGE_DUPLICATE_ASSIGNMENT_WITH_DIFFERENT_ROLE, newWorker.getName()));
         }
 
         if (!newWorker.isFitForRole(newRole)) {

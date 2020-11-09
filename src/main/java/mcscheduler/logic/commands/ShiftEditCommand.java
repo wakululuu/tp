@@ -49,7 +49,7 @@ public class ShiftEditCommand extends Command {
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided";
     public static final String MESSAGE_DUPLICATE_SHIFT = "This shift already exists in the App";
     public static final String MESSAGE_UNASSIGN_WORKERS = "Some workers must be unassigned from their roles"
-            + "to make this edit";
+            + " to make this edit";
 
     private final Index index;
     private final EditShiftDescriptor editShiftDescriptor;
