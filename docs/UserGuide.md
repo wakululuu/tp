@@ -25,7 +25,7 @@ easily available to streamline the work of McDonald's Shift Managers.
 
 1. Double-click the file to start the app. The GUI (similar to the image below) should appear in a few seconds. The app
    contains some sample data.<br>
-   ![Ui](images/Ui.png) <div style="page-break-after: always;"></div>
+   ![Ui](images/Ui.png)
 
 1. Type a command in the command box and press `Enter` to execute it.<br>
    e.g. Typing **`help`** and pressing `Enter` will open the help window.<br>
