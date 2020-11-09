@@ -56,4 +56,5 @@ Given below are my contributions to the project.
   [\#194](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/194), [\#198](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/198)
   * Discussed implementation of other features with other developers within group: [\#88](https://github.com/AY2021S1-CS2103-F10-4/tp/issues/89), 
   [\#89](https://github.com/AY2021S1-CS2103-F10-4/tp/pull/89)
+  * Reported bugs to other groups: [PE-D](https://github.com/wangzijun97/ped/issues)
 

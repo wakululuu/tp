@@ -8,7 +8,7 @@ show members
 
 
 class Role {
-tagName: String
+roleName: String
 {static} createRole(String)
 }
 
