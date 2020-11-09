@@ -31,6 +31,9 @@ Given below are my contributions to the project.
     * Allows the user to assign a worker to a role in a shift, as well as delete an existing assignment
     * Ensures that the role in the assignment is a role the worker is fit for
     * Ensures that the role in the assignment is required and has yet to be filled in the shift
+
+<div style="page-break-after: always;"></div>
+
   * _Justification:_
     * Fulfils the fundamental purpose of the McScheduler, which is to allow the user to schedule workers for shifts
     * Helps the user ensure an assignment is valid (i.e. the worker is fit for the role and the shift has not been filled)
