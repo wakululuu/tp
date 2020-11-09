@@ -58,7 +58,7 @@ public class AssignCommand extends Command {
      * Creates an AssignCommand to add an assignment of the specified {@code Shift}, {@code Worker} and {@code Role}.
      *
      * @param shiftIndex  of the shift in the filtered shift list.
-     * @param workerRolePairs a set of worker-roles to be assined to the shift
+     * @param workerRolePairs a set of worker-roles to be assigned to the shift
      */
     public AssignCommand(Index shiftIndex, Set<WorkerRolePair> workerRolePairs) {
         CollectionUtil.requireAllNonNull(shiftIndex, workerRolePairs);
