@@ -719,6 +719,12 @@ _Some user stories are to be implemented beyond v1.4_
      * 5e2. User adds the given role to the McScheduler as a new role (UC-012).
  
        Use case resumes at step 4.
+       
+* 5f. The worker is already assigned to the shift under a role.
+ 
+     * 5f1. McScheduler shows an error message.
+     
+       Use case ends.
 
 #### Use case: Unassign a worker from a shift (UC-008)
 
