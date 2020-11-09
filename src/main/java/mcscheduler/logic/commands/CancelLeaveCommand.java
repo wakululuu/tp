@@ -85,14 +85,14 @@ public class CancelLeaveCommand extends Command {
 
             Optional<Assignment> assignmentInModelOptional = model.getAssignment(assignmentToCancelLeave);
             if (assignmentInModelOptional.isEmpty()) {
-                throw new CommandException(String.format(Messages.MESSAGE_NO_ASSIGNMENT_FOUND,
-                        workerToCancelLeave, shiftToCancelLeaveFrom));
+                throw new CommandException(String.format(MESSAGE_WORKER_NOT_ON_LEAVE,
+                        workerToCancelLeave.getName(), workerIndex.getOneBased()));
             }
 
             Assignment assignmentInModel = assignmentInModelOptional.get();
             if (!Leave.isLeave(assignmentInModel.getRole())) {
-                throw new CommandException(String.format(Messages.MESSAGE_NO_LEAVE_FOUND,
-                        workerToCancelLeave, shiftToCancelLeaveFrom));
+                throw new CommandException(String.format(MESSAGE_WORKER_NOT_ON_LEAVE,
+                        workerToCancelLeave.getName(), workerIndex.getOneBased()));
             }
 
             try {
@@ -106,30 +106,6 @@ public class CancelLeaveCommand extends Command {
 
         return new CommandResult(String.format(
                 MESSAGE_CANCEL_LEAVE_SUCCESS, workerIndexes.size(), assignStringBuilder.toString()));
-    }
-
-    private void checkWorkerNotOnLeave(Model model) throws CommandException {
-        List<Worker> lastShownList = model.getFilteredWorkerList();
-        List<Assignment> assignmentList = model.getFullAssignmentList();
-
-        for (Index workerIndex : workerIndexes) {
-            Worker worker = lastShownList.get(workerIndex.getZeroBased());
-            boolean isWorkerOnLeave = false;
-            for (Assignment assignment : assignmentList) {
-                if (!assignment.getWorker().isSameWorker(worker)) {
-                    continue;
-                }
-                if (Leave.isLeave(assignment.getRole())) {
-                    isWorkerOnLeave = true;
-                    break;
-                }
-            }
-            if (!isWorkerOnLeave) {
-                throw new CommandException(
-                        String.format(MESSAGE_WORKER_NOT_ON_LEAVE, worker.getName(),
-                                workerIndex.getOneBased()));
-            }
-        }
     }
 
     @Override
