@@ -39,8 +39,7 @@ public class WorkerDeleteCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(targetIndex));
         }
 
         Worker workerToDelete = lastShownList.get(targetIndex.getZeroBased());
@@ -63,6 +62,13 @@ public class WorkerDeleteCommand extends Command {
 
         assignmentsToDelete.forEach(model::deleteAssignment);
     }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

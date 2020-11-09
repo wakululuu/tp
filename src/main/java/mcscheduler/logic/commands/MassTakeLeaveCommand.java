@@ -78,8 +78,7 @@ public class MassTakeLeaveCommand extends Command {
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
 
         if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 
@@ -91,7 +90,8 @@ public class MassTakeLeaveCommand extends Command {
             Assignment toAdd = new Assignment(shift, worker, new Leave());
             if (hasNonLeaveAssignment(model, toAdd)) {
                 Assignment nonLeaveAssignmentInModel = model.getAssignment(toAdd).get();
-                model.setAssignment(nonLeaveAssignmentInModel, toAdd);
+                model.deleteAssignment(nonLeaveAssignmentInModel);
+                model.addAssignment(toAdd);
                 reassignedAssignments.add(nonLeaveAssignmentInModel);
             } else if (hasLeaveAssignment(model, toAdd) || isWorkerUnavailable(worker, shift)) {
                 shiftsAlreadyWithLeave.add(shift);
@@ -116,6 +116,12 @@ public class MassTakeLeaveCommand extends Command {
         return new CommandResult(resultMessage);
 
 
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
     }
 
     @Override

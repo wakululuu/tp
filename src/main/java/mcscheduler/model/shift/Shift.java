@@ -17,6 +17,7 @@ import mcscheduler.model.role.Role;
  * Guarantees: details are present and not null, field values are validated, immutable.
  */
 public class Shift {
+    public static final Integer HOURS_PER_SHIFT = 8;
 
     // Identity fields
     private final ShiftDay shiftDay;
@@ -166,13 +167,14 @@ public class Shift {
 
         Shift otherShift = (Shift) other;
         return otherShift.getShiftDay().equals(getShiftDay())
-                && otherShift.getShiftTime().equals(getShiftTime());
+                && otherShift.getShiftTime().equals(getShiftTime())
+                && otherShift.getRoleRequirements().equals(getRoleRequirements());
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(shiftDay, shiftTime);
+        return Objects.hash(shiftDay, shiftTime, roleRequirements);
     }
 
     /**

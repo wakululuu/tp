@@ -1,6 +1,8 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DUPLICATE_ROLE;
+import static mcscheduler.commons.core.Messages.MESSAGE_ROLE_NOT_EDITED;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,12 +55,17 @@ public class RoleEditCommand extends Command {
         List<Role> roleList = model.getFilteredRoleList();
 
         if (targetIndex.getZeroBased() >= roleList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsRoleIndexError(targetIndex));
         }
 
         Role roleToEdit = roleList.get(targetIndex.getZeroBased());
         assert !Leave.isLeave(roleToEdit) : "Leave should not be edited";
+
+        if (roleToEdit.equals(editedRole)) {
+            throw new CommandException(String.format(MESSAGE_ROLE_NOT_EDITED, roleToEdit));
+        } else if (model.hasRole(editedRole)) {
+            throw new CommandException(MESSAGE_DUPLICATE_ROLE);
+        }
 
         editRoleInShifts(model, roleToEdit);
         editRoleInWorkers(model, roleToEdit);
@@ -132,6 +139,13 @@ public class RoleEditCommand extends Command {
             }
         }
     }
+
+    private String printOutOfBoundsRoleIndexError(Index roleIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_ROLE_DISPLAYED_INDEX, roleIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

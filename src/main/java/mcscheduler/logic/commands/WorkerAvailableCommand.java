@@ -58,8 +58,7 @@ public class WorkerAvailableCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (targetIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(targetIndex));
         }
 
         if (!model.hasRole(role)) {
@@ -130,6 +129,13 @@ public class WorkerAvailableCommand extends Command {
 
         return output;
     }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {
