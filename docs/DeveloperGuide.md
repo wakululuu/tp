@@ -324,7 +324,7 @@ The following commands have been implemented to work with `Role`:
 
 #### Example usage scenario
 
-Step 1. The user executes `role-add cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
+Step 1. The user executes `role-add Cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
 If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleException` is thrown.
 
 ![AddRoleSequenceDiagram](images/AddRoleSequenceDiagram.png)
