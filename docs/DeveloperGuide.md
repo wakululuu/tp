@@ -143,12 +143,12 @@ Classes used by multiple components are in the `mcscheduler.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+<div style="page-break-after: always;"></div>
+
 ### Worker feature
 
 The adding of workers is core to the functionality of the system. Users are able to add important information to each
 worker, which will help them assign workers to shifts they are most suited for.
-
-<div style="page-break-after: always;"></div>
 
 #### Implementation
 
@@ -463,6 +463,8 @@ that shift immediately.
 
 Step 1. The manager creates a new Shift through the `shift-add` command if it was not already done.
 
+<div style="page-break-after: always;"></div>
+
 Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
 eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
 and Janitor respectively to Shift 8.
@@ -485,6 +487,8 @@ Step 3. McScheduler parses the input and creates 3 `Assignment`s, which are then
 * [DevOps guide](DevOps.md)
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## **Appendix: Requirements**
 
@@ -514,6 +518,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * `* * *` As a user, I want to **add a new worker and their details**, so that I can track the worker's data and schedule their work
 * `* * *` As a user, I want to **view a list of all workers**, so that I can know who are the workers I can assign shifts to
+
+<div style="page-break-after: always;"></div>
+
 * [Epic] `* * *` As a user, I want to **view the details of a worker**
   * `* * *` As a user, I want to **view the contact details of workers**, so that I can contact them easily
   * `* * *` As a user, I want to **view the roles a worker can fill**, so that I can assign them a role they are fit for
@@ -537,6 +544,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * `* *` As a user, I want to **find a specific shift among all other shifts**, so that I can easily view its details without sieving through the whole list of shifts
 * `* *` As a user, I want to **edit the details of a shift**, so that I can reflect any changes in the timing, roles or number of workers needed for the shift
 * `* * *` As a user, I want to **delete a shift**, so that I can remove an unwanted shift
+
+<div style="page-break-after: always;"></div>
 
 #### Assignment-related stories
 
@@ -573,6 +582,8 @@ _Some user stories are to be implemented beyond v1.4_
     * 1a1. McScheduler shows an error message.
 
       Use case ends.
+
+<div style="page-break-after: always;"></div>
 
 #### Use case: Delete a worker (UC-002)
 
