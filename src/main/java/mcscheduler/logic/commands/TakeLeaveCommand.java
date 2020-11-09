@@ -63,7 +63,7 @@ public class TakeLeaveCommand extends Command {
         List<Index> workerToReplaceAssignmentIndexes = new ArrayList<>();
         separateWorkerIndexes(workerToTakeLeavePairs, workerToReplaceAssignmentIndexes, model);
 
-        checkWorkerAlreadyOnLeave(model);
+        checkWorkerAlreadyOnLeave(model, shiftIndex);
 
         CommandResult assignCommandResult = new CommandResult("");
         if (!workerToTakeLeavePairs.isEmpty()) {
@@ -112,14 +112,16 @@ public class TakeLeaveCommand extends Command {
         }
     }
 
-    private void checkWorkerAlreadyOnLeave(Model model) throws CommandException {
-        List<Worker> lastShownList = model.getFilteredWorkerList();
+    private void checkWorkerAlreadyOnLeave(Model model, Index shiftIndex) throws CommandException {
+        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+        List<Shift> lastShownShiftList = model.getFilteredShiftList();
         List<Assignment> assignmentList = model.getFullAssignmentList();
 
         for (Index workerIndex : workerIndexes) {
-            Worker worker = lastShownList.get(workerIndex.getZeroBased());
+            Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Shift shift = lastShownShiftList.get(shiftIndex.getZeroBased());
             for (Assignment assignment : assignmentList) {
-                if (!assignment.getWorker().isSameWorker(worker)) {
+                if (!assignment.getWorker().isSameWorker(worker) || !assignment.getShift().isSameShift(shift)) {
                     continue;
                 }
                 if (Leave.isLeave(assignment.getRole())) {
