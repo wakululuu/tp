@@ -720,11 +720,17 @@ _Some user stories are to be implemented beyond v1.4_
  
        Use case resumes at step 4.
        
-* 5f. The worker is already assigned to the shift under a role.
+* 5f. The worker is already assigned to the shift under the same role.
  
      * 5f1. McScheduler shows an error message.
      
-       Use case ends.
+       Use case resumes at step 4.
+       
+* 5g. The worker is already assigned to the shift under a different role.
+ 
+     * 5f1. McScheduler shows an error message.
+     
+     * 5f2. User reassigns worker to a different role for the same shift (UC-017)
 
 #### Use case: Unassign a worker from a shift (UC-008)
 
@@ -983,7 +989,46 @@ _Some user stories are to be implemented beyond v1.4_
     
         Use case ends.
 
+#### Use case: Reassign the worker to a different role for a given shift (UC-017)
 
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to list shifts.
+4. McScheduler shows a list of shifts.
+5. User requests to reassign a worker at a specific position on the workers' list to a different role for a shift at a specific position on the shifts' list.
+6. McScheduler reassigns the specified worker to a different role for the specified shift.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 4a. The list of shifts is empty.
+
+  Use case ends.
+
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+        
+* 5b. The specified worker is on leave for the specified shift.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+* 5b. The specified worker is not assigned to the specified shift under any role.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+     
 ### Non-Functional Requirements
 
 1.  Should work on any _mainstream OS_ as long as it has Java `11` or above installed.
