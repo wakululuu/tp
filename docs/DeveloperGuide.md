@@ -327,7 +327,7 @@ The following commands have been implemented to work with `Role`:
 
 #### Example usage scenario
 
-Step 1. The user executes `role-add cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
+Step 1. The user executes `role-add Cashier` to add the cashier role to the `UniqueRoleList` in the McScheduler `ModelManager`.
 If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleException` is thrown.
 
 ![AddRoleSequenceDiagram](images/AddRoleSequenceDiagram.png)
@@ -336,7 +336,7 @@ If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleEx
 </div>
 
 
-Step 2. The user realises the previous command was a mistake and executes `role-list` to get the index of the cashier role in the `UniqueRoleList`.
+Step 2. The user realises the previous command was a mistake and looks at the Role list to get the index of the cashier role in the `UniqueRoleList`.
 Using the role index in the `UniqueRoleList`, the user executes `role-delete ROLE_INDEX` to remove the cashier role from the `UniqueRoleList`.
 
 
@@ -673,7 +673,7 @@ _Some user stories are to be implemented beyond v1.4_
 2. McScheduler shows a list of shifts.
 3. User requests to list workers.
 4. McScheduler shows a list of workers.
-5. User requests to assign worker at a specific position on the workers' list to a shift at a specific position on the shifts' list.
+5. User requests to assign worker at a specific position on the workers' list to a shift at a specific position on the shifts' list for a given role.
 6. McScheduler assigns specified worker to specified shift.
 
    Use case ends.
@@ -699,7 +699,27 @@ _Some user stories are to be implemented beyond v1.4_
     * 5b1. McScheduler shows an error message.
 
       Use case resumes at step 4.
+      
+* 5c. The worker is unavailable on the day and time of the shift.
+
+    * 5c1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+
+* 5d. The worker is on leave for the shift.
+
+    * 5d1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
  
+* 5e. The given role is not registered in the McScheduler.
+ 
+     * 5e1. McScheduler shows an error message.
+     
+     * 5e2. User adds the given role to the McScheduler as a new role (UC-012).
+ 
+       Use case resumes at step 4.
+
 #### Use case: Unassign a worker from a shift (UC-008)
 
 **MSS**
@@ -745,6 +765,212 @@ _Some user stories are to be implemented beyond v1.4_
    Step 2 is repeated for all shifts the worker is hired for.
 
    Use case ends.
+   
+#### Use case: Calculate the pay earned by a worker for the week (UC-010)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to calculate the pay earned for the week by a worker at a specific position on the workers' list.
+4. McScheduler shows the pay earned by the specified worker for the week.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 3a. The worker index given is invalid.
+
+    * 3a1. McScheduler shows an error message.
+
+      Use case resumes at step 2.
+
+#### Use case: View the list of workers who are available to work for a given shift under a given role (UC-011)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to list shifts.
+4. McScheduler shows a list of shifts.
+5. User requests to view the list of workers who are available to work for a shift at a specific position on the shifts' list under a given role.
+6. McScheduler shows the list of available workers who are available to work for the specified shift under the specified role.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 4a. The list of shifts is empty.
+
+  Use case ends.
+
+* 5a. The shift index given is invalid.
+
+    * 5a1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+
+* 5b. The role given is not registered in the McScheduler.
+
+    * 5b1. McScheduler shows an error message.
+
+    * 5b2. User adds the given role into the McScheduler as a new role (UC-012).
+        
+        Use case resumes at step 4.
+    
+
+   
+#### Use case: Add a new role into the McScheduler (UC-012)
+
+**MSS**
+
+1. User requests to create new role.
+2. McScheduler shows a success message.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The role name of the new role contains non-alphanumeric characters.
+
+    * 1a1. McScheduler shows an error message.
+        
+        Use case ends.
+        
+#### Use case: Delete a role from the McScheduler (UC-013)
+
+**MSS**
+
+1. McScheduler shows a list of roles.
+2. User requests to delete the role at the specific position on the roles' list.
+3. McScheduler deletes the role.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The list of roles is empty.
+
+  Use case ends.
+
+* 2a. The role index given is invalid.
+
+    * 2a1. McScheduler shows an error message.
+        
+        Use case resumes at step 1.
+
+#### Use case: Edit an existing role in the McScheduler (UC-014)
+
+**MSS**
+
+1. McScheduler shows a list of roles.
+2. User requests to edit a role at a specific position on the roles' list.
+3. McScheduler edits the role.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. The list of roles is empty.
+
+  Use case ends.
+
+* 2a. The role index given is invalid.
+
+    * 2a1. McScheduler shows an error message.
+        
+        Use case resumes at step 1.
+        
+* 2b. The new role name contains non-alphanumeric characters.
+
+    * 2b1. McScheduler shows an error message.
+    
+        Use case resumes at step 1.
+
+#### Use case: Take leave for a worker for a given shift (UC-015)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to list shifts.
+4. McScheduler shows a list of shifts.
+5. User requests to take leave for a worker at a specific position on the workers' list for a shift at a specific position on the shifts' list.
+6. McScheduler takes leave for the specified worker for the specified shift.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 4a. The list of shifts is empty.
+
+  Use case ends.
+
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+        
+* 5b. The specified worker is already on leave for the specified shift.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+        
+* 5c. The worker is unavailable on the day and time of the shift and does not need to take leave.
+
+    * 5c1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+        
+#### Use case: Cancel leave for a worker for a given shift (UC-016)
+
+**MSS**
+
+1. User requests to list workers.
+2. McScheduler shows a list of workers.
+3. User requests to list shifts.
+4. McScheduler shows a list of shifts.
+5. User requests to cancel leave for a worker at a specific position on the workers' list for a shift at a specific position on the shifts' list.
+6. McScheduler cancels leave for the specified worker for the specified shift.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list of workers is empty.
+
+  Use case ends.
+
+* 4a. The list of shifts is empty.
+
+  Use case ends.
+
+* 5a. At least one of the given indexes are invalid.
+
+    * 5a1. McScheduler shows an error message.
+
+      Use case resumes at step 4.
+        
+* 5b. The specified worker is not on leave for the specified shift.
+
+    * 5b1. McScheduler shows an error message.
+    
+        Use case ends.
+
 
 *{More to be added}*
 
