@@ -576,7 +576,7 @@ Format: `help`
 * Additional parameters after the command `help` will throw an `Unexpected argument` error.
     * e.g. `help asdf` will return the following error: `Unexpected argument for command "help": asdf`.
 
-### Deleting all existing data in McScheduler: `clear`
+#### Deleting all existing data in McScheduler: `clear`
 
 Delete all existing data (`Worker`, `Shift`, `Assignment` and `Role`) in McScheduler.
 
