@@ -80,16 +80,20 @@ public class ReassignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(oldShiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(oldShiftIndex, MESSAGE_USAGE));
         }
         if (newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(newShiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(newShiftIndex, MESSAGE_USAGE));
         }
         if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(printOutOfBoundsWorkerIndexError(oldWorkerIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsWorkerIndexError(oldWorkerIndex, MESSAGE_USAGE));
         }
         if (newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(printOutOfBoundsWorkerIndexError(newWorkerIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsWorkerIndexError(newWorkerIndex, MESSAGE_USAGE));
         }
         if (!model.hasRole(newRole)) {
             throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
@@ -143,19 +147,6 @@ public class ReassignCommand extends Command {
         return new CommandResult(
                 String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd, assignmentToRemove.getRole()));
     }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {

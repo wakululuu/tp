@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -89,13 +88,15 @@ public class TakeLeaveCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(shiftIndex, MESSAGE_USAGE));
         }
         Shift shiftToTakeLeaveFrom = lastShownShiftList.get(shiftIndex.getZeroBased());
 
         for (Index workerIndex : workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
+                throw new CommandException(
+                        CommandUtil.printOutOfBoundsWorkerIndexError(workerIndex, MESSAGE_USAGE));
             }
             Worker workerToTakeLeave = lastShownWorkerList.get(workerIndex.getZeroBased());
             Assignment assignment = new Assignment(shiftToTakeLeaveFrom, workerToTakeLeave);
@@ -106,19 +107,6 @@ public class TakeLeaveCommand extends Command {
             }
         }
     }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {
