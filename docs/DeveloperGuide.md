@@ -333,7 +333,7 @@ If the role being added already exists in the `UniqueRoleList`, `DuplicateRoleEx
 </div>
 
 
-Step 2. The user realises the previous command was a mistake and executes `role-list` to get the index of the cashier role in the `UniqueRoleList`.
+Step 2. The user realises the previous command was a mistake and looks at the Role list to get the index of the cashier role in the `UniqueRoleList`.
 Using the role index in the `UniqueRoleList`, the user executes `role-delete ROLE_INDEX` to remove the cashier role from the `UniqueRoleList`.
 
 
@@ -834,53 +834,51 @@ _Some user stories are to be implemented beyond v1.4_
 
 **MSS**
 
-1. User requests to list roles.
-2. McScheduler shows a list of roles.
-3. User requests to delete the role at the specific position on the roles' list.
-4. McScheduler deletes the role.
+1. McScheduler shows a list of roles.
+2. User requests to delete the role at the specific position on the roles' list.
+3. McScheduler deletes the role.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. The list of roles is empty.
+* 1a. The list of roles is empty.
 
   Use case ends.
 
-* 3a. The role index given is invalid.
+* 2a. The role index given is invalid.
 
-    * 3a1. McScheduler shows an error message.
+    * 2a1. McScheduler shows an error message.
         
-        Use case resumes at step 2.
+        Use case resumes at step 1.
 
 #### Use case: Edit an existing role in the McScheduler (UC-014)
 
 **MSS**
 
-1. User requests to list roles.
-2. McScheduler shows a list of roles.
-3. User requests to edit a role at a specific position on the roles' list.
-4. McScheduler edits the role.
+1. McScheduler shows a list of roles.
+2. User requests to edit a role at a specific position on the roles' list.
+3. McScheduler edits the role.
 
    Use case ends.
 
 **Extensions**
 
-* 2a. The list of roles is empty.
+* 1a. The list of roles is empty.
 
   Use case ends.
 
-* 3a. The role index given is invalid.
+* 2a. The role index given is invalid.
 
-    * 3a1. McScheduler shows an error message.
+    * 2a1. McScheduler shows an error message.
         
-        Use case resumes at step 2.
+        Use case resumes at step 1.
         
-* 3b. The new role name contains non-alphanumeric characters.
+* 2b. The new role name contains non-alphanumeric characters.
 
-    * 3b1. McScheduler shows an error message.
+    * 2b1. McScheduler shows an error message.
     
-        Use case resumes at step 2.
+        Use case resumes at step 1.
 
 #### Use case: Take leave for a worker for a given shift (UC-015)
 
