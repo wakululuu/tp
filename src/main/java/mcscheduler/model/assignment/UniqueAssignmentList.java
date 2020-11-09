@@ -70,7 +70,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
             throw new AssignmentNotFoundException();
         }
 
-        if (!target.equals(editedAssignment) && contains(editedAssignment)) {
+        if (!target.isSameAssignment(editedAssignment) && contains(editedAssignment)) {
             throw new DuplicateAssignmentException();
         }
 

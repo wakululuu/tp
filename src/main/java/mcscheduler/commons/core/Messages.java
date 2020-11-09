@@ -26,7 +26,7 @@ public class Messages {
             + "cannot be assigned a role or leave";
     public static final String MESSAGE_ROLE_NOT_EDITED = "The role has not been edited: %1$s";
     public static final String MESSAGE_DUPLICATE_ROLE = "This role already exists in the McScheduler";
-    public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "%1$s is not available for %2$s";
+    //public static final String MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE = "%1$s is not available for %2$s";
     public static final String MESSAGE_INVALID_ASSIGNMENT_WORKER_ROLE = "%1$s is not fit for the %2$s role";
     public static final String MESSAGE_NO_ASSIGNMENT_FOUND =
             "No assignment found between worker: %1$s and shift: %2$s";
