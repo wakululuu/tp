@@ -1081,12 +1081,14 @@ _Some user stories are to be implemented beyond v1.4_
 
 ### Glossary
 
-* **Role**: A position that a worker is able to fill based on their skill set (e.g Cashier, Cleaner, Burger Flipper)
 * **Assignment**: A shift and role allocation to a particular worker, where the worker is given a particular role in the particular shift (e.g. An assignment can involve a worker A, who is a Chef in shift B)
-* **Unavailability**: A particular day and time (e.g. "Monday AM") where a particular worker is unavailable for work on a recurring basis (e.g. A worker whose unavailability is "Monday AM" is unavailable for work _every_ Monday morning)
 * **Leave**: A worker's day-off, where the worker will not be available for work for that particular day 
 * **Mainstream OS**: Windows, Linux, Unix, macOS
+* **Role**: A position that a worker is able to fill based on their skill set (e.g Cashier, Cleaner, Burger Flipper)
+* **Role requirement**: A role and the corresponding number of workers that is required to fill that role in a shift
 * **Service Rating**: A rating given based on how well the worker performs at their work
+* **Unavailability**: A particular day and time (e.g. "Monday AM") where a particular worker is unavailable for work on a recurring basis (e.g. A worker whose unavailability is "Monday AM" is unavailable for work _every_ Monday morning)
+* **Worker role pair**: A worker and the corresponding role they will be assigned to
 
 --------------------------------------------------------------------------------------------------------------------
 
