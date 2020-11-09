@@ -104,11 +104,6 @@ public class AssignCommand extends Command {
                         shiftToAssign.getShiftDay(), shiftToAssign.getShiftTime()));
             }
 
-            /*
-            if (!shiftToAssign.isRoleRequired(role)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSIGNMENT_NOT_REQUIRED);
-            }
-             */
             // Count for RoleRequirements
             if (!(Leave.isLeave(role))) {
                 int roleQuantityRequired = getQuantityRequiredForRole(shiftToAssign, role);

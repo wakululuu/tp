@@ -5,7 +5,7 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
 participant ":WorkerAddCommandParser" as WorkerAddCommandParser LOGIC_COLOR
-participant "d:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
+participant "a:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
 participant ":ParserUtil" as ParserUtil LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
@@ -14,10 +14,10 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute(command)
+[-> LogicManager : execute("worker-add\n... u/Mon")
 activate LogicManager
 
-LogicManager -> McSchedulerParser : parseCommand(command)
+LogicManager -> McSchedulerParser : parseCommand("worker-add\n... u/Mon")
 activate McSchedulerParser
 
 create WorkerAddCommandParser
@@ -27,14 +27,14 @@ activate WorkerAddCommandParser
 WorkerAddCommandParser --> McSchedulerParser
 deactivate WorkerAddCommandParser
 
-McSchedulerParser -> WorkerAddCommandParser : parse(command)
+McSchedulerParser -> WorkerAddCommandParser : parse("... u/Mon")
 activate WorkerAddCommandParser
 
-WorkerAddCommandParser -> ParserUtil : parseUnavailabilities(string)
+WorkerAddCommandParser -> ParserUtil : parseUnavailabilities("Mon")
 activate ParserUtil
 
-ParserUtil -> ParserUtil : createMorningUnavailabilityString(day)
-ParserUtil -> ParserUtil : createAfternoonUnavailabilityString(day)
+ParserUtil -> ParserUtil : createMorningUnavailability\nString("Mon")
+ParserUtil -> ParserUtil : createAfternoonUnavailability\nString("Mon")
 return
 deactivate ParserUtil
 
@@ -45,13 +45,13 @@ activate WorkerAddCommand
 WorkerAddCommand --> WorkerAddCommandParser
 deactivate WorkerAddCommand
 
-WorkerAddCommandParser --> McSchedulerParser : d
+WorkerAddCommandParser --> McSchedulerParser : a
 deactivate WorkerAddCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
 WorkerAddCommandParser -[hidden]-> McSchedulerParser
 destroy WorkerAddCommandParser
 
-McSchedulerParser --> LogicManager : d
+McSchedulerParser --> LogicManager : a
 deactivate McSchedulerParser
 
 LogicManager -> WorkerAddCommand : execute()

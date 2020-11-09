@@ -40,6 +40,8 @@ public class CancelLeaveCommand extends Command {
     public static final String MESSAGE_CANCEL_LEAVE_SUCCESS_PREFIX = "[Leave Cancelled] ";
     public static final String MESSAGE_CANCEL_LEAVE_SUCCESS = MESSAGE_CANCEL_LEAVE_SUCCESS_PREFIX
             + UnassignCommand.MESSAGE_UNASSIGN_SUCCESS;
+    public static final String MESSAGE_WORKER_NOT_ON_LEAVE =
+            "%1$s ( w/%2$d ) is not on leave. Please remove %1$s from the \"cancel-leave\" command";;
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -83,14 +85,14 @@ public class CancelLeaveCommand extends Command {
 
             Optional<Assignment> assignmentInModelOptional = model.getAssignment(assignmentToCancelLeave);
             if (assignmentInModelOptional.isEmpty()) {
-                throw new CommandException(String.format(Messages.MESSAGE_NO_ASSIGNMENT_FOUND,
-                        workerToCancelLeave, shiftToCancelLeaveFrom));
+                throw new CommandException(String.format(MESSAGE_WORKER_NOT_ON_LEAVE,
+                        workerToCancelLeave.getName(), workerIndex.getOneBased()));
             }
 
             Assignment assignmentInModel = assignmentInModelOptional.get();
             if (!Leave.isLeave(assignmentInModel.getRole())) {
-                throw new CommandException(String.format(Messages.MESSAGE_NO_LEAVE_FOUND,
-                        workerToCancelLeave, shiftToCancelLeaveFrom));
+                throw new CommandException(String.format(MESSAGE_WORKER_NOT_ON_LEAVE,
+                        workerToCancelLeave.getName(), workerIndex.getOneBased()));
             }
 
             try {
