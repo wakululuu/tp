@@ -37,6 +37,8 @@ public class TakeLeaveCommand extends Command {
             + "w/3";
 
     public static final String MESSAGE_TAKE_LEAVE_SUCCESS_PREFIX = "[Leave taken] ";
+    public static final String MESSAGE_WORKER_ALREADY_ON_LEAVE =
+            "%1$s ( w/%2$d ) is already on leave. Please remove %1$s from the \"take-leave\" command";
 
     private final Index shiftIndex;
     private final Set<Index> workerIndexes;
@@ -60,6 +62,8 @@ public class TakeLeaveCommand extends Command {
         List<WorkerRolePair> workerToTakeLeavePairs = new ArrayList<>();
         List<Index> workerToReplaceAssignmentIndexes = new ArrayList<>();
         separateWorkerIndexes(workerToTakeLeavePairs, workerToReplaceAssignmentIndexes, model);
+
+        checkWorkerAlreadyOnLeave(model, shiftIndex);
 
         CommandResult assignCommandResult = new CommandResult("");
         if (!workerToTakeLeavePairs.isEmpty()) {
@@ -104,6 +108,27 @@ public class TakeLeaveCommand extends Command {
                 workerToReplaceAssignmentIndexes.add(workerIndex);
             } else {
                 workerToTakeLeavePairs.add(new WorkerRolePair(workerIndex, new Leave()));
+            }
+        }
+    }
+
+    private void checkWorkerAlreadyOnLeave(Model model, Index shiftIndex) throws CommandException {
+        List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
+        List<Shift> lastShownShiftList = model.getFilteredShiftList();
+        List<Assignment> assignmentList = model.getFullAssignmentList();
+
+        for (Index workerIndex : workerIndexes) {
+            Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
+            Shift shift = lastShownShiftList.get(shiftIndex.getZeroBased());
+            for (Assignment assignment : assignmentList) {
+                if (!assignment.getWorker().isSameWorker(worker) || !assignment.getShift().isSameShift(shift)) {
+                    continue;
+                }
+                if (Leave.isLeave(assignment.getRole())) {
+                    throw new CommandException(
+                            String.format(MESSAGE_WORKER_ALREADY_ON_LEAVE, worker.getName(),
+                                    workerIndex.getOneBased()));
+                }
             }
         }
     }
