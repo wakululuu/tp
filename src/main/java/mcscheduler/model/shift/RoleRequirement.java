@@ -147,8 +147,7 @@ public class RoleRequirement {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(" Role Required: ")
-                .append(getRole())
+        builder.append(getRole())
                 .append(" x ")
                 .append(getQuantityRequired());
         return builder.toString();
