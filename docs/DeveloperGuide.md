@@ -53,7 +53,7 @@ For example, the `Logic` component (see the class diagram given below) defines i
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `worker-delete 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
@@ -68,7 +68,7 @@ The sections below give more details of each component.
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `WorkerListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -88,11 +88,11 @@ The `UI` component,
 1. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 1. In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying help to the user.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("worker-delete 1")` API call.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `worker-delete 1` Command](images/DeleteSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerDeleteCommandParser`should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
 ### Model component
@@ -105,14 +105,9 @@ The `Model`,
 
 * stores a `UserPref` object that represents the user’s preferences.
 * stores the mcsheduler data.
-* exposes an unmodifiable `ObservableList<Worker>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* exposes an unmodifiable `ObservableList<Worker>` and `ObservableList<Role>` that can be 'observed' e.g. the UI can be
+bound to these lists so that the UI automatically updates when the data in the lists change.
 * does not depend on any of the other three components.
-
-
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `McScheduler`, which `Worker` references. This allows `McScheduler` to only require one `Tag` object per unique `Tag`, instead of each `Worker` needing their own `Tag` object.<br>
-![BetterModelClassDiagram](images/BetterModelClassDiagram.png)
-
-</div>
 
 
 ### Storage component
@@ -135,7 +130,7 @@ Classes used by multiple components are in the `mcscheduler.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
-### Adding of a Worker feature
+### Worker feature
 
 The adding of workers is core to the functionality of the system. Users are able to add important information to each
 worker, which will help them assign workers to shifts they are most suited for.
@@ -150,41 +145,44 @@ The mechanism for adding a worker is facilitated by a `Worker` class. A `Worker`
 A user can add a `Worker` to the `McScheduler` by running a `worker-add` command. 
 
 #### Example usage scenario
-Given below is an example usage scenario and how the add worker feature behaves at each step after the user has
+
+Given below is an example usage scenario and how the `worker-add` feature behaves at each step after the user has
 launched the application.
 
 Step 1. The user executes the command `worker-add n/John hp/98765432 p/9.0 a/400 Scheduler Lane`. `McSchedulerParser`
 creates a `WorkerAddCommandParser` and calls the `WorkerAddCommandParser#parse()` method.
 
 Step 2. The fields `n/`, `hp/`, `p/`, and `a/` are parsed within `WorkerAddCommandParser#parse()` and an instance of
-`Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as parameters to the `Worker`
+`Name`, `Phone`, `Pay` and `Address` are created respectively. These objects are passed as arguments to the `Worker`
 constructor and a new `Worker` object is created.
 
-Step 3. A `WorkerAddCommand` with the newly created `Worker` object is returned and executed. The `Worker` object is
-added to and stored inside the `Model`.
+Step 3. A `WorkerAddCommand` with the created `Worker` object as an argument is returned to the `LogicManager` and
+executed. The `Worker` object is added to and stored inside the `Model`.
 
 The following sequence diagram shows how `Worker` is added.
 
 ![Add Worker Sequence Diagram](images/AddWorkerSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
 ### Shift feature
-Similar to workers, adding and manipulating shifts is a key functionality of the McScheduler. Managers will be able to make use of 
-shifts to set role requirements, add or remove workers and assign leave. 
+
+Similar to workers, adding and manipulating shifts is a key functionality of the McScheduler. Users will be able to add
+role requirements to shifts, assign workers to shifts and assign workers to take leave for a shift. 
 
 #### Implementation
 
-Shifts are represented by a `Shift` class. It contains important detail related to shifts such as the day (through `ShiftDay`),
-the time (through `ShiftTime`) and role requirements (through `RoleRequirement`) that details how many workers are needed
-at which positions in a given shift.
+Shifts are represented by the `Shift` class. It contains important details related to shifts such as the day (through `ShiftDay`),
+the time (through `ShiftTime`) and role requirements (through `RoleRequirement`) of the shift. A `RoleRequirement` object
+details how many workers are needed to fill which roles in a given shift.
 
 The following diagram details `Shift` and how it is represented in the App model.
 
 ![Shift Class Diagram](images/ShiftClassDiagram.png)
 
 #### Commands
+
 The following commands have been implemented to work with `Shift`:
 - `ShiftAddCommand` to add new shifts
 - `ShiftEditCommand` to edit existing shifts
@@ -192,8 +190,9 @@ The following commands have been implemented to work with `Shift`:
 
 These commands work similarly to the `Worker` based commands.
 
-#### Example Usage Scenario
-Given below is an example usage scenario and how the edit shift feature works at each step.
+#### Example usage scenario
+
+Given below is an example usage scenario and how the `shift-edit` feature works at each step.
 
 Step 1. User enters the command `shift-edit 2 d/FRI`. `McSchedulerParser` creates a `ShiftEditCommandParser` and calls
 the `ShiftEditCommandParser#parser()` method.
@@ -211,8 +210,9 @@ The following sequence diagram demonstrates this editing process (as per the exa
 
 ![Edit Shift Sequence Diagram](images/EditShiftSequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** Should there be other information to be edited
-as requested by the user, there will be other objects created besides `ShiftDay`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `ShiftEditCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+
+Should there be other information to be edited as requested by the user, there will be other objects created besides `ShiftDay`.
 </div>
 
 ### Unavailability feature
@@ -268,7 +268,7 @@ The following sequence diagram shows how unavailable timings are added to a `Wor
 
 ![Unavailability Sequence Diagram](images/AddUnavailabilitySequenceDiagram.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `WorkerAddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
 ### Assign/unassign feature
@@ -288,21 +288,24 @@ The operations supporting the adding/deleting of `Assignment` objects are expose
 
 #### Example usage scenario
 
-Step 1. The user executes `assign s/1 w/1 r/Cashier` to assign the 1st worker the role of a cashier in the 1st shift in
-the McScheduler. The `assign` command creates an `Assignment` object, storing the 1st `Shift`, 1st `Worker` and cashier
-`Role` objects. The command then checks if there already exists an `assignment` with the same `shift` and `worker` in
-the model, as well as the `unavailability` of the `worker` to be assigned. If the `assignment` is unique and the
-`worker` is available, the `assignment` is added to the list of `assignments` in the `model`.
+Step 1. The user executes `assign s/1 w/1 Cashier` to assign the 1st worker the role of a cashier in the 1st shift in
+the McScheduler. `McSchedulerParser` creates an `AssignCommandParser` and calls the `AssignCommandParser#parse()` method.
+
+Step 2. The fields `s/` and `w/` are parsed by the `AssignCommandParser`. A `shiftIndex` and `Set<WorkerRolePair>`
+object are created respectively and passed as arguments into the `AssignCommand` constructor. The created `AssignCommand`
+is executed in the `LogicManager` by calling the `AssignCommand#execute()` method.
+
+Step 3. During the execution of the `AssignCommand`, an `Assignment` object, storing the 1st `Shift`, 1st `Worker` and cashier
+`Role` objects, is created. The `Assignment` object is then added to the `UniqueAssignmentList` in the `Model`.
 
 ![AssignSequenceDiagram](images/AssignSequenceDiagram.png)
 
 <div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AssignCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 </div>
 
-Step 2. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
-from the 1st shift in the McScheduler. The `unassign` command creates a dummy `Assignment` object, storing the 1st
-`Shift` and 1st `Worker` objects. The command then uses the dummy `assignment` as an identifier to identify the
-`assignment` to be deleted from the list of `assignments` in the `model`.
+Step 4. The user realises the previous command was a mistake and executes `unassign s/1 w/1` to unassign the 1st worker
+from the 1st shift in the McScheduler. The `unassign` command recreates the `Assignment` object to be deleted and uses it
+ as an identifier to identify the `assignment` to be deleted from the `UniqueAssignmentList` in the `Model`.
 
 ### Role feature
 
@@ -426,7 +429,7 @@ them to the Model.
 
 ![Class Diagram of AssignCommand, highlighting its MassOps](images/MassAssignClassDiagram.png)
 
-#### Example Usage Scenario
+#### Example usage scenario
 Let's say that the manager has a new Shift, and requires 3 of their existing staff members to work on 
 that shift immediately.
 
@@ -434,11 +437,12 @@ Step 1. The manager creates a new Shift through the `shift-add` command if it wa
 
 Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
 eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
-and Janitor respectively to Shift number 8.
+and Janitor respectively to Shift 8.
 
-Step 3. McScheduler parses the input and creates 3 Assignments: 
-shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds them to the Model
-
+Step 3. McScheduler parses the input and creates 3 `Assignment`s, which are then added to the `Model`:
+* Shift 8, Worker 2, Cashier
+* Shift 8, Worker 3, Fry Cook
+* Shift 8, Worker 7, Janitor
 
 ![Object Diagram of one AssignCommand used to assign 3 workers into a shift](images/MassAssignObjectDiagram.png)
 
@@ -478,6 +482,8 @@ typical mouse/GUI driven app for fast typists.
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
+#### Worker-related stories
+
 * `* * *` As a user, I want to **add a new worker and their details**, so that I can track the worker's data and schedule their work
 * `* * *` As a user, I want to **view a list of all workers**, so that I can know who are the workers I can assign shifts to
 * [Epic] `* * *` As a user, I want to **view the details of a worker**
@@ -489,6 +495,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * `* *` As a user, I want to **view the weekly pay of a worker**, so that I can compensate them accordingly
 * `* *` As a user, I want to **edit the details of a worker**, so that I can have the most up-to-date information for shift scheduling and if I need to contact them
 * `* * *` As a user, I want to **delete a worker**, so that I can remove a worker who has left McDonald's
+* `*` As a user, I want to **see a worker's service rating**, so that I can decide who to give more work opportunities to
+
+#### Shift-related stories
+
 * `* * *` As a user, I want to **add a new shift**, so that I can assign workers to shifts
 * `* * *` As a user, I want to **add roles and the respective quantities that need to be filled to a shift**, so that I can assign workers based on what is needed
 * `* * *` As a user, I want to **view a list of all shifts**, so that I can have an overview of all the shifts I am managing
@@ -499,15 +509,20 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * `* *` As a user, I want to **find a specific shift among all other shifts**, so that I can easily view its details without sieving through the whole list of shifts
 * `* *` As a user, I want to **edit the details of a shift**, so that I can reflect any changes in the timing, roles or number of workers needed for the shift
 * `* * *` As a user, I want to **delete a shift**, so that I can remove an unwanted shift
+
+#### Assignment-related stories
+
 * `* * *` As a user, I want to **assign a worker to a role in a shift**, so that I can fill shift positions
 * `* *` As a user, I want to **edit an existing assignment**, so that I can easily move workers around after assigning them to a role in a shift
 * `* * *` As a user, I want to **unassign a worker from a shift**, so that I can update the quantity of the role that has been and has yet to be filled
+* `* *` As a user, I want to **generate a weekly shift schedule**, so that I can see at a glance the workers assigned to every shift in the week
+
+#### General stories
+
 * `* *` As a new user, I want to **see sample data**, so that I can see what I can do with the app
 * `* *` As a new user ready to add my own data, I want to **delete all sample data**, so that all data in the app is relevant to me
 * `* *` As a new user, I want to **see a guide on how to use the key functions**, so that I can learn how to use the app
 * `* *` As a user, I want to **see a summary of the various commands**, so that I can easily refer to it when I forget the exact format for the commands
-* `* *` As a user, I want to **generate a weekly shift schedule**, so that I can see at a glance the workers assigned to every shift in the week
-* `*` As a user, I want to **see a worker's service rating**, so that I can decide who to give more work opportunities to
 
 _Some user stories are to be implemented beyond v1.4_
 
@@ -746,8 +761,11 @@ _Some user stories are to be implemented beyond v1.4_
 
 ### Glossary
 
-* **Mainstream OS**: Windows, Linux, Unix, macOS
 * **Role**: A position that a worker is able to fill based on their skill set (e.g Cashier, Cleaner, Burger Flipper)
+* **Assignment**: A shift and role allocation to a particular worker, where the worker is given a particular role in the particular shift (e.g. An assignment can involve a worker A, who is a Chef in shift B)
+* **Unavailability**: A particular day and time (e.g. "Monday AM") where a particular worker is unavailable for work on a recurring basis (e.g. A worker whose unavailability is "Monday AM" is unavailable for work _every_ Monday morning)
+* **Leave**: A worker's day-off, where the worker will not be available for work for that particular day 
+* **Mainstream OS**: Windows, Linux, Unix, macOS
 * **Service Rating**: A rating given based on how well the worker performs at their work
 
 --------------------------------------------------------------------------------------------------------------------

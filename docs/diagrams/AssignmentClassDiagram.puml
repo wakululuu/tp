@@ -3,9 +3,6 @@
 skinparam arrowColor MODEL_COLOR
 skinparam classBackgroundColor MODEL_COLOR
 
-title Assignment - Class Diagram
-skinparam backgroundColor transparent
-
 Assignment -->"1" Shift
 Assignment --> "1" Worker
 Assignment --> "1" Role

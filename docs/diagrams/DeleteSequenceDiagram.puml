@@ -4,8 +4,8 @@
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
-participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
-participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
+participant ":WorkerDeleteCommandParser" as WorkerDeleteCommandParser LOGIC_COLOR
+participant "d:WorkerDeleteCommand" as WorkerDeleteCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
 
@@ -13,56 +13,56 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("delete 1")
+[-> LogicManager : execute("worker-delete 1")
 activate LogicManager
 
-LogicManager -> McSchedulerParser : parseCommand("delete 1")
+LogicManager -> McSchedulerParser : parseCommand("worker-delete 1")
 activate McSchedulerParser
 
-create DeleteCommandParser
-McSchedulerParser -> DeleteCommandParser
-activate DeleteCommandParser
+create WorkerDeleteCommandParser
+McSchedulerParser -> WorkerDeleteCommandParser
+activate WorkerDeleteCommandParser
 
-DeleteCommandParser --> McSchedulerParser
-deactivate DeleteCommandParser
+WorkerDeleteCommandParser --> McSchedulerParser
+deactivate WorkerDeleteCommandParser
 
-McSchedulerParser -> DeleteCommandParser : parse("1")
-activate DeleteCommandParser
+McSchedulerParser -> WorkerDeleteCommandParser : parse("1")
+activate WorkerDeleteCommandParser
 
-create DeleteCommand
-DeleteCommandParser -> DeleteCommand
-activate DeleteCommand
+create WorkerDeleteCommand
+WorkerDeleteCommandParser -> WorkerDeleteCommand
+activate WorkerDeleteCommand
 
-DeleteCommand --> DeleteCommandParser : d
-deactivate DeleteCommand
+WorkerDeleteCommand --> WorkerDeleteCommandParser : d
+deactivate WorkerDeleteCommand
 
-DeleteCommandParser --> McSchedulerParser : d
-deactivate DeleteCommandParser
+WorkerDeleteCommandParser --> McSchedulerParser : d
+deactivate WorkerDeleteCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> McSchedulerParser
-destroy DeleteCommandParser
+WorkerDeleteCommandParser -[hidden]-> McSchedulerParser
+destroy WorkerDeleteCommandParser
 
 McSchedulerParser --> LogicManager : d
 deactivate McSchedulerParser
 
-LogicManager -> DeleteCommand : execute()
-activate DeleteCommand
+LogicManager -> WorkerDeleteCommand : execute()
+activate WorkerDeleteCommand
 
-DeleteCommand -> Model : deleteWorker(1)
+WorkerDeleteCommand -> Model : deleteWorker(1)
 activate Model
 
-Model --> DeleteCommand
+Model --> WorkerDeleteCommand
 deactivate Model
 
 create CommandResult
-DeleteCommand -> CommandResult
+WorkerDeleteCommand -> CommandResult
 activate CommandResult
 
-CommandResult --> DeleteCommand
+CommandResult --> WorkerDeleteCommand
 deactivate CommandResult
 
-DeleteCommand --> LogicManager : result
-deactivate DeleteCommand
+WorkerDeleteCommand --> LogicManager : result
+deactivate WorkerDeleteCommand
 
 [<--LogicManager
 deactivate LogicManager

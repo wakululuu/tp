@@ -18,14 +18,16 @@ Class ReadOnlyUserPrefs
 Package Worker {
 Class Worker
 Class Address
-Class Email
+Class Pay
 Class Name
 Class Phone
+Class Unavailability
 Class UniqueWorkerList
 }
 
-Package Tag {
-Class Tag
+Package Role {
+Class Role
+Class UniqueRoleList
 }
 }
 
@@ -41,16 +43,20 @@ ModelManager o-left-> "1" UserPrefs
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 McScheduler *--> "1" UniqueWorkerList
+McScheduler *--> "1" UniqueRoleList
 UniqueWorkerList o--> "*" Worker
 Worker *--> Name
 Worker *--> Phone
-Worker *--> Email
+Worker *--> Pay
 Worker *--> Address
-Worker *--> "*" Tag
+Worker *--> "*" Unavailability
+Worker o--> "*" Role
+UniqueRoleList o--> "*" Role
 
 Name -[hidden]right-> Phone
 Phone -[hidden]right-> Address
-Address -[hidden]right-> Email
+Address -[hidden]right-> Pay
+Pay -[hidden]right-> Unavailability
 
 ModelManager -->"1" Worker : filtered list
 @enduml
