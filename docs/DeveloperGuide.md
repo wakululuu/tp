@@ -759,7 +759,13 @@ _Some user stories are to be implemented beyond v1.4_
 
     * 5b1. McScheduler shows an error message.
 
-      Use case resumes at step 4.
+      Use case ends.
+
+* 5b. The worker is on leave for the given shift.
+
+    * 5b1. McScheduler shows an error message.
+
+      Use case ends.
   
 #### Use Case: Hire a new worker for shifts (UC-009)
 
@@ -977,8 +983,6 @@ _Some user stories are to be implemented beyond v1.4_
     
         Use case ends.
 
-
-*{More to be added}*
 
 ### Non-Functional Requirements
 
