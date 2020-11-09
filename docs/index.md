@@ -8,8 +8,8 @@ title: McScheduler
 
 ![Ui](images/Ui.png)
 
-McScheduler is a **one-stop solution for McDonald's Shift Managers to manage shift scheduling and worker
-contact/compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
+McScheduler is a **one-stop solution for McDonald's Shift Managers** to manage shift scheduling, as well as worker
+contacts and compensation, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a
 Graphical User Interface (GUI).
 
 * If you are interested in using the McScheduler, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).

@@ -1,6 +1,7 @@
 package mcscheduler.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_PARSE_LEAVE_ASSIGN;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_NEW;
@@ -17,6 +18,7 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.ReassignCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 
 public class ReassignCommandParser implements Parser<ReassignCommand> {
@@ -88,6 +90,9 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
         }
 
         Role newRole = ParserUtil.parseRole(argMultimap.getValue(PREFIX_ROLE).get());
+        if (Leave.isLeave(newRole)) {
+            throw new ParseException(MESSAGE_DO_NOT_PARSE_LEAVE_ASSIGN);
+        }
 
         return new ReassignCommand(oldWorkerIndex, newWorkerIndex, oldShiftIndex, newShiftIndex, newRole);
     }

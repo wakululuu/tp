@@ -1,19 +1,20 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_UNASSIGN_LEAVE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 
 import java.util.List;
 import java.util.Set;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
 import mcscheduler.model.assignment.Assignment;
 import mcscheduler.model.assignment.exceptions.AssignmentNotFoundException;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.role.Role;
 import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
@@ -63,13 +64,15 @@ public class UnassignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (shiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(shiftIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(shiftIndex, MESSAGE_USAGE));
         }
 
         // Check if any is not found
         for (Index workerIndex : workerIndexes) {
             if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-                throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
+                throw new CommandException(
+                        CommandUtil.printOutOfBoundsWorkerIndexError(workerIndex, MESSAGE_USAGE));
             }
             Worker workerToUnassign = lastShownWorkerList.get(workerIndex.getZeroBased());
             Shift shiftToUnassign = lastShownShiftList.get(shiftIndex.getZeroBased());
@@ -77,6 +80,8 @@ public class UnassignCommand extends Command {
 
             if (!model.hasAssignment(assignmentToDelete)) {
                 throw new CommandException(String.format(MESSAGE_ASSIGNMENT_NOT_FOUND, assignmentToDelete));
+            } else if (Leave.isLeave(model.getAssignment(assignmentToDelete).get().getRole())) {
+                throw new CommandException(MESSAGE_DO_NOT_UNASSIGN_LEAVE);
             }
         }
 
@@ -116,18 +121,6 @@ public class UnassignCommand extends Command {
         }
         assert false : "Role returned is null"; // a non-null role should have been returned within the for loop
         return null;
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
     }
 
     @Override

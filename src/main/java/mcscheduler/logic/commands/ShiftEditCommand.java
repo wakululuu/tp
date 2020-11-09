@@ -1,6 +1,7 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_MODIFY_LEAVE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
@@ -71,7 +72,8 @@ public class ShiftEditCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(printOutOfBoundsShiftIndexError(index));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsShiftIndexError(index, MESSAGE_USAGE));
         }
 
         Shift shiftToEdit = lastShownList.get(index.getZeroBased());
@@ -79,6 +81,11 @@ public class ShiftEditCommand extends Command {
 
         if (!shiftToEdit.isSameShift(editedShift) && model.hasShift(editedShift)) {
             throw new CommandException(MESSAGE_DUPLICATE_SHIFT);
+        }
+        if (editedShift.getRoleRequirements()
+                .stream()
+                .anyMatch(roleRequirement -> Leave.isLeave(roleRequirement.getRole()))) {
+            throw new CommandException(MESSAGE_DO_NOT_MODIFY_LEAVE);
         }
 
         Set<RoleRequirement> roleRequirementSet = editedShift.getRoleRequirements();
@@ -161,13 +168,6 @@ public class ShiftEditCommand extends Command {
         CollectionUtil.requireAllNonNull(assignmentToEdit, editedShift);
         return new Assignment(editedShift, assignmentToEdit.getWorker(), assignmentToEdit.getRole());
     }
-
-    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
-                        + MESSAGE_USAGE);
-    }
-
 
     @Override
     public boolean equals(Object other) {

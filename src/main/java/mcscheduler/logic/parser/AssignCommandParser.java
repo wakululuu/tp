@@ -1,6 +1,7 @@
 package mcscheduler.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_PARSE_LEAVE_ASSIGN;
 import static mcscheduler.logic.parser.ParserUtil.arePrefixesPresent;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ import mcscheduler.commons.exceptions.IllegalValueException;
 import mcscheduler.logic.commands.AssignCommand;
 import mcscheduler.logic.parser.exceptions.ParseException;
 import mcscheduler.model.assignment.WorkerRolePair;
+import mcscheduler.model.role.Leave;
 
 /**
  * Parses input arguments and creates a new AssignCommand object
@@ -41,6 +43,9 @@ public class AssignCommandParser implements Parser<AssignCommand> {
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     ive.getMessage() + AssignCommand.MESSAGE_USAGE), ive);
+        }
+        if (workerRolePairs.stream().anyMatch(workerRolePair -> Leave.isLeave(workerRolePair.getRole()))) {
+            throw new ParseException(MESSAGE_DO_NOT_PARSE_LEAVE_ASSIGN);
         }
 
         return new AssignCommand(shiftIndex, workerRolePairs);

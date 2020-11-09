@@ -12,7 +12,6 @@ import static mcscheduler.logic.parser.CliSyntax.PREFIX_WORKER;
 import java.util.ArrayList;
 import java.util.List;
 
-import mcscheduler.commons.core.Messages;
 import mcscheduler.commons.core.index.Index;
 import mcscheduler.commons.util.CollectionUtil;
 import mcscheduler.logic.commands.exceptions.CommandException;
@@ -78,7 +77,8 @@ public class MassTakeLeaveCommand extends Command {
         List<Worker> lastShownWorkerList = model.getFilteredWorkerList();
 
         if (workerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(printOutOfBoundsWorkerIndexError(workerIndex));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsWorkerIndexError(workerIndex, MESSAGE_USAGE));
         }
         Worker worker = lastShownWorkerList.get(workerIndex.getZeroBased());
 
@@ -116,12 +116,6 @@ public class MassTakeLeaveCommand extends Command {
         return new CommandResult(resultMessage);
 
 
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
     }
 
     @Override

@@ -76,7 +76,8 @@ public class WorkerEditCommand extends Command {
         List<Worker> lastShownList = model.getFilteredWorkerList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(printOutOfBoundsWorkerIndexError(index));
+            throw new CommandException(
+                    CommandUtil.printOutOfBoundsWorkerIndexError(index, MESSAGE_USAGE));
         }
 
         Worker workerToEdit = lastShownList.get(index.getZeroBased());
@@ -148,12 +149,6 @@ public class WorkerEditCommand extends Command {
     private static Assignment createEditedAssignment(Assignment assignmentToEdit, Worker editedWorker) {
         CollectionUtil.requireAllNonNull(assignmentToEdit, editedWorker);
         return new Assignment(assignmentToEdit.getShift(), editedWorker, assignmentToEdit.getRole());
-    }
-
-    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
-        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
-                        + MESSAGE_USAGE);
     }
 
     @Override
