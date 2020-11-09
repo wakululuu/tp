@@ -1,6 +1,7 @@
 package mcscheduler.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static mcscheduler.commons.core.Messages.MESSAGE_DO_NOT_MODIFY_LEAVE;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_ROLE_REQUIREMENT;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_DAY;
 import static mcscheduler.logic.parser.CliSyntax.PREFIX_SHIFT_TIME;
@@ -10,6 +11,7 @@ import java.util.Set;
 import mcscheduler.commons.core.Messages;
 import mcscheduler.logic.commands.exceptions.CommandException;
 import mcscheduler.model.Model;
+import mcscheduler.model.role.Leave;
 import mcscheduler.model.shift.RoleRequirement;
 import mcscheduler.model.shift.Shift;
 
@@ -54,6 +56,9 @@ public class ShiftAddCommand extends Command {
         for (RoleRequirement requirement : roleRequirementSet) {
             if (!model.hasRole(requirement.getRole())) {
                 throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, requirement.getRole()));
+            }
+            if (Leave.isLeave(requirement.getRole())) {
+                throw new CommandException(MESSAGE_DO_NOT_MODIFY_LEAVE);
             }
         }
 

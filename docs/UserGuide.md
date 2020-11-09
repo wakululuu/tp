@@ -175,7 +175,7 @@ Examples:
 
 Finds workers whose names contain any of the given keywords.
 
-Format: `worker-find KEYWORD [MORE_KEYWORDS]`
+Format: `worker-find KEYWORD...`
 
 * The search is case-insensitive. e.g. `hans` will match `Hans`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
@@ -246,25 +246,6 @@ Format: `shift-list`
 * Additional parameters after the command `shift-list` will throw an `Unexpected argument` error.
     * e.g. `shift-list asdf` will return the following error: `Unexpected argument for command "shift-list": asdf`.
 
-### Locating shifts by day or time: `shift-find`
-
-Finds shifts whose day or time contain any of the given keywords.
-
-Format: `shift-find KEYWORD [MORE_KEYWORDS]`
-
-* The search is case-insensitive. e.g. `mon` will match `MON`
-* Only the day and time are searched.
-* Only full words will be matched e.g. `m` will not match `MON`
-* Workers matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `MON AM` will return a `TUE AM` shift and a `MON PM` shift
-
-Examples:
-* `shift-find Fri PM` returns all shifts on Friday and all PM shifts. i.e. `FRI PM`, `THU PM` and `FRI AM` shift will all be returned
-
-* `shift-find Mon` returns a `MON AM` shift and a `MON PM` shift
-
-* `shift-find AM PM` returns all shifts
-
 ### Editing a shift: `shift-edit`
 
 Edits the details of an existing shift in the McScheduler.
@@ -284,15 +265,34 @@ Format: `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`
   [role-add](#adding-a-role-role-add) command.
 * Each role should be accompanied by the `NUMBER_NEEDED` to fill that role. This number **must be a positive integer**
   with no leading zeroes i.e. 1, 2, 3, …​
-* `NUMBER_NEEDED` **must not exceed 50** i.e. there can only be at most 50 workers for each role.
+* `NUMBER_NEEDED` **must not exceed 50** i.e. there can only be at most 50 workers for each role within a shift.
 
 Examples:
 * `shift-edit 3 r/Cashier 3 r/Janitor 2` Edits the 3rd shift on the list such that it now requires 3 cashiers and 2
   janitors.
 
-* `shift-edit 1 d/Mon t/PM r/Janitor 1` Edits the 1st shift such that it is now a Monday PM shift, requiring 1 janitor.
+* `shift-edit 1 d/Mon t/PM r/Janitor 1` Edits the 1st shift such that it is now a Monday PM shift, requiring 1 janitor only.
 
 * `shift-edit 2 r/` Edits the 2nd shift such that it now has no required roles.
+
+### Locating shifts by day or time: `shift-find`
+
+Finds shifts whose day or time contain any of the given keywords.
+
+Format: `shift-find KEYWORD...`
+
+* The search is case-insensitive. e.g. `mon` will match `MON`.
+* Only the day and time are searched.
+* Only full words will be matched e.g. `m` will not match `MON`
+* Workers matching at least one keyword will be returned (i.e. `OR` search).
+  * e.g. `MON AM` will return a `TUE AM` shift and a `MON PM` shift.
+
+Examples:
+* `shift-find Fri PM` returns all shifts on Friday and all PM shifts. i.e. `FRI PM`, `THU PM` and `FRI AM` shift will all be returned.
+
+* `shift-find Mon` returns a `MON AM` shift and a `MON PM` shift.
+
+* `shift-find AM PM` returns all shifts.
 
 ### Deleting a shift: `shift-delete`
 
@@ -371,6 +371,7 @@ Format: `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`
   3, …​
 * The assigned worker(s) will fill up the specified `ROLE` in the shift. The worker(s) must be fit for the specified `ROLE`
   and the shift must require the `ROLE`.
+  * `Leave` is also accepted: workers can be assigned the leave status for any shift with no limit.
 
 Example:
 * `assign s/3 w/2 Cashier` Assigns the 2nd worker on the worker list to the 3rd shift on the shift list as a cashier.
@@ -531,16 +532,16 @@ Worker | **Add** | `worker-add n/NAME hp/PHONE_NUMBER a/ADDRESS p/HOURLY_PAY [r/
 Worker | **Delete** | `worker-delete WORKER_INDEX`<br>e.g. `worker-delete 4`
 Worker | **Edit** | `worker-edit WORKER_INDEX [n/NAME] [hp/PHONE_NUMBER] [a/ADDRESS] [p/HOURLY_PAY] [r/ROLE]... [u/UNAVAILABLE_DAY [UNAVAILABLE_TIME]]...`<br>e.g. `worker-edit 2 n/Betsy Crower p/7 u/Mon`
 Worker | **List** | `worker-list`
-Worker | **Find** | `worker-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `worker-find alex david`
+Worker | **Find** | `worker-find KEYWORD...`<br>e.g. `worker-find alex david`
 Worker | **Pay** | `worker-pay WORKER_INDEX`<br>e.g. `worker-pay 1`
 Shift | **Add** | `shift-add d/DAY t/TIME [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-add d/Wed t/AM r/Cashier 2 r/Janitor 3`
 Shift | **Delete** | `shift-delete SHIFT_INDEX`<br>e.g. `shift-delete 2`
 Shift | **Edit** | `shift-edit SHIFT_INDEX [d/DAY] [t/TIME] [r/ROLE NUMBER_NEEDED]...`<br>e.g. `shift-edit 1 d/Mon t/PM r/Janitor 1`
 Shift | **List** | `shift-list`
-Shift | **Find** | `shift-find KEYWORD [MORE_KEYWORDS]`<br>e.g. `shift-find Fri PM`
+Shift | **Find** | `shift-find KEYWORD...`<br>e.g. `shift-find Fri PM`
 Role | **Add** | `role-add ROLE`<br>e.g. `role-add Storey 2 server`
-Role | **Edit** | `role-edit ROLE_INDEX NEW_ROLE`<br>e.g. `role-edit 1 burger flipper`
 Role | **Delete** | `role-delete ROLE_INDEX`<br>e.g. `role-delete 3`
+Role | **Edit** | `role-edit ROLE_INDEX NEW_ROLE`<br>e.g. `role-edit 1 burger flipper`
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g. `unassign s/4 w/1 w/5`
