@@ -229,7 +229,7 @@ The proposed mechanism is facilitated by `ParserUtil` and the existing system fo
 Unavailability is represented by an `Unavailability` class. Since a worker's unavailable timings are only relevant
 in the context of existing shift slots, `Unavailability` contains a `ShiftDay` and a `ShiftTime`.
 
-![Unavailability Class Diagram](images/UnavailabilityClassDiagram.png)
+<img src="images/UnavailabilityClassDiagram.png" width="200" />
 
 Instances of `Unavailability` can be created on 2 occasions:
 
@@ -281,7 +281,7 @@ This mechanism is facilitated by adding/deleting `Assignment` objects in the `Mc
 stores a `Shift`, `Worker` and `Role` object. The `McScheduler` maintains a `UniqueAssignmentList`, which enforces
 uniqueness between `Assignment` objects by comparing them using `Assignment#isSameAssignment(Assignment)`.
 
-![AssignmentClassDiagram](images/AssignmentClassDiagram.png)
+<img src="images/AssignmentClassDiagram.png" width="300" />
 
 The operations supporting the adding/deleting of `Assignment` objects are exposed in the `Model` interface as
 `Model#addAssignment(Assignment)` and `Model#deleteAssignment(Assignment)`.
@@ -358,7 +358,7 @@ Leave is represented as an extension of `Role`. To prevent conflicts between `ne
 these two objects are deemed equivalent through `Leave#equals()` and `Role#equals()`. This implementation should
 be reconsidered if there should be a significant difference between these two objects.
 
-![Leave Class Diagram](images/LeaveClassDiagram.png)
+<img src="images/LeaveClassDiagram.png" width="280" />
 
 Due to their similarity, `Leave` objects are initiated using a common factory method as `Role` objects 
 through `Role#createRole()`, which will parse the given input as a `Role` or a `Leave` respectively. 
@@ -428,8 +428,7 @@ signifying a `Worker`-`Role` relation.
 Once the Command object has its `shiftIndex` and Set of `WorkerRole`, it creates individual `Assignment`s and adds
 them to the Model.
 
-
-![Class Diagram of AssignCommand, highlighting its MassOps](images/MassAssignClassDiagram.png)
+<img src="images/MassAssignClassDiagram.png" width="400" />
 
 #### Example usage scenario
 Let's say that the manager has a new Shift, and requires 3 of their existing staff members to work on 
