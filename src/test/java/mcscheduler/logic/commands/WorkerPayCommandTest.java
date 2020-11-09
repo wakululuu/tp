@@ -16,9 +16,11 @@ import mcscheduler.commons.core.index.Index;
 import mcscheduler.model.Model;
 import mcscheduler.model.ModelManager;
 import mcscheduler.model.UserPrefs;
+import mcscheduler.model.shift.Shift;
 import mcscheduler.model.worker.Worker;
 import mcscheduler.testutil.McSchedulerBuilder;
 import mcscheduler.testutil.TestUtil;
+
 
 //@@author plosslaw
 /**
@@ -34,9 +36,11 @@ public class WorkerPayCommandTest {
         Worker selectedWorker = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(INDEX_FIRST_WORKER);
 
-        float calculatedPay = model.calculateWorkerPay(selectedWorker);
+        int shiftsAssigned = model.calculateWorkerShiftsAssigned(selectedWorker);
+        float calculatedPay = shiftsAssigned * Shift.HOURS_PER_SHIFT * selectedWorker.getPay().getValue();
         String expectedMessage =
-            String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
+            String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(),
+                    selectedWorker.getPay().getValue(), Shift.HOURS_PER_SHIFT, shiftsAssigned, calculatedPay);
 
         ModelManager expectedModel = new ModelManager(model.getMcScheduler(), new UserPrefs());
 
@@ -49,7 +53,7 @@ public class WorkerPayCommandTest {
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(outOfBoundIndex);
 
         assertCommandFailure(workerPayCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -59,9 +63,11 @@ public class WorkerPayCommandTest {
         Worker selectedWorker = TestUtil.getWorker(model, INDEX_FIRST_WORKER);
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(INDEX_FIRST_WORKER);
 
-        float calculatedPay = model.calculateWorkerPay(selectedWorker);
+        int shiftsAssigned = model.calculateWorkerShiftsAssigned(selectedWorker);
+        float calculatedPay = shiftsAssigned * Shift.HOURS_PER_SHIFT * selectedWorker.getPay().getValue();
         String expectedMessage =
-            String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(), calculatedPay);
+                String.format(WorkerPayCommand.MESSAGE_SHOW_PAY_SUCCESS, selectedWorker.getName(),
+                        selectedWorker.getPay().getValue(), Shift.HOURS_PER_SHIFT, shiftsAssigned, calculatedPay);
 
         Model expectedModel = new ModelManager(model.getMcScheduler(), new UserPrefs());
         showWorkerAtIndex(expectedModel, INDEX_FIRST_WORKER);
@@ -80,7 +86,7 @@ public class WorkerPayCommandTest {
         WorkerPayCommand workerPayCommand = new WorkerPayCommand(outOfBoundIndex);
 
         assertCommandFailure(workerPayCommand, model,
-                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsWorkerIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -103,5 +109,11 @@ public class WorkerPayCommandTest {
 
         // different worker -> returns false
         assertNotEquals(workerPaySecondCommand, workerPayFirstCommand);
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + WorkerPayCommand.MESSAGE_USAGE);
     }
 }

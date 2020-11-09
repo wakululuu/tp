@@ -130,7 +130,7 @@ public class ShiftEditCommandTest {
         ShiftEditCommand shiftEditCommand = new ShiftEditCommand(outOfBoundIndex, descriptor);
 
         assertCommandFailure(shiftEditCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     /**
@@ -148,7 +148,7 @@ public class ShiftEditCommandTest {
                 new EditShiftDescriptorBuilder().withShiftDay(VALID_DAY_MON).withShiftTime(VALID_TIME_PM).build());
 
         assertCommandFailure(shiftEditCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -184,6 +184,12 @@ public class ShiftEditCommandTest {
 
         // different descriptor -> returns false
         assertNotEquals(new ShiftEditCommand(INDEX_FIRST_SHIFT, DESC_SECOND_SHIFT), standardCommand);
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + ShiftEditCommand.MESSAGE_USAGE);
     }
 
 }

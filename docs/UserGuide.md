@@ -65,6 +65,9 @@ easily available to streamline the work of McDonald's Shift Managers.
 * Parameters with `…`​ after them can be used multiple times.<br>
   e.g. `w/WORKER_INDEX` can be used as `w/1`, `w/1 w/2`, `w/1 w/2 w/3` etc.
 
+* For parameters _without_ `…​` after them, if provided more than once, only the last value provided will be taken.
+  eg. if `n/Alex n/Betty n/Charlie` is provided for `n/NAME`, the name taken will be Charlie.   
+
 * When `[square brackets]` are used with `…`​, parameters can be used multiple times including zero times.<br>
   e.g. `[r/ROLE NUMBER_NEEDED]…​` can be used as ` ` (i.e. 0 times), `r/Cashier 3`, `r/Cashier 1 r/Janitor 2` etc.
 
@@ -72,7 +75,7 @@ easily available to streamline the work of McDonald's Shift Managers.
   e.g. `{w/WORKER_INDEX ROLE}…​` should be used as `w/1 Cashier`, `w/1 Cashier w/2 Janitor w/3 Chef` etc.
 
 * Parameters can be provided in any order, unless otherwise specified.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+  e.g. if the command specifies `n/NAME hp/PHONE_NUMBER`, `hp/PHONE_NUMBER n/NAME` is also acceptable.
 
 </div>
 
@@ -388,21 +391,34 @@ Format: `unassign s/SHIFT_INDEX w/WORKER_INDEX...`
 
 Reassigns an existing assignment in the McScheduler, similar to an assignment edit.
 
-Format: `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX r/ROLE`
+Formats:   
+1.`reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX r/ROLE`  
 
 * Reassigns an existing assignment using the indexes provided such that the worker at `NEW_WORKER_INDEX` will be assigned to the
 shift at `NEW_SHIFT_INDEX` for the specified `ROLE`. The indexes **must be positive integers** i.e. 1,2, 3, …​
 * The old assignment involving the worker at the specified `OLD_WORKER_INDEX` and the shift at `OLD_SHIFT_INDEX` must exist.
 The old assignment will be edited during a successful `reassign` call.
 * The `OLD_WORKER_INDEX` can be the same as the `NEW_WORKER_INDEX`. The `OLD_SHIFT_INDEX` can be the same as the `NEW_SHIFT_INDEX`.
-This allows workers to be reassigned to the same shift but under a different `ROLE`.
-
+This allows workers to be reassigned to the same shift but under a different `ROLE`. Alternatively, the 2nd `reassign` command format listed below can be used
+to achieve this in a more efficient manner.
 * No reassignment will be made if there already exists a duplicate assignment in the McScheduler.
 
 Examples:
 * `reassign so/4 wo/1 sn/4 wn/2 r/Chef` Reassigns the 2nd worker on the worker list to the 4th shift on the shift list as a Chef.
 
 * `reassign so/1 wo/2 sn/3 wn/2 r/Cashier` Reassigns the 2nd worker on the worker list to the 3rd shift on the shift list as a Cashier.
+
+2.`reassign s/SHIFT_INDEX w/WORKER_INDEX r/NEW_ROLE`  
+
+* Reassigns an existing assignment using the indexes provided such that the worker at `WORKER_INDEX` will be assigned to the
+role `NEW_ROLE` in the shift specified by `SHIFT_INDEX`. The indexes **must be positive integers** i.e. 1,2, 3, …​
+* The old assignment involving the worker at the specified `WORKER_INDEX` and the shift at `SHIFT_INDEX` must exist.
+The old assignment will be edited during a successful `reassign` call.
+* No reassignment will be made if there already exists a duplicate assignment in the McScheduler (i.e. the worker specified by `WORKER_INDEX`
+is already assigned to the role specified by `NEW_ROLE` under the shift specified by `SHIFT_INDEX`).
+
+Example:
+* `reassign s/4 w/1 r/Chef` Reassigns the 1st worker on the worker list as a Chef in the 4th shift on the shift list.
 
 ### Assigning a worker to take leave during a shift: `take-leave`
 
@@ -529,7 +545,7 @@ Role | **Edit** | `role-edit ROLE_INDEX NEW_ROLE`<br>e.g. `role-edit 1 burger fl
 Assignment | **Show Available Workers** | `worker-avail SHIFT_INDEX r/ROLE`<br>e.g. `worker-avail 1 r/Chef`
 Assignment | **Assign** | `assign s/SHIFT_INDEX {w/WORKER_INDEX ROLE}...`<br>e.g. `assign s/3 w/2 Cashier w/3 Chef`
 Assignment | **Unassign** | `unassign s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g. `unassign s/4 w/1 w/5`
-Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`
+Assignment | **Reassign** | `reassign so/OLD_SHIFT_INDEX wo/OLD_WORKER_INDEX sn/NEW_SHIFT_INDEX wn/NEW_WORKER_INDEX r/NEW_ROLE`<br>e.g. `reassign so/4 wo/1 sn/1 wn/1 r/Chef`<br>`reassign s/SHIFT_INDEX w/WORKER_INDEX r/NEW_ROLE` <br>e.g. `reassign s/1 w/1 r/Cashier`
 Leave | **Take** | `take-leave s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g. `take-leave s/2 w/1 w/4`
 Leave | **Take over range of dates** | `mass-take-leave w/WORKER_INDEX d/START_DAY t/START_TIME d/END_DAY t/END_TIME`<br>e.g. `mass-take-leave w/2 d/Sat t/AM d/Tue t/PM`
 Leave | **Cancel** | `cancel-leave s/SHIFT_INDEX w/WORKER_INDEX...`<br>e.g.`cancel-leave s/3 w/2 w/3`

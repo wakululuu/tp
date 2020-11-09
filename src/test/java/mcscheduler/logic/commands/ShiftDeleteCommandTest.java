@@ -44,7 +44,7 @@ public class ShiftDeleteCommandTest {
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(shiftDeleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ShiftDeleteCommandTest {
         ShiftDeleteCommand shiftDeleteCommand = new ShiftDeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(shiftDeleteCommand, model,
-                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, outOfBoundIndex.getOneBased()));
+                printOutOfBoundsShiftIndexError(outOfBoundIndex));
     }
 
     @Test
@@ -106,5 +106,11 @@ public class ShiftDeleteCommandTest {
         model.updateFilteredShiftList(p -> false);
 
         assertTrue(model.getFilteredShiftList().isEmpty());
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + ShiftDeleteCommand.MESSAGE_USAGE);
     }
 }

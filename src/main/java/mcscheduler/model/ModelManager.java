@@ -3,6 +3,7 @@ package mcscheduler.model;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -23,7 +24,6 @@ import mcscheduler.model.worker.Worker;
  */
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-    private static final Integer HOURS_PER_SHIFT = 8;
 
     private final McScheduler mcScheduler;
     private final UserPrefs userPrefs;
@@ -45,10 +45,31 @@ public class ModelManager implements Model {
         filteredWorkers = new FilteredList<>(this.mcScheduler.getWorkerList());
         filteredShifts = new FilteredList<>(this.mcScheduler.getShiftList());
         filteredRoles = new FilteredList<>(this.mcScheduler.getRoleList());
+        getFullWorkerList().forEach(this::synchronizeWorkerInAssignment);
+        getFullShiftList().forEach(this::synchronizeShiftInAssignment);
+
     }
 
     public ModelManager() {
         this(new McScheduler(), new UserPrefs());
+    }
+
+    //=========== initialization synchronization ==================================
+
+    private void synchronizeWorkerInAssignment(Worker worker) {
+        new ArrayList<>(getFullAssignmentList())
+                .stream()
+                .filter(assignment -> assignment.getWorker().isSameWorker(worker))
+                .forEach(assignment -> setAssignment(assignment,
+                        new Assignment(assignment.getShift(), worker, assignment.getRole())));
+    }
+
+    private void synchronizeShiftInAssignment(Shift shift) {
+        new ArrayList<>(getFullAssignmentList())
+                .stream()
+                .filter(assignment -> assignment.getShift().isSameShift(shift))
+                .forEach(assignment -> setAssignment(assignment,
+                        new Assignment(shift, assignment.getWorker(), assignment.getRole())));
     }
 
     //=========== UserPrefs ==================================================================================
@@ -123,10 +144,13 @@ public class ModelManager implements Model {
         mcScheduler.setWorker(target, editedWorker);
     }
     @Override
-    public float calculateWorkerPay(Worker worker) {
+    public int calculateWorkerShiftsAssigned(Worker worker) {
         Integer numberOfShiftsAssigned = 0;
         ObservableList<Assignment> assignments = getFullAssignmentList();
         for (Assignment assignment : assignments) {
+            if (Leave.isLeave(assignment.getRole())) {
+                continue;
+            }
             Worker assignedWorker = assignment.getWorker();
             if (assignedWorker.equals(worker)) {
                 numberOfShiftsAssigned++;
@@ -134,7 +158,7 @@ public class ModelManager implements Model {
         }
         assert numberOfShiftsAssigned >= 0 : "Invalid number of shifts counted";
 
-        return worker.getPay().getValue() * numberOfShiftsAssigned * HOURS_PER_SHIFT;
+        return numberOfShiftsAssigned;
     }
 
     @Override
@@ -181,13 +205,13 @@ public class ModelManager implements Model {
     @Override
     public void deleteAssignment(Assignment target) {
         mcScheduler.removeAssignment(target);
-        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
+        target.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override
     public void addAssignment(Assignment assignment) {
         mcScheduler.addAssignment(assignment);
-        Shift.updateRoleRequirements(this, assignment.getShift(), assignment.getRole());
+        assignment.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override
@@ -195,8 +219,8 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedAssignment);
 
         mcScheduler.setAssignment(target, editedAssignment);
-        Shift.updateRoleRequirements(this, target.getShift(), target.getRole());
-        Shift.updateRoleRequirements(this, editedAssignment.getShift(), editedAssignment.getRole());
+        target.getShift().updateRoleRequirements(getFullAssignmentList());
+        editedAssignment.getShift().updateRoleRequirements(getFullAssignmentList());
     }
 
     @Override

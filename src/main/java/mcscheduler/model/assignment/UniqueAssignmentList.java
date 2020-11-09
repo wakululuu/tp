@@ -14,7 +14,7 @@ import mcscheduler.model.assignment.exceptions.DuplicateAssignmentException;
 
 /**
  * A list of assignments that enforces uniqueness between its elements and does not allow nulls.
- * An assignment is considered unique by comparing using {@code Assignment#equals(Assignment)}.
+ * An assignment is considered unique by comparing using {@code Assignment#isSameAssignment(Assignment)}.
  *
  * Supports a minimal set of list operations.
  */
@@ -29,7 +29,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
      */
     public boolean contains(Assignment toCheck) {
         requireNonNull(toCheck);
-        return internalList.stream().anyMatch(toCheck::equals);
+        return internalList.stream().anyMatch(toCheck::isSameAssignment);
     }
 
     /**
@@ -40,7 +40,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
 
         return internalList
                 .stream()
-                .filter(assignment -> assignment.equals(toGet))
+                .filter(assignment -> assignment.isSameAssignment(toGet))
                 .findFirst();
     }
 
@@ -70,7 +70,7 @@ public class UniqueAssignmentList implements Iterable<Assignment> {
             throw new AssignmentNotFoundException();
         }
 
-        if (!target.equals(editedAssignment) && contains(editedAssignment)) {
+        if (!target.isSameAssignment(editedAssignment) && contains(editedAssignment)) {
             throw new DuplicateAssignmentException();
         }
 

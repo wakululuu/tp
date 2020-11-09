@@ -5,7 +5,6 @@ title: About Us
 
 We are a team based in the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
-
 ## Project team
 
 ### Foo Kai En
@@ -14,6 +13,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](https://github.com/wakululuu)]
 [[portfolio](team/wakululuu.md)]
+
+Email: [kaien.foo@u.nus.edu](mailto:kaien.foo@u.nus.edu)
 
 * Role: Developer
 * Responsibilities: Code quality, testing (secondary)
@@ -24,6 +25,8 @@ We are a team based in the [School of Computing, National University of Singapor
 
 [[github](http://github.com/plosslaw)]
 [[portfolio](team/plosslaw.md)]
+
+Email: [bohao.guo@u.nus.edu](mailto:bohao.guo@u.nus.edu)
 
 * Role: Developer
 * Responsibilities: Testing
@@ -46,6 +49,8 @@ Email: [sigmund@u.nus.edu](mailto:sigmund@u.nus.edu)
 
 [[github](http://github.com/tnsyn)]
 [[portfolio](team/tnsyn.md)]
+
+Email: [tansuyin@u.nus.edu](mailto:tansuyin@u.nus.edu)
 
 * Role: Developer
 * Responsibilities: Integration

@@ -39,8 +39,7 @@ public class ShiftDeleteCommand extends Command {
         List<Shift> lastShownList = model.getFilteredShiftList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, targetIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(targetIndex));
         }
 
         Shift shiftToDelete = lastShownList.get(targetIndex.getZeroBased());
@@ -63,6 +62,13 @@ public class ShiftDeleteCommand extends Command {
 
         assignmentsToDelete.forEach(model::deleteAssignment);
     }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
 
     @Override
     public boolean equals(Object other) {

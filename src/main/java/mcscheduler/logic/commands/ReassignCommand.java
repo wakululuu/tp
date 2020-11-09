@@ -80,20 +80,16 @@ public class ReassignCommand extends Command {
         List<Shift> lastShownShiftList = model.getFilteredShiftList();
 
         if (oldShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, oldShiftIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(oldShiftIndex));
         }
         if (newShiftIndex.getZeroBased() >= lastShownShiftList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, newShiftIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsShiftIndexError(newShiftIndex));
         }
         if (oldWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, oldWorkerIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(oldWorkerIndex));
         }
         if (newWorkerIndex.getZeroBased() >= lastShownWorkerList.size()) {
-            throw new CommandException(
-                    String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, newWorkerIndex.getOneBased()));
+            throw new CommandException(printOutOfBoundsWorkerIndexError(newWorkerIndex));
         }
         if (!model.hasRole(newRole)) {
             throw new CommandException(String.format(Messages.MESSAGE_ROLE_NOT_FOUND, newRole));
@@ -134,7 +130,7 @@ public class ReassignCommand extends Command {
         }
         if (newWorker.isUnavailable(newShift)) {
             throw new CommandException(String.format(Messages.MESSAGE_INVALID_ASSIGNMENT_UNAVAILABLE,
-                    newWorker.getName(), newShift));
+                    newWorker.getName(), newShift.getShiftDay(), newShift.getShiftTime()));
         }
 
         if (!newShift.isRoleRequired(newRole)) {
@@ -146,6 +142,18 @@ public class ReassignCommand extends Command {
 
         return new CommandResult(
                 String.format(MESSAGE_REASSIGN_SUCCESS, assignmentToAdd, assignmentToRemove.getRole()));
+    }
+
+    private String printOutOfBoundsWorkerIndexError(Index workerIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_WORKER_DISPLAYED_INDEX, workerIndex.getOneBased())
+                        + MESSAGE_USAGE);
+    }
+
+    private String printOutOfBoundsShiftIndexError(Index shiftIndex) {
+        return String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
+                String.format(Messages.MESSAGE_INVALID_SHIFT_DISPLAYED_INDEX, shiftIndex.getOneBased())
+                        + MESSAGE_USAGE);
     }
 
 
