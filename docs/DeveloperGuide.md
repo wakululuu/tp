@@ -23,11 +23,13 @@ The ***Architecture Diagram*** given above explains the high-level design of the
 
 <div markdown="span" class="alert alert-primary">
 
-:bulb: **Tip:** The `.puml` files used to create diagrams in this document can be found in the [diagrams](https://github.com/se-edu/addressbook-level3/tree/master/docs/diagrams/) folder. Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
+:bulb: **Tip:** The `.puml` files used to create diagrams in this document can be found in the [diagrams](https://github.com/AY2021S1-CS2103-F10-4/tp/tree/master/docs/diagrams) folder.
+Refer to the [_PlantUML Tutorial_ at se-edu/guides](https://se-education.org/guides/tutorials/plantUml.html) to learn how to create and edit diagrams.
 
 </div>
 
-**`Main`** has two classes called [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java). It is responsible for,
+**`Main`** has two classes called [`Main`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/Main.java)
+and [`MainApp`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/MainApp.java). It is responsible for,
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup methods where necessary.
 
@@ -62,7 +64,7 @@ The sections below give more details of each component.
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
 **API** :
-[`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+[`Ui.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/ui/Ui.java)
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `WorkerListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
@@ -78,7 +80,7 @@ The `UI` component,
 ![Structure of the Logic Component](images/LogicClassDiagram.png)
 
 **API** :
-[`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+[`Logic.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/logic/Logic.java)
 
 1. `Logic` uses the `McSchedulerParser` class to parse the user command.
 1. This results in a `Command` object which is executed by the `LogicManager`.
@@ -97,7 +99,7 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 
 ![Structure of the Model Component](images/ModelClassDiagram.png)
 
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/model/Model.java)
 
 The `Model`,
 
@@ -117,7 +119,7 @@ The `Model`,
 
 ![Structure of the Storage Component](images/StorageClassDiagram.png)
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API** : [`Storage.java`](https://github.com/AY2021S1-CS2103-F10-4/tp/blob/master/src/main/java/mcscheduler/storage/Storage.java)
 
 The `Storage` component,
 * can save `UserPref` objects in json format and read it back.
@@ -458,7 +460,7 @@ shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds
 
 **Target user profile**:
 
-* is a McDonald's shift manager
+* is a McDonald's shift manager in Singapore
 * manages a significant number of worker contacts
 * manages a large number of work shifts
 * prefers desktop apps over other types
@@ -466,37 +468,48 @@ shift8-worker2-Cashier, shift8-worker3-Fry Cook, shift8-worker7-Janitor and adds
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: McScheduler provides a one-stop solution for McDonald's shift managers' needs for shift scheduling and worker contact/compensation. All relevant information is easily available to help streamline the management process. It is also easy for the manager to contact workers and manage their hours and pay. McScheduler aims to be faster than a typical mouse/GUI driven app.
+**Value proposition**: McScheduler is a one-stop solution for McDonald's shift managers to manage shift scheduling, as
+well as worker contacts and compensation. All relevant information is easily available to help streamline the management
+process. It is also easy for the manager to contact workers, and manage their hours and pay. McScheduler aims to be faster than a
+typical mouse/GUI driven app for fast typists.
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                                                                         | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | user                                       | add a new worker                                                                     | track the worker's data and schedule their work                        |
-| `* * *`  | user                                       | view a list of all workers                                                           | know who are the workers I can assign shifts to                        |
-| `* * *`  | user                                       | view the contact details of workers                                                  | contact them easily                                                    |
-| `* * *`  | user                                       | edit the details of a worker                                                         | have the most up-to-date information if I need to contact them         |
-| `* * *`  | user                                       | assign roles to a worker                                                             | put them in shifts based on the work that they are trained to do       |
-| `* * *`  | user                                       | delete a worker                                                                      | remove a worker who has left McDonald's                                |
-| `* * *`  | user                                       | add a new shift                                                                      | assign workers to shifts                                               |
-| `* * *`  | user                                       | view a list of all shifts                                                            | know which shifts need a worker                                        |
-| `* * *`  | user                                       | add roles that need to be filled in a shift                                          | assign workers into those roles based on what is needed                |
-| `* * *`  | user                                       | set the number of workers needed for each role in a shift                            | schedule workers based on what is needed                               |
-| `* * *`  | user                                       | assign a worker to a shift                                                           | fill shift positions                                                   |
-| `* * *`  | user                                       | edit the details of a shift                                                          | reflect any changes in the number of workers needed for the shift      |
-| `* * *`  | user                                       | unassign a worker from a shift                                                       | find a replacement if the worker is no longer available for that shift |
-| `* * *`  | user                                       | delete a shift                                                                       | remove an unwanted shift                                               |
-| `* *`    | new user                                   | see a guide on how to use the key functions                                          | learn how to use the app                                               |
-| `* *`    | user                                       | see a summary of the various commands                                                | easily refer to it when I forget the exact format for the commands     |
-| `* *`    | user                                       | generate a weekly shift schedule                                                     | see at a glance the workers assigned to every shift in the week        |
-| `*`      | user                                       | login                                                                                |                                                                        |
-| `*`      | user                                       | see a worker's service rating                                                        | decide who to give more work opportunities to                          |
+* `* * *` As a user, I want to **add a new worker and their details**, so that I can track the worker's data and schedule their work
+* `* * *` As a user, I want to **view a list of all workers**, so that I can know who are the workers I can assign shifts to
+* [Epic] `* * *` As a user, I want to **view the details of a worker**
+  * `* * *` As a user, I want to **view the contact details of workers**, so that I can contact them easily
+  * `* * *` As a user, I want to **view the roles a worker can fill**, so that I can assign them a role they are fit for
+  * `* * *` As a user, I want to **view the shifts a worker is unavailable or has taken leave for**, so that I can assign them only shifts they are available for
+  * `* * *` As a user, I want to **view the shifts a worker is already assigned to**, so that I can assign them only shifts they have not been assigned to
+  * `* *` As a user, I want to **find a specific worker among all other workers**, so that I can easily view their details without sieving through the whole list of workers
+  * `* *` As a user, I want to **view the weekly pay of a worker**, so that I can compensate them accordingly
+* `* *` As a user, I want to **edit the details of a worker**, so that I can have the most up-to-date information for shift scheduling and if I need to contact them
+* `* * *` As a user, I want to **delete a worker**, so that I can remove a worker who has left McDonald's
+* `* * *` As a user, I want to **add a new shift**, so that I can assign workers to shifts
+* `* * *` As a user, I want to **add roles and the respective quantities that need to be filled to a shift**, so that I can assign workers based on what is needed
+* `* * *` As a user, I want to **view a list of all shifts**, so that I can have an overview of all the shifts I am managing
+* [Epic] `* * *` As a user, I want to **view the details of a shift**
+  * `* * *` As a user, I want to **view the roles and their quantities required in a shift**, so that I can assign workers based on what is needed
+  * `* * *` As a user, I want to **view the workers already assigned to a shift and the role they are filling**, so that I can know which roles have yet to be filled
+  * `* *` As a user, I want to **view all workers available to fill a role in a shift**, so that I can more easily assign workers shifts
+  * `* *` As a user, I want to **find a specific shift among all other shifts**, so that I can easily view its details without sieving through the whole list of shifts
+* `* *` As a user, I want to **edit the details of a shift**, so that I can reflect any changes in the timing, roles or number of workers needed for the shift
+* `* * *` As a user, I want to **delete a shift**, so that I can remove an unwanted shift
+* `* * *` As a user, I want to **assign a worker to a role in a shift**, so that I can fill shift positions
+* `* *` As a user, I want to **edit an existing assignment**, so that I can easily move workers around after assigning them to a role in a shift
+* `* * *` As a user, I want to **unassign a worker from a shift**, so that I can update the quantity of the role that has been and has yet to be filled
+* `* *` As a new user, I want to **see sample data**, so that I can see what I can do with the app
+* `* *` As a new user ready to add my own data, I want to **delete all sample data**, so that all data in the app is relevant to me
+* `* *` As a new user, I want to **see a guide on how to use the key functions**, so that I can learn how to use the app
+* `* *` As a user, I want to **see a summary of the various commands**, so that I can easily refer to it when I forget the exact format for the commands
+* `* *` As a user, I want to **generate a weekly shift schedule**, so that I can see at a glance the workers assigned to every shift in the week
+* `*` As a user, I want to **see a worker's service rating**, so that I can decide who to give more work opportunities to
 
-
-*{More to be added}*
+_Some user stories are to be implemented beyond v1.4_
 
 ### Use cases
 
