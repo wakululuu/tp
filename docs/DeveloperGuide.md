@@ -143,12 +143,12 @@ Classes used by multiple components are in the `mcscheduler.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+<div style="page-break-after: always;"></div>
+
 ### Worker feature
 
 The adding of workers is core to the functionality of the system. Users are able to add important information to each
 worker, which will help them assign workers to shifts they are most suited for.
-
-<div style="page-break-after: always;"></div>
 
 #### Implementation
 
@@ -463,6 +463,8 @@ that shift immediately.
 
 Step 1. The manager creates a new Shift through the `shift-add` command if it was not already done.
 
+<div style="page-break-after: always;"></div>
+
 Step 2. The manager calls `assign` to assign the 3 existing Workers to the Shift. 
 eg. `assign s/8 w/2 Cashier w/3 Fry Cook w/7 Janitor` to assign Workers 2, 3, and 7 to the Role of Cashier, Fry Cook, 
 and Janitor respectively to Shift 8.
@@ -485,6 +487,8 @@ Step 3. McScheduler parses the input and creates 3 `Assignment`s, which are then
 * [DevOps guide](DevOps.md)
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div style="page-break-after: always;"></div>
 
 ## **Appendix: Requirements**
 
