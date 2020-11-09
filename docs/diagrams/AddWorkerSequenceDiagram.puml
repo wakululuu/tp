@@ -5,8 +5,7 @@ box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":McSchedulerParser" as McSchedulerParser LOGIC_COLOR
 participant ":WorkerAddCommandParser" as WorkerAddCommandParser LOGIC_COLOR
-participant "d:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
-participant "d:Worker" as Worker LOGIC_COLOR
+participant "a:WorkerAddCommand" as WorkerAddCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
 
@@ -14,10 +13,10 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute(command)
+[-> LogicManager : execute("worker-add\nn/John hp/98765432\np/9.0 a/400")
 activate LogicManager
 
-LogicManager -> McSchedulerParser : parseCommand(command)
+LogicManager -> McSchedulerParser : parseCommand("worker-add\nn/John hp/98765432\np/9.0 a/400")
 activate McSchedulerParser
 
 create WorkerAddCommandParser
@@ -27,35 +26,29 @@ activate WorkerAddCommandParser
 WorkerAddCommandParser --> McSchedulerParser
 deactivate WorkerAddCommandParser
 
-McSchedulerParser -> WorkerAddCommandParser : parse(command)
+McSchedulerParser -> WorkerAddCommandParser : parse("n/John hp/98765432\np/9.0 a/400")
 activate WorkerAddCommandParser
 
 create WorkerAddCommand
 WorkerAddCommandParser -> WorkerAddCommand
 activate WorkerAddCommand
 
-create Worker
-WorkerAddCommand -> Worker
-activate Worker
-return newWorker
-deactivate Worker
-
-WorkerAddCommand --> WorkerAddCommandParser : d
+WorkerAddCommand --> WorkerAddCommandParser : a
 deactivate WorkerAddCommand
 
-WorkerAddCommandParser --> McSchedulerParser : d
+WorkerAddCommandParser --> McSchedulerParser : a
 deactivate WorkerAddCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
 WorkerAddCommandParser -[hidden]-> McSchedulerParser
 destroy WorkerAddCommandParser
 
-McSchedulerParser --> LogicManager : d
+McSchedulerParser --> LogicManager : a
 deactivate McSchedulerParser
 
 LogicManager -> WorkerAddCommand : execute()
 activate WorkerAddCommand
 
-WorkerAddCommand -> Model : addWorker(newWorker)
+WorkerAddCommand -> Model : addWorker(w)
 activate Model
 
 Model --> WorkerAddCommand
